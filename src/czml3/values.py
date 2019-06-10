@@ -14,7 +14,7 @@ class Cartesian3Value(BaseCZMLObject):
 
     """
 
-    def __init__(self, values):
+    def __init__(self, *, values):
         if not (len(values) == 3 or len(values) % 4 == 0):
             raise ValueError(
                 "Input values must have either 3 or N * 4 values, "
