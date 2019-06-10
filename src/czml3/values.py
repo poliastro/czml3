@@ -1,5 +1,7 @@
 from typing import Optional
 
+from w3lib.url import is_url, parse_data_uri
+
 from .base import BaseCZMLObject
 from .common import DeletableProperty
 
@@ -45,3 +47,29 @@ class StringValue(BaseCZMLObject, DeletableProperty):
 
     def to_json(self):
         return self.string
+
+
+class Uri(BaseCZMLObject, DeletableProperty):
+    """A URI value.
+
+    The URI can optionally vary with time.
+    """
+
+    def __init__(self, *, delete: Optional[bool] = None, uri: Optional[str] = None):
+        super().__init__(delete=delete)
+
+        try:
+            parse_data_uri(uri)
+        except ValueError:
+            if not is_url(uri):
+                raise ValueError("uri must be a URL or a data URI")
+
+        self._uri = uri
+
+    @property
+    def uri(self):
+        """The URI value."""
+        return self._uri
+
+    def to_json(self):
+        return self.uri
