@@ -203,3 +203,18 @@ def test_packet_description():
     packet_val = Packet(id="id_00", name="Name", description=StringValue(string=string))
 
     assert repr(packet_str) == repr(packet_val) == expected_result
+
+
+def test_packet_custom_properties():
+    expected_result = """{
+    "id": "id_00",
+    "properties": {
+        "a": false,
+        "b": 1,
+        "c": "C"
+    }
+}"""
+    prop_dict = {"a": False, "b": 1, "c": "C"}
+    packet = Packet(id="id_00", properties=prop_dict)
+
+    assert repr(packet) == expected_result
