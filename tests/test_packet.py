@@ -41,6 +41,16 @@ def test_packet_repr_id_name():
     assert repr(packet) == expected_result
 
 
+def test_packet_with_delete_has_nothing_else():
+    expected_result = """{
+    "id": "id_00",
+    "delete": true
+}"""
+    packet = Packet(id="id_00", delete=True, name="No Name In Packet")
+
+    assert repr(packet) == expected_result
+
+
 def test_packet_dumps():
     expected_result = """{"id": "id_00"}"""
     packet = Packet(id="id_00")
