@@ -6,7 +6,7 @@ import pytest
 from czml3 import Packet
 from czml3.enums import InterpolationAlgorithms, ReferenceFrames
 from czml3.properties import Position
-from czml3.values import Cartesian3Value
+from czml3.values import Cartesian3Value, StringValue
 
 
 def test_auto_generated_id():
@@ -190,3 +190,16 @@ def test_packet_dynamic_cartesian_position():
     )
 
     assert repr(packet) == expected_result
+
+
+def test_packet_description():
+    expected_result = """{
+    "id": "id_00",
+    "name": "Name",
+    "description": "<strong>Description</strong>"
+}"""
+    string = "<strong>Description</strong>"
+    packet_str = Packet(id="id_00", name="Name", description=string)
+    packet_val = Packet(id="id_00", name="Name", description=StringValue(string=string))
+
+    assert repr(packet_str) == repr(packet_val) == expected_result
