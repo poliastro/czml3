@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 from uuid import uuid4
 
 from ._version import get_versions
@@ -54,6 +54,7 @@ class Packet(_BaseCZMLObject):
         name: Optional[str] = None,
         parent: Optional[str] = None,
         description: Union[str, StringValue, None] = None,
+        properties: Optional[Dict[str, Any]] = None,
         position: Optional[Position] = None,
     ):
         if id is None:
@@ -64,6 +65,7 @@ class Packet(_BaseCZMLObject):
         self._name = name
         self._parent = parent
         self._description = description
+        self._properties = properties
         self._position = position
 
     @property
@@ -106,6 +108,11 @@ class Packet(_BaseCZMLObject):
     def description(self):
         """An HTML description of the object."""
         return self._description
+
+    @property
+    def properties(self):
+        """A set of custom properties for this object."""
+        return self._properties
 
     @property
     def position(self):
