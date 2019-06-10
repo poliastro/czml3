@@ -1,79 +1,12 @@
-import json
-import warnings
-from json import JSONEncoder
 from typing import List, Optional
 from uuid import uuid4
 
 from ._version import get_versions
+from .base import BaseCZMLObject as _BaseCZMLObject
+from .properties import Position
 
 __version__ = get_versions()["version"]
 del get_versions
-
-
-# https://github.com/AnalyticalGraphicsInc/czml-writer/wiki/Packet
-PACKET_PROPERTIES = [
-    "id",
-    "delete",
-    "name",
-    "parent",
-    "description",
-    "clock",
-    "version",
-    "availability",
-    "properties",
-    "position",
-    "orientation",
-    "viewFrom",
-    "billboard",
-    "box",
-    "corridor",
-    "cylinder",
-    "ellipse",
-    "ellipsoid",
-    "label",
-    "model",
-    "path",
-    "polygon",
-    "polyline",
-    "rectangle",
-    "wall",
-]
-
-
-class _BaseCZMLObject:
-    def __repr__(self):
-        return self.dumps(indent=4)
-
-    def dumps(self, *args, **kwargs):
-        if "cls" in kwargs:
-            warnings.warn("Ignoring specified cls", UserWarning)
-
-        kwargs["cls"] = _CZMLEncoder
-        return json.dumps(self, *args, **kwargs)
-
-    def dump(self, fp, *args, **kwargs):
-        for chunk in _CZMLEncoder(*args, **kwargs).iterencode(self):
-            fp.write(chunk)
-
-
-class _CZMLEncoder(JSONEncoder):
-    def default(self, o):
-        if isinstance(o, Packet):
-            obj_dict = {}
-            for property_name in PACKET_PROPERTIES:
-                if getattr(o, property_name, None) is not None:
-                    obj_dict[property_name] = getattr(o, property_name)
-
-            return obj_dict
-
-        elif isinstance(o, Document):
-            obj_list = []
-            for packet in o.packets:
-                obj_list.append(self.default(packet))
-
-            return obj_list
-
-        return super().default(o)
 
 
 class Packet(_BaseCZMLObject):
@@ -83,6 +16,35 @@ class Packet(_BaseCZMLObject):
     for further information.
     """
 
+    # https://github.com/AnalyticalGraphicsInc/czml-writer/wiki/Packet
+    KNOWN_PROPERTIES = [
+        "id",
+        "delete",
+        "name",
+        "parent",
+        "description",
+        "clock",
+        "version",
+        "availability",
+        "properties",
+        "position",
+        "orientation",
+        "viewFrom",
+        "billboard",
+        "box",
+        "corridor",
+        "cylinder",
+        "ellipse",
+        "ellipsoid",
+        "label",
+        "model",
+        "path",
+        "polygon",
+        "polyline",
+        "rectangle",
+        "wall",
+    ]
+
     def __init__(
         self,
         *,
@@ -90,6 +52,7 @@ class Packet(_BaseCZMLObject):
         delete: Optional[bool] = None,
         name: Optional[str] = None,
         parent: Optional[str] = None,
+        position: Optional[Position] = None,
     ):
         if id is None:
             id = str(uuid4())
@@ -98,6 +61,7 @@ class Packet(_BaseCZMLObject):
         self._delete = delete
         self._name = name
         self._parent = parent
+        self._position = position
 
     @property
     def id(self):
@@ -135,6 +99,16 @@ class Packet(_BaseCZMLObject):
         """An HTML description of the object."""
         return self._parent
 
+    @property
+    def position(self):
+        """The position of the object in the world.
+
+        The position has no direct visual representation,
+        but it is used to locate billboards, labels,
+        and other graphical items attached to the object.
+        """
+        return self._position
+
 
 class Document(_BaseCZMLObject):
     def __init__(self, packets: List[Packet]):
@@ -143,3 +117,10 @@ class Document(_BaseCZMLObject):
     @property
     def packets(self):
         return self._packets
+
+    def to_json(self):
+        obj_list = []
+        for packet in self.packets:
+            obj_list.append(packet.to_json())
+
+        return obj_list
