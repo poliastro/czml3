@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Union
 
 from czml3.common import DeletableProperty, InterpolatableProperty
 
@@ -24,11 +24,13 @@ class Position(BaseCZMLObject, InterpolatableProperty, DeletableProperty):
         epoch: Optional[str] = None,
         interpolationAlgorithm: InterpolationAlgorithms = InterpolationAlgorithms.LINEAR,
         referenceFrame: ReferenceFrames = ReferenceFrames.FIXED,
-        cartesian: Cartesian3Value = None,
+        cartesian: Union[list, Cartesian3Value, None] = None,
     ):
         super().__init__(
             delete=delete, epoch=epoch, interpolationAlgorithm=interpolationAlgorithm
         )
+        if isinstance(cartesian, list):
+            cartesian = Cartesian3Value(values=cartesian)
         self._reference_frame = referenceFrame
         self._cartesian = cartesian
 

@@ -6,7 +6,7 @@ import pytest
 from czml3 import Packet
 from czml3.enums import InterpolationAlgorithms, ReferenceFrames
 from czml3.properties import Position
-from czml3.values import Cartesian3Value, StringValue
+from czml3.values import StringValue
 
 
 def test_auto_generated_id():
@@ -85,9 +85,7 @@ def test_packet_constant_cartesian_position_perfect():
         ]
     }
 }"""
-    packet = Packet(
-        id="MyObject", position=Position(cartesian=Cartesian3Value([0.0, 0.0, 0.0]))
-    )
+    packet = Packet(id="MyObject", position=Position(cartesian=[0.0, 0.0, 0.0]))
 
     assert repr(packet) == expected_result
 
@@ -105,9 +103,7 @@ def test_packet_constant_cartesian_position():
         ]
     }
 }"""
-    packet = Packet(
-        id="MyObject", position=Position(cartesian=Cartesian3Value([0.0, 0.0, 0.0]))
-    )
+    packet = Packet(id="MyObject", position=Position(cartesian=[0.0, 0.0, 0.0]))
 
     assert repr(packet) == expected_result
 
@@ -133,18 +129,16 @@ def test_packet_dynamic_cartesian_position_perfect():
         position=Position(
             interpolationAlgorithm=InterpolationAlgorithms.LAGRANGE,
             referenceFrame=ReferenceFrames.INERTIAL,
-            cartesian=Cartesian3Value(
-                [
-                    0.0,
-                    -6668447.2211117,
-                    1201886.45913705,
-                    146789.427467256,
-                    60.0,
-                    -6711432.84684144,
-                    919677.673492462,
-                    -214047.552431458,
-                ]
-            ),
+            cartesian=[
+                0.0,
+                -6668447.2211117,
+                1201886.45913705,
+                146789.427467256,
+                60.0,
+                -6711432.84684144,
+                919677.673492462,
+                -214047.552431458,
+            ],
         ),
     )
 
@@ -174,18 +168,16 @@ def test_packet_dynamic_cartesian_position():
         position=Position(
             interpolationAlgorithm=InterpolationAlgorithms.LAGRANGE,
             referenceFrame=ReferenceFrames.INERTIAL,
-            cartesian=Cartesian3Value(
-                [
-                    0.0,
-                    -6668447.2211117,
-                    1201886.45913705,
-                    146789.427467256,
-                    60.0,
-                    -6711432.84684144,
-                    919677.673492462,
-                    -214047.552431458,
-                ]
-            ),
+            cartesian=[
+                0.0,
+                -6668447.2211117,
+                1201886.45913705,
+                146789.427467256,
+                60.0,
+                -6711432.84684144,
+                919677.673492462,
+                -214047.552431458,
+            ],
         ),
     )
 
