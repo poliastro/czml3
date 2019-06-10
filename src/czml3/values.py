@@ -34,7 +34,10 @@ class Cartesian3Value(BaseCZMLObject):
 
 
 class StringValue(BaseCZMLObject, DeletableProperty):
-    """A string value. The string can optionally vary with time."""
+    """A string value.
+
+    The string can optionally vary with time.
+    """
 
     def __init__(self, *, delete: Optional[bool] = None, string: Optional[str] = None):
         super().__init__(delete=delete)
