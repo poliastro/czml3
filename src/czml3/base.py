@@ -4,6 +4,8 @@ from enum import Enum
 from json import JSONEncoder
 from typing import List
 
+NON_DELETE_PROPERTIES = ["id", "delete"]
+
 
 class CZMLEncoder(JSONEncoder):
     def default(self, o):
@@ -34,8 +36,13 @@ class BaseCZMLObject:
             fp.write(chunk)
 
     def to_json(self):
+        if getattr(self, "delete", False):
+            properties_list = NON_DELETE_PROPERTIES
+        else:
+            properties_list = self.KNOWN_PROPERTIES
+
         obj_dict = {}
-        for property_name in self.KNOWN_PROPERTIES:
+        for property_name in properties_list:
             if getattr(self, property_name, None) is not None:
                 obj_dict[property_name] = getattr(self, property_name)
 
