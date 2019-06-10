@@ -5,7 +5,7 @@ import pytest
 
 from czml3 import Packet
 from czml3.enums import InterpolationAlgorithms, ReferenceFrames
-from czml3.properties import Position
+from czml3.properties import Billboard, Position
 from czml3.values import StringValue
 
 
@@ -208,5 +208,17 @@ def test_packet_custom_properties():
 }"""
     prop_dict = {"a": False, "b": 1, "c": "C"}
     packet = Packet(id="id_00", properties=prop_dict)
+
+    assert repr(packet) == expected_result
+
+
+def test_packet_billboard():
+    expected_result = """{
+    "id": "id_00",
+    "billboard": {
+        "image": "file://image.png"
+    }
+}"""
+    packet = Packet(id="id_00", billboard=Billboard(image="file://image.png"))
 
     assert repr(packet) == expected_result

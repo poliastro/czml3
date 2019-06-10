@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from ._version import get_versions
 from .base import BaseCZMLObject as _BaseCZMLObject
-from .properties import Position
+from .properties import Billboard, Position
 from .values import StringValue
 
 __version__ = get_versions()["version"]
@@ -56,6 +56,7 @@ class Packet(_BaseCZMLObject):
         description: Union[str, StringValue, None] = None,
         properties: Optional[Dict[str, Any]] = None,
         position: Optional[Position] = None,
+        billboard: Optional[Billboard] = None,
     ):
         if id is None:
             id = str(uuid4())
@@ -67,6 +68,7 @@ class Packet(_BaseCZMLObject):
         self._description = description
         self._properties = properties
         self._position = position
+        self._billboard = billboard
 
     @property
     def id(self):
@@ -123,6 +125,15 @@ class Packet(_BaseCZMLObject):
         and other graphical items attached to the object.
         """
         return self._position
+
+    @property
+    def billboard(self):
+        """A billboard, or viewport-aligned image, sometimes called a marker.
+
+        The billboard is positioned in the scene by the position property.
+
+        """
+        return self._billboard
 
 
 class Document(_BaseCZMLObject):
