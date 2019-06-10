@@ -1,4 +1,7 @@
+from typing import Optional
+
 from .base import BaseCZMLObject
+from .common import DeletableProperty
 
 
 class Cartesian3Value(BaseCZMLObject):
@@ -26,3 +29,19 @@ class Cartesian3Value(BaseCZMLObject):
 
     def to_json(self):
         return list(self.values)
+
+
+class StringValue(BaseCZMLObject, DeletableProperty):
+    """A string value. The string can optionally vary with time."""
+
+    def __init__(self, *, delete: Optional[bool] = None, string: Optional[str] = None):
+        super().__init__(delete=delete)
+        self._string = string
+
+    @property
+    def string(self):
+        """The string value."""
+        return self._string
+
+    def to_json(self):
+        return self.string
