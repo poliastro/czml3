@@ -98,3 +98,21 @@ class TimeInterval(BaseCZMLObject):
             end = self._end.astimezone(dt.timezone.utc).strftime(ISO8601_FORMAT_Z)
 
         return "{start}/{end}".format(start=start, end=end)
+
+
+class IntervalValue(BaseCZMLObject):
+    """Value over some interval."""
+
+    KNOWN_PROPERTIES = ["interval", "value"]
+
+    def __init__(self, *, start, end, value):
+        self._interval = TimeInterval(start=start, end=end)
+        self._value = value
+
+    @property
+    def interval(self):
+        return self._interval
+
+    @property
+    def value(self):
+        return self._value
