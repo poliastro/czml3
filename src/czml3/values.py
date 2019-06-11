@@ -66,9 +66,9 @@ class Uri(BaseCZMLObject, DeletableProperty):
 
         try:
             parse_data_uri(uri)
-        except ValueError:
+        except ValueError as e:
             if not is_url(uri):
-                raise ValueError("uri must be a URL or a data URI")
+                raise ValueError("uri must be a URL or a data URI") from e
 
         self._uri = uri
 
