@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from .base import BaseCZMLObject
 from .properties import Billboard, Position
-from .values import StringValue
+from .values import StringValue, TimeInterval
 
 CZML_VERSION = "1.0"
 
@@ -78,6 +78,7 @@ class Packet(BaseCZMLObject):
         name: Optional[str] = None,
         parent: Optional[str] = None,
         description: Union[str, StringValue, None] = None,
+        availability: Optional[TimeInterval] = None,
         properties: Optional[Dict[str, Any]] = None,
         position: Optional[Position] = None,
         billboard: Optional[Billboard] = None,
@@ -90,6 +91,7 @@ class Packet(BaseCZMLObject):
         self._name = name
         self._parent = parent
         self._description = description
+        self._availability = availability
         self._properties = properties
         self._position = position
         self._billboard = billboard
@@ -134,6 +136,29 @@ class Packet(BaseCZMLObject):
     def description(self):
         """An HTML description of the object."""
         return self._description
+
+    @property
+    def availability(self):
+        """The set of time intervals over which data for an object is available.
+
+        The property can be a single string specifying a single interval,
+        or an array of strings representing intervals.
+        A later CZML packet can update this availability
+        if it changes or is found to be incorrect.
+        For example, an SGP4 propagator may initially report availability for all time,
+        but then later the propagator throws an exception
+        and the availability can be adjusted to end at that time.
+        If this optional property is not present,
+        the object is assumed to be available for all time.
+        Availability is scoped to a particular CZML stream,
+        so two different streams can list different availability for a single object.
+        Within a single stream,
+        the last availability stated for an object is the one in effect
+        and any availabilities in previous packets are ignored.
+        If an object is not available at a time,
+        the client will not draw that object.
+        """
+        return self._availability
 
     @property
     def properties(self):

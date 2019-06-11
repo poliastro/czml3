@@ -1,9 +1,12 @@
+import datetime as dt
 from typing import Optional
 
 from w3lib.url import is_url, parse_data_uri
 
 from .base import BaseCZMLObject
 from .common import DeletableProperty
+
+ISO8601_FORMAT_Z = "%Y-%m-%dT%H:%M:%SZ"  # TODO: Add milliseconds?
 
 
 class Cartesian3Value(BaseCZMLObject):
@@ -76,3 +79,26 @@ class Uri(BaseCZMLObject, DeletableProperty):
 
     def to_json(self):
         return self.uri
+
+
+class TimeInterval(BaseCZMLObject):
+    """A time interval, specified in ISO8601 interval format."""
+
+    def __init__(
+        self, *, start: Optional[dt.datetime] = None, end: Optional[dt.datetime] = None
+    ):
+        self._start = start
+        self._end = end
+
+    def to_json(self):
+        if self._start is None:
+            start = "0000-00-00T00:00:00Z"
+        else:
+            start = self._start.astimezone(dt.timezone.utc).strftime(ISO8601_FORMAT_Z)
+
+        if self._end is None:
+            end = "9999-12-31T24:00:00Z"
+        else:
+            end = self._end.astimezone(dt.timezone.utc).strftime(ISO8601_FORMAT_Z)
+
+        return "{start}/{end}".format(start=start, end=end)
