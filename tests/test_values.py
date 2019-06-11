@@ -3,7 +3,7 @@ import datetime as dt
 import pytest
 from dateutil.tz import tzoffset
 
-from czml3.values import Cartesian3Value, TimeInterval, Uri
+from czml3.types import Cartesian3Value, TimeInterval, Uri
 
 
 @pytest.mark.parametrize("values", [[2, 2], [5, 5, 5, 5, 5]])

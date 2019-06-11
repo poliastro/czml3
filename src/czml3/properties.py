@@ -5,7 +5,7 @@ from czml3.common import DeletableProperty, InterpolatableProperty
 
 from .base import BaseCZMLObject
 from .enums import InterpolationAlgorithms, ReferenceFrames
-from .values import Cartesian3Value, Uri
+from .types import Cartesian3Value, Uri
 
 
 # noinspection PyPep8Naming

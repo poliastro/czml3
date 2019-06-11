@@ -1,7 +1,7 @@
 import datetime as dt
 
 from czml3.properties import Position
-from czml3.values import Cartesian3Value
+from czml3.types import Cartesian3Value
 
 
 def test_position_has_delete():

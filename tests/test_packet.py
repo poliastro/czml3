@@ -6,7 +6,7 @@ import pytest
 from czml3 import CZML_VERSION, Packet, Preamble
 from czml3.enums import InterpolationAlgorithms, ReferenceFrames
 from czml3.properties import Billboard, Position
-from czml3.values import StringValue
+from czml3.types import StringValue
 
 
 def test_preamble_has_proper_id_and_expected_version():

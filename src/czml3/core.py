@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from .base import BaseCZMLObject
 from .properties import Billboard, Position
-from .values import StringValue, TimeInterval
+from .types import StringValue, TimeInterval
 
 CZML_VERSION = "1.0"
 
