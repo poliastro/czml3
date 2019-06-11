@@ -1,6 +1,3 @@
-import datetime as dt
-from typing import Optional
-
 from czml3.enums import InterpolationAlgorithms
 
 
@@ -10,7 +7,7 @@ class DeletableProperty:
 
     KNOWN_PROPERTIES = ["delete"]
 
-    def __init__(self, *, delete: Optional[bool] = None, **kwargs):
+    def __init__(self, *, delete=None, **kwargs):
         super().__init__(**kwargs)  # type: ignore
         self._delete = delete
 
@@ -41,8 +38,8 @@ class InterpolatableProperty:
     def __init__(
         self,
         *,
-        epoch: Optional[dt.datetime] = None,
-        interpolationAlgorithm: InterpolationAlgorithms = InterpolationAlgorithms.LINEAR,
+        epoch=None,
+        interpolationAlgorithm=InterpolationAlgorithms.LINEAR,
         **kwargs,
     ):
         super().__init__(**kwargs)  # type: ignore

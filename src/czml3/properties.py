@@ -1,6 +1,3 @@
-import datetime as dt
-from typing import Optional, Union
-
 from czml3.common import DeletableProperty, InterpolatableProperty
 
 from .base import BaseCZMLObject
@@ -21,11 +18,11 @@ class Position(BaseCZMLObject, InterpolatableProperty, DeletableProperty):
     def __init__(
         self,
         *,
-        delete: Optional[bool] = None,
-        epoch: Optional[dt.datetime] = None,
-        interpolationAlgorithm: InterpolationAlgorithms = InterpolationAlgorithms.LINEAR,
-        referenceFrame: ReferenceFrames = ReferenceFrames.FIXED,
-        cartesian: Union[list, Cartesian3Value, None] = None,
+        delete=None,
+        epoch=None,
+        interpolationAlgorithm=InterpolationAlgorithms.LINEAR,
+        referenceFrame=ReferenceFrames.FIXED,
+        cartesian=None,
     ):
         super().__init__(
             delete=delete, epoch=epoch, interpolationAlgorithm=interpolationAlgorithm
@@ -60,7 +57,7 @@ class Billboard(BaseCZMLObject):
 
     KNOWN_PROPERTIES = ["image"]
 
-    def __init__(self, *, image: Union[str, Uri]):
+    def __init__(self, *, image):
         if isinstance(image, str):
             image = Uri(uri=image)
 

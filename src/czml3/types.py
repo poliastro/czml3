@@ -1,5 +1,4 @@
 import datetime as dt
-from typing import Optional
 
 from w3lib.url import is_url, parse_data_uri
 
@@ -41,7 +40,7 @@ class StringValue(BaseCZMLObject, DeletableProperty):
     The string can optionally vary with time.
     """
 
-    def __init__(self, *, delete: Optional[bool] = None, string: Optional[str] = None):
+    def __init__(self, *, delete=None, string=None):
         super().__init__(delete=delete)
         self._string = string
 
@@ -60,7 +59,7 @@ class Uri(BaseCZMLObject, DeletableProperty):
     The URI can optionally vary with time.
     """
 
-    def __init__(self, *, delete: Optional[bool] = None, uri: Optional[str] = None):
+    def __init__(self, *, delete=None, uri=None):
         super().__init__(delete=delete)
 
         try:
@@ -83,9 +82,7 @@ class Uri(BaseCZMLObject, DeletableProperty):
 class TimeInterval(BaseCZMLObject):
     """A time interval, specified in ISO8601 interval format."""
 
-    def __init__(
-        self, *, start: Optional[dt.datetime] = None, end: Optional[dt.datetime] = None
-    ):
+    def __init__(self, *, start=None, end=None):
         self._start = start
         self._end = end
 

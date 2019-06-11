@@ -1,9 +1,6 @@
-from typing import Any, Dict, List, Optional, Union
 from uuid import uuid4
 
 from .base import BaseCZMLObject
-from .properties import Billboard, Position
-from .types import StringValue, TimeInterval
 
 CZML_VERSION = "1.0"
 
@@ -13,12 +10,7 @@ class Preamble(BaseCZMLObject):
 
     KNOWN_PROPERTIES = ["id", "version", "name"]
 
-    def __init__(
-        self,
-        *,
-        version: str = CZML_VERSION,
-        name: Optional[str] = None,
-    ):
+    def __init__(self, *, version=CZML_VERSION, name=None):
         self._id = "document"
         self._version = version
         self._name = name
@@ -73,15 +65,15 @@ class Packet(BaseCZMLObject):
     def __init__(
         self,
         *,
-        id: Optional[str] = None,
-        delete: Optional[bool] = None,
-        name: Optional[str] = None,
-        parent: Optional[str] = None,
-        description: Union[str, StringValue, None] = None,
-        availability: Optional[TimeInterval] = None,
-        properties: Optional[Dict[str, Any]] = None,
-        position: Optional[Position] = None,
-        billboard: Optional[Billboard] = None,
+        id=None,
+        delete=None,
+        name=None,
+        parent=None,
+        description=None,
+        availability=None,
+        properties=None,
+        position=None,
+        billboard=None,
     ):
         if id is None:
             id = str(uuid4())
@@ -186,7 +178,7 @@ class Packet(BaseCZMLObject):
 
 
 class Document(BaseCZMLObject):
-    def __init__(self, packets: List[Packet]):
+    def __init__(self, packets):
         self._packets = packets
 
     @property
