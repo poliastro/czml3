@@ -1,3 +1,4 @@
+import datetime as dt
 from typing import Optional, Union
 
 from czml3.common import DeletableProperty, InterpolatableProperty
@@ -21,7 +22,7 @@ class Position(BaseCZMLObject, InterpolatableProperty, DeletableProperty):
         self,
         *,
         delete: Optional[bool] = None,
-        epoch: Optional[str] = None,
+        epoch: Optional[dt.datetime] = None,
         interpolationAlgorithm: InterpolationAlgorithms = InterpolationAlgorithms.LINEAR,
         referenceFrame: ReferenceFrames = ReferenceFrames.FIXED,
         cartesian: Union[list, Cartesian3Value, None] = None,

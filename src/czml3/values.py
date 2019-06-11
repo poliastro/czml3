@@ -5,8 +5,7 @@ from w3lib.url import is_url, parse_data_uri
 
 from .base import BaseCZMLObject
 from .common import DeletableProperty
-
-ISO8601_FORMAT_Z = "%Y-%m-%dT%H:%M:%SZ"  # TODO: Add milliseconds?
+from .constants import ISO8601_FORMAT_Z
 
 
 class Cartesian3Value(BaseCZMLObject):

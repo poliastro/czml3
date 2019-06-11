@@ -1,3 +1,4 @@
+import datetime as dt
 from typing import Optional
 
 from czml3.enums import InterpolationAlgorithms
@@ -40,7 +41,7 @@ class InterpolatableProperty:
     def __init__(
         self,
         *,
-        epoch: Optional[str] = None,
+        epoch: Optional[dt.datetime] = None,
         interpolationAlgorithm: InterpolationAlgorithms = InterpolationAlgorithms.LINEAR,
         **kwargs,
     ):
