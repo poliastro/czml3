@@ -3,10 +3,24 @@ from uuid import UUID
 
 import pytest
 
-from czml3 import Packet
+from czml3 import CZML_VERSION, Packet, Preamble
 from czml3.enums import InterpolationAlgorithms, ReferenceFrames
 from czml3.properties import Billboard, Position
 from czml3.values import StringValue
+
+
+def test_preamble_has_proper_id_and_expected_version():
+    preamble = Preamble()
+
+    assert preamble.id == "document"
+    assert preamble.version == CZML_VERSION
+
+
+def test_preamble_has_given_name():
+    expected_name = "document_00"
+    preamble = Preamble(name=expected_name)
+
+    assert preamble.name == expected_name
 
 
 def test_auto_generated_id():
