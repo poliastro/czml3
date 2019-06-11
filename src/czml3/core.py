@@ -5,6 +5,36 @@ from .base import BaseCZMLObject
 from .properties import Billboard, Position
 from .values import StringValue
 
+CZML_VERSION = "1.0"
+
+
+class Preamble(BaseCZMLObject):
+    """The preamble packet."""
+
+    KNOWN_PROPERTIES = ["id", "version", "name"]
+
+    def __init__(
+        self,
+        *,
+        version: str = CZML_VERSION,
+        name: Optional[str] = None,
+    ):
+        self._id = "document"
+        self._version = version
+        self._name = name
+
+    @property
+    def id(self):
+        return self._id
+
+    @property
+    def version(self):
+        return self._version
+
+    @property
+    def name(self):
+        return self._name
+
 
 class Packet(BaseCZMLObject):
     """A CZML Packet.
@@ -20,8 +50,6 @@ class Packet(BaseCZMLObject):
         "name",
         "parent",
         "description",
-        "clock",
-        "version",
         "availability",
         "properties",
         "position",
