@@ -50,20 +50,57 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
 
 
 # noinspection PyPep8Naming
-class Billboard(BaseCZMLObject):
+class Billboard(BaseCZMLObject, HasAlignment):
     """A billboard, or viewport-aligned image.
 
     The billboard is positioned in the scene by the position property.
     A billboard is sometimes called a marker.
     """
 
-    KNOWN_PROPERTIES = ["image"]
+    KNOWN_PROPERTIES = [
+        "show",
+        "image",
+        "scale",
+        "pixelOffset",
+        "eyeOffset",
+        "horizontalOrigin",
+        "verticalOrigin",
+        "heightReference",
+        "color",
+        "rotation",
+        "alignedAxis",
+        "sizeInMeters",
+        "width",
+        "height",
+        "scaleByDistance",
+        "translucencyByDistance",
+        "pixelOffsetScaleByDistance",
+        "imageSubRegion",
+        "distanceDisplayCondition",
+        "disableDepthTestDistance",
+    ]
 
-    def __init__(self, *, image):
+    def __init__(
+        self,
+        *,
+        image,
+        show=None,
+        scale=None,
+        horizontalOrigin=None,
+        verticalOrigin=None,
+    ):
         if isinstance(image, str):
             image = Uri(uri=image)
-
         self._image = image
+        self._show = show
+        self._scale = scale
+        self._horizontal_origin = horizontalOrigin
+        self._vertical_origin = verticalOrigin
+
+    @property
+    def show(self):
+        """Whether or not the billboard is shown."""
+        return self._show
 
     @property
     def image(self):
@@ -74,6 +111,18 @@ class Billboard(BaseCZMLObject):
         The URI may also be a data URI.
         """
         return self._image
+
+    @property
+    def scale(self):
+        """The scale of the billboard.
+
+        The scale is multiplied with the pixel size of the billboard's image.
+        For example, if the scale is 2.0,
+        the billboard will be rendered with twice the number of pixels,
+        in each direction, of the image.
+
+        """
+        return self._scale
 
 
 # noinspection PyPep8Naming
