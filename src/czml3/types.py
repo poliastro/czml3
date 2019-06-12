@@ -1,5 +1,7 @@
 import datetime as dt
 
+# TODO: Wait until https://github.com/python/typeshed/pull/2694 is released
+from dateutil.parser import isoparse as parse_iso_date  # type: ignore
 from w3lib.url import is_url, parse_data_uri
 
 from .base import BaseCZMLObject
@@ -7,6 +9,27 @@ from .common import Deletable
 from .constants import ISO8601_FORMAT_Z
 
 TYPE_MAPPING = {bool: "boolean"}
+
+
+def format_datetime_like(dt_object):
+    if dt_object is None:
+        result = dt_object
+
+    elif isinstance(dt_object, str):
+        try:
+            parse_iso_date(dt_object)
+        except Exception:
+            raise
+        else:
+            result = dt_object
+
+    elif isinstance(dt_object, dt.datetime):
+        result = dt_object.astimezone(dt.timezone.utc).strftime(ISO8601_FORMAT_Z)
+
+    else:
+        result = dt_object.strftime(ISO8601_FORMAT_Z)
+
+    return result
 
 
 class Cartesian3Value(BaseCZMLObject):
@@ -84,19 +107,19 @@ class TimeInterval(BaseCZMLObject):
     """A time interval, specified in ISO8601 interval format."""
 
     def __init__(self, *, start=None, end=None):
-        self._start = start
-        self._end = end
+        self._start = format_datetime_like(start)
+        self._end = format_datetime_like(end)
 
     def to_json(self):
         if self._start is None:
             start = "0000-00-00T00:00:00Z"
         else:
-            start = self._start.astimezone(dt.timezone.utc).strftime(ISO8601_FORMAT_Z)
+            start = self._start
 
         if self._end is None:
             end = "9999-12-31T24:00:00Z"
         else:
-            end = self._end.astimezone(dt.timezone.utc).strftime(ISO8601_FORMAT_Z)
+            end = self._end
 
         return "{start}/{end}".format(start=start, end=end)
 

@@ -1,9 +1,10 @@
 import datetime as dt
 
+import astropy.time
 import pytest
 from dateutil.tz import tzoffset
 
-from czml3.types import Cartesian3Value, TimeInterval, Uri
+from czml3.types import Cartesian3Value, TimeInterval, Uri, format_datetime_like
 
 
 @pytest.mark.parametrize("values", [[2, 2], [5, 5, 5, 5, 5]])
@@ -38,3 +39,29 @@ def test_custom_time_interval():
     time_interval = TimeInterval(start=start, end=end)
 
     assert repr(time_interval) == expected_result
+
+
+def test_bad_time_raises_error():
+    with pytest.raises(ValueError):
+        format_datetime_like("2019/01/01")
+
+
+@pytest.mark.xfail
+def test_astropy_time_retains_input_format():
+    # It would be nice to recover the input format,
+    # but it's difficult without conditionally depending on Astropy
+    expected_result = "2012-03-15T10:16:06.97400000000198Z"
+    time = astropy.time.Time(expected_result)
+
+    result = format_datetime_like(time)
+
+    assert result == expected_result
+
+
+def test_astropy_time_format():
+    expected_result = "2012-03-15T10:16:06Z"
+    time = astropy.time.Time("2012-03-15T10:16:06.97400000000198Z")
+
+    result = format_datetime_like(time)
+
+    assert result == expected_result

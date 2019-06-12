@@ -37,6 +37,50 @@ def test_simple():
                 id="Satellite/Geoeye1-to-Satellite/ISS",
                 name="Geoeye1 to ISS",
                 parent=accesses_id,
+                availability=Sequence(
+                    [
+                        TimeInterval(
+                            start="2012-03-15T10:16:06.97400000000198Z",
+                            end="2012-03-15T10:33:59.3549999999959Z",
+                        ),
+                        TimeInterval(
+                            start="2012-03-15T11:04:09.73799999999756Z",
+                            end="2012-03-15T11:21:04.51900000000023Z",
+                        ),
+                        TimeInterval(
+                            start="2012-03-15T11:52:06.94400000000314Z",
+                            end="2012-03-15T12:08:18.8840000000055Z",
+                        ),
+                        TimeInterval(
+                            start="2012-03-15T12:40:57.2069999999949Z",
+                            end="2012-03-15T12:54:39.301999999996Z",
+                        ),
+                        TimeInterval(
+                            start="2012-03-15T13:29:44.5040000000008Z",
+                            end="2012-03-15T13:41:05.96899999999732Z",
+                        ),
+                        TimeInterval(
+                            start="2012-03-15T14:20:16.8450000000012Z",
+                            end="2012-03-15T14:25:48.0559999999969Z",
+                        ),
+                        TimeInterval(
+                            start="2012-03-16T07:01:44.4309999999823Z",
+                            end="2012-03-16T07:06:19.6309999999939Z",
+                        ),
+                        TimeInterval(
+                            start="2012-03-16T07:46:00.457999999984168Z",
+                            end="2012-03-16T07:57:20.8470000000088Z",
+                        ),
+                        TimeInterval(
+                            start="2012-03-16T08:32:14.5289999999804Z",
+                            end="2012-03-16T08:46:17.0109999999986Z",
+                        ),
+                        TimeInterval(
+                            start="2012-03-16T09:18:28.4590000000026Z",
+                            end="2012-03-16T09:35:16.6410000000033Z",
+                        ),
+                    ]
+                ),
             ),
             Packet(
                 id="Facility/AGI-to-Satellite/ISS",
