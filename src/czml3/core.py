@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from .base import BaseCZMLObject
+from .types import Sequence
 
 CZML_VERSION = "1.0"
 
@@ -177,17 +178,9 @@ class Packet(BaseCZMLObject):
         return self._billboard
 
 
-class Document(BaseCZMLObject):
-    def __init__(self, packets):
-        self._packets = packets
+class Document(Sequence):
+    """A CZML document, consisting on a list of packets."""
 
     @property
     def packets(self):
-        return self._packets
-
-    def to_json(self):
-        obj_list = []
-        for packet in self.packets:
-            obj_list.append(packet.to_json())
-
-        return obj_list
+        return self._values

@@ -116,3 +116,13 @@ class IntervalValue(BaseCZMLObject):
     @property
     def value(self):
         return self._value
+
+
+class Sequence(BaseCZMLObject):
+    """Sequence, list, array of objects."""
+
+    def __init__(self, values):
+        self._values = values
+
+    def to_json(self):
+        return list(self._values)
