@@ -23,6 +23,7 @@ class Preamble(BaseCZMLObject):
 
     @property
     def version(self):
+        """The CZML version being written."""
         return self._version
 
     @property
