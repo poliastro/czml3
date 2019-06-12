@@ -2,14 +2,8 @@ from czml3.enums import InterpolationAlgorithms
 
 
 # noinspection PyPep8Naming
-class DeletableProperty:
+class Deletable:
     """A property whose value may be deleted."""
-
-    KNOWN_PROPERTIES = ["delete"]
-
-    def __init__(self, *, delete=None, **kwargs):
-        super().__init__(**kwargs)  # type: ignore
-        self._delete = delete
 
     @property
     def delete(self):
@@ -27,24 +21,11 @@ class DeletableProperty:
 
 
 # noinspection PyPep8Naming
-class InterpolatableProperty:
+class Interpolatable:
     """A property whose value may be determined by interpolating.
 
     The interpolation happens over provided time-tagged samples.
     """
-
-    KNOWN_PROPERTIES = ["epoch", "interpolationAlgorithm"]
-
-    def __init__(
-        self,
-        *,
-        epoch=None,
-        interpolationAlgorithm=InterpolationAlgorithms.LINEAR,
-        **kwargs,
-    ):
-        super().__init__(**kwargs)  # type: ignore
-        self._epoch = epoch
-        self._interpolation_algorithm = interpolationAlgorithm
 
     @property
     def epoch(self):

@@ -1,6 +1,5 @@
-from czml3.common import DeletableProperty, InterpolatableProperty
-
 from .base import BaseCZMLObject
+from .common import Deletable, Interpolatable
 from .enums import (
     ClockRanges,
     ClockSteps,
@@ -11,14 +10,16 @@ from .types import Cartesian3Value, Uri
 
 
 # noinspection PyPep8Naming
-class Position(BaseCZMLObject, InterpolatableProperty, DeletableProperty):
+class Position(BaseCZMLObject, Interpolatable, Deletable):
     """Defines a position. The position can optionally vary over time."""
 
-    KNOWN_PROPERTIES = (
-        InterpolatableProperty.KNOWN_PROPERTIES
-        + DeletableProperty.KNOWN_PROPERTIES
-        + ["referenceFrame", "cartesian"]
-    )
+    KNOWN_PROPERTIES = [
+        "delete",
+        "epoch",
+        "interpolationAlgorithm",
+        "referenceFrame",
+        "cartesian",
+    ]
 
     def __init__(
         self,
@@ -29,11 +30,12 @@ class Position(BaseCZMLObject, InterpolatableProperty, DeletableProperty):
         referenceFrame=ReferenceFrames.FIXED,
         cartesian=None,
     ):
-        super().__init__(
-            delete=delete, epoch=epoch, interpolationAlgorithm=interpolationAlgorithm
-        )
         if isinstance(cartesian, list):
             cartesian = Cartesian3Value(values=cartesian)
+
+        self._delete = delete
+        self._epoch = epoch
+        self._interpolation_algorithm = interpolationAlgorithm
         self._reference_frame = referenceFrame
         self._cartesian = cartesian
 

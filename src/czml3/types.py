@@ -3,7 +3,7 @@ import datetime as dt
 from w3lib.url import is_url, parse_data_uri
 
 from .base import BaseCZMLObject
-from .common import DeletableProperty
+from .common import Deletable
 from .constants import ISO8601_FORMAT_Z
 
 TYPE_MAPPING = {bool: "boolean"}
@@ -36,14 +36,14 @@ class Cartesian3Value(BaseCZMLObject):
         return list(self.values)
 
 
-class StringValue(BaseCZMLObject, DeletableProperty):
+class StringValue(BaseCZMLObject, Deletable):
     """A string value.
 
     The string can optionally vary with time.
     """
 
     def __init__(self, *, delete=None, string=None):
-        super().__init__(delete=delete)
+        self._delete = delete
         self._string = string
 
     @property
@@ -55,21 +55,20 @@ class StringValue(BaseCZMLObject, DeletableProperty):
         return self.string
 
 
-class Uri(BaseCZMLObject, DeletableProperty):
+class Uri(BaseCZMLObject, Deletable):
     """A URI value.
 
     The URI can optionally vary with time.
     """
 
     def __init__(self, *, delete=None, uri=None):
-        super().__init__(delete=delete)
-
         try:
             parse_data_uri(uri)
         except ValueError as e:
             if not is_url(uri):
                 raise ValueError("uri must be a URL or a data URI") from e
 
+        self._delete = delete
         self._uri = uri
 
     @property
@@ -108,10 +107,6 @@ class IntervalValue(BaseCZMLObject):
     def __init__(self, *, start, end, value):
         self._interval = TimeInterval(start=start, end=end)
         self._value = value
-
-    @property
-    def interval(self):
-        return self._interval
 
     def to_json(self):
         obj_dict = {"interval": self._interval}
