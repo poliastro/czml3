@@ -14,3 +14,17 @@ class ReferenceFrames(Enum):
 
     FIXED = auto()
     INERTIAL = auto()
+
+
+class ClockRanges(Enum):
+    """The behavior of a clock when its current time reaches its start or end time."""
+
+    UNBOUNDED = auto()
+    CLAMPED = auto()
+    LOOP_STOP = auto()
+
+
+class ClockSteps(Enum):
+    TICK_DEPENDENT = auto()
+    SYSTEM_CLOCK_MULTIPLIER = auto()
+    SYSTEM_CLOCK = auto()

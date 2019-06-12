@@ -9,12 +9,13 @@ CZML_VERSION = "1.0"
 class Preamble(BaseCZMLObject):
     """The preamble packet."""
 
-    KNOWN_PROPERTIES = ["id", "version", "name"]
+    KNOWN_PROPERTIES = ["id", "version", "name", "clock"]
 
-    def __init__(self, *, version=CZML_VERSION, name=None):
+    def __init__(self, *, version=CZML_VERSION, name=None, clock=None):
         self._id = "document"
         self._version = version
         self._name = name
+        self._clock = clock
 
     @property
     def id(self):
@@ -27,6 +28,11 @@ class Preamble(BaseCZMLObject):
     @property
     def name(self):
         return self._name
+
+    @property
+    def clock(self):
+        """The clock settings for the entire data set."""
+        return self._clock
 
 
 class Packet(BaseCZMLObject):

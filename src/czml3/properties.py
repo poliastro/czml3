@@ -1,7 +1,12 @@
 from czml3.common import DeletableProperty, InterpolatableProperty
 
 from .base import BaseCZMLObject
-from .enums import InterpolationAlgorithms, ReferenceFrames
+from .enums import (
+    ClockRanges,
+    ClockSteps,
+    InterpolationAlgorithms,
+    ReferenceFrames,
+)
 from .types import Cartesian3Value, Uri
 
 
@@ -72,3 +77,55 @@ class Billboard(BaseCZMLObject):
         The URI may also be a data URI.
         """
         return self._image
+
+
+# noinspection PyPep8Naming
+class Clock(BaseCZMLObject):
+    """Initial settings for a simulated clock when a document is loaded.
+
+    The start and stop time are configured using the interval property.
+
+    """
+
+    KNOWN_PROPERTIES = ["currentTime", "multiplier", "range", "step"]
+
+    def __init__(
+        self,
+        *,
+        currentTime=None,
+        multiplier=1.0,
+        range=ClockRanges.LOOP_STOP,
+        step=ClockSteps.SYSTEM_CLOCK_MULTIPLIER,
+    ):
+        self._current_time = currentTime
+        self._multiplier = multiplier
+        self._range = range
+        self._step = step
+
+    @property
+    def currentTime(self):
+        """The current time, specified in ISO8601 format."""
+        return self._current_time
+
+    @property
+    def multiplier(self):
+        """The multiplier.
+
+        When step is set to TICK_DEPENDENT,
+        this is the number of seconds to advance each tick.
+        When step is set to SYSTEM_CLOCK_DEPENDENT,
+        this is multiplied by the elapsed system time between ticks.
+        This value is ignored in SYSTEM_CLOCK mode.
+
+        """
+        return self._multiplier
+
+    @property
+    def range(self):
+        """The behavior when the current time reaches its start or end times."""
+        return self._range
+
+    @property
+    def step(self):
+        """How the current time advances each tick."""
+        return self._step
