@@ -30,9 +30,7 @@ def test_position_has_given_epoch():
 
 def test_position_renders_epoch():
     expected_result = """{
-    "epoch": "2019-03-20T12:00:00Z",
-    "interpolationAlgorithm": "LINEAR",
-    "referenceFrame": "FIXED"
+    "epoch": "2019-03-20T12:00:00Z"
 }"""
     pos = Position(epoch=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc))
 

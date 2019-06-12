@@ -1,6 +1,3 @@
-from czml3.enums import InterpolationAlgorithms
-
-
 # noinspection PyPep8Naming
 class Deletable:
     """A property whose value may be deleted."""

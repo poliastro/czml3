@@ -108,8 +108,6 @@ def test_packet_constant_cartesian_position():
     expected_result = """{
     "id": "MyObject",
     "position": {
-        "interpolationAlgorithm": "LINEAR",
-        "referenceFrame": "FIXED",
         "cartesian": [
             0.0,
             0.0,

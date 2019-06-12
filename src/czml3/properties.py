@@ -1,12 +1,6 @@
 from .base import BaseCZMLObject
 from .common import Deletable, HasAlignment, Interpolatable
-from .enums import (
-    ClockRanges,
-    ClockSteps,
-    InterpolationAlgorithms,
-    LabelStyles,
-    ReferenceFrames,
-)
+from .enums import ClockRanges, ClockSteps, LabelStyles
 from .types import Cartesian3Value, Uri
 
 
@@ -27,8 +21,8 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         *,
         delete=None,
         epoch=None,
-        interpolationAlgorithm=InterpolationAlgorithms.LINEAR,
-        referenceFrame=ReferenceFrames.FIXED,
+        interpolationAlgorithm=None,
+        referenceFrame=None,
         cartesian=None,
     ):
         if isinstance(cartesian, list):
