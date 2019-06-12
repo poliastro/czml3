@@ -16,6 +16,14 @@ class ReferenceFrames(Enum):
     INERTIAL = auto()
 
 
+class LabelStyles(Enum):
+    """The style of a label."""
+
+    FILL = auto()
+    OUTLINE = auto()
+    FILL_AND_OUTLINE = auto()
+
+
 class ClockRanges(Enum):
     """The behavior of a clock when its current time reaches its start or end time."""
 

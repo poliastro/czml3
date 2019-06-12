@@ -1,9 +1,10 @@
 from .base import BaseCZMLObject
-from .common import Deletable, Interpolatable
+from .common import Deletable, HasAlignment, Interpolatable
 from .enums import (
     ClockRanges,
     ClockSteps,
     InterpolationAlgorithms,
+    LabelStyles,
     ReferenceFrames,
 )
 from .types import Cartesian3Value, Uri
@@ -131,3 +132,93 @@ class Clock(BaseCZMLObject):
     def step(self):
         """How the current time advances each tick."""
         return self._step
+
+
+# noinspection PyPep8Naming
+class Label(BaseCZMLObject, HasAlignment):
+    """A string of text."""
+
+    KNOWN_PROPERTIES = [
+        "show",
+        "text",
+        "style",
+        "scale",
+        "showBackground",
+        "backgroundColor",
+        "backgroundPadding",
+        "pixelOffset",
+        "eyeOffset",
+        "horizontalOrigin",
+        "verticalOrigin",
+        "heightReference",
+        "fillColor",
+        "outlineColor",
+        "outlineWidth",
+        "translucencyByDistance",
+        "pixelOffsetScaleByDistance",
+        "scaleByDistance",
+        "distanceDisplayCondition",
+        "disableDepthTestDistance",
+    ]
+
+    def __init__(
+        self,
+        *,
+        show=True,
+        text=None,
+        style=LabelStyles.FILL,
+        scale=None,
+        showBackground=None,
+        horizontalOrigin=None,
+        verticalOrigin=None,
+        outlineWidth=1.0,
+    ):
+        self._show = show
+        self._text = text
+        self._style = style
+        self._scale = scale
+        self._show_background = showBackground
+        self._horizontal_origin = horizontalOrigin
+        self._vertical_origin = verticalOrigin
+        self._outline_width = outlineWidth
+
+    @property
+    def show(self):
+        """Whether or not the label is shown."""
+        return self._show
+
+    @property
+    def text(self):
+        """The text displayed by the label.
+
+        The newline character (\n) indicates line breaks.
+
+        """
+        return self._text
+
+    @property
+    def style(self):
+        """The style of the label."""
+        return self._style
+
+    @property
+    def scale(self):
+        """The scale of the label.
+
+        The scale is multiplied with the pixel size of the label's text.
+        For example, if the scale is 2.0,
+        the label will be rendered with twice the number of pixels,
+        in each direction, of the text.
+
+        """
+        return self._scale
+
+    @property
+    def showBackground(self):
+        """Whether or not a background behind the label is shown."""
+        return self._show_background
+
+    @property
+    def outlineWidth(self):
+        """The outline width of the label."""
+        return self._outline_width

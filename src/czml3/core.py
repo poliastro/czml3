@@ -82,6 +82,7 @@ class Packet(BaseCZMLObject):
         properties=None,
         position=None,
         billboard=None,
+        label=None,
     ):
         if id is None:
             id = str(uuid4())
@@ -95,6 +96,7 @@ class Packet(BaseCZMLObject):
         self._properties = properties
         self._position = position
         self._billboard = billboard
+        self._label = label
 
     @property
     def id(self):
@@ -183,6 +185,16 @@ class Packet(BaseCZMLObject):
 
         """
         return self._billboard
+
+    @property
+    def label(self):
+        """A string of text.
+
+        The label is positioned in the scene by the position property.
+
+        """
+        return self._label
+
 
 
 class Document(Sequence):
