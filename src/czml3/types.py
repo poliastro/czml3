@@ -6,6 +6,8 @@ from .base import BaseCZMLObject
 from .common import DeletableProperty
 from .constants import ISO8601_FORMAT_Z
 
+TYPE_MAPPING = {bool: "boolean"}
+
 
 class Cartesian3Value(BaseCZMLObject):
     """A three-dimensional Cartesian value specified as [X, Y, Z].
@@ -103,8 +105,6 @@ class TimeInterval(BaseCZMLObject):
 class IntervalValue(BaseCZMLObject):
     """Value over some interval."""
 
-    KNOWN_PROPERTIES = ["interval", "value"]
-
     def __init__(self, *, start, end, value):
         self._interval = TimeInterval(start=start, end=end)
         self._value = value
@@ -113,9 +113,16 @@ class IntervalValue(BaseCZMLObject):
     def interval(self):
         return self._interval
 
-    @property
-    def value(self):
-        return self._value
+    def to_json(self):
+        obj_dict = {"interval": self._interval}
+
+        try:
+            obj_dict.update(**self._value.to_json())
+        except AttributeError:
+            key = TYPE_MAPPING[type(self._value)]
+            obj_dict[key] = self._value
+
+        return obj_dict
 
 
 class Sequence(BaseCZMLObject):

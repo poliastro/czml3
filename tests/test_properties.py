@@ -1,7 +1,7 @@
 import datetime as dt
 
-from czml3.properties import Billboard, Position
-from czml3.types import Cartesian3Value, IntervalValue
+from czml3.properties import Position
+from czml3.types import Cartesian3Value, IntervalValue, Sequence
 
 
 def test_position_has_delete():
@@ -41,43 +41,39 @@ def test_position_renders_epoch():
 
 def test_single_interval_value():
     expected_result = """{
-    "image": {
-        "interval": "2019-01-01T00:00:00Z/2019-01-02T00:00:00Z",
-        "value": "file://a"
-    }
+    "interval": "2019-01-01T00:00:00Z/2019-01-02T00:00:00Z",
+    "boolean": true
 }"""
 
     start = dt.datetime(2019, 1, 1, tzinfo=dt.timezone.utc)
     end = dt.datetime(2019, 1, 2, tzinfo=dt.timezone.utc)
 
-    billb = Billboard(image=IntervalValue(start=start, end=end, value="file://a"))
+    prop = IntervalValue(start=start, end=end, value=True)
 
-    assert repr(billb) == expected_result
+    assert repr(prop) == expected_result
 
 
 def test_multiple_interval_value():
-    expected_result = """{
-    "image": [
-        {
-            "interval": "2019-01-01T00:00:00Z/2019-01-02T00:00:00Z",
-            "value": "file://a"
-        },
-        {
-            "interval": "2019-01-02T00:00:00Z/2019-01-03T00:00:00Z",
-            "value": "file://b"
-        }
-    ]
-}"""
+    expected_result = """[
+    {
+        "interval": "2019-01-01T00:00:00Z/2019-01-02T00:00:00Z",
+        "boolean": true
+    },
+    {
+        "interval": "2019-01-02T00:00:00Z/2019-01-03T00:00:00Z",
+        "boolean": false
+    }
+]"""
 
     start0 = dt.datetime(2019, 1, 1, tzinfo=dt.timezone.utc)
     end0 = start1 = dt.datetime(2019, 1, 2, tzinfo=dt.timezone.utc)
     end1 = dt.datetime(2019, 1, 3, tzinfo=dt.timezone.utc)
 
-    billb = Billboard(
-        image=[
-            IntervalValue(start=start0, end=end0, value="file://a"),
-            IntervalValue(start=start1, end=end1, value="file://b"),
+    prop = Sequence(
+        [
+            IntervalValue(start=start0, end=end0, value=True),
+            IntervalValue(start=start1, end=end1, value=False),
         ]
     )
 
-    assert repr(billb) == expected_result
+    assert repr(prop) == expected_result
