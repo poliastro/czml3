@@ -34,6 +34,11 @@ class Interpolatable:
         """The interpolation algorithm to use when interpolating."""
         return self._interpolation_algorithm
 
+    @property
+    def interpolationDegree(self):
+        """The degree of interpolation to use when interpolating."""
+        return self._interpolation_degree
+
 
 # noinspection PyPep8Naming
 class HasAlignment:

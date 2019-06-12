@@ -12,6 +12,7 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         "delete",
         "epoch",
         "interpolationAlgorithm",
+        "interpolationDegree",
         "referenceFrame",
         "cartesian",
     ]
@@ -22,6 +23,7 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         delete=None,
         epoch=None,
         interpolationAlgorithm=None,
+        interpolationDegree=None,
         referenceFrame=None,
         cartesian=None,
     ):
@@ -31,6 +33,7 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         self._delete = delete
         self._epoch = epoch
         self._interpolation_algorithm = interpolationAlgorithm
+        self._interpolation_degree = interpolationDegree
         self._reference_frame = referenceFrame
         self._cartesian = cartesian
 
