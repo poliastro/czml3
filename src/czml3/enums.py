@@ -28,3 +28,16 @@ class ClockSteps(Enum):
     TICK_DEPENDENT = auto()
     SYSTEM_CLOCK_MULTIPLIER = auto()
     SYSTEM_CLOCK = auto()
+
+
+class VerticalOrigins(Enum):
+    BASELINE = auto()
+    BOTTOM = auto()
+    CENTER = auto()
+    TOP = auto()
+
+
+class HorizontalOrigins(Enum):
+    LEFT = auto()
+    CENTER = auto()
+    RIGHT = auto()

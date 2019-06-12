@@ -55,3 +55,28 @@ class InterpolatableProperty:
     def interpolationAlgorithm(self):
         """The interpolation algorithm to use when interpolating."""
         return self._interpolation_algorithm
+
+
+# noinspection PyPep8Naming
+class HasAlignment:
+    """A property that can be horizontally or vertically aligned."""
+
+    @property
+    def horizontalOrigin(self):
+        """The horizontal origin of the object.
+
+        It controls whether the object is
+        left-, center-, or right-aligned with the position.
+
+        """
+        return self._horizontal_origin
+
+    @property
+    def verticalOrigin(self):
+        """The vertical origin of the object.
+
+        Determines whether the object is
+        bottom-, center-, or top-aligned with the position.
+
+        """
+        return self._vertical_origin
