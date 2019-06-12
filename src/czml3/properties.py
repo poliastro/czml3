@@ -135,6 +135,82 @@ class Clock(BaseCZMLObject):
 
 
 # noinspection PyPep8Naming
+class Path(BaseCZMLObject):
+    """A path, which is a polyline defined by the motion of an object over time.
+
+    The possible vertices of the path are specified by the position property.
+    Note that because clients cannot render a truly infinite path,
+    the path must be limited,
+    either by defining availability for this object,
+    or by using the leadTime and trailTime properties.
+
+    """
+
+    KNOWN_PROPERTIES = [
+        "show",
+        "leadTime",
+        "trailTime",
+        "width",
+        "resolution",
+        "material",
+        "distanceDisplayCondition",
+    ]
+
+    def __init__(
+        self, *, show=True, leadTime=None, trailTime=None, width=1.0, resolution=60.0
+    ):
+        self._show = show
+        self._lead_time = leadTime
+        self._trail_time = trailTime
+        self._width = width
+        self._resolution = resolution
+
+    @property
+    def show(self):
+        """Whether or not the path is shown."""
+        return self._show
+
+    @property
+    def leadTime(self):
+        """The time ahead of the animation time, in seconds, to show the path.
+
+        The time will be limited to not exceed the object's availability.
+        By default, the value is unlimited,
+        which effectively results in drawing the entire available path of the object.
+
+        """
+        return self._lead_time
+
+    @property
+    def trailTime(self):
+        """The time behind the animation time, in seconds, to show the path.
+
+        The time will be limited to not exceed the object's availability.
+        By default, the value is unlimited,
+        which effectively results in drawing the entire available path of the object.
+
+        """
+        return self._trail_time
+
+    @property
+    def width(self):
+        """The width of the path line."""
+        return self._width
+
+    @property
+    def resolution(self):
+        """The maximum step-size, in seconds, used to sample the path.
+
+        If the position property has data points
+        farther apart than resolution specifies,
+        additional samples will be computed,
+        creating a smoother path.
+
+        """
+        return self._resolution
+
+
+# noinspection PyPep8Naming
 class Label(BaseCZMLObject, HasAlignment):
     """A string of text."""
 

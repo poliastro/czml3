@@ -83,6 +83,7 @@ class Packet(BaseCZMLObject):
         position=None,
         billboard=None,
         label=None,
+        path=None,
     ):
         if id is None:
             id = str(uuid4())
@@ -97,6 +98,7 @@ class Packet(BaseCZMLObject):
         self._position = position
         self._billboard = billboard
         self._label = label
+        self._path = path
 
     @property
     def id(self):
@@ -195,6 +197,14 @@ class Packet(BaseCZMLObject):
         """
         return self._label
 
+    @property
+    def path(self):
+        """A path, which is a polyline defined by the motion of an object over time.
+
+        The possible vertices of the path are specified by the position property.
+
+        """
+        return self._path
 
 
 class Document(Sequence):
