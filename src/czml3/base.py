@@ -16,7 +16,7 @@ class CZMLEncoder(JSONEncoder):
             return o.to_json()
 
         elif isinstance(o, Enum):
-            return o.value
+            return o.name
 
         elif isinstance(o, dt.datetime):
             return o.astimezone(dt.timezone.utc).strftime(ISO8601_FORMAT_Z)

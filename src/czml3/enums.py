@@ -1,16 +1,16 @@
-from enum import Enum
+from enum import Enum, auto
 
 
 class InterpolationAlgorithms(Enum):
     """The interpolation algorithm to use when interpolating."""
 
-    LINEAR = "LINEAR"
-    LAGRANGE = "LAGRANGE"
-    HERMITE = "HERMITE"
+    LINEAR = auto()
+    LAGRANGE = auto()
+    HERMITE = auto()
 
 
 class ReferenceFrames(Enum):
     """The reference frame in which cartesian positions are specified."""
 
-    FIXED = "FIXED"
-    INERTIAL = "INERTIAL"
+    FIXED = auto()
+    INERTIAL = auto()
