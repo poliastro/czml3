@@ -1,4 +1,19 @@
-from enum import Enum, auto
+try:
+    from enum import Enum, auto  # type: ignore
+except ImportError:
+    # We are in Python 3.5
+    # https://docs.python.org/3.5/library/enum.html#autonumber
+    from enum import Enum as _BaseEnum
+
+    class Enum(_BaseEnum):  # type: ignore
+        def __new__(cls, *args):
+            value = len(cls.__members__) + 1
+            obj = object.__new__(cls)
+            obj._value_ = value
+            return obj
+
+    def auto():
+        pass
 
 
 class InterpolationAlgorithms(Enum):
