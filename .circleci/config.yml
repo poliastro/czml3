@@ -1,0 +1,76 @@
+version: 2
+jobs:
+  quality:
+    docker:
+      - image: circleci/python:3
+
+    working_directory: ~/repo
+
+    environment:
+      PIP_PREFER_BINARY: true
+      PIP_PROGRESS_BAR: "off"
+      TOXENV: quality
+
+    steps:
+      - checkout
+      - run:
+          name: install dependencies
+          command: |
+            python -m pip install tox
+      - run:
+          name: check quality
+          command: |
+            tox
+
+  test_py35: &test-template
+    docker:
+      - image: circleci/python:3.5
+
+    working_directory: ~/repo
+
+    environment:
+      PIP_PREFER_BINARY: true
+      PIP_PROGRESS_BAR: "off"
+      TOXENV: py35
+
+    steps:
+      - checkout
+      - run:
+          name: install dependencies
+          command: |
+            python -m pip install tox
+      - run:
+          name: run tests
+          command: |
+            tox
+
+  test_py36:
+    <<: *test-template
+    docker:
+      - image: circleci/python:3.6
+
+    environment:
+      TOXENV: py36
+
+  test_py37:
+    <<: *test-template
+    docker:
+      - image: circleci/python:3.7
+
+    environment:
+      TOXENV: py37
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - quality
+      - test_py35:
+          requires:
+            - quality
+      - test_py36:
+          requires:
+            - quality
+      - test_py37:
+          requires:
+            - quality
