@@ -22,16 +22,16 @@ jobs:
           command: |
             tox
 
-  test_py35: &test-template
+  test_py36: &test-template
     docker:
-      - image: python:3.5
+      - image: python:3.6
 
     working_directory: ~/repo
 
     environment:
       PIP_PREFER_BINARY: true
       PIP_PROGRESS_BAR: "off"
-      TOXENV: py35
+      TOXENV: py36
 
     steps:
       - checkout
@@ -43,14 +43,6 @@ jobs:
           name: run tests
           command: |
             tox
-
-  test_py36:
-    <<: *test-template
-    docker:
-      - image: python:3.6
-
-    environment:
-      TOXENV: py36
 
   test_py37:
     <<: *test-template
@@ -65,9 +57,6 @@ workflows:
   build_and_test:
     jobs:
       - quality
-      - test_py35:
-          requires:
-            - quality
       - test_py36:
           requires:
             - quality
