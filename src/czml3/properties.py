@@ -25,7 +25,7 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         interpolationAlgorithm=None,
         interpolationDegree=None,
         referenceFrame=None,
-        cartesian=None,
+        cartesian=None
     ):
         if isinstance(cartesian, list):
             cartesian = Cartesian3Value(values=cartesian)
@@ -90,7 +90,7 @@ class Billboard(BaseCZMLObject, HasAlignment):
         show=None,
         scale=None,
         horizontalOrigin=None,
-        verticalOrigin=None,
+        verticalOrigin=None
     ):
         if isinstance(image, str):
             image = Uri(uri=image)
@@ -144,7 +144,7 @@ class Clock(BaseCZMLObject):
         currentTime=None,
         multiplier=1.0,
         range=ClockRanges.LOOP_STOP,
-        step=ClockSteps.SYSTEM_CLOCK_MULTIPLIER,
+        step=ClockSteps.SYSTEM_CLOCK_MULTIPLIER
     ):
         self._current_time = currentTime
         self._multiplier = multiplier
@@ -293,7 +293,7 @@ class Label(BaseCZMLObject, HasAlignment):
         showBackground=None,
         horizontalOrigin=None,
         verticalOrigin=None,
-        outlineWidth=1.0,
+        outlineWidth=1.0
     ):
         self._show = show
         self._text = text

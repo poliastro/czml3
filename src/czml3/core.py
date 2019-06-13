@@ -83,7 +83,7 @@ class Packet(BaseCZMLObject):
         position=None,
         billboard=None,
         label=None,
-        path=None,
+        path=None
     ):
         if id is None:
             id = str(uuid4())
