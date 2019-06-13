@@ -2,7 +2,7 @@ version: 2
 jobs:
   quality:
     docker:
-      - image: circleci/python:3
+      - image: python:3
 
     working_directory: ~/repo
 
@@ -24,7 +24,7 @@ jobs:
 
   test_py35: &test-template
     docker:
-      - image: circleci/python:3.5
+      - image: python:3.5
 
     working_directory: ~/repo
 
@@ -47,7 +47,7 @@ jobs:
   test_py36:
     <<: *test-template
     docker:
-      - image: circleci/python:3.6
+      - image: python:3.6
 
     environment:
       TOXENV: py36
@@ -55,7 +55,7 @@ jobs:
   test_py37:
     <<: *test-template
     docker:
-      - image: circleci/python:3.7
+      - image: python:3.7
 
     environment:
       TOXENV: py37
