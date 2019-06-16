@@ -49,7 +49,7 @@ class RgbafValue(BaseCZMLObject):
             )
 
         if len(values) == 4:
-            if not all([0 <= l <= 1 for l in values]):
+            if not all([0 <= val <= 1 for val in values]):
                 raise ValueError("Color values must be floats in the range 0-1.")
 
         else:
@@ -59,7 +59,7 @@ class RgbafValue(BaseCZMLObject):
                 if type(t) is not float and type(t) is not int:
                     raise ValueError("Time values must be either floats or integers")
 
-                if not all([0 <= l <= 1 for l in v]):
+                if not all([0 <= val <= 1 for val in v]):
                     raise ValueError("Color values must be floats in the range 0-1.")
 
         self._values = values
@@ -91,7 +91,7 @@ class RgbaValue(BaseCZMLObject):
             )
 
         if len(values) == 4:
-            if not all([type(l) is int and 0 <= l <= 255 for l in values]):
+            if not all([type(val) is int and 0 <= val <= 255 for val in values]):
                 raise ValueError("Color values must be integers in the range 0-255.")
 
         else:
@@ -101,7 +101,7 @@ class RgbaValue(BaseCZMLObject):
                 if type(t) is not float and type(t) is not int:
                     raise ValueError("Time values must be either floats or integers")
 
-                if not all([type(l) is int and 0 <= l <= 255 for l in v]):
+                if not all([type(val) is int and 0 <= val <= 255 for val in v]):
                     raise ValueError(
                         "Color values must be integers in the range 0-255."
                     )

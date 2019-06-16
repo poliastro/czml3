@@ -2,6 +2,8 @@ import datetime as dt
 
 import astropy.time
 import pytest
+from dateutil.tz import tzoffset
+
 from czml3.types import (
     Cartesian3Value,
     RgbafValue,
@@ -10,7 +12,6 @@ from czml3.types import (
     Uri,
     format_datetime_like,
 )
-from dateutil.tz import tzoffset
 
 
 @pytest.mark.parametrize("values", [[2, 2], [5, 5, 5, 5, 5]])
@@ -84,13 +85,6 @@ def test_bad_rgbaf_5_time_values_raises_error():
         RgbafValue(values=[0, 0, 0, 0, 0.5, "0", 0, 0, 0, 0.3])
 
     assert "Time values must be either floats or integers" in excinfo.exconly()
-
-
-def test_bad_uri_raises_error():
-    with pytest.raises(ValueError) as excinfo:
-        Uri(uri="a")
-
-    assert "uri must be a URL or a data URI" in excinfo.exconly()
 
 
 def test_default_time_interval():
