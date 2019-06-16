@@ -1,7 +1,7 @@
 from .base import BaseCZMLObject
 from .common import Deletable, HasAlignment, Interpolatable
 from .enums import ClockRanges, ClockSteps, LabelStyles
-from .types import Cartesian3Value, RgbaValue, RgbafValue, Uri
+from .types import Cartesian3Value, RgbafValue, RgbaValue, Uri
 
 
 class Color(BaseCZMLObject, Interpolatable, Deletable):

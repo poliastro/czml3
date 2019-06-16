@@ -2,16 +2,15 @@ import datetime as dt
 
 import astropy.time
 import pytest
-from dateutil.tz import tzoffset
-
 from czml3.types import (
     Cartesian3Value,
-    RgbaValue,
     RgbafValue,
+    RgbaValue,
     TimeInterval,
     Uri,
     format_datetime_like,
 )
+from dateutil.tz import tzoffset
 
 
 @pytest.mark.parametrize("values", [[2, 2], [5, 5, 5, 5, 5]])
