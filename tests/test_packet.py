@@ -5,7 +5,7 @@ import pytest
 
 from czml3 import CZML_VERSION, Packet, Preamble
 from czml3.enums import InterpolationAlgorithms, ReferenceFrames
-from czml3.properties import Billboard, Position
+from czml3.properties import Billboard, Color, Label, Position
 from czml3.types import StringValue
 
 
@@ -41,6 +41,43 @@ def test_packet_repr_id_only():
     "id": "id_00"
 }"""
     packet = Packet(id="id_00")
+
+    assert repr(packet) == expected_result
+
+
+def test_packet_label():
+    expected_result = """{
+    "id": "0",
+    "label": {
+        "show": true,
+        "style": "FILL",
+        "fillColor": {
+            "rgbaf": [
+                0.2,
+                0.3,
+                0.4,
+                1
+            ]
+        },
+        "outlineColor": {
+            "rgba": [
+                0,
+                233,
+                255,
+                2
+            ]
+        },
+        "outlineWidth": 2.0
+    }
+}"""
+    packet = Packet(
+        id="0",
+        label=Label(
+            fillColor=Color(rgbaf=[0.2, 0.3, 0.4, 1]),
+            outlineColor=Color(rgba=[0, 233, 255, 2]),
+            outlineWidth=2.0,
+        ),
+    )
 
     assert repr(packet) == expected_result
 

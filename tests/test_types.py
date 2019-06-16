@@ -4,7 +4,14 @@ import astropy.time
 import pytest
 from dateutil.tz import tzoffset
 
-from czml3.types import Cartesian3Value, TimeInterval, Uri, format_datetime_like
+from czml3.types import (
+    Cartesian3Value,
+    RgbaValue,
+    RgbafValue,
+    TimeInterval,
+    Uri,
+    format_datetime_like,
+)
 
 
 @pytest.mark.parametrize("values", [[2, 2], [5, 5, 5, 5, 5]])
@@ -13,6 +20,71 @@ def test_bad_cartesian_raises_error(values):
         Cartesian3Value(values=values)
 
     assert "Input values must have either 3 or N * 4 values" in excinfo.exconly()
+
+
+def test_bad_rgba_size_values_raises_error():
+    with pytest.raises(ValueError) as excinfo:
+        RgbaValue(values=[0, 0, 255])
+
+    assert "Input values must have either 4 or N * 5 values, " in excinfo.exconly()
+
+
+def test_bad_rgba_4_values_raises_error():
+    with pytest.raises(ValueError) as excinfo:
+        RgbaValue(values=[256, 0, 0, 255])
+
+    assert "Color values must be integers in the range 0-255." in excinfo.exconly()
+
+
+def test_bad_rgba_5_color_values_raises_error():
+
+    with pytest.raises(ValueError) as excinfo:
+        RgbaValue(values=[0, 0.1, 0.3, 0.3, 255])
+
+    assert "Color values must be integers in the range 0-255." in excinfo.exconly()
+
+
+def test_bad_rgba_5_time_values_raises_error():
+    with pytest.raises(ValueError) as excinfo:
+        RgbaValue(values=[0, 0, 0, 0, 255, "0", 0, 0, 0, 255])
+
+    assert "Time values must be either floats or integers" in excinfo.exconly()
+
+
+def test_bad_uri_raises_error():
+    with pytest.raises(ValueError) as excinfo:
+        Uri(uri="a")
+
+    assert "uri must be a URL or a data URI" in excinfo.exconly()
+
+
+def test_bad_rgbaf_size_values_raises_error():
+    with pytest.raises(ValueError) as excinfo:
+        RgbafValue(values=[0, 0, 0.1])
+
+    assert "Input values must have either 4 or N * 5 values, " in excinfo.exconly()
+
+
+def test_bad_rgbaf_4_values_raises_error():
+    with pytest.raises(ValueError) as excinfo:
+        RgbafValue(values=[0.3, 0, 0, 1.4])
+
+    assert "Color values must be floats in the range 0-1." in excinfo.exconly()
+
+
+def test_bad_rgbaf_5_color_values_raises_error():
+
+    with pytest.raises(ValueError) as excinfo:
+        RgbafValue(values=[0, 0.1, 0.3, 0.3, 255])
+
+    assert "Color values must be floats in the range 0-1." in excinfo.exconly()
+
+
+def test_bad_rgbaf_5_time_values_raises_error():
+    with pytest.raises(ValueError) as excinfo:
+        RgbafValue(values=[0, 0, 0, 0, 0.5, "0", 0, 0, 0, 0.3])
+
+    assert "Time values must be either floats or integers" in excinfo.exconly()
 
 
 def test_bad_uri_raises_error():

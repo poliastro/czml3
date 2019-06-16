@@ -1,7 +1,47 @@
 from .base import BaseCZMLObject
 from .common import Deletable, HasAlignment, Interpolatable
 from .enums import ClockRanges, ClockSteps, LabelStyles
-from .types import Cartesian3Value, Uri
+from .types import Cartesian3Value, RgbaValue, RgbafValue, Uri
+
+
+class Color(BaseCZMLObject, Interpolatable, Deletable):
+    """A color. The color can optionally vary over time."""
+
+    KNOWN_PROPERTIES = ["delete", "rgba", "rgbaf", "reference"]
+
+    def __init__(self, *, delete=None, rgba=None, rgbaf=None):
+
+        if isinstance(rgba, list):
+            rgba = RgbaValue(values=rgba)
+        if isinstance(rgbaf, list):
+            rgbaf = RgbafValue(values=rgbaf)
+
+        self._delete = delete
+        self._rgba = rgba
+        self._rgbaf = rgbaf
+
+    @property
+    def rgba(self):
+        """A color specified as an array of color components [Red, Green, Blue, Alpha]
+        where each component is in the range 0-255. If the array has four elements,
+        the color is constant.
+
+        If it has five or more elements, they are time-tagged samples arranged as
+        [Time, Red, Green, Blue, Alpha, Time, Red, Green, Blue, Alpha, ...], where Time
+        is an ISO 8601 date and time string or seconds since epoch.
+        """
+        return self._rgba
+
+    @property
+    def rgbaf(self):
+        """A color specified as an array of color components [Red, Green, Blue, Alpha]
+        where each component is in the range 0.0-1.0. If the array has four elements,
+        the color is constant. If it has five or more elements, they are time-tagged
+        samples arranged as [Time, Red, Green, Blue, Alpha, Time, Red, Green, Blue, Alpha, ...],
+        where Time is an ISO 8601 date and time string or seconds since epoch.
+
+    """
+        return self._rgbaf
 
 
 # noinspection PyPep8Naming
@@ -255,6 +295,19 @@ class Path(BaseCZMLObject):
         """
         return self._resolution
 
+    @property
+    def material(self):
+        """The material to use to draw the path."""
+        return self._material
+
+    @property
+    def distanceDisplayCondition(self):
+        """The display condition specifying at what
+         distance from the camera this path will be displayed.
+
+         """
+        return self._distanceDisplayCondition
+
 
 # noinspection PyPep8Naming
 class Label(BaseCZMLObject, HasAlignment):
@@ -293,6 +346,8 @@ class Label(BaseCZMLObject, HasAlignment):
         showBackground=None,
         horizontalOrigin=None,
         verticalOrigin=None,
+        fillColor=None,
+        outlineColor=None,
         outlineWidth=1.0,
     ):
         self._show = show
@@ -302,6 +357,8 @@ class Label(BaseCZMLObject, HasAlignment):
         self._show_background = showBackground
         self._horizontal_origin = horizontalOrigin
         self._vertical_origin = verticalOrigin
+        self._fillColor = fillColor
+        self._outlineColor = outlineColor
         self._outline_width = outlineWidth
 
     @property
@@ -339,6 +396,16 @@ class Label(BaseCZMLObject, HasAlignment):
     def showBackground(self):
         """Whether or not a background behind the label is shown."""
         return self._show_background
+
+    @property
+    def fillColor(self):
+        """The fill color of the label."""
+        return self._fillColor
+
+    @property
+    def outlineColor(self):
+        """The outline color of the label."""
+        return self._outlineColor
 
     @property
     def outlineWidth(self):
