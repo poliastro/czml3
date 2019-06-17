@@ -23,8 +23,9 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
     @property
     def rgba(self):
         """A color specified as an array of color components [Red, Green, Blue, Alpha]
-        where each component is in the range 0-255. If the array has four elements,
-        the color is constant.
+        where each component is in the range 0-255.
+
+        If the array has four elements, the color is constant.
 
         If it has five or more elements, they are time-tagged samples arranged as
         [Time, Red, Green, Blue, Alpha, Time, Red, Green, Blue, Alpha, ...], where Time
@@ -35,12 +36,15 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
     @property
     def rgbaf(self):
         """A color specified as an array of color components [Red, Green, Blue, Alpha]
-        where each component is in the range 0.0-1.0. If the array has four elements,
-        the color is constant. If it has five or more elements, they are time-tagged
+        where each component is in the range 0.0-1.0.
+
+        If the array has four elements, the color is constant.
+
+        If it has five or more elements, they are time-tagged
         samples arranged as [Time, Red, Green, Blue, Alpha, Time, Red, Green, Blue, Alpha, ...],
         where Time is an ISO 8601 date and time string or seconds since epoch.
 
-    """
+        """
         return self._rgbaf
 
 
@@ -356,11 +360,11 @@ class Label(BaseCZMLObject, HasAlignment):
         self._style = style
         self._scale = scale
         self._show_background = showBackground
-        self._backgroundColor = backgroundColor
+        self._background_color = backgroundColor
         self._horizontal_origin = horizontalOrigin
         self._vertical_origin = verticalOrigin
-        self._fillColor = fillColor
-        self._outlineColor = outlineColor
+        self._fill_color = fillColor
+        self._outline_color = outlineColor
         self._outline_width = outlineWidth
 
     @property
@@ -402,17 +406,17 @@ class Label(BaseCZMLObject, HasAlignment):
     @property
     def backgroundColor(self):
         """The color of the background behind the label."""
-        return self._backgroundColor
+        return self._background_color
 
     @property
     def fillColor(self):
         """The fill color of the label."""
-        return self._fillColor
+        return self._fill_color
 
     @property
     def outlineColor(self):
         """The outline color of the label."""
-        return self._outlineColor
+        return self._outline_color
 
     @property
     def outlineWidth(self):
