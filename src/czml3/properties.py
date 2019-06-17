@@ -344,6 +344,7 @@ class Label(BaseCZMLObject, HasAlignment):
         style=LabelStyles.FILL,
         scale=None,
         showBackground=None,
+        backgroundColor=None,
         horizontalOrigin=None,
         verticalOrigin=None,
         fillColor=None,
@@ -355,6 +356,7 @@ class Label(BaseCZMLObject, HasAlignment):
         self._style = style
         self._scale = scale
         self._show_background = showBackground
+        self._backgroundColor = backgroundColor
         self._horizontal_origin = horizontalOrigin
         self._vertical_origin = verticalOrigin
         self._fillColor = fillColor
@@ -396,6 +398,11 @@ class Label(BaseCZMLObject, HasAlignment):
     def showBackground(self):
         """Whether or not a background behind the label is shown."""
         return self._show_background
+
+    @property
+    def backgroundColor(self):
+        """The color of the background behind the label."""
+        return self._backgroundColor
 
     @property
     def fillColor(self):
