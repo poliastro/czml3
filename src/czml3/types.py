@@ -32,6 +32,84 @@ def format_datetime_like(dt_object):
     return result
 
 
+class RgbafValue(BaseCZMLObject):
+    """A color specified as an array of color components [Red, Green, Blue, Alpha]
+     where each component is in the range 0.0-1.0. If the array has four elements,
+    the color is constant. If it has five or more elements, they are time-tagged
+    samples arranged as [Time, Red, Green, Blue, Alpha, Time, Red, Green, Blue, Alpha, ...],
+    where Time is an ISO 8601 date and time string or seconds since epoch.
+
+    """
+
+    def __init__(self, *, values):
+        if not (len(values) == 4 or len(values) % 5 == 0):
+            raise ValueError(
+                "Input values must have either 4 or N * 5 values, "
+                "where N is the number of time-tagged samples."
+            )
+
+        if len(values) == 4:
+            if not all([0 <= val <= 1 for val in values]):
+                raise ValueError("Color values must be floats in the range 0-1.")
+
+        else:
+            for i in range(0, len(values), 5):
+                v = values[i + 1 : i + 5]
+
+                if not all([0 <= val <= 1 for val in v]):
+                    raise ValueError("Color values must be floats in the range 0-1.")
+
+        self._values = values
+
+    @property
+    def values(self):
+        return self._values
+
+    def to_json(self):
+        return list(self.values)
+
+
+class RgbaValue(BaseCZMLObject):
+    """A color specified as an array of color components [Red, Green, Blue, Alpha]
+     where each component is in the range 0-255. If the array has four elements,
+     the color is constant.
+
+      If it has five or more elements, they are time-tagged samples arranged as
+     [Time, Red, Green, Blue, Alpha, Time, Red, Green, Blue, Alpha, ...], where Time
+     is an ISO 8601 date and time string or seconds since epoch.
+
+     """
+
+    def __init__(self, *, values):
+        if not (len(values) == 4 or len(values) % 5 == 0):
+            raise ValueError(
+                "Input values must have either 4 or N * 5 values, "
+                "where N is the number of time-tagged samples."
+            )
+
+        if len(values) == 4:
+            if not all([type(val) is int and 0 <= val <= 255 for val in values]):
+                raise ValueError("Color values must be integers in the range 0-255.")
+
+        else:
+            for i in range(0, len(values), 5):
+                v = values[i + 1 : i + 5]
+
+                if not all([type(val) is int and 0 <= val <= 255 for val in v]):
+                    raise ValueError(
+                        "Color values must be integers in the range 0-255."
+                    )
+
+        self._values = values
+
+    @property
+    def values(self):
+        return self._values
+
+    def to_json(self):
+        return list(self.values)
+
+
 class Cartesian3Value(BaseCZMLObject):
     """A three-dimensional Cartesian value specified as [X, Y, Z].
 
