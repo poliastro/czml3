@@ -4,6 +4,240 @@ from .enums import ClockRanges, ClockSteps, LabelStyles
 from .types import Cartesian3Value, RgbafValue, RgbaValue, Uri
 
 
+class PolylineMaterial(BaseCZMLObject):
+    """"A definition of how a surface is colored or shaded."""
+
+    KNOWN_PROPERTIES = [
+        "solidColor",
+        "polylineOutline",
+        "polylineArrow",
+        "polylineDash",
+        "polylineGlow",
+        "image",
+        "grid",
+        "stripe",
+        "checkerboard",
+    ]
+
+    def __init__(
+        self, *, solidColor=None, image=None, grid=None, stripe=None, checkerboard=None
+    ):
+
+        self._solid_color = solidColor
+        self._image = image
+        self._grid = grid
+        self._stripe = stripe
+        self._checkerboard = checkerboard
+
+    @property
+    def solidColor(self):
+        """A material that fills the surface with a solid color, which may be translucent."""
+        return self._solid_color
+
+    @property
+    def image(self):
+        """A material that fills the surface with an image."""
+        return self._image
+
+    @property
+    def grid(self):
+        """A material that fills the surface with a grid."""
+        return self._grid
+
+    @property
+    def stripe(self):
+        """A material that fills the surface with alternating colors."""
+        return self._stripe
+
+    @property
+    def checkerboard(self):
+        """A material that fills the surface with a checkerboard pattern."""
+        return self._checkerboard
+
+
+class SolidColorMaterial(BaseCZMLObject):
+    """A material that fills the surface with a solid color."""
+
+    KNOWN_PROPERTIES = ["color"]
+
+    def __init__(self, *, color=None):
+        self._color = color
+
+    @property
+    def color(self):
+        """The color of the surface."""
+        return self._color
+
+
+class GridMaterial(BaseCZMLObject):
+    """A material that fills the surface with a two-dimensional grid."""
+
+    KNOWN_PROPERTIES = [
+        "color",
+        "cellAlpha",
+        "lineCount",
+        "lineThickness",
+        "lineOffset",
+    ]
+
+    def __init__(
+        self,
+        *,
+        color=None,
+        cellAlpha=0.1,
+        lineCount=[8, 8],
+        lineThickness=[1.0, 1.0],
+        lineOffset=[0.0, 0.0],
+    ):
+        self._color = color
+        self._cell_alpha = cellAlpha
+        self._line_count = lineCount
+        self._line_thickness = lineThickness
+        self._line_offset = lineOffset
+
+    @property
+    def color(self):
+        """The color of the surface."""
+        return self._color
+
+    @property
+    def cellAlpha(self):
+        """The alpha value for the space between grid lines.
+
+        This will be combined with the color alpha.
+
+        """
+        return self._cell_alpha
+
+    @property
+    def lineCount(self):
+        """The number of grid lines along each axis."""
+        return self._line_count
+
+    @property
+    def lineThickness(self):
+        """The thickness of grid lines along each axis, in pixels."""
+        return self._line_thickness
+
+    @property
+    def lineOffset(self):
+        """The offset of grid lines along each axis, as a percentage from 0 to 1."""
+        return self._line_offset
+
+
+class StripeMaterial(BaseCZMLObject):
+    """A material that fills the surface with alternating colors."""
+
+    KNOWN_PROPERTIES = ["orientation", "evenColor", "oddColor", "offset", "repeat"]
+
+    def __init__(
+        self,
+        *,
+        orientation="HORIZONTAL",
+        evenColor=None,
+        oddColor=None,
+        offset=0.0,
+        repeat=1.0,
+    ):
+
+        self._orientation = orientation
+        self._even_color = evenColor
+        self._odd_color = oddColor
+        self._offset = offset
+        self._repeat = repeat
+
+    @property
+    def orientation(self):
+        """The value indicating if the stripes are horizontal or vertical."""
+        return self._orientation
+
+    @property
+    def evenColor(self):
+        """The even color."""
+        return self._even_color
+
+    @property
+    def oddColor(self):
+        """The odd color."""
+        return self._odd_color
+
+    @property
+    def offset(self):
+        """The value indicating where in the pattern to begin drawing, with 0.0 being the beginning of the even color,
+         1.0 the beginning of the odd color, 2.0 being the even color again, and any multiple or fractional values being
+         in between."""
+        return self._offset
+
+    @property
+    def repeat(self):
+        """The number of times the stripes repeat."""
+        return self._repeat
+
+
+class CheckerboardMaterial(BaseCZMLObject):
+    """A material that fills the surface with alternating colors."""
+
+    KNOWN_PROPERTIES = ["orientation", "evenColor", "oddColor", "offset", "repeat"]
+
+    def __init__(self, *, evenColor=None, oddColor=None, repeat=[1, 2]):
+
+        self._even_color = evenColor
+        self._odd_color = oddColor
+        self._repeat = repeat
+
+    @property
+    def evenColor(self):
+        """The even color."""
+        return self._even_color
+
+    @property
+    def oddColor(self):
+        """The odd color."""
+        return self._odd_color
+
+    @property
+    def repeat(self):
+        """The number of times the stripes repeat."""
+        return self._repeat
+
+
+class ImageMaterial(BaseCZMLObject):
+    """A material that fills the surface with an image."""
+
+    KNOWN_PROPERTIES = ["image", "repeat", "color", "transparent"]
+
+    def __init__(self, *, image=None, repeat=[1, 1], color=None, transparent=False):
+
+        self._image = image
+        self._repeat = repeat
+        self._color = color
+        self._transparent = transparent
+
+    @property
+    def image(self):
+        """The image to display on the surface."""
+        return self._image
+
+    @property
+    def repeat(self):
+        """The number of times the image repeats along each axis."""
+        return self._repeat
+
+    @property
+    def color(self):
+        """The color of the image.
+
+         This color value is multiplied with the image to produce the final color.
+
+         """
+        return self._color
+
+    @property
+    def transparent(self):
+        """Whether or not the image has transparency."""
+        return self._transparent
+
+
 class Color(BaseCZMLObject, Interpolatable, Deletable):
     """A color. The color can optionally vary over time."""
 
@@ -247,13 +481,21 @@ class Path(BaseCZMLObject):
     ]
 
     def __init__(
-        self, *, show=True, leadTime=None, trailTime=None, width=1.0, resolution=60.0
+        self,
+        *,
+        show=True,
+        leadTime=None,
+        trailTime=None,
+        width=1.0,
+        resolution=60.0,
+        material=None,
     ):
         self._show = show
         self._lead_time = leadTime
         self._trail_time = trailTime
         self._width = width
         self._resolution = resolution
+        self._material = material
 
     @property
     def show(self):
@@ -300,17 +542,17 @@ class Path(BaseCZMLObject):
         return self._resolution
 
     @property
-    def material(self):
-        """The material to use to draw the path."""
-        return self._material
-
-    @property
     def distanceDisplayCondition(self):
         """The display condition specifying at what
          distance from the camera this path will be displayed.
 
          """
         return self._distanceDisplayCondition
+
+    @property
+    def material(self):
+        """The material to use to draw the path."""
+        return self._material
 
 
 # noinspection PyPep8Naming

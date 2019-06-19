@@ -1,7 +1,157 @@
 import datetime as dt
 
-from czml3.properties import Position
-from czml3.types import Cartesian3Value, IntervalValue, Sequence
+from czml3.properties import (
+    CheckerboardMaterial,
+    Color,
+    GridMaterial,
+    ImageMaterial,
+    PolylineMaterial,
+    Position,
+    SolidColorMaterial,
+    StripeMaterial,
+)
+from czml3.types import Cartesian3Value, IntervalValue, Sequence, Uri
+
+
+def test_material_solid_color():
+    expected_result = """{
+    "solidColor": {
+        "color": {
+            "rgba": [
+                200,
+                100,
+                30,
+                255
+            ]
+        }
+    }
+}"""
+    pol_mat = PolylineMaterial(
+        solidColor=SolidColorMaterial(color=Color(rgba=[200, 100, 30, 255]))
+    )
+    assert repr(pol_mat) == expected_result
+
+
+def test_material_image():
+    expected_result = """{
+    "image": {
+        "image": "https://site.com/image.png",
+        "repeat": [
+            2,
+            2
+        ],
+        "color": {
+            "rgba": [
+                200,
+                100,
+                30,
+                255
+            ]
+        },
+        "transparent": false
+    }
+}"""
+    pol_mat = PolylineMaterial(
+        image=ImageMaterial(
+            image=Uri(uri="https://site.com/image.png"),
+            repeat=[2, 2],
+            color=Color(rgba=[200, 100, 30, 255]),
+        )
+    )
+    assert repr(pol_mat) == expected_result
+
+
+def test_material_grid():
+    expected_result = """{
+    "color": {
+        "rgba": [
+            20,
+            20,
+            30,
+            255
+        ]
+    },
+    "cellAlpha": 1.0,
+    "lineCount": [
+        16,
+        16
+    ],
+    "lineThickness": [
+        2.0,
+        2.0
+    ],
+    "lineOffset": [
+        0.3,
+        0.4
+    ]
+}"""
+    pol_mat = GridMaterial(
+        color=Color(rgba=[20, 20, 30, 255]),
+        cellAlpha=1.0,
+        lineCount=[16, 16],
+        lineThickness=[2.0, 2.0],
+        lineOffset=[0.3, 0.4],
+    )
+    assert repr(pol_mat) == expected_result
+
+
+def test_material_stripe():
+    expected_result = """{
+    "orientation": "HORIZONTAL",
+    "evenColor": {
+        "rgba": [
+            0,
+            0,
+            0,
+            255
+        ]
+    },
+    "oddColor": {
+        "rgba": [
+            255,
+            255,
+            255,
+            255
+        ]
+    },
+    "offset": 0.3,
+    "repeat": 4
+}"""
+    pol_mat = StripeMaterial(
+        evenColor=Color(rgba=[0, 0, 0, 255]),
+        oddColor=Color(rgba=[255, 255, 255, 255]),
+        offset=0.3,
+        repeat=4,
+    )
+    assert repr(pol_mat) == expected_result
+
+
+def test_material_checkerboard():
+    expected_result = """{
+    "evenColor": {
+        "rgba": [
+            0,
+            0,
+            0,
+            255
+        ]
+    },
+    "oddColor": {
+        "rgba": [
+            255,
+            255,
+            255,
+            255
+        ]
+    },
+    "repeat": 4
+}"""
+    pol_mat = CheckerboardMaterial(
+        evenColor=Color(rgba=[0, 0, 0, 255]),
+        oddColor=Color(rgba=[255, 255, 255, 255]),
+        repeat=4,
+    )
+    assert repr(pol_mat) == expected_result
 
 
 def test_position_has_delete():
