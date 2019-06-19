@@ -44,13 +44,6 @@ def test_bad_rgba_5_color_values_raises_error():
     assert "Color values must be integers in the range 0-255." in excinfo.exconly()
 
 
-def test_bad_rgba_5_time_values_raises_error():
-    with pytest.raises(ValueError) as excinfo:
-        RgbaValue(values=[0, 0, 0, 0, 255, "0", 0, 0, 0, 255])
-
-    assert "Time values must be either floats or integers" in excinfo.exconly()
-
-
 def test_bad_uri_raises_error():
     with pytest.raises(ValueError) as excinfo:
         Uri(uri="a")
@@ -78,13 +71,6 @@ def test_bad_rgbaf_5_color_values_raises_error():
         RgbafValue(values=[0, 0.1, 0.3, 0.3, 255])
 
     assert "Color values must be floats in the range 0-1." in excinfo.exconly()
-
-
-def test_bad_rgbaf_5_time_values_raises_error():
-    with pytest.raises(ValueError) as excinfo:
-        RgbafValue(values=[0, 0, 0, 0, 0.5, "0", 0, 0, 0, 0.3])
-
-    assert "Time values must be either floats or integers" in excinfo.exconly()
 
 
 def test_default_time_interval():

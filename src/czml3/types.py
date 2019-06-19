@@ -54,10 +54,7 @@ class RgbafValue(BaseCZMLObject):
 
         else:
             for i in range(0, len(values), 5):
-                t, v = values[i], values[i + 1 : i + 5]
-
-                if type(t) is not float and type(t) is not int:
-                    raise ValueError("Time values must be either floats or integers")
+                v = values[i + 1 : i + 5]
 
                 if not all([0 <= val <= 1 for val in v]):
                     raise ValueError("Color values must be floats in the range 0-1.")
@@ -96,10 +93,7 @@ class RgbaValue(BaseCZMLObject):
 
         else:
             for i in range(0, len(values), 5):
-                t, v = values[i], values[i + 1 : i + 5]
-
-                if type(t) is not float and type(t) is not int:
-                    raise ValueError("Time values must be either floats or integers")
+                v = values[i + 1 : i + 5]
 
                 if not all([type(val) is int and 0 <= val <= 255 for val in v]):
                     raise ValueError(
