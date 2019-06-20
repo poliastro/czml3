@@ -1,7 +1,6 @@
 import datetime as dt
 
-# TODO: Wait until https://github.com/python/typeshed/pull/2694 is released
-from dateutil.parser import isoparse as parse_iso_date  # type: ignore
+from dateutil.parser import isoparse as parse_iso_date
 from w3lib.url import is_url, parse_data_uri
 
 from .base import BaseCZMLObject
