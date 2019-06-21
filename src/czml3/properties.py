@@ -1,7 +1,7 @@
 from .base import BaseCZMLObject
 from .common import Deletable, HasAlignment, Interpolatable
 from .enums import ClockRanges, ClockSteps, LabelStyles
-from .types import Cartesian3Value, RgbafValue, RgbaValue, Uri
+from .types import Cartesian3Value, FontValue, RgbafValue, RgbaValue, Uri
 
 
 class PolylineMaterial(BaseCZMLObject):
@@ -236,6 +236,29 @@ class ImageMaterial(BaseCZMLObject):
     def transparent(self):
         """Whether or not the image has transparency."""
         return self._transparent
+
+
+class Font(BaseCZMLObject, Deletable):
+    """A font used to draw text.
+
+    Fonts are specified using the same syntax as the CSS "font" property.
+
+    """
+
+    KNOWN_PROPERTIES = ["delete", "font", "reference"]
+
+    def __init__(self, *, delete=None, font=None):
+
+        if isinstance(font, str):
+            font = FontValue(font)
+
+        self._delete = delete
+        self._font = font
+
+    @property
+    def font(self):
+        """The font, specified using the same syntax as the CSS "font" property."""
+        return self._font
 
 
 class Color(BaseCZMLObject, Interpolatable, Deletable):
@@ -562,6 +585,7 @@ class Label(BaseCZMLObject, HasAlignment):
     KNOWN_PROPERTIES = [
         "show",
         "text",
+        "font",
         "style",
         "scale",
         "showBackground",
@@ -587,6 +611,7 @@ class Label(BaseCZMLObject, HasAlignment):
         *,
         show=True,
         text=None,
+        font=None,
         style=LabelStyles.FILL,
         scale=None,
         showBackground=None,
@@ -599,6 +624,7 @@ class Label(BaseCZMLObject, HasAlignment):
     ):
         self._show = show
         self._text = text
+        self._font = font
         self._style = style
         self._scale = scale
         self._show_background = showBackground
@@ -622,6 +648,11 @@ class Label(BaseCZMLObject, HasAlignment):
 
         """
         return self._text
+
+    @property
+    def font(self):
+        """The font to use for the label."""
+        return self._font
 
     @property
     def style(self):
