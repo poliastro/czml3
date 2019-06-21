@@ -250,7 +250,7 @@ class Font(BaseCZMLObject, Deletable):
     def __init__(self, *, delete=None, font=None):
 
         if isinstance(font, str):
-            font = FontValue(font)
+            font = FontValue(font=font)
 
         self._delete = delete
         self._font = font
