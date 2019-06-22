@@ -31,6 +31,21 @@ def format_datetime_like(dt_object):
     return result
 
 
+class FontValue(BaseCZMLObject):
+    """A font, specified using the same syntax as the CSS "font" property."""
+
+    def __init__(self, *, font=None):
+        self._font = font
+
+    @property
+    def font(self):
+        """The font to use for the label."""
+        return self._font
+
+    def to_json(self):
+        return self._font
+
+
 class RgbafValue(BaseCZMLObject):
     """A color specified as an array of color components [Red, Green, Blue, Alpha]
      where each component is in the range 0.0-1.0. If the array has four elements,

@@ -50,6 +50,7 @@ def test_packet_label():
     "id": "0",
     "label": {
         "show": true,
+        "font": "20px sans-serif",
         "style": "FILL",
         "fillColor": {
             "rgbaf": [
@@ -73,6 +74,7 @@ def test_packet_label():
     packet = Packet(
         id="0",
         label=Label(
+            font="20px sans-serif",
             fillColor=Color(rgbaf=[0.2, 0.3, 0.4, 1]),
             outlineColor=Color(rgba=[0, 233, 255, 2]),
             outlineWidth=2.0,

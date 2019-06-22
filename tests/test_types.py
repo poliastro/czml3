@@ -6,6 +6,7 @@ from dateutil.tz import tzoffset
 
 from czml3.types import (
     Cartesian3Value,
+    FontValue,
     RgbafValue,
     RgbaValue,
     TimeInterval,
@@ -20,6 +21,20 @@ def test_bad_cartesian_raises_error(values):
         Cartesian3Value(values=values)
 
     assert "Input values must have either 3 or N * 4 values" in excinfo.exconly()
+
+
+def test_font_value():
+    expected_result = '"20px sans-serif"'
+    font = FontValue(font="20px sans-serif")
+
+    assert repr(font) == expected_result
+
+
+def test_font_property_value():
+    expected_result = "20px sans-serif"
+    font = FontValue(font="20px sans-serif")
+
+    assert font.font == expected_result
 
 
 def test_bad_rgba_size_values_raises_error():

@@ -1,7 +1,7 @@
 from .base import BaseCZMLObject
 from .common import Deletable, HasAlignment, Interpolatable
 from .enums import ClockRanges, ClockSteps, LabelStyles
-from .types import Cartesian3Value, RgbafValue, RgbaValue, Uri
+from .types import Cartesian3Value, FontValue, RgbafValue, RgbaValue, Uri
 
 
 class PolylineMaterial(BaseCZMLObject):
@@ -562,6 +562,7 @@ class Label(BaseCZMLObject, HasAlignment):
     KNOWN_PROPERTIES = [
         "show",
         "text",
+        "font",
         "style",
         "scale",
         "showBackground",
@@ -587,6 +588,7 @@ class Label(BaseCZMLObject, HasAlignment):
         *,
         show=True,
         text=None,
+        font=None,
         style=LabelStyles.FILL,
         scale=None,
         showBackground=None,
@@ -597,8 +599,13 @@ class Label(BaseCZMLObject, HasAlignment):
         outlineColor=None,
         outlineWidth=1.0,
     ):
+
+        if isinstance(font, str):
+            font = FontValue(font=font)
+
         self._show = show
         self._text = text
+        self._font = font
         self._style = style
         self._scale = scale
         self._show_background = showBackground
@@ -622,6 +629,11 @@ class Label(BaseCZMLObject, HasAlignment):
 
         """
         return self._text
+
+    @property
+    def font(self):
+        """The font to use for the label."""
+        return self._font
 
     @property
     def style(self):
