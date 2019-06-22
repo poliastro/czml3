@@ -238,29 +238,6 @@ class ImageMaterial(BaseCZMLObject):
         return self._transparent
 
 
-class Font(BaseCZMLObject, Deletable):
-    """A font used to draw text.
-
-    Fonts are specified using the same syntax as the CSS "font" property.
-
-    """
-
-    KNOWN_PROPERTIES = ["delete", "font", "reference"]
-
-    def __init__(self, *, delete=None, font=None):
-
-        if isinstance(font, str):
-            font = FontValue(font=font)
-
-        self._delete = delete
-        self._font = font
-
-    @property
-    def font(self):
-        """The font, specified using the same syntax as the CSS "font" property."""
-        return self._font
-
-
 class Color(BaseCZMLObject, Interpolatable, Deletable):
     """A color. The color can optionally vary over time."""
 
@@ -622,6 +599,10 @@ class Label(BaseCZMLObject, HasAlignment):
         outlineColor=None,
         outlineWidth=1.0,
     ):
+
+        if isinstance(font, str):
+            font = FontValue(font=font)
+
         self._show = show
         self._text = text
         self._font = font

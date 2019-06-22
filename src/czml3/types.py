@@ -44,7 +44,7 @@ class FontValue(BaseCZMLObject):
         return self._font
 
     def to_json(self):
-        return list(self._font)
+        return self._font
 
 
 class RgbafValue(BaseCZMLObject):
