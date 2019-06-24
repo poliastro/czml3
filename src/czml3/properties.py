@@ -4,6 +4,46 @@ from .enums import ClockRanges, ClockSteps, LabelStyles
 from .types import Cartesian3Value, FontValue, RgbafValue, RgbaValue, Uri
 
 
+class Material(BaseCZMLObject):
+    """A definition of how a surface is colored or shaded."""
+
+    KNOWN_PROPERTIES = ["solidColor", "image", "grid", "stripe", "checkerboard"]
+
+    def __init__(
+        self, *, solidColor=None, image=None, grid=None, stripe=None, checkerboard=None
+    ):
+        self._solid_color = solidColor
+        self._image = image
+        self._grid = grid
+        self._stripe = stripe
+        self._checkerboard = checkerboard
+
+    @property
+    def solidColor(self):
+        """A material that fills the surface with a solid color, which may be translucent."""
+        return self._solid_color
+
+    @property
+    def image(self):
+        """A material that fills the surface with an image."""
+        return self._image
+
+    @property
+    def grid(self):
+        """A material that fills the surface with a grid."""
+        return self._grid
+
+    @property
+    def stripe(self):
+        """A material that fills the surface with alternating colors."""
+        return self._stripe
+
+    @property
+    def checkerboard(self):
+        """A material that fills the surface with a checkerboard pattern."""
+        return self._checkerboard
+
+
 class PolylineMaterial(BaseCZMLObject):
     """"A definition of how a surface is colored or shaded."""
 
