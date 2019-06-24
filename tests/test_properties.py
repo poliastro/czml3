@@ -5,6 +5,7 @@ from czml3.properties import (
     Color,
     GridMaterial,
     ImageMaterial,
+    Material,
     PolylineMaterial,
     Position,
     SolidColorMaterial,
@@ -26,6 +27,10 @@ def test_material_solid_color():
         }
     }
 }"""
+    mat = Material(solidColor=SolidColorMaterial(color=Color(rgba=[200, 100, 30, 255])))
+
+    assert repr(mat) == expected_result
+
     pol_mat = PolylineMaterial(
         solidColor=SolidColorMaterial(color=Color(rgba=[200, 100, 30, 255]))
     )
@@ -51,6 +56,16 @@ def test_material_image():
         "transparent": false
     }
 }"""
+
+    mat = Material(
+        image=ImageMaterial(
+            image=Uri(uri="https://site.com/image.png"),
+            repeat=[2, 2],
+            color=Color(rgba=[200, 100, 30, 255]),
+        )
+    )
+    assert repr(mat) == expected_result
+
     pol_mat = PolylineMaterial(
         image=ImageMaterial(
             image=Uri(uri="https://site.com/image.png"),
@@ -85,6 +100,7 @@ def test_material_grid():
         0.4
     ]
 }"""
+
     pol_mat = GridMaterial(
         color=Color(rgba=[20, 20, 30, 255]),
         cellAlpha=1.0,
@@ -117,6 +133,7 @@ def test_material_stripe():
     "offset": 0.3,
     "repeat": 4
 }"""
+
     pol_mat = StripeMaterial(
         evenColor=Color(rgba=[0, 0, 0, 255]),
         oddColor=Color(rgba=[255, 255, 255, 255]),
@@ -146,6 +163,7 @@ def test_material_checkerboard():
     },
     "repeat": 4
 }"""
+
     pol_mat = CheckerboardMaterial(
         evenColor=Color(rgba=[0, 0, 0, 255]),
         oddColor=Color(rgba=[255, 255, 255, 255]),
