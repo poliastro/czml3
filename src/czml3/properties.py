@@ -449,10 +449,7 @@ class Billboard(BaseCZMLObject, HasAlignment):
 class EllipsoidRadii(BaseCZMLObject, Deletable, Interpolatable):
     """The radii of an ellipsoid."""
 
-    KNOWN_PROPERTIES = [
-        "cartesian",
-        "reference"
-    ]
+    KNOWN_PROPERTIES = ["cartesian", "reference"]
 
     def __init__(self, *, cartesian=None, reference=None):
         self._cartesian = cartesian
@@ -467,7 +464,6 @@ class EllipsoidRadii(BaseCZMLObject, Deletable, Interpolatable):
     def reference(self):
         """The radii specified as a reference to another property."""
         return self._reference
-
 
 
 class Ellipsoid(BaseCZMLObject):
@@ -485,11 +481,22 @@ class Ellipsoid(BaseCZMLObject):
         "slicePartitions",
         "subdivisions",
         "shadows",
-        "distanceDisplayCondition"
+        "distanceDisplayCondition",
     ]
 
-    def __init__(self, *, radii, show=None, fill=None, material=None, outlineColor=None, outlineWidth=None,
-                 stackPartitions=None, slicePartitions=None, subdivisions=None):
+    def __init__(
+        self,
+        *,
+        radii,
+        show=None,
+        fill=None,
+        material=None,
+        outlineColor=None,
+        outlineWidth=None,
+        stackPartitions=None,
+        slicePartitions=None,
+        subdivisions=None,
+    ):
         self._radii = radii
         self._show = show
         self._fill = fill
@@ -549,6 +556,7 @@ class Ellipsoid(BaseCZMLObject):
     def subdivisions(self):
         """The number of samples per outline ring, determining the granularity of the curvature."""
         return self._subdivisions
+
 
 # noinspection PyPep8Naming
 class Clock(BaseCZMLObject):
