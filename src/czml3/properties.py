@@ -446,6 +446,110 @@ class Billboard(BaseCZMLObject, HasAlignment):
         return self._scale
 
 
+class EllipsoidRadii(BaseCZMLObject, Deletable, Interpolatable):
+    """The radii of an ellipsoid."""
+
+    KNOWN_PROPERTIES = [
+        "cartesian",
+        "reference"
+    ]
+
+    def __init__(self, *, cartesian=None, reference=None):
+        self._cartesian = cartesian
+        self._reference = reference
+
+    @property
+    def cartesian(self):
+        """The radii specified as a three-dimensional Cartesian value [X, Y, Z], in world coordinates in meters."""
+        return self._cartesian
+
+    @property
+    def reference(self):
+        """The radii specified as a reference to another property."""
+        return self._reference
+
+
+
+class Ellipsoid(BaseCZMLObject):
+    """A closed quadric surface that is a three-dimensional analogue of an ellipse."""
+
+    KNOWN_PROPERTIES = [
+        "radii",
+        "show",
+        "heightReference",
+        "fill",
+        "material",
+        "outlineColor",
+        "outlineWidth",
+        "stackPartitions",
+        "slicePartitions",
+        "subdivisions",
+        "shadows",
+        "distanceDisplayCondition"
+    ]
+
+    def __init__(self, *, radii, show=None, fill=None, material=None, outlineColor=None, outlineWidth=None,
+                 stackPartitions=None, slicePartitions=None, subdivisions=None):
+        self._radii = radii
+        self._show = show
+        self._fill = fill
+        self._material = material
+        self._outlineColor = outlineColor
+        self._outlineWidth = outlineWidth
+        self._stackPartitions = stackPartitions
+        self._slicePartitions = slicePartitions
+        self._subdivisions = subdivisions
+
+    @property
+    def show(self):
+        """Whether or not the ellipsoid is shown."""
+        return self._show
+
+    @property
+    def radii(self):
+        """The dimensions of the ellipsoid."""
+        return self._radii
+
+    @property
+    def fill(self):
+        """Whether or not the ellipsoid is filled."""
+        return self._fill
+
+    @property
+    def material(self):
+        """The material to display on the surface of the ellipsoid."""
+        return self._material
+
+    @property
+    def outline(self):
+        """Whether or not the ellipsoid is outlined."""
+        return self._outline
+
+    @property
+    def outlineColor(self):
+        """The color of the ellipsoid outline."""
+        return self._outlineColor
+
+    @property
+    def outlineWidth(self):
+        """The width of the ellipsoid outline."""
+        return self._outlineWidth
+
+    @property
+    def stackPartitions(self):
+        """The number of times to partition the ellipsoid into stacks."""
+        return self._stackPartitions
+
+    @property
+    def slicePartitions(self):
+        """The number of times to partition the ellipsoid into radial slices."""
+        return self._slicePartitions
+
+    @property
+    def subdivisions(self):
+        """The number of samples per outline ring, determining the granularity of the curvature."""
+        return self._subdivisions
+
 # noinspection PyPep8Naming
 class Clock(BaseCZMLObject):
     """Initial settings for a simulated clock when a document is loaded.

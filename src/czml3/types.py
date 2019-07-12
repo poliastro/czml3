@@ -124,6 +124,34 @@ class RgbaValue(BaseCZMLObject):
         return list(self.values)
 
 
+class ReferenceValue(BaseCZMLObject):
+    """ Represents a reference to another property. References can be used to specify that two properties on different
+    objects are in fact, the same property.
+
+    """
+
+    def __init__(self, *, string=None):
+
+        if not isinstance(string, str):
+            raise ValueError("Reference must be a string")
+        if "#" not in string:
+            raise ValueError(
+                "Invalid reference string format. Input must be of the form id#property"
+            )
+        self._string = string
+
+    @property
+    def string(self):
+        """ Represents a reference to another property. References can be used to specify that two properties on
+        different objects are in fact, the same property.
+
+        """
+        return self._string
+
+    def to_json(self):
+        return self._string
+
+
 class Cartesian3Value(BaseCZMLObject):
     """A three-dimensional Cartesian value specified as [X, Y, Z].
 

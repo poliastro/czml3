@@ -5,8 +5,15 @@ import pytest
 
 from czml3 import CZML_VERSION, Packet, Preamble
 from czml3.enums import InterpolationAlgorithms, ReferenceFrames
-from czml3.properties import Billboard, Color, Label, Position
-from czml3.types import StringValue
+from czml3.properties import (
+    Billboard,
+    Color,
+    Ellipsoid,
+    EllipsoidRadii,
+    Label,
+    Position,
+)
+from czml3.types import Cartesian3Value, StringValue
 
 
 def test_preamble_has_proper_id_and_expected_version():
@@ -254,10 +261,29 @@ def test_packet_custom_properties():
     "properties": {
         "a": false,
         "b": 1,
-        "c": "C"
+        "c": "C",
+        "ellipsoid": {
+            "radii": {
+                "cartesian": [
+                    6378137,
+                    6378137,
+                    6356752.31414
+                ]
+            }
+        }
     }
 }"""
-    prop_dict = {"a": False, "b": 1, "c": "C"}
+    prop_dict = {
+        "a": False,
+        "b": 1,
+        "c": "C",
+        "ellipsoid": Ellipsoid(
+            radii=EllipsoidRadii(
+                cartesian=Cartesian3Value(values=[6378137, 6378137, 6356752.314140])
+            )
+        ),
+    }
+
     packet = Packet(id="id_00", properties=prop_dict)
 
     assert repr(packet) == expected_result
