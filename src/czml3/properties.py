@@ -565,6 +565,24 @@ class Ellipsoid(BaseCZMLObject):
         return self._subdivisions
 
 
+class HeightReference(BaseCZMLObject, Deletable):
+    """The height reference of an object, which indicates if the object's position is relative to terrain or not."""
+
+    KNOWN_PROPERTIES = ["heightReference", "reference"]
+
+    def __init__(self, *, heightReference=None, reference=None):
+        self._height_reference = heightReference
+        self._reference = reference
+
+    @property
+    def heightReference(self):
+        return self._height_reference
+
+    @property
+    def reference(self):
+        return self._reference
+
+
 # noinspection PyPep8Naming
 class Clock(BaseCZMLObject):
     """Initial settings for a simulated clock when a document is loaded.
