@@ -144,7 +144,6 @@ class ReferenceValue(BaseCZMLObject):
     def string(self):
         """ Represents a reference to another property. References can be used to specify that two properties on
         different objects are in fact, the same property.
-
         """
         return self._string
 
@@ -195,7 +194,7 @@ class StringValue(BaseCZMLObject, Deletable):
         return self._string
 
     def to_json(self):
-        return self.string
+        return self._string
 
 
 class Uri(BaseCZMLObject, Deletable):
@@ -242,6 +241,21 @@ class TimeInterval(BaseCZMLObject):
             end = self._end
 
         return "{start}/{end}".format(start=start, end=end)
+
+
+class HeightReferenceValue(BaseCZMLObject):
+    """The height reference of an object, which indicates if the object's position is relative to terrain or not."""
+
+    def __init__(self, *, string):
+        valid_values = ["NONE", "CLAMP_TO_GROUND", "RELATIVE_TO_GROUND"]
+
+        if string not in valid_values:
+            raise ValueError("Invalid height reference value.")
+
+        self._string = string
+
+    def to_json(self):
+        return self._string
 
 
 class IntervalValue(BaseCZMLObject):

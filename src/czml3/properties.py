@@ -489,6 +489,7 @@ class Ellipsoid(BaseCZMLObject):
         *,
         radii,
         show=None,
+        heightReference=None,
         fill=None,
         material=None,
         outlineColor=None,
@@ -499,6 +500,7 @@ class Ellipsoid(BaseCZMLObject):
     ):
         self._radii = radii
         self._show = show
+        self._height_reference = heightReference
         self._fill = fill
         self._material = material
         self._outlineColor = outlineColor
@@ -516,6 +518,11 @@ class Ellipsoid(BaseCZMLObject):
     def radii(self):
         """The dimensions of the ellipsoid."""
         return self._radii
+
+    @property
+    def heightReference(self):
+        """The height reference of the ellipsoid, which indicates if the position is relative to terrain or not."""
+        return self._height_reference
 
     @property
     def fill(self):
