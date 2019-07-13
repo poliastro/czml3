@@ -7,6 +7,8 @@ from dateutil.tz import tzoffset
 from czml3.types import (
     Cartesian3Value,
     FontValue,
+    HeightReferenceValue,
+    ReferenceValue,
     RgbafValue,
     RgbaValue,
     TimeInterval,
@@ -21,6 +23,38 @@ def test_bad_cartesian_raises_error(values):
         Cartesian3Value(values=values)
 
     assert "Input values must have either 3 or N * 4 values" in excinfo.exconly()
+
+
+def test_height_reference_value():
+    expected_result = '"CLAMP_TO_GROUND"'
+    height_reference = HeightReferenceValue(string="CLAMP_TO_GROUND")
+
+    assert repr(height_reference) == expected_result
+
+
+def test_invalid_height_reference_value():
+
+    with pytest.raises(ValueError) as excinfo:
+        HeightReferenceValue(string="CLAMP")
+
+    assert "Invalid height reference value." in excinfo.exconly()
+
+
+def test_reference_value():
+    expected_result = '"id#property"'
+    reference = ReferenceValue(string="id#property")
+
+    assert repr(reference) == expected_result
+
+
+def test_invalid_reference_value():
+    with pytest.raises(ValueError) as excinfo:
+        ReferenceValue(string="id")
+
+    assert (
+        "Invalid reference string format. Input must be of the form id#property"
+        in excinfo.exconly()
+    )
 
 
 def test_font_value():

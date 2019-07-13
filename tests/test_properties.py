@@ -4,6 +4,7 @@ from czml3.properties import (
     CheckerboardMaterial,
     Color,
     GridMaterial,
+    HeightReference,
     ImageMaterial,
     Material,
     PolylineMaterial,
@@ -11,7 +12,13 @@ from czml3.properties import (
     SolidColorMaterial,
     StripeMaterial,
 )
-from czml3.types import Cartesian3Value, IntervalValue, Sequence, Uri
+from czml3.types import (
+    Cartesian3Value,
+    HeightReferenceValue,
+    IntervalValue,
+    Sequence,
+    Uri,
+)
 
 
 def test_material_solid_color():
@@ -243,3 +250,14 @@ def test_multiple_interval_value():
     )
 
     assert repr(prop) == expected_result
+
+
+def test_height_reference():
+    expected_result = """{
+    "heightReference": "CLAMP_TO_GROUND"
+}"""
+    height_reference = HeightReference(
+        heightReference=HeightReferenceValue(string="CLAMP_TO_GROUND")
+    )
+
+    assert repr(height_reference) == expected_result
