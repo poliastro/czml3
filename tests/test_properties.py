@@ -1,24 +1,67 @@
 import datetime as dt
 
-from czml3.properties import (
+from src.czml3.properties import (
+    ArcType,
     CheckerboardMaterial,
     Color,
+    ClassificationType,
+    DistanceDisplayCondition,
     GridMaterial,
     HeightReference,
     ImageMaterial,
     Material,
+    Polyline,
     PolylineMaterial,
     Position,
+    PositionList,
     SolidColorMaterial,
     StripeMaterial,
 )
-from czml3.types import (
+from src.czml3.types import (
+    ArcTypeValue,
     Cartesian3Value,
+    CartographicDegreesListValue,
+    ClassificationTypeValue,
+    DistanceDisplayConditionValue,
     HeightReferenceValue,
     IntervalValue,
     Sequence,
     Uri,
 )
+
+
+def test_polyline():
+    expected_result = """{
+    "positions": {
+        "cartographicDegrees": [
+            20,
+            30,
+            10
+        ]
+    },
+    "distanceDisplayCondition": {
+        "distanceDisplayCondition": [
+            14,
+            81
+        ]
+    },
+    "classificationType": {
+        "classificationType": "CESIUM_3D_TILE"
+    }
+}"""
+    pol = Polyline(
+        positions=PositionList(
+            cartographicDegrees=CartographicDegreesListValue(values=[20, 30, 10])
+        ),
+        arcType=ArcType(arcType=ArcTypeValue(string="GEODESIC")),
+        distanceDisplayCondition=DistanceDisplayCondition(
+            distanceDisplayCondition=DistanceDisplayConditionValue(values=[14, 81])
+        ),
+        classificationType=ClassificationType(
+            classificationType=ClassificationTypeValue(string="CESIUM_3D_TILE")
+        ),
+    )
+    assert repr(pol) == expected_result
 
 
 def test_material_solid_color():

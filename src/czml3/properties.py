@@ -466,6 +466,263 @@ class EllipsoidRadii(BaseCZMLObject, Deletable, Interpolatable):
         return self._reference
 
 
+class Polyline(BaseCZMLObject):
+    """A polyline, which is a line in the scene composed of multiple segments."""
+
+    KNOWN_PROPERTIES = [
+        "show",
+        "positions",
+        "arcType",
+        "width",
+        "granularity",
+        "material",
+        "followSurface",
+        "shadows",
+        "depthFailMaterial",
+        "distanceDisplayCondition",
+        "clampToGround",
+        "classificationType",
+        "zIndex",
+    ]
+
+    def __init__(
+        self,
+        *,
+        positions,
+        show=None,
+        arcType=None,
+        width=None,
+        granularity=None,
+        material=None,
+        followSurface=None,
+        shadows=None,
+        depthFailMaterial=None,
+        distanceDisplayCondition=None,
+        clampToGround=None,
+        classificationType=None,
+        zIndex=None,
+    ):
+        self._position = positions
+        self._show = show
+        self._arc_type = arcType
+        self._width = width
+        self._granularity = granularity
+        self._material = material
+        self._followSurface = followSurface
+        self._shadows = shadows
+        self._depth_fail_material = depthFailMaterial
+        self._distance_display_condition = distanceDisplayCondition
+        self._clamp_to_ground = clampToGround
+        self._classification_type = classificationType
+        self._z_index = zIndex
+
+    @property
+    def positions(self):
+        """The array of positions defining the polyline as a line strip."""
+        return self._position
+
+    @property
+    def show(self):
+        """Whether or not the polyline is shown."""
+        return self._show
+
+    @property
+    def arcType(self):
+        """The type of arc that should connect the positions of the polyline."""
+        return self._arcType
+
+    @property
+    def width(self):
+        """The width of the polyline."""
+        return self._width
+
+    @property
+    def granulariy(self):
+        """The sampling distance, in radians."""
+        return self._granularity
+
+    @property
+    def material(self):
+        """The material to use to draw the polyline."""
+        return self._material
+
+    @property
+    def followSurface(self):
+        """ Whether or not the positions are connected as great arcs (the default) or as straight lines.
+        This property has been superseded by arcType, which should be used instead.
+        """
+        return self._follow_surface
+
+    @property
+    def shadows(self):
+        """Whether or not the polyline casts or receives shadows."""
+        return self._shadows
+
+    @property
+    def depthFailMaterial(self):
+        """The material to use to draw the polyline when it is below the terrain."""
+        return self._depth_fail_material
+
+    @property
+    def distanceDisplayCondition(self):
+        """The display condition specifying at what distance from the camera this polyline will be displayed."""
+        return self._distance_display_condition
+
+    @property
+    def clampToGround(self):
+        """Whether or not the polyline should be clamped to the ground."""
+        return self._clamp_to_ground
+
+    @property
+    def classificationType(self):
+        """Whether a classification affects terrain, 3D Tiles, or both."""
+        return self._classification_type
+
+    @property
+    def zIndex(self):
+        """ The z-index of the polyline, used for ordering ground geometry. Only has an effect if the polyline is
+        constant, and clampToGround is true.
+        """
+        return self._z_index
+
+
+class ArcType(BaseCZMLObject, Deletable):
+    """The type of an arc."""
+
+    KNOWN_PROPERTIES = ["arcType", "reference"]
+
+    def __init__(self, *, arcType=None, reference=None):
+        self._arc_type = arcType
+        self._reference = reference
+
+    @property
+    def arcType(self):
+        """The arc type"""
+        return self._arc_type
+
+    @property
+    def reference(self):
+        """The arc type specified as a reference to another property."""
+        return self._reference
+
+
+class ShadowMode(BaseCZMLObject, Deletable):
+    """Whether or not an object casts or receives shadows from each light source when shadows are enabled."""
+
+    KNOWN_PROPERTIES = ["shadowMode", "reference"]
+
+    def __init__(self, *, shadowMode=None, reference=None):
+        self._shadow_mode = shadowMode
+        self._reference = reference
+
+    @property
+    def shadowMode(self):
+        """The shadow mode"""
+        return self._shadow_mode
+
+    @property
+    def reference(self):
+        """The shadow mode specified as a reference to another property."""
+        return self._reference
+
+
+class ClassificationType(BaseCZMLObject, Deletable):
+    """Whether a classification affects terrain, 3D Tiles, or both."""
+
+    KNOWN_PROPERTIES = ["classificationType", "reference"]
+
+    def __init__(self, *, classificationType=None, reference=None):
+        self._classification_type = classificationType
+        self._reference = reference
+
+    @property
+    def classificationType(self):
+        """The classification type, which indicates whether a classification affects terrain, 3D Tiles, or both."""
+        return self._classification_type
+
+    @property
+    def reference(self):
+        """The classification type specified as a reference to another property."""
+        return self._reference
+
+
+class DistanceDisplayCondition(BaseCZMLObject, Interpolatable, Deletable):
+    """Indicates the visibility of an object based on the distance to the camera."""
+
+    KNOWN_PROPERTIES = ["distanceDisplayCondition", "reference"]
+
+    def __init__(self, *, distanceDisplayCondition=None, reference=None):
+        self._distance_display_condition = distanceDisplayCondition
+        self._reference = reference
+
+    @property
+    def distanceDisplayCondition(self):
+        """The value specified as two values [NearDistance, FarDistance], with distances in meters."""
+        return self._distance_display_condition
+
+    @property
+    def reference(self):
+        """The value specified as a reference to another property."""
+        return self._reference
+
+
+class PositionList(BaseCZMLObject, Deletable):
+    """A list of positions."""
+
+    KNOWN_PROPERTIES = [
+        "referenceFrame",
+        "cartersian",
+        "cartographicRadians",
+        "cartographicDegrees",
+        "references",
+    ]
+
+    def __init__(
+        self,
+        *,
+        referenceFrame=None,
+        cartesian=None,
+        cartographicRadians=None,
+        cartographicDegrees=None,
+        references=None,
+    ):
+        self._reference_frames = referenceFrame
+        self._cartesian = cartesian
+        self._cartographic_radians = cartographicRadians
+        self._cartographic_degrees = cartographicDegrees
+        self._references = references
+
+    @property
+    def referenceFrame(self):
+        """The reference frame in which cartesian positions are specified. Possible values are "FIXED" and
+        "INERTIAL"."""
+        return self._reference_frames
+
+    @property
+    def cartesian(self):
+        """The list of positions specified as three-dimensional Cartesian values, [X, Y, Z, X, Y, Z, ...],
+        in meters relative to the referenceFrame."""
+        return self._cartesian
+
+    @property
+    def cartographicRadians(self):
+        """The list of positions specified in Cartographic WGS84 coordinates, [Longitude, Latitude, Height, Longitude,
+         Latitude, Height, ...], where Longitude and Latitude are in radians and Height is in meters."""
+        return self._cartographic_radians
+
+    @property
+    def cartographicDegrees(self):
+        """The list of positions specified in Cartographic WGS84 coordinates, [Longitude, Latitude, Height, Longitude,
+        Latitude, Height, ...], where Longitude and Latitude are in degrees and Height is in meters."""
+        return self._cartographic_degrees
+
+    @property
+    def references(self):
+        """The list of positions specified as references. Each reference is to a property that defines a single
+        position, which may change with time."""
+        return self._references
+
+
 class Ellipsoid(BaseCZMLObject):
     """A closed quadric surface that is a three-dimensional analogue of an ellipse."""
 
@@ -503,10 +760,10 @@ class Ellipsoid(BaseCZMLObject):
         self._height_reference = heightReference
         self._fill = fill
         self._material = material
-        self._outlineColor = outlineColor
-        self._outlineWidth = outlineWidth
-        self._stackPartitions = stackPartitions
-        self._slicePartitions = slicePartitions
+        self._outline_color = outlineColor
+        self._outline_width = outlineWidth
+        self._stack_partitions = stackPartitions
+        self._slice_partitions = slicePartitions
         self._subdivisions = subdivisions
 
     @property
@@ -542,22 +799,22 @@ class Ellipsoid(BaseCZMLObject):
     @property
     def outlineColor(self):
         """The color of the ellipsoid outline."""
-        return self._outlineColor
+        return self._outline_color
 
     @property
     def outlineWidth(self):
         """The width of the ellipsoid outline."""
-        return self._outlineWidth
+        return self._outline_width
 
     @property
     def stackPartitions(self):
         """The number of times to partition the ellipsoid into stacks."""
-        return self._stackPartitions
+        return self._stack_partitions
 
     @property
     def slicePartitions(self):
         """The number of times to partition the ellipsoid into radial slices."""
-        return self._slicePartitions
+        return self._slice_partitions
 
     @property
     def subdivisions(self):
