@@ -14,6 +14,7 @@ from czml3.properties import (
     PolylineMaterial,
     Position,
     PositionList,
+    ShadowMode,
     SolidColorMaterial,
     StripeMaterial,
 )
@@ -26,8 +27,25 @@ from czml3.types import (
     HeightReferenceValue,
     IntervalValue,
     Sequence,
+    ShadowModeValue,
     Uri,
 )
+
+
+def test_arc_type():
+    expected_result = """{
+    "arcType": "NONE"
+}"""
+    arc_type = ArcType(arcType=ArcTypeValue(string="NONE"))
+    assert repr(arc_type) == expected_result
+
+
+def test_shadow_mode():
+    expected_result = """{
+    "shadowMode": "ENABLED"
+}"""
+    shadow_mode = ShadowMode(shadowMode=ShadowModeValue(string="ENABLED"))
+    assert repr(shadow_mode) == expected_result
 
 
 def test_polyline():

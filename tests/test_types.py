@@ -5,16 +5,78 @@ import pytest
 from dateutil.tz import tzoffset
 
 from czml3.types import (
+    ArcTypeValue,
     Cartesian3Value,
+    CartographicDegreesListValue,
+    CartographicRadiansListValue,
+    ClassificationTypeValue,
+    DistanceDisplayConditionValue,
     FontValue,
     HeightReferenceValue,
     ReferenceValue,
     RgbafValue,
     RgbaValue,
+    ShadowModeValue,
     TimeInterval,
     Uri,
     format_datetime_like,
 )
+
+
+def test_classification_type():
+    expected_result = '"BOTH"'
+    cls = ClassificationTypeValue(string="BOTH")
+    assert repr(cls) == expected_result
+
+
+def test_distance_display_condition():
+    expected_result = """[
+    0,
+    150,
+    15000000,
+    300,
+    10000,
+    15000000,
+    600,
+    150,
+    15000000
+]"""
+    dist = DistanceDisplayConditionValue(
+        values=[0, 150, 15000000, 300, 10000, 15000000, 600, 150, 15000000]
+    )
+    assert repr(dist) == expected_result
+
+
+def test_shadow_mode():
+    expected_result = '"CAST_ONLY"'
+    shad = ShadowModeValue(string="CAST_ONLY")
+    assert repr(shad) == expected_result
+
+
+def test_arc_type():
+    expected_result = '"RHUMB"'
+    arc = ArcTypeValue(string="RHUMB")
+    assert repr(arc) == expected_result
+
+
+def test_cartographic_radian_list():
+    expected_result = """[
+    0,
+    1,
+    0
+]"""
+    car = CartographicRadiansListValue(values=[0, 1, 0])
+    assert repr(car) == expected_result
+
+
+def test_cartograpic_degree_list():
+    expected_result = """[
+    15,
+    25,
+    50
+]"""
+    car = CartographicDegreesListValue(values=[15, 25, 50])
+    assert repr(car) == expected_result
 
 
 @pytest.mark.parametrize("values", [[2, 2], [5, 5, 5, 5, 5]])
