@@ -1,6 +1,6 @@
 import datetime as dt
 
-from src.czml3.properties import (
+from czml3.properties import (
     ArcType,
     CheckerboardMaterial,
     Color,
@@ -17,7 +17,7 @@ from src.czml3.properties import (
     SolidColorMaterial,
     StripeMaterial,
 )
-from src.czml3.types import (
+from czml3.types import (
     ArcTypeValue,
     Cartesian3Value,
     CartographicDegreesListValue,
