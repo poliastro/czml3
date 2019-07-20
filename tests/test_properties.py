@@ -3,8 +3,8 @@ import datetime as dt
 from czml3.properties import (
     ArcType,
     CheckerboardMaterial,
-    Color,
     ClassificationType,
+    Color,
     DistanceDisplayCondition,
     GridMaterial,
     HeightReference,
