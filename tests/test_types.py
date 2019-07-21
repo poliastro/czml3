@@ -53,10 +53,24 @@ def test_shadow_mode():
     assert repr(shad) == expected_result
 
 
+def test_invalid_shadow_mode():
+
+    with pytest.raises(ValueError) as excinfo:
+        ArcTypeValue(string="SHADOW")
+    assert "Invalid input value" in excinfo.exconly()
+
+
 def test_arc_type():
     expected_result = '"RHUMB"'
     arc = ArcTypeValue(string="RHUMB")
     assert repr(arc) == expected_result
+
+
+def test_invalid_arc_type():
+
+    with pytest.raises(ValueError) as excinfo:
+        ArcTypeValue(string="ARC")
+    assert "Invalid input value" in excinfo.exconly()
 
 
 def test_cartographic_radian_list():
@@ -69,6 +83,16 @@ def test_cartographic_radian_list():
     assert repr(car) == expected_result
 
 
+def test_invalid_cartograpic_radian_list():
+
+    with pytest.raises(ValueError) as excinfo:
+        CartographicRadiansListValue(values=[1])
+    assert (
+        "Invalid values. Input values should be arrays of size 3 * N"
+        in excinfo.exconly()
+    )
+
+
 def test_cartograpic_degree_list():
     expected_result = """[
     15,
@@ -77,6 +101,16 @@ def test_cartograpic_degree_list():
 ]"""
     car = CartographicDegreesListValue(values=[15, 25, 50])
     assert repr(car) == expected_result
+
+
+def test_invalid_cartograpic_degree_list():
+
+    with pytest.raises(ValueError) as excinfo:
+        CartographicDegreesListValue(values=[15, 25, 50, 30])
+    assert (
+        "Invalid values. Input values should be arrays of size 3 * N"
+        in excinfo.exconly()
+    )
 
 
 @pytest.mark.parametrize("values", [[2, 2], [5, 5, 5, 5, 5]])
