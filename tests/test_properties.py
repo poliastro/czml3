@@ -1,24 +1,85 @@
 import datetime as dt
 
 from czml3.properties import (
+    ArcType,
     CheckerboardMaterial,
+    ClassificationType,
     Color,
+    DistanceDisplayCondition,
     GridMaterial,
     HeightReference,
     ImageMaterial,
     Material,
+    Polyline,
     PolylineMaterial,
     Position,
+    PositionList,
+    ShadowMode,
     SolidColorMaterial,
     StripeMaterial,
 )
 from czml3.types import (
+    ArcTypeValue,
     Cartesian3Value,
+    CartographicDegreesListValue,
+    ClassificationTypeValue,
+    DistanceDisplayConditionValue,
     HeightReferenceValue,
     IntervalValue,
     Sequence,
+    ShadowModeValue,
     Uri,
 )
+
+
+def test_arc_type():
+    expected_result = """{
+    "arcType": "NONE"
+}"""
+    arc_type = ArcType(arcType=ArcTypeValue(string="NONE"))
+    assert repr(arc_type) == expected_result
+
+
+def test_shadow_mode():
+    expected_result = """{
+    "shadowMode": "ENABLED"
+}"""
+    shadow_mode = ShadowMode(shadowMode=ShadowModeValue(string="ENABLED"))
+    assert repr(shadow_mode) == expected_result
+
+
+def test_polyline():
+    expected_result = """{
+    "positions": {
+        "cartographicDegrees": [
+            20,
+            30,
+            10
+        ]
+    },
+    "distanceDisplayCondition": {
+        "distanceDisplayCondition": [
+            14,
+            81
+        ]
+    },
+    "classificationType": {
+        "classificationType": "CESIUM_3D_TILE"
+    }
+}"""
+    pol = Polyline(
+        positions=PositionList(
+            cartographicDegrees=CartographicDegreesListValue(values=[20, 30, 10])
+        ),
+        arcType=ArcType(arcType=ArcTypeValue(string="GEODESIC")),
+        distanceDisplayCondition=DistanceDisplayCondition(
+            distanceDisplayCondition=DistanceDisplayConditionValue(values=[14, 81])
+        ),
+        classificationType=ClassificationType(
+            classificationType=ClassificationTypeValue(string="CESIUM_3D_TILE")
+        ),
+    )
+    assert repr(pol) == expected_result
 
 
 def test_material_solid_color():

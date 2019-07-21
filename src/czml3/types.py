@@ -197,6 +197,129 @@ class StringValue(BaseCZMLObject, Deletable):
         return self._string
 
 
+class ArcTypeValue(BaseCZMLObject):
+    """The type of an arc"""
+
+    def __init__(self, *, string=None):
+        valid_values = ["NONE", "GEODESIC", "RHUMB"]
+
+        if string not in valid_values:
+            raise ValueError("Invalid input value")
+
+        self._string = string
+
+    @property
+    def string(self):
+        """The string value"""
+        return self._string
+
+    def to_json(self):
+        return self._string
+
+
+class ShadowModeValue(BaseCZMLObject, Deletable):
+    """Whether or not an object casts or receives shadows from each light source when shadows are enabled."""
+
+    def __init__(self, *, string=None):
+        valid_values = ["DISABLED", "ENABLED", "CAST_ONLY", "RECEIVE_ONLY"]
+
+        if string not in valid_values:
+            raise ValueError("Invalid input value")
+
+        self._string = string
+
+    @property
+    def string(self):
+        """The string value"""
+        return self._string
+
+    def to_json(self):
+        return self._string
+
+
+class ClassificationTypeValue(BaseCZMLObject):
+    """Whether a classification affects terrain, 3D Tiles, or both."""
+
+    def __init__(self, *, string=None):
+        valid_values = ["TERRAIN", "CESIUM_3D_TILE", "BOTH"]
+
+        if string not in valid_values:
+            raise ValueError("Invalid input value")
+
+        self._string = string
+
+    @property
+    def string(self):
+        """The string value"""
+        return self._string
+
+    def to_json(self):
+        return self._string
+
+
+class CartographicRadiansListValue(BaseCZMLObject):
+    """A list of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...],
+     where Longitude and Latitude are in radians and Height is in meters."""
+
+    def __init__(self, *, values=None):
+        if len(values) % 3 != 0:
+            raise ValueError(
+                "Invalid values. Input values should be arrays of size 3 * N"
+            )
+
+        self._values = values
+
+    @property
+    def values(self):
+        return self._values
+
+    def to_json(self):
+        return list(self._values)
+
+
+class CartographicDegreesListValue(BaseCZMLObject):
+    """A list of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...],
+    where Longitude and Latitude are in degrees and Height is in meters."""
+
+    def __init__(self, *, values=None):
+        if len(values) % 3 != 0:
+            raise ValueError(
+                "Invalid values. Input values should be arrays of size 3 * N"
+            )
+
+        self._values = values
+
+    @property
+    def values(self):
+        return self._values
+
+    def to_json(self):
+        return list(self._values)
+
+
+class DistanceDisplayConditionValue(BaseCZMLObject):
+    """A value indicating the visibility of an object based on the distance to the camera, specified as two values
+    [NearDistance, FarDistance]. If the array has two elements, the value is constant. If it has three or more elements,
+    they are time-tagged samples arranged as [Time, NearDistance, FarDistance, Time, NearDistance, FarDistance, ...],
+    where Time is an ISO 8601 date and time string or seconds since epoch.
+    """
+
+    def __init__(self, *, values=None):
+        if len(values) != 2 and len(values) % 3 != 0:
+            raise ValueError(
+                "Invalid values. Input values should be arrays of size either 2 or 3 * N"
+            )
+
+        self._values = values
+
+    @property
+    def values(self):
+        return self._values
+
+    def to_json(self):
+        return list(self._values)
+
+
 class Uri(BaseCZMLObject, Deletable):
     """A URI value.
 
