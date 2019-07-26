@@ -10,6 +10,8 @@ from czml3.properties import (
     HeightReference,
     ImageMaterial,
     Material,
+    NearFarScalar,
+    Point,
     Polyline,
     PolylineMaterial,
     Position,
@@ -26,10 +28,37 @@ from czml3.types import (
     DistanceDisplayConditionValue,
     HeightReferenceValue,
     IntervalValue,
+    NearFarScalarValue,
     Sequence,
     ShadowModeValue,
     Uri,
 )
+
+
+def test_point():
+    expected_result = """{
+    "show": true,
+    "pixelSize": 10,
+    "scaleByDistance": {
+        "nearFarScalar": [
+            150,
+            2.0,
+            15000000,
+            0.5
+        ]
+    },
+    "disableDepthTestDistance": 1.2
+}"""
+
+    pnt = Point(
+        show=True,
+        pixelSize=10,
+        scaleByDistance=NearFarScalar(
+            nearFarScalar=NearFarScalarValue(values=[150, 2.0, 15000000, 0.5])
+        ),
+        disableDepthTestDistance=1.2,
+    )
+    assert repr(pnt) == expected_result
 
 
 def test_arc_type():

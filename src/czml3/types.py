@@ -80,7 +80,7 @@ class RgbafValue(BaseCZMLObject):
         return self._values
 
     def to_json(self):
-        return list(self.values)
+        return list(self._values)
 
 
 class RgbaValue(BaseCZMLObject):
@@ -121,7 +121,7 @@ class RgbaValue(BaseCZMLObject):
         return self._values
 
     def to_json(self):
-        return list(self.values)
+        return list(self._values)
 
 
 class ReferenceValue(BaseCZMLObject):
@@ -175,7 +175,7 @@ class Cartesian3Value(BaseCZMLObject):
         return self._values
 
     def to_json(self):
-        return list(self.values)
+        return list(self._values)
 
 
 class StringValue(BaseCZMLObject, Deletable):
@@ -308,6 +308,31 @@ class DistanceDisplayConditionValue(BaseCZMLObject):
         if len(values) != 2 and len(values) % 3 != 0:
             raise ValueError(
                 "Invalid values. Input values should be arrays of size either 2 or 3 * N"
+            )
+
+        self._values = values
+
+    @property
+    def values(self):
+        return self._values
+
+    def to_json(self):
+        return list(self._values)
+
+
+class NearFarScalarValue(BaseCZMLObject, Deletable):
+    """A near-far scalar value specified as four values [NearDistance, NearValue, FarDistance, FarValue].
+
+     If the array has four elements, the value is constant. If it has five or more elements, they are time-tagged
+    samples arranged as [Time, NearDistance, NearValue, FarDistance, FarValue, Time, NearDistance, NearValue,
+    FarDistance, FarValue, ...], where Time is an ISO 8601 date and time string or seconds since epoch.
+    """
+
+    def __init__(self, *, values=None):
+        if not (len(values) == 4 or len(values) % 5 == 0):
+            raise ValueError(
+                "Input values must have either 4 or N * 5 values, "
+                "where N is the number of time-tagged samples."
             )
 
         self._values = values
