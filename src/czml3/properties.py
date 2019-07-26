@@ -989,6 +989,134 @@ class Path(BaseCZMLObject):
         return self._material
 
 
+class Point(BaseCZMLObject):
+    """A point, or viewport-aligned circle."""
+
+    KNOWN_PROPERTIES = [
+        "show",
+        "pixelSize",
+        "heightReference",
+        "color",
+        "outlineColor",
+        "outlineWidth",
+        "scaleByDistance",
+        "translucencyByDistance",
+        "distanceDisplayCondition",
+        "disableDepthTestDistance",
+    ]
+
+    def __init__(
+        self,
+        *,
+        show=None,
+        pixelSize=None,
+        heightReference=None,
+        color=None,
+        outlineColor=None,
+        outlineWidth=None,
+        scaleByDistance=None,
+        translucencyByDistance=None,
+        distanceDisplayCondition=None,
+        disableDepthTestDistance=None,
+    ):
+        self._show = show
+        self._pixel_size = pixelSize
+        self._height_reference = heightReference
+        self._color = color
+        self._outline_color = outlineColor
+        self._outline_width = outlineWidth
+        self._scale_by_distance = scaleByDistance
+        self._translucency_by_distance = translucencyByDistance
+        self._distance_display_condition = distanceDisplayCondition
+        self._disable_depth_test_distance = disableDepthTestDistance
+
+    @property
+    def show(self):
+        """Whether or not the point is shown."""
+        return self._show
+
+    @property
+    def pixelSize(self):
+        """The size of the point, in pixels."""
+        return self._pixel_size
+
+    @property
+    def heightReference(self):
+        """The height reference of the point, which indicates if the position is relative to terrain or not."""
+        return self._height_reference
+
+    @property
+    def color(self):
+        """The color of the point."""
+        return self._color
+
+    @property
+    def outlineColor(self):
+        """The color of the outline of the point."""
+        return self._outline_color
+
+    @property
+    def outlineWidth(self):
+        """The width of the outline of the point."""
+        return self._outline_width
+
+    @property
+    def scaleByDistance(self):
+        """ How the point's scale should change based on the point's distance from the camera.
+        This scalar value will be multiplied by pixelSize.
+        """
+        return self._scale_by_distance
+
+    @property
+    def translucencyByDistance(self):
+        """ How the point's translucency should change based on the point's distance from the camera.
+        This scalar value should range from 0 to 1.
+        """
+        return self._translucency_by_distance
+
+    @property
+    def distanceDisplayCondition(self):
+        """The display condition specifying the distance from the camera at which this point will be displayed."""
+        return self._distance_display_condition
+
+    @property
+    def disableDepthTestDistance(self):
+        """ The distance from the camera at which to disable the depth test. This can be used to prevent clipping
+        against terrain, for example. When set to zero, the depth test is always applied.
+
+        When set to Infinity, the depth test is never applied.
+        """
+        return self._disable_depth_test_distance
+
+
+class NearFarScalar(BaseCZMLObject, Interpolatable, Deletable):
+    """ A numeric value which will be linearly interpolated between two values based on an object's distance from the
+     camera, in eye coordinates.
+
+    The computed value will interpolate between the near value and the far value while the camera distance falls
+    between the near distance and the far distance, and will be clamped to the near or far value while the distance is
+    less than the near distance or greater than the far distance, respectively.
+    """
+
+    KNOWN_PROPERTIES = ["nearFarScalar", "reference"]
+
+    def __init__(self, *, nearFarScalar=None, reference=None):
+        self._near_far_scalar = nearFarScalar
+        self._reference = reference
+
+    @property
+    def nearFarScalar(self):
+        """ The value specified as four values [NearDistance, NearValue, FarDistance, FarValue], with distances in eye
+        coordinates in meters.
+        """
+        return self._near_far_scalar
+
+    @property
+    def reference(self):
+        """The value specified as a reference to another property."""
+        return self._reference
+
+
 # noinspection PyPep8Naming
 class Label(BaseCZMLObject, HasAlignment):
     """A string of text."""
