@@ -13,6 +13,7 @@ from czml3.types import (
     DistanceDisplayConditionValue,
     FontValue,
     HeightReferenceValue,
+    NearFarScalarValue,
     ReferenceValue,
     RgbafValue,
     RgbaValue,
@@ -21,6 +22,13 @@ from czml3.types import (
     Uri,
     format_datetime_like,
 )
+
+
+def test_invalid_near_far_scalar_value():
+    with pytest.raises(ValueError) as excinfo:
+        NearFarScalarValue(values=[0, 3.2, 1, 4, 2, 1])
+
+    assert "Input values must have either 4 or N * 5 values, " in excinfo.exconly()
 
 
 def test_classification_type():
