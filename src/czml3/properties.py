@@ -973,6 +973,137 @@ class Ellipsoid(BaseCZMLObject):
         return self._subdivisions
 
 
+class Box(BaseCZMLObject):
+    """A box, which is a closed rectangular cuboid."""
+
+    KNOWN_PROPERTIES = [
+        "show",
+        "dimensions",
+        "heightReference",
+        "fill",
+        "material",
+        "outline",
+        "outlineColor",
+        "outlineWidth",
+        "shadows",
+        "distanceDisplayCondition",
+    ]
+
+    def __init__(
+        self,
+        show=None,
+        dimensions=None,
+        heightReference=None,
+        fill=None,
+        material=None,
+        outline=None,
+        outlineColor=None,
+        outlineWidth=None,
+        shadows=None,
+        distanceDisplayCondition=None,
+    ):
+        self._show = show
+        self._dimensions = dimensions
+        self._heightReference = heightReference
+        self._fill = fill
+        self._material = material
+        self._outline = outline
+        self._outlineColor = outlineColor
+        self._outlineWidth = outlineWidth
+        self._shadows = shadows
+        self._distanceDisplayCondition = distanceDisplayCondition
+
+    @property
+    def show(self):
+        """Whether or not the box is shown."""
+        return self._show
+
+    @property
+    def dimensions(self):
+        """The dimensions of the box."""
+        return self._dimensions
+
+    @property
+    def heightReference(self):
+        """The height reference of the box, which indicates if the position is relative to terrain or not."""
+        return self._heightReference
+
+    @property
+    def fill(self):
+        """Whether or not the box is filled."""
+        return self._fill
+
+    @property
+    def material(self):
+        """The material to display on the surface of the box."""
+        return self._material
+
+    @property
+    def outline(self):
+        """Whether or not the box is outlined."""
+        return self._outline
+
+    @property
+    def outlineColor(self):
+        """The color of the box outline."""
+        return self._outlineColor
+
+    @property
+    def outlineWidth(self):
+        """The width of the box outline."""
+        return self._outlineWidth
+
+    @property
+    def shadows(self):
+        """Whether or not the box casts or receives shadows."""
+        return self._shadows
+
+    @property
+    def distanceDisplayCondition(self):
+        """The display condition specifying the distance from the camera at which this box will be displayed."""
+        return self._distanceDisplayCondition
+
+
+class BoxDimensions(BaseCZMLObject, Interpolatable):
+    """The width, depth, and height of a box."""
+
+    KNOWN_PROPERTIES = ["cartesian", "reference"]
+
+    def __init__(self, *, cartesian=None, reference=None):
+        self._cartesian = cartesian
+        self._reference = reference
+
+    @property
+    def cartesian(self):
+        """The dimensions specified as a three-dimensional Cartesian value [X, Y, Z], with X representing width, Y representing depth, and Z representing height, in world coordinates in meters."""
+        return self._cartesian
+
+    @property
+    def reference(self):
+        """The dimensions specified as a reference to another property."""
+        return self._reference
+
+
+class EyeOffset(BaseCZMLObject, Deletable):
+    """An offset in eye coordinates which can optionally vary over time. Eye coordinates are a left-handed coordinate system where the X-axis points toward the viewer's right, the Y-axis poitns up, and the Z-axis points into the screen."""
+
+    KNOWN_PROPERTIES = ["cartesian", "reference"]
+
+    def __init__(self, *, cartesian=None, reference=None):
+        self._cartesian = cartesian
+        self._reference = reference
+
+    @property
+    def cartesian(self):
+        """The eye offset specified as a three-dimensional Cartesian value [X, Y, Z], in eye coordinates in meters. If the array has three elements, the eye offset is constant. If it has four or more elements, they are time-tagged samples arranged as [Time, X, Y, Z, Time, X, Y, Z, ...], where Time is an ISO 8601 date and time string or seconds since epoch."""
+        return self._cartesian
+
+    @property
+    def reference(self):
+        """The eye offset specified as a reference to another property."""
+        return self._reference
+
+
 class HeightReference(BaseCZMLObject, Deletable):
     """The height reference of an object, which indicates if the object's position is relative to terrain or not."""
 
