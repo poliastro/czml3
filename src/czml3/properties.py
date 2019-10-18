@@ -21,6 +21,9 @@ class Material(BaseCZMLObject):
     def __init__(
         self, *, solidColor=None, image=None, grid=None, stripe=None, checkerboard=None
     ):
+        if isinstance(solidColor, Color):
+            solidColor = SolidColorMaterial(color=solidColor)
+
         self._solid_color = solidColor
         self._image = image
         self._grid = grid
@@ -71,6 +74,8 @@ class PolylineMaterial(BaseCZMLObject):
     def __init__(
         self, *, solidColor=None, image=None, grid=None, stripe=None, checkerboard=None
     ):
+        if isinstance(solidColor, Color):
+            solidColor = SolidColorMaterial(color=solidColor)
 
         self._solid_color = solidColor
         self._image = image
