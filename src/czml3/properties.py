@@ -503,6 +503,108 @@ class EllipsoidRadii(BaseCZMLObject, Deletable, Interpolatable):
         return self._reference
 
 
+class Polygon(BaseCZMLObject):
+    """A polygon, which is a closed figure on the surface of the Earth."""
+
+    KNOWN_PROPERTIES = [
+        "show",
+        "positions",
+        "holes",
+        "arcType",
+        "height",
+        "heightReference",
+        "extrudedHeight",
+        "extrudedHeightReference",
+        "stRotation",
+        "granularity",
+        "fill",
+        "material",
+        "outline",
+        "outlineColor",
+        "outlineWidth",
+        "perPositionHeight",
+        "closeTop",
+        "closeBottom",
+        "shadows",
+        "distanceDisplayCondition",
+        "classificationType",
+        "zIndex",
+    ]
+
+    def __init__(
+        self,
+        *,
+        positions,
+        show=None,
+        arcType=None,
+        granularity=None,
+        material=None,
+        shadows=None,
+        distanceDisplayCondition=None,
+        classificationType=None,
+        zIndex=None,
+    ):
+        self._position = positions
+        self._show = show
+        self._arc_type = arcType
+        self._granularity = granularity
+        self._material = material
+        self._shadows = shadows
+        self._distance_display_condition = distanceDisplayCondition
+        self._classification_type = classificationType
+        self._z_index = zIndex
+
+    @property
+    def positions(self):
+        """The array of positions defining a simple polygon."""
+        return self._position
+
+    @property
+    def show(self):
+        """Whether or not the polygon is shown."""
+        return self._show
+
+    @property
+    def arcType(self):
+        """The type of arc that should connect the positions of the polygon."""
+        return self._arc_type
+
+    @property
+    def granularity(self):
+        """The sampling distance, in radians."""
+        return self._granularity
+
+    @property
+    def material(self):
+        """The material to use to fill the polygon."""
+        return self._material
+
+    @property
+    def shadows(self):
+        """Whether or not the polygon casts or receives shadows."""
+        return self._shadows
+
+    @property
+    def distanceDisplayCondition(self):
+        """The display condition specifying the distance from the camera at which this polygon will be displayed."""
+        return self._distance_display_condition
+
+    @property
+    def classificationType(self):
+        """Whether a classification affects terrain, 3D Tiles, or both."""
+        return self._classification_type
+
+    @property
+    def zIndex(self):
+        """The z-index of the polygon, used for ordering ground geometry.
+
+        Only has an effect if the polygon is constant,
+        and height and extrudedHeight are not specified.
+
+        """
+        return self._z_index
+
+
 class Polyline(BaseCZMLObject):
     """A polyline, which is a line in the scene composed of multiple segments."""
 
