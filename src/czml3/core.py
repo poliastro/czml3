@@ -86,6 +86,7 @@ class Packet(BaseCZMLObject):
         label=None,
         path=None,
         point=None,
+        polygon=None,
         polyline=None,
     ):
         if id is None:
@@ -103,6 +104,7 @@ class Packet(BaseCZMLObject):
         self._label = label
         self._path = path
         self._point = point
+        self._polygon = polygon
         self._polyline = polyline
 
     @property
@@ -219,6 +221,13 @@ class Packet(BaseCZMLObject):
 
         """
         return self._point
+
+    @property
+    def polygon(self):
+        """A polygon, which is a closed figure on the surface of the Earth.
+
+        """
+        return self._polygon
 
     @property
     def polyline(self):
