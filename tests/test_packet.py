@@ -11,6 +11,7 @@ from czml3.properties import (
     Ellipsoid,
     EllipsoidRadii,
     Label,
+    Point,
     Position,
 )
 from czml3.types import Cartesian3Value, StringValue
@@ -297,5 +298,24 @@ def test_packet_billboard():
     }
 }"""
     packet = Packet(id="id_00", billboard=Billboard(image="file://image.png"))
+
+    assert repr(packet) == expected_result
+
+
+def test_packet_point():
+    expected_result = """{
+    "id": "id_00",
+    "point": {
+        "color": {
+            "rgba": [
+                255,
+                0,
+                0,
+                255
+            ]
+        }
+    }
+}"""
+    packet = Packet(id="id_00", point=Point(color=Color(rgba=[255, 0, 0, 255])))
 
     assert repr(packet) == expected_result

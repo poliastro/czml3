@@ -64,6 +64,7 @@ class Packet(BaseCZMLObject):
         "label",
         "model",
         "path",
+        "point",
         "polygon",
         "polyline",
         "rectangle",
@@ -84,6 +85,7 @@ class Packet(BaseCZMLObject):
         billboard=None,
         label=None,
         path=None,
+        point=None,
     ):
         if id is None:
             id = str(uuid4())
@@ -99,6 +101,7 @@ class Packet(BaseCZMLObject):
         self._billboard = billboard
         self._label = label
         self._path = path
+        self._point = point
 
     @property
     def id(self):
@@ -205,6 +208,15 @@ class Packet(BaseCZMLObject):
 
         """
         return self._path
+
+    @property
+    def point(self):
+        """A point, or viewport-aligned circle.
+
+        The point is positioned in the scene by the position property.
+
+        """
+        return self._point
 
 
 class Document(Sequence):
