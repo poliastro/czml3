@@ -508,7 +508,7 @@ class Polyline(BaseCZMLObject):
         self._width = width
         self._granularity = granularity
         self._material = material
-        self._followSurface = followSurface
+        self._follow_surface = followSurface
         self._shadows = shadows
         self._depth_fail_material = depthFailMaterial
         self._distance_display_condition = distanceDisplayCondition
@@ -529,7 +529,7 @@ class Polyline(BaseCZMLObject):
     @property
     def arcType(self):
         """The type of arc that should connect the positions of the polyline."""
-        return self._arcType
+        return self._arc_type
 
     @property
     def width(self):
@@ -732,6 +732,7 @@ class Ellipsoid(BaseCZMLObject):
         "heightReference",
         "fill",
         "material",
+        "outline",
         "outlineColor",
         "outlineWidth",
         "stackPartitions",
@@ -749,6 +750,7 @@ class Ellipsoid(BaseCZMLObject):
         heightReference=None,
         fill=None,
         material=None,
+        outline=None,
         outlineColor=None,
         outlineWidth=None,
         stackPartitions=None,
@@ -760,6 +762,7 @@ class Ellipsoid(BaseCZMLObject):
         self._height_reference = heightReference
         self._fill = fill
         self._material = material
+        self._outline = outline
         self._outline_color = outlineColor
         self._outline_width = outlineWidth
         self._stack_partitions = stackPartitions
@@ -923,6 +926,7 @@ class Path(BaseCZMLObject):
         width=1.0,
         resolution=60.0,
         material=None,
+        distanceDisplayCondition=None,
     ):
         self._show = show
         self._lead_time = leadTime
@@ -930,6 +934,7 @@ class Path(BaseCZMLObject):
         self._width = width
         self._resolution = resolution
         self._material = material
+        self._distance_display_condition = distanceDisplayCondition
 
     @property
     def show(self):
@@ -981,7 +986,7 @@ class Path(BaseCZMLObject):
          distance from the camera this path will be displayed.
 
          """
-        return self._distanceDisplayCondition
+        return self._distance_display_condition
 
     @property
     def material(self):
