@@ -342,12 +342,14 @@ def test_packet_polyline():
         },
         "material": {
             "solidColor": {
-                "rgba": [
-                    255,
-                    0,
-                    0,
-                    255
-                ]
+                "color": {
+                    "rgba": [
+                        255,
+                        0,
+                        0,
+                        255
+                    ]
+                }
             }
         }
     }
@@ -391,12 +393,14 @@ def test_packet_polygon():
         "granularity": 1.0,
         "material": {
             "solidColor": {
-                "rgba": [
-                    255,
-                    0,
-                    0,
-                    255
-                ]
+                "color": {
+                    "rgba": [
+                        255,
+                        0,
+                        0,
+                        255
+                    ]
+                }
             }
         }
     }
