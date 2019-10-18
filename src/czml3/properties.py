@@ -1,7 +1,16 @@
 from .base import BaseCZMLObject
 from .common import Deletable, HasAlignment, Interpolatable
 from .enums import ClockRanges, ClockSteps, LabelStyles
-from .types import ArcTypeValue, Cartesian3Value, FontValue, RgbafValue, RgbaValue, Uri
+from .types import (
+    ArcTypeValue,
+    Cartesian3Value,
+    CartographicDegreesValue,
+    CartographicRadiansValue,
+    FontValue,
+    RgbafValue,
+    RgbaValue,
+    Uri,
+)
 
 
 class Material(BaseCZMLObject):
@@ -333,6 +342,8 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         "interpolationDegree",
         "referenceFrame",
         "cartesian",
+        "cartographicRadians",
+        "cartographicDegrees",
     ]
 
     def __init__(
@@ -344,9 +355,15 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         interpolationDegree=None,
         referenceFrame=None,
         cartesian=None,
+        cartographicRadians=None,
+        cartographicDegrees=None,
     ):
         if isinstance(cartesian, list):
             cartesian = Cartesian3Value(values=cartesian)
+        if isinstance(cartographicRadians, list):
+            cartographicRadians = CartographicRadiansValue(values=cartographicRadians)
+        if isinstance(cartographicDegrees, list):
+            cartographicDegrees = CartographicDegreesValue(values=cartographicDegrees)
 
         self._delete = delete
         self._epoch = epoch
@@ -354,6 +371,8 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         self._interpolation_degree = interpolationDegree
         self._reference_frame = referenceFrame
         self._cartesian = cartesian
+        self._cartographic_radians = cartographicRadians
+        self._cartographic_degrees = cartographicDegrees
 
     @property
     def referenceFrame(self):
@@ -368,6 +387,24 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         in meters relative to the ReferenceFrame.
         """
         return self._cartesian
+
+    @property
+    def cartographicRadians(self):
+        """The position specified in Cartographic WGS84 coordinates, [Longitude, Latitude, Height].
+
+        Longitude and Latitude are in radians and Height is in meters.
+
+        """
+        return self._cartographic_radians
+
+    @property
+    def cartographicDegrees(self):
+        """The position specified in Cartographic WGS84 coordinates, [Longitude, Latitude, Height].
+
+        Longitude and Latitude are in degrees and Height is in meters.
+
+        """
+        return self._cartographic_degrees
 
 
 # noinspection PyPep8Naming

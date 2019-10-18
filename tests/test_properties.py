@@ -305,6 +305,19 @@ def test_position_renders_epoch():
     assert repr(pos) == expected_result
 
 
+def test_position_cartographic_degrees():
+    expected_result = """{
+    "cartographicDegrees": [
+        10.0,
+        20.0,
+        0.0
+    ]
+}"""
+    pos = Position(cartographicDegrees=[10.0, 20.0, 0.0])
+
+    assert repr(pos) == expected_result
+
+
 def test_single_interval_value():
     expected_result = """{
     "interval": "2019-01-01T00:00:00Z/2019-01-02T00:00:00Z",
