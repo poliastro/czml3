@@ -64,6 +64,7 @@ class Packet(BaseCZMLObject):
         "label",
         "model",
         "path",
+        "point",
         "polygon",
         "polyline",
         "rectangle",
@@ -84,6 +85,9 @@ class Packet(BaseCZMLObject):
         billboard=None,
         label=None,
         path=None,
+        point=None,
+        polygon=None,
+        polyline=None,
     ):
         if id is None:
             id = str(uuid4())
@@ -99,6 +103,9 @@ class Packet(BaseCZMLObject):
         self._billboard = billboard
         self._label = label
         self._path = path
+        self._point = point
+        self._polygon = polygon
+        self._polyline = polyline
 
     @property
     def id(self):
@@ -205,6 +212,29 @@ class Packet(BaseCZMLObject):
 
         """
         return self._path
+
+    @property
+    def point(self):
+        """A point, or viewport-aligned circle.
+
+        The point is positioned in the scene by the position property.
+
+        """
+        return self._point
+
+    @property
+    def polygon(self):
+        """A polygon, which is a closed figure on the surface of the Earth.
+
+        """
+        return self._polygon
+
+    @property
+    def polyline(self):
+        """A polyline, which is a line in the scene composed of multiple segments.
+
+        """
+        return self._polyline
 
 
 class Document(Sequence):

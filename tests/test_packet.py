@@ -11,7 +11,13 @@ from czml3.properties import (
     Ellipsoid,
     EllipsoidRadii,
     Label,
+    Material,
+    Point,
+    Polygon,
+    Polyline,
+    PolylineMaterial,
     Position,
+    PositionList,
 )
 from czml3.types import Cartesian3Value, StringValue
 
@@ -297,5 +303,129 @@ def test_packet_billboard():
     }
 }"""
     packet = Packet(id="id_00", billboard=Billboard(image="file://image.png"))
+
+    assert repr(packet) == expected_result
+
+
+def test_packet_point():
+    expected_result = """{
+    "id": "id_00",
+    "point": {
+        "color": {
+            "rgba": [
+                255,
+                0,
+                0,
+                255
+            ]
+        }
+    }
+}"""
+    packet = Packet(id="id_00", point=Point(color=Color(rgba=[255, 0, 0, 255])))
+
+    assert repr(packet) == expected_result
+
+
+def test_packet_polyline():
+    expected_result = """{
+    "id": "id_00",
+    "polyline": {
+        "positions": {
+            "cartographicDegrees": [
+                -75,
+                43,
+                500000,
+                -125,
+                43,
+                500000
+            ]
+        },
+        "material": {
+            "solidColor": {
+                "rgba": [
+                    255,
+                    0,
+                    0,
+                    255
+                ]
+            }
+        }
+    }
+}"""
+    packet = Packet(
+        id="id_00",
+        polyline=Polyline(
+            positions=PositionList(
+                cartographicDegrees=[-75, 43, 500000, -125, 43, 500000]
+            ),
+            material=PolylineMaterial(solidColor=Color(rgba=[255, 0, 0, 255])),
+        ),
+    )
+
+    assert repr(packet) == expected_result
+
+
+def test_packet_polygon():
+    expected_result = """{
+    "id": "id_00",
+    "polygon": {
+        "positions": {
+            "cartographicDegrees": [
+                -115.0,
+                37.0,
+                0,
+                -115.0,
+                32.0,
+                0,
+                -107.0,
+                33.0,
+                0,
+                -102.0,
+                31.0,
+                0,
+                -102.0,
+                35.0,
+                0
+            ]
+        },
+        "granularity": 1.0,
+        "material": {
+            "solidColor": {
+                "rgba": [
+                    255,
+                    0,
+                    0,
+                    255
+                ]
+            }
+        }
+    }
+}"""
+    packet = Packet(
+        id="id_00",
+        polygon=Polygon(
+            positions=PositionList(
+                cartographicDegrees=[
+                    -115.0,
+                    37.0,
+                    0,
+                    -115.0,
+                    32.0,
+                    0,
+                    -107.0,
+                    33.0,
+                    0,
+                    -102.0,
+                    31.0,
+                    0,
+                    -102.0,
+                    35.0,
+                    0,
+                ]
+            ),
+            granularity=1.0,
+            material=Material(solidColor=Color(rgba=[255, 0, 0, 255])),
+        ),
+    )
 
     assert repr(packet) == expected_result

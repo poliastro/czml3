@@ -1,7 +1,16 @@
 from .base import BaseCZMLObject
 from .common import Deletable, HasAlignment, Interpolatable
 from .enums import ClockRanges, ClockSteps, LabelStyles
-from .types import Cartesian3Value, FontValue, RgbafValue, RgbaValue, Uri
+from .types import (
+    ArcTypeValue,
+    Cartesian3Value,
+    CartographicDegreesValue,
+    CartographicRadiansValue,
+    FontValue,
+    RgbafValue,
+    RgbaValue,
+    Uri,
+)
 
 
 class Material(BaseCZMLObject):
@@ -333,6 +342,8 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         "interpolationDegree",
         "referenceFrame",
         "cartesian",
+        "cartographicRadians",
+        "cartographicDegrees",
     ]
 
     def __init__(
@@ -344,9 +355,15 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         interpolationDegree=None,
         referenceFrame=None,
         cartesian=None,
+        cartographicRadians=None,
+        cartographicDegrees=None,
     ):
         if isinstance(cartesian, list):
             cartesian = Cartesian3Value(values=cartesian)
+        if isinstance(cartographicRadians, list):
+            cartographicRadians = CartographicRadiansValue(values=cartographicRadians)
+        if isinstance(cartographicDegrees, list):
+            cartographicDegrees = CartographicDegreesValue(values=cartographicDegrees)
 
         self._delete = delete
         self._epoch = epoch
@@ -354,6 +371,8 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         self._interpolation_degree = interpolationDegree
         self._reference_frame = referenceFrame
         self._cartesian = cartesian
+        self._cartographic_radians = cartographicRadians
+        self._cartographic_degrees = cartographicDegrees
 
     @property
     def referenceFrame(self):
@@ -368,6 +387,24 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         in meters relative to the ReferenceFrame.
         """
         return self._cartesian
+
+    @property
+    def cartographicRadians(self):
+        """The position specified in Cartographic WGS84 coordinates, [Longitude, Latitude, Height].
+
+        Longitude and Latitude are in radians and Height is in meters.
+
+        """
+        return self._cartographic_radians
+
+    @property
+    def cartographicDegrees(self):
+        """The position specified in Cartographic WGS84 coordinates, [Longitude, Latitude, Height].
+
+        Longitude and Latitude are in degrees and Height is in meters.
+
+        """
+        return self._cartographic_degrees
 
 
 # noinspection PyPep8Naming
@@ -466,6 +503,108 @@ class EllipsoidRadii(BaseCZMLObject, Deletable, Interpolatable):
         return self._reference
 
 
+class Polygon(BaseCZMLObject):
+    """A polygon, which is a closed figure on the surface of the Earth."""
+
+    KNOWN_PROPERTIES = [
+        "show",
+        "positions",
+        "holes",
+        "arcType",
+        "height",
+        "heightReference",
+        "extrudedHeight",
+        "extrudedHeightReference",
+        "stRotation",
+        "granularity",
+        "fill",
+        "material",
+        "outline",
+        "outlineColor",
+        "outlineWidth",
+        "perPositionHeight",
+        "closeTop",
+        "closeBottom",
+        "shadows",
+        "distanceDisplayCondition",
+        "classificationType",
+        "zIndex",
+    ]
+
+    def __init__(
+        self,
+        *,
+        positions,
+        show=None,
+        arcType=None,
+        granularity=None,
+        material=None,
+        shadows=None,
+        distanceDisplayCondition=None,
+        classificationType=None,
+        zIndex=None,
+    ):
+        self._position = positions
+        self._show = show
+        self._arc_type = arcType
+        self._granularity = granularity
+        self._material = material
+        self._shadows = shadows
+        self._distance_display_condition = distanceDisplayCondition
+        self._classification_type = classificationType
+        self._z_index = zIndex
+
+    @property
+    def positions(self):
+        """The array of positions defining a simple polygon."""
+        return self._position
+
+    @property
+    def show(self):
+        """Whether or not the polygon is shown."""
+        return self._show
+
+    @property
+    def arcType(self):
+        """The type of arc that should connect the positions of the polygon."""
+        return self._arc_type
+
+    @property
+    def granularity(self):
+        """The sampling distance, in radians."""
+        return self._granularity
+
+    @property
+    def material(self):
+        """The material to use to fill the polygon."""
+        return self._material
+
+    @property
+    def shadows(self):
+        """Whether or not the polygon casts or receives shadows."""
+        return self._shadows
+
+    @property
+    def distanceDisplayCondition(self):
+        """The display condition specifying the distance from the camera at which this polygon will be displayed."""
+        return self._distance_display_condition
+
+    @property
+    def classificationType(self):
+        """Whether a classification affects terrain, 3D Tiles, or both."""
+        return self._classification_type
+
+    @property
+    def zIndex(self):
+        """The z-index of the polygon, used for ordering ground geometry.
+
+        Only has an effect if the polygon is constant,
+        and height and extrudedHeight are not specified.
+
+        """
+        return self._z_index
+
+
 class Polyline(BaseCZMLObject):
     """A polyline, which is a line in the scene composed of multiple segments."""
 
@@ -508,7 +647,7 @@ class Polyline(BaseCZMLObject):
         self._width = width
         self._granularity = granularity
         self._material = material
-        self._followSurface = followSurface
+        self._follow_surface = followSurface
         self._shadows = shadows
         self._depth_fail_material = depthFailMaterial
         self._distance_display_condition = distanceDisplayCondition
@@ -529,7 +668,7 @@ class Polyline(BaseCZMLObject):
     @property
     def arcType(self):
         """The type of arc that should connect the positions of the polyline."""
-        return self._arcType
+        return self._arc_type
 
     @property
     def width(self):
@@ -592,6 +731,10 @@ class ArcType(BaseCZMLObject, Deletable):
     KNOWN_PROPERTIES = ["arcType", "reference"]
 
     def __init__(self, *, arcType=None, reference=None):
+
+        if isinstance(arcType, str):
+            arcType = ArcTypeValue(string=arcType)
+
         self._arc_type = arcType
         self._reference = reference
 
@@ -732,6 +875,7 @@ class Ellipsoid(BaseCZMLObject):
         "heightReference",
         "fill",
         "material",
+        "outline",
         "outlineColor",
         "outlineWidth",
         "stackPartitions",
@@ -749,6 +893,7 @@ class Ellipsoid(BaseCZMLObject):
         heightReference=None,
         fill=None,
         material=None,
+        outline=None,
         outlineColor=None,
         outlineWidth=None,
         stackPartitions=None,
@@ -760,6 +905,7 @@ class Ellipsoid(BaseCZMLObject):
         self._height_reference = heightReference
         self._fill = fill
         self._material = material
+        self._outline = outline
         self._outline_color = outlineColor
         self._outline_width = outlineWidth
         self._stack_partitions = stackPartitions
@@ -923,6 +1069,7 @@ class Path(BaseCZMLObject):
         width=1.0,
         resolution=60.0,
         material=None,
+        distanceDisplayCondition=None,
     ):
         self._show = show
         self._lead_time = leadTime
@@ -930,6 +1077,7 @@ class Path(BaseCZMLObject):
         self._width = width
         self._resolution = resolution
         self._material = material
+        self._distance_display_condition = distanceDisplayCondition
 
     @property
     def show(self):
@@ -981,7 +1129,7 @@ class Path(BaseCZMLObject):
          distance from the camera this path will be displayed.
 
          """
-        return self._distanceDisplayCondition
+        return self._distance_display_condition
 
     @property
     def material(self):

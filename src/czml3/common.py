@@ -1,6 +1,13 @@
 # noinspection PyPep8Naming
+import datetime as dt
+
+from czml3.enums import HorizontalOrigins, InterpolationAlgorithms, VerticalOrigins
+
+
 class Deletable:
     """A property whose value may be deleted."""
+
+    _delete: bool
 
     @property
     def delete(self):
@@ -24,6 +31,10 @@ class Interpolatable:
     The interpolation happens over provided time-tagged samples.
     """
 
+    _epoch: dt.datetime
+    _interpolation_algorithm: InterpolationAlgorithms
+    _interpolation_degree: int
+
     @property
     def epoch(self):
         """The epoch to use for times specified as seconds since an epoch."""
@@ -43,6 +54,9 @@ class Interpolatable:
 # noinspection PyPep8Naming
 class HasAlignment:
     """A property that can be horizontally or vertically aligned."""
+
+    _horizontal_origin: HorizontalOrigins
+    _vertical_origin: VerticalOrigins
 
     @property
     def horizontalOrigin(self):

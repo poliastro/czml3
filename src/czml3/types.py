@@ -31,6 +31,24 @@ def format_datetime_like(dt_object):
     return result
 
 
+class _TimeTaggedCoords(BaseCZMLObject):
+    def __init__(self, *, values):
+        if not (len(values) == 3 or len(values) % 4 == 0):
+            raise ValueError(
+                "Input values must have either 3 or N * 4 values, "
+                "where N is the number of time-tagged samples."
+            )
+
+        self._values = values
+
+    @property
+    def values(self):
+        return self._values
+
+    def to_json(self):
+        return list(self._values)
+
+
 class FontValue(BaseCZMLObject):
     """A font, specified using the same syntax as the CSS "font" property."""
 
@@ -151,7 +169,7 @@ class ReferenceValue(BaseCZMLObject):
         return self._string
 
 
-class Cartesian3Value(BaseCZMLObject):
+class Cartesian3Value(_TimeTaggedCoords):
     """A three-dimensional Cartesian value specified as [X, Y, Z].
 
     If the values has three elements, the value is constant.
@@ -161,21 +179,29 @@ class Cartesian3Value(BaseCZMLObject):
 
     """
 
-    def __init__(self, *, values):
-        if not (len(values) == 3 or len(values) % 4 == 0):
-            raise ValueError(
-                "Input values must have either 3 or N * 4 values, "
-                "where N is the number of time-tagged samples."
-            )
 
-        self._values = values
+class CartographicRadiansValue(_TimeTaggedCoords):
+    """A geodetic, WGS84 position specified as [Longitude, Latitude, Height].
 
-    @property
-    def values(self):
-        return self._values
+    Longitude and Latitude are in radians and Height is in meters.
+    If the array has three elements, the value is constant.
+    If it has four or more elements, they are time-tagged samples
+    arranged as [Time, Longitude, Latitude, Height, Time, Longitude, Latitude, Height, ...],
+    where Time is an ISO 8601 date and time string or seconds since epoch.
 
-    def to_json(self):
-        return list(self._values)
+    """
+
+
+class CartographicDegreesValue(_TimeTaggedCoords):
+    """A geodetic, WGS84 position specified as [Longitude, Latitude, Height].
+
+    Longitude and Latitude are in degrees and Height is in meters.
+    If the array has three elements, the value is constant.
+    If it has four or more elements, they are time-tagged samples
+    arranged as [Time, Longitude, Latitude, Height, Time, Longitude, Latitude, Height, ...],
+    where Time is an ISO 8601 date and time string or seconds since epoch.
+
+    """
 
 
 class StringValue(BaseCZMLObject, Deletable):

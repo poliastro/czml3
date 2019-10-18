@@ -86,6 +86,9 @@ def test_polyline():
             10
         ]
     },
+    "arcType": {
+        "arcType": "GEODESIC"
+    },
     "distanceDisplayCondition": {
         "distanceDisplayCondition": [
             14,
@@ -100,7 +103,7 @@ def test_polyline():
         positions=PositionList(
             cartographicDegrees=CartographicDegreesListValue(values=[20, 30, 10])
         ),
-        arcType=ArcType(arcType=ArcTypeValue(string="GEODESIC")),
+        arcType=ArcType(arcType="GEODESIC"),
         distanceDisplayCondition=DistanceDisplayCondition(
             distanceDisplayCondition=DistanceDisplayConditionValue(values=[14, 81])
         ),
@@ -298,6 +301,19 @@ def test_position_renders_epoch():
     "epoch": "2019-03-20T12:00:00Z"
 }"""
     pos = Position(epoch=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc))
+
+    assert repr(pos) == expected_result
+
+
+def test_position_cartographic_degrees():
+    expected_result = """{
+    "cartographicDegrees": [
+        10.0,
+        20.0,
+        0.0
+    ]
+}"""
+    pos = Position(cartographicDegrees=[10.0, 20.0, 0.0])
 
     assert repr(pos) == expected_result
 
