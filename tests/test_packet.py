@@ -12,7 +12,10 @@ from czml3.properties import (
     EllipsoidRadii,
     Label,
     Point,
+    Polyline,
+    PolylineMaterial,
     Position,
+    PositionList,
 )
 from czml3.types import Cartesian3Value, StringValue
 
@@ -317,5 +320,44 @@ def test_packet_point():
     }
 }"""
     packet = Packet(id="id_00", point=Point(color=Color(rgba=[255, 0, 0, 255])))
+
+    assert repr(packet) == expected_result
+
+
+def test_packet_polyline():
+    expected_result = """{
+    "id": "id_00",
+    "polyline": {
+        "positions": {
+            "cartographicDegrees": [
+                -75,
+                43,
+                500000,
+                -125,
+                43,
+                500000
+            ]
+        },
+        "material": {
+            "solidColor": {
+                "rgba": [
+                    255,
+                    0,
+                    0,
+                    255
+                ]
+            }
+        }
+    }
+}"""
+    packet = Packet(
+        id="id_00",
+        polyline=Polyline(
+            positions=PositionList(
+                cartographicDegrees=[-75, 43, 500000, -125, 43, 500000]
+            ),
+            material=PolylineMaterial(solidColor=Color(rgba=[255, 0, 0, 255])),
+        ),
+    )
 
     assert repr(packet) == expected_result

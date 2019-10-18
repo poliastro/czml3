@@ -86,6 +86,7 @@ class Packet(BaseCZMLObject):
         label=None,
         path=None,
         point=None,
+        polyline=None,
     ):
         if id is None:
             id = str(uuid4())
@@ -102,6 +103,7 @@ class Packet(BaseCZMLObject):
         self._label = label
         self._path = path
         self._point = point
+        self._polyline = polyline
 
     @property
     def id(self):
@@ -217,6 +219,13 @@ class Packet(BaseCZMLObject):
 
         """
         return self._point
+
+    @property
+    def polyline(self):
+        """A polyline, which is a line in the scene composed of multiple segments.
+
+        """
+        return self._polyline
 
 
 class Document(Sequence):
