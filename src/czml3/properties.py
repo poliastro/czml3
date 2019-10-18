@@ -1,7 +1,7 @@
 from .base import BaseCZMLObject
 from .common import Deletable, HasAlignment, Interpolatable
 from .enums import ClockRanges, ClockSteps, LabelStyles
-from .types import Cartesian3Value, FontValue, RgbafValue, RgbaValue, Uri
+from .types import ArcTypeValue, Cartesian3Value, FontValue, RgbafValue, RgbaValue, Uri
 
 
 class Material(BaseCZMLObject):
@@ -592,6 +592,10 @@ class ArcType(BaseCZMLObject, Deletable):
     KNOWN_PROPERTIES = ["arcType", "reference"]
 
     def __init__(self, *, arcType=None, reference=None):
+
+        if isinstance(arcType, str):
+            arcType = ArcTypeValue(string=arcType)
+
         self._arc_type = arcType
         self._reference = reference
 
