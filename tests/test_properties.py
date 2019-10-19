@@ -2,10 +2,13 @@ import datetime as dt
 
 from czml3.properties import (
     ArcType,
+    Box,
+    BoxDimensions,
     CheckerboardMaterial,
     ClassificationType,
     Color,
     DistanceDisplayCondition,
+    EyeOffset,
     GridMaterial,
     HeightReference,
     ImageMaterial,
@@ -33,6 +36,37 @@ from czml3.types import (
     ShadowModeValue,
     Uri,
 )
+
+
+def test_box():
+    expected_result = """{
+    "show": true,
+    "dimensions": {
+        "cartesian": [
+            5,
+            6,
+            3
+        ]
+    }
+}"""
+
+    box = Box(
+        show=True, dimensions=BoxDimensions(cartesian=Cartesian3Value(values=[5, 6, 3]))
+    )
+    assert repr(box) == expected_result
+
+
+def test_eyeOffset():
+    expected_result = """{
+    "cartesian": [
+        1,
+        2,
+        3
+    ]
+}"""
+
+    eyeOffset = EyeOffset(cartesian=Cartesian3Value(values=[1, 2, 3]))
+    assert repr(eyeOffset) == expected_result
 
 
 def test_point():
