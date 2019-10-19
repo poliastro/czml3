@@ -8,6 +8,7 @@ from czml3.properties import (
     ClassificationType,
     Color,
     DistanceDisplayCondition,
+    EyeOffset,
     GridMaterial,
     HeightReference,
     ImageMaterial,
@@ -53,6 +54,19 @@ def test_box():
         show=True, dimensions=BoxDimensions(cartesian=Cartesian3Value(values=[5, 6, 3]))
     )
     assert repr(box) == expected_result
+
+
+def test_eyeOffset():
+    expected_result = """{
+    "cartesian": [
+        1,
+        2,
+        3
+    ]
+}"""
+
+    eyeOffset = EyeOffset(cartesian=Cartesian3Value(values=[1, 2, 3]))
+    assert repr(eyeOffset) == expected_result
 
 
 def test_point():
