@@ -48,14 +48,20 @@ require(['cesium'], function (dependency) {{
 class CZMLWidget:
     cesium_version = "1.62"
 
-    def __init__(self, doc=None):
-        if doc is not None:
-            self._czml = doc.dumps()
+    def __init__(self, document=None):
+        if document is not None:
+            self._document = document
         else:
-            self._czml = Document([Preamble()])
+            self._document = Document([Preamble()])
+
+    @property
+    def document(self):
+        return self._document
 
     def build_script(self):
-        return SCRIPT_TPL.format(cesium_version=self.cesium_version, czml=self._czml)
+        return SCRIPT_TPL.format(
+            cesium_version=self.cesium_version, czml=self.document.dumps()
+        )
 
     def to_html(self):
         return CESIUM_TPL.format(
