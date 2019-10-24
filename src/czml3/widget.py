@@ -1,3 +1,5 @@
+import attr
+
 from .core import Document, Preamble
 
 CESIUM_TPL = """
@@ -45,18 +47,10 @@ require(['cesium'], function (dependency) {{
 """
 
 
+@attr.s
 class CZMLWidget:
-    cesium_version = "1.62"
-
-    def __init__(self, document=None):
-        if document is not None:
-            self._document = document
-        else:
-            self._document = Document([Preamble()])
-
-    @property
-    def document(self):
-        return self._document
+    document = attr.ib(default=Document([Preamble()]))
+    cesium_version = attr.ib(default="1.62")
 
     def build_script(self):
         return SCRIPT_TPL.format(
