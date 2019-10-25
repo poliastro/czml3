@@ -21,3 +21,10 @@ def test_get_color_missing():
     expected_color = Color(rgbaf=[1.0, 0.8, 0, 1.0])
 
     assert get_color([1.0, 0.8, 0, 1.0]).rgbaf.values == expected_color.rgbaf.values
+
+
+@pytest.mark.parametrize("input", ["a", [0, 0, 0, 0, 0], [1.0, 1.0]])
+def test_get_color_invalid_input_raises_error(input):
+    with pytest.raises(ValueError) as exc:
+        get_color(input)
+    assert "Invalid" in exc.exconly()

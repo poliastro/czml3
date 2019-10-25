@@ -2,7 +2,7 @@ from .properties import Color
 
 
 def get_color(color):
-    if isinstance(color, str):
+    if isinstance(color, str) and 6 <= len(color) <= 10:
         return get_color(int(color.rsplit("#")[-1], 16))
     elif isinstance(color, int):
         if color > 0xFFFFFF:
@@ -27,6 +27,6 @@ def get_color(color):
         else:
             raise ValueError("Invalid number of values")
     else:
-        raise NotImplementedError
+        raise ValueError("Invalid input")
 
     return Color(rgba=values)
