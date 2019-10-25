@@ -1,5 +1,7 @@
 import datetime as dt
 
+import pytest
+
 from czml3.properties import (
     ArcType,
     Box,
@@ -307,9 +309,19 @@ def test_material_checkerboard():
 
 
 def test_position_has_delete():
-    pos = Position(delete=True)
+    pos = Position(delete=True, cartesian=[])
 
     assert pos.delete
+
+
+def test_position_no_values_raises_error():
+    with pytest.raises(ValueError) as exc:
+        Position()
+
+    assert (
+        "One of cartesian, cartographicDegrees or cartographicRadians must be given"
+        in exc.exconly()
+    )
 
 
 def test_position_with_delete_has_nothing_else():
@@ -325,16 +337,19 @@ def test_position_with_delete_has_nothing_else():
 def test_position_has_given_epoch():
     expected_epoch = dt.datetime(2019, 6, 11, 12, 26, 58, tzinfo=dt.timezone.utc)
 
-    pos = Position(epoch=expected_epoch)
+    pos = Position(epoch=expected_epoch, cartesian=[])
 
     assert pos.epoch == expected_epoch
 
 
 def test_position_renders_epoch():
     expected_result = """{
-    "epoch": "2019-03-20T12:00:00Z"
+    "epoch": "2019-03-20T12:00:00Z",
+    "cartesian": []
 }"""
-    pos = Position(epoch=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc))
+    pos = Position(
+        epoch=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc), cartesian=[]
+    )
 
     assert repr(pos) == expected_result
 
