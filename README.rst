@@ -93,7 +93,7 @@ You can easily display your CZML document using our interactive widget::
 
 And this would be the result:
 
-.. image:: widget-screenshot.png
+.. image:: https://raw.githubusercontent.com/poliastro/czml3/master/widget-screenshot.png
 
 Support
 =======
