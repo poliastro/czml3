@@ -1,16 +1,19 @@
 import json
 import os
 
+import pytest
+
 from czml3.examples import simple
 
 TESTS_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
-def test_simple():
-    with open(os.path.join(TESTS_DIR, "simple.czml"), "r") as fp:
+@pytest.mark.parametrize("document,filename", [(simple, "simple.czml")])
+def test_simple(document, filename):
+    with open(os.path.join(TESTS_DIR, filename), "r") as fp:
         expected_result = json.load(fp)
 
-    result = json.loads(simple.dumps())
+    result = json.loads(document.dumps())
     for ii, packet in enumerate(result):
         expected_packet = expected_result[ii]
         for key in packet:
