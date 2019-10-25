@@ -1,8 +1,5 @@
 :Name: czml3
-:Authors: Juan Luis Cano Rodríguez |orcid|, Eleftheria Chatziargyriou
-
-.. |orcid| image:: https://img.shields.io/badge/id-0000--0002--2187--161X-a6ce39.svg
-   :target: http://orcid.org/0000-0002-2187-161X
+:Authors: Juan Luis Cano Rodríguez, Eleftheria Chatziargyriou
 
 .. |circleci| image:: https://img.shields.io/circleci/project/github/poliastro/czml3/master.svg?style=flat-square&logo=circleci
    :target: https://circleci.com/gh/poliastro/czml3
