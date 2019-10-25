@@ -61,8 +61,39 @@ all objects show as nice CZML (JSON)::
   >>> packet0.dumps()
   '{"id": "Facility/AGI", "name": "AGI"}'
 
-Check out `the tests <https://github.com/poliastro/czml3/tree/master/tests>`_
-to get an idea of the current capabilities of the library.
+And there are more complex examples available::
+
+  >>> from czml3.examples import simple
+  >>> simple
+  [
+      {
+          "id": "document",
+          "version": "1.0",
+          "name": "simple",
+          "clock": {
+              "interval": "2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
+              "currentTime": "2012-03-15T10:00:00Z",
+              "multiplier": 60,
+              "range": "LOOP_STOP",
+              "step": "SYSTEM_CLOCK_MULTIPLIER"
+          }
+      },
+  ...
+
+Jupyter widget
+--------------
+
+You can easily display your CZML document using our interactive widget::
+
+  In [1]: from czml3.examples import simple
+
+  In [2]: from czml3.widget import CZMLWidget
+
+  In [3]: CZMLWidget(simple)
+
+And this would be the result:
+
+.. image:: widget-screenshot.png
 
 Support
 =======

@@ -363,6 +363,13 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         cartographicRadians=None,
         cartographicDegrees=None,
     ):
+        if all(
+            val is None for val in (cartesian, cartographicDegrees, cartographicRadians)
+        ):
+            raise ValueError(
+                "One of cartesian, cartographicDegrees or cartographicRadians must be given"
+            )
+
         if isinstance(cartesian, list):
             cartesian = Cartesian3Value(values=cartesian)
         if isinstance(cartographicRadians, list):
