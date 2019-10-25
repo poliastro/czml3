@@ -2,6 +2,8 @@ from .properties import Color
 
 
 def get_color(color):
+    # TODO: Turn this into individual classmethods on Color?
+    # Color.from_string, Color.from_int, ...
     if isinstance(color, str) and 6 <= len(color) <= 10:
         return get_color(int(color.rsplit("#")[-1], 16))
     elif isinstance(color, int):
