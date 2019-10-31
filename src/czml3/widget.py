@@ -54,7 +54,7 @@ class CZMLWidget:
     document = attr.ib(default=Document([Preamble()]))
     cesium_version = attr.ib(default="1.62")
 
-    _container_id = attr.ib(default=uuid4())
+    _container_id = attr.ib(factory=uuid4)
 
     def build_script(self):
         return SCRIPT_TPL.format(
