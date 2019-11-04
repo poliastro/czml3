@@ -1574,3 +1574,172 @@ class Orientation(BaseCZMLObject):
 
         """
         return self._velocity_reference
+
+
+class Model(BaseCZMLObject):
+    """A 3D model."""
+
+    KNOWN_PROPERTIES = [
+        "show",
+        "gltf",
+        "scale",
+        "minimumPixelSize",
+        "maximumScale",
+        "incrementallyLoadTextures",
+        "runAnimations",
+        "shadows",
+        "heightReference",
+        "silhouetteColor",
+        "silhouetteSize",
+        "color",
+        "colorBlendMode",
+        "colorBlendAmount",
+        "distanceDisplayCondition",
+        "nodeTransformations",
+        "articulations",
+    ]
+
+    def __init__(
+        self,
+        *,
+        show=None,
+        gltf,
+        scale=None,
+        minimumPixelSize=None,
+        maximumScale=None,
+        incrementallyLoadTextures=None,
+        runAnimations=None,
+        shadows=None,
+        heightReference=None,
+        silhouetteColor=None,
+        silhouetteSize=None,
+        color=None,
+        colorBlendMode=None,
+        colorBlendAmount=None,
+        distanceDisplayCondition=None,
+        nodeTransformations=None,
+        articulations=None,
+    ):
+        if not isinstance(gltf, Uri):
+            gltf = Uri(uri=gltf)
+
+        self._show = show
+        self._gltf = gltf
+        self._scale = scale
+        self._minimum_pixel_size = minimumPixelSize
+        self._maximum_scale = maximumScale
+        self._incrementally_load_textures = incrementallyLoadTextures
+        self._run_animations = runAnimations
+        self._shadows = shadows
+        self._height_reference = heightReference
+        self._silhouette_color = silhouetteColor
+        self._silhouette_size = silhouetteSize
+        self._color = color
+        self._color_blend_mode = colorBlendMode
+        self._color_blend_amount = colorBlendAmount
+        self._distance_display_condition = distanceDisplayCondition
+        self._node_transformations = nodeTransformations
+        self._articulations = articulations
+
+    @property
+    def show(self):
+        """Whether or not the model is shown."""
+        return self._show
+
+    @property
+    def gltf(self):
+        """The URI of a glTF model.
+
+        For broadest client compatibility, the URI should be accessible via Cross-Origin Resource Sharing (CORS).
+        The URI may also be a data URI.
+
+        """
+        return self._gltf
+
+    @property
+    def scale(self):
+        """The scale of the model."""
+        return self._scale
+
+    @property
+    def minimumPixelSize(self):
+        """The approximate minimum pixel size of the model regardless of zoom."""
+        return self._minimum_pixel_size
+
+    @property
+    def maximumScale(self):
+        """The maximum scale size of the model.
+
+        This is used as an upper limit for minimumPixelSize.
+
+        """
+        return self._maximum_scale
+
+    @property
+    def incrementallyLoadTextures(self):
+        """Whether or not the model can be rendered before all textures have loaded."""
+        return self._incrementally_load_textures
+
+    @property
+    def runAnimations(self):
+        """Whether or not to run all animations defined in the glTF model."""
+        return self._run_animations
+
+    @property
+    def shadows(self):
+        """Whether or not the model casts or receives shadows."""
+        return self._shadows
+
+    @property
+    def heightReference(self):
+        """The height reference of the model, which indicates if the position is relative to terrain or not."""
+        return self._height_reference
+
+    @property
+    def silhouetteColor(self):
+        """The color of the silhouette drawn around the model."""
+        return self._silhouette_color
+
+    @property
+    def silhouetteSize(self):
+        """The size, in pixels, of the silhouette drawn around the model."""
+        return self._silhouette_size
+
+    @property
+    def color(self):
+        """The color to blend with the model's rendered color."""
+        return self._color
+
+    @property
+    def colorBlendMode(self):
+        """The mode to use for blending between color and the model's color."""
+        return self._color_blend_mode
+
+    @property
+    def colorBlendAmount(self):
+        """The color strength when colorBlendMode is MIX.
+
+        A value of 0.0 results in the model's rendered color while a value of 1.0 results in a solid color,
+        with any value in-between resulting in a mix of the two.
+
+        """
+        return self._color_blend_amount
+
+    @property
+    def distanceDisplayCondition(self):
+        """The display condition specifying at what distance from the camera this model will be displayed."""
+        return self._distance_display_condition
+
+    @property
+    def nodeTransformations(self):
+        """A mapping of node names to node transformations."""
+        return self._node_transformations
+
+    @property
+    def articulations(self):
+        """A mapping of keys to articulation values.
+
+        The keys are the name of the articulation, a single space, and the name of the stage.
+
+        """
+        return self._articulations

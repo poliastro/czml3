@@ -14,6 +14,7 @@ from czml3.properties import (
     GridMaterial,
     ImageMaterial,
     Material,
+    Model,
     NearFarScalar,
     Orientation,
     Point,
@@ -418,5 +419,17 @@ def test_orientation():
 }"""
 
     result = Orientation(unitQuaternion=UnitQuaternionValue(values=[0, 0, 0, 1]))
+
+    assert repr(result) == expected_result
+
+
+def test_model():
+    expected_result = """{
+    "gltf": "https://sandcastle.cesium.com/SampleData/models/CesiumAir/Cesium_Air.glb"
+}"""
+
+    result = Model(
+        gltf="https://sandcastle.cesium.com/SampleData/models/CesiumAir/Cesium_Air.glb"
+    )
 
     assert repr(result) == expected_result

@@ -85,6 +85,7 @@ class Packet(BaseCZMLObject):
         orientation=None,
         billboard=None,
         label=None,
+        model=None,
         path=None,
         point=None,
         polygon=None,
@@ -104,6 +105,7 @@ class Packet(BaseCZMLObject):
         self._orientation = orientation
         self._billboard = billboard
         self._label = label
+        self._model = model
         self._path = path
         self._point = point
         self._polygon = polygon
@@ -216,6 +218,15 @@ class Packet(BaseCZMLObject):
 
         """
         return self._label
+
+    @property
+    def model(self):
+        """A 3D model.
+
+        The model is positioned and oriented using the position and orientation properties.
+
+        """
+        return self._model
 
     @property
     def path(self):
