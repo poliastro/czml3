@@ -9,6 +9,7 @@ from .types import (
     FontValue,
     RgbafValue,
     RgbaValue,
+    UnitQuaternionValue,
     Uri,
 )
 
@@ -1529,3 +1530,47 @@ class Label(BaseCZMLObject, HasAlignment):
     def outlineWidth(self):
         """The outline width of the label."""
         return self._outline_width
+
+
+class Orientation(BaseCZMLObject):
+    """Defines an orientation.
+
+    An orientation is a rotation that takes a vector expressed in the "body" axes of the object
+    and transforms it to the Earth fixed axes.
+
+    """
+
+    KNOWN_PROPERTIES = [
+        "unitQuaternion",
+        "reference",
+        "velocityReference",
+    ]
+
+    def __init__(
+        self, *, unitQuaternion=None, reference=None, velocityReference=None,
+    ):
+        if not isinstance(unitQuaternion, UnitQuaternionValue):
+            unitQuaternion = UnitQuaternionValue(values=unitQuaternion)
+
+        self._unit_quaternion = unitQuaternion
+        self._reference = reference
+        self._velocity_reference = velocityReference
+
+    @property
+    def unitQuaternion(self):
+        """The orientation specified as a 4-dimensional unit magnitude quaternion, specified as [X, Y, Z, W]."""
+        return self._unit_quaternion
+
+    @property
+    def reference(self):
+        """The orientation specified as a reference to another property."""
+        return self._reference
+
+    @property
+    def velocityReference(self):
+        """The orientation specified as the normalized velocity vector of a position property.
+
+        The reference must be to a position property.
+
+        """
+        return self._velocity_reference

@@ -16,6 +16,7 @@ from czml3.properties import (
     ImageMaterial,
     Material,
     NearFarScalar,
+    Orientation,
     Point,
     Polyline,
     PolylineMaterial,
@@ -36,6 +37,7 @@ from czml3.types import (
     NearFarScalarValue,
     Sequence,
     ShadowModeValue,
+    UnitQuaternionValue,
     Uri,
 )
 
@@ -416,3 +418,18 @@ def test_height_reference():
     )
 
     assert repr(height_reference) == expected_result
+
+
+def test_orientation():
+    expected_result = """{
+    "unitQuaternion": [
+        0,
+        0,
+        0,
+        1
+    ]
+}"""
+
+    result = Orientation(unitQuaternion=UnitQuaternionValue(values=[0, 0, 0, 1]))
+
+    assert repr(result) == expected_result

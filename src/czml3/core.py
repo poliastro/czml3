@@ -82,6 +82,7 @@ class Packet(BaseCZMLObject):
         availability=None,
         properties=None,
         position=None,
+        orientation=None,
         billboard=None,
         label=None,
         path=None,
@@ -100,6 +101,7 @@ class Packet(BaseCZMLObject):
         self._availability = availability
         self._properties = properties
         self._position = position
+        self._orientation = orientation
         self._billboard = billboard
         self._label = label
         self._path = path
@@ -185,6 +187,17 @@ class Packet(BaseCZMLObject):
         and other graphical items attached to the object.
         """
         return self._position
+
+    @property
+    def orientation(self):
+        """The orientation of the object in the world.
+
+        The orientation has no direct visual representation,
+        but it is used to orient models, cones, pyramids,
+        and other graphical items attached to the object.
+
+        """
+        return self._orientation
 
     @property
     def billboard(self):
