@@ -12,7 +12,6 @@ from czml3.types import (
     ClassificationTypeValue,
     DistanceDisplayConditionValue,
     FontValue,
-    HeightReferenceValue,
     NearFarScalarValue,
     ReferenceValue,
     RgbafValue,
@@ -128,21 +127,6 @@ def test_bad_cartesian_raises_error(values):
         Cartesian3Value(values=values)
 
     assert "Input values must have either 3 or N * 4 values" in excinfo.exconly()
-
-
-def test_height_reference_value():
-    expected_result = '"CLAMP_TO_GROUND"'
-    height_reference = HeightReferenceValue(string="CLAMP_TO_GROUND")
-
-    assert repr(height_reference) == expected_result
-
-
-def test_invalid_height_reference_value():
-
-    with pytest.raises(ValueError) as excinfo:
-        HeightReferenceValue(string="CLAMP")
-
-    assert "Invalid height reference value." in excinfo.exconly()
 
 
 def test_reference_value():

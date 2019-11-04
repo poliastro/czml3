@@ -12,7 +12,6 @@ from czml3.properties import (
     DistanceDisplayCondition,
     EyeOffset,
     GridMaterial,
-    HeightReference,
     ImageMaterial,
     Material,
     NearFarScalar,
@@ -32,7 +31,6 @@ from czml3.types import (
     CartographicDegreesListValue,
     ClassificationTypeValue,
     DistanceDisplayConditionValue,
-    HeightReferenceValue,
     IntervalValue,
     NearFarScalarValue,
     Sequence,
@@ -407,17 +405,6 @@ def test_multiple_interval_value():
     )
 
     assert repr(prop) == expected_result
-
-
-def test_height_reference():
-    expected_result = """{
-    "heightReference": "CLAMP_TO_GROUND"
-}"""
-    height_reference = HeightReference(
-        heightReference=HeightReferenceValue(string="CLAMP_TO_GROUND")
-    )
-
-    assert repr(height_reference) == expected_result
 
 
 def test_orientation():

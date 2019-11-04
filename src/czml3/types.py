@@ -428,21 +428,6 @@ class TimeInterval(BaseCZMLObject):
         return "{start}/{end}".format(start=start, end=end)
 
 
-class HeightReferenceValue(BaseCZMLObject):
-    """The height reference of an object, which indicates if the object's position is relative to terrain or not."""
-
-    def __init__(self, *, string):
-        valid_values = ["NONE", "CLAMP_TO_GROUND", "RELATIVE_TO_GROUND"]
-
-        if string not in valid_values:
-            raise ValueError("Invalid height reference value.")
-
-        self._string = string
-
-    def to_json(self):
-        return self._string
-
-
 class IntervalValue(BaseCZMLObject):
     """Value over some interval."""
 

@@ -49,3 +49,9 @@ class HorizontalOrigins(Enum):
     LEFT = auto()
     CENTER = auto()
     RIGHT = auto()
+
+
+class HeightReferences(Enum):
+    NONE = auto()
+    CLAMP_TO_GROUND = auto()
+    RELATIVE_TO_GROUND = auto()
