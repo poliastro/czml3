@@ -19,6 +19,7 @@ from czml3.types import (
     RgbaValue,
     ShadowModeValue,
     TimeInterval,
+    UnitQuaternionValue,
     Uri,
     format_datetime_like,
 )
@@ -269,3 +270,16 @@ def test_astropy_time_format():
     result = format_datetime_like(time)
 
     assert result == expected_result
+
+
+def test_quaternion_value():
+    expected_result = """[
+    0,
+    0,
+    0,
+    1
+]"""
+
+    result = UnitQuaternionValue(values=[0, 0, 0, 1])
+
+    assert repr(result) == expected_result
