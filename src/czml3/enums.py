@@ -55,3 +55,16 @@ class HeightReferences(Enum):
     NONE = auto()
     CLAMP_TO_GROUND = auto()
     RELATIVE_TO_GROUND = auto()
+
+
+class ColorBlendModes(Enum):
+    HIGHLIGHT = auto()
+    REPLACE = auto()
+    MIX = auto()
+
+
+class ShadowModes(Enum):
+    DISABLED = auto()
+    ENABLED = auto()
+    CAST_ONLY = auto()
+    RECEIVE_ONLY = auto()
