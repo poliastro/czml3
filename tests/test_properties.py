@@ -2,6 +2,7 @@ import datetime as dt
 
 import pytest
 
+from czml3.enums import ArcTypes, ClassificationTypes, ShadowModes
 from czml3.properties import (
     ArcType,
     Box,
@@ -27,15 +28,12 @@ from czml3.properties import (
     StripeMaterial,
 )
 from czml3.types import (
-    ArcTypeValue,
     Cartesian3Value,
     CartographicDegreesListValue,
-    ClassificationTypeValue,
     DistanceDisplayConditionValue,
     IntervalValue,
     NearFarScalarValue,
     Sequence,
-    ShadowModeValue,
     UnitQuaternionValue,
     Uri,
 )
@@ -102,7 +100,7 @@ def test_arc_type():
     expected_result = """{
     "arcType": "NONE"
 }"""
-    arc_type = ArcType(arcType=ArcTypeValue(string="NONE"))
+    arc_type = ArcType(arcType=ArcTypes.NONE)
     assert repr(arc_type) == expected_result
 
 
@@ -110,7 +108,7 @@ def test_shadow_mode():
     expected_result = """{
     "shadowMode": "ENABLED"
 }"""
-    shadow_mode = ShadowMode(shadowMode=ShadowModeValue(string="ENABLED"))
+    shadow_mode = ShadowMode(shadowMode=ShadowModes.ENABLED)
     assert repr(shadow_mode) == expected_result
 
 
@@ -145,7 +143,7 @@ def test_polyline():
             distanceDisplayCondition=DistanceDisplayConditionValue(values=[14, 81])
         ),
         classificationType=ClassificationType(
-            classificationType=ClassificationTypeValue(string="CESIUM_3D_TILE")
+            classificationType=ClassificationTypes.CESIUM_3D_TILE
         ),
     )
     assert repr(pol) == expected_result

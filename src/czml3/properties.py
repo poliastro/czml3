@@ -1,8 +1,7 @@
 from .base import BaseCZMLObject
 from .common import Deletable, HasAlignment, Interpolatable
-from .enums import ClockRanges, ClockSteps, LabelStyles
+from .enums import ArcTypes, ClockRanges, ClockSteps, LabelStyles
 from .types import (
-    ArcTypeValue,
     Cartesian3Value,
     CartographicDegreesValue,
     CartographicRadiansValue,
@@ -746,7 +745,7 @@ class ArcType(BaseCZMLObject, Deletable):
     def __init__(self, *, arcType=None, reference=None):
 
         if isinstance(arcType, str):
-            arcType = ArcTypeValue(string=arcType)
+            arcType = ArcTypes[arcType]
 
         self._arc_type = arcType
         self._reference = reference

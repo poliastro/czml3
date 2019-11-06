@@ -5,18 +5,15 @@ import pytest
 from dateutil.tz import tzoffset
 
 from czml3.types import (
-    ArcTypeValue,
     Cartesian3Value,
     CartographicDegreesListValue,
     CartographicRadiansListValue,
-    ClassificationTypeValue,
     DistanceDisplayConditionValue,
     FontValue,
     NearFarScalarValue,
     ReferenceValue,
     RgbafValue,
     RgbaValue,
-    ShadowModeValue,
     TimeInterval,
     UnitQuaternionValue,
     Uri,
@@ -29,12 +26,6 @@ def test_invalid_near_far_scalar_value():
         NearFarScalarValue(values=[0, 3.2, 1, 4, 2, 1])
 
     assert "Input values must have either 4 or N * 5 values, " in excinfo.exconly()
-
-
-def test_classification_type():
-    expected_result = '"BOTH"'
-    cls = ClassificationTypeValue(string="BOTH")
-    assert repr(cls) == expected_result
 
 
 def test_distance_display_condition():
@@ -53,32 +44,6 @@ def test_distance_display_condition():
         values=[0, 150, 15000000, 300, 10000, 15000000, 600, 150, 15000000]
     )
     assert repr(dist) == expected_result
-
-
-def test_shadow_mode():
-    expected_result = '"CAST_ONLY"'
-    shad = ShadowModeValue(string="CAST_ONLY")
-    assert repr(shad) == expected_result
-
-
-def test_invalid_shadow_mode():
-
-    with pytest.raises(ValueError) as excinfo:
-        ArcTypeValue(string="SHADOW")
-    assert "Invalid input value" in excinfo.exconly()
-
-
-def test_arc_type():
-    expected_result = '"RHUMB"'
-    arc = ArcTypeValue(string="RHUMB")
-    assert repr(arc) == expected_result
-
-
-def test_invalid_arc_type():
-
-    with pytest.raises(ValueError) as excinfo:
-        ArcTypeValue(string="ARC")
-    assert "Invalid input value" in excinfo.exconly()
 
 
 def test_cartographic_radian_list():
