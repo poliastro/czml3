@@ -5,6 +5,8 @@ from enum import Enum
 from json import JSONEncoder
 from typing import List
 
+import attr
+
 from .constants import ISO8601_FORMAT_Z
 
 NON_DELETE_PROPERTIES = ["id", "delete"]
@@ -24,6 +26,7 @@ class CZMLEncoder(JSONEncoder):
         return super().default(o)
 
 
+@attr.s(repr=False, frozen=True)
 class BaseCZMLObject:
     KNOWN_PROPERTIES = []  # type: List[str]
 
