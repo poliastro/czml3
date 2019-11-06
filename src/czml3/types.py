@@ -2,10 +2,8 @@ import datetime as dt
 
 import attr
 from dateutil.parser import isoparse as parse_iso_date
-from w3lib.url import is_url, parse_data_uri
 
 from .base import BaseCZMLObject
-from .common import Deletable
 from .constants import ISO8601_FORMAT_Z
 
 TYPE_MAPPING = {bool: "boolean"}
@@ -201,13 +199,12 @@ class CartographicDegreesValue(_TimeTaggedCoords):
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
-class StringValue(BaseCZMLObject, Deletable):
+class StringValue(BaseCZMLObject):
     """A string value.
 
     The string can optionally vary with time.
     """
 
-    delete = attr.ib(default=None)
     string = attr.ib(default=None)
 
     def to_json(self):
@@ -269,7 +266,7 @@ class DistanceDisplayConditionValue(BaseCZMLObject):
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
-class NearFarScalarValue(BaseCZMLObject, Deletable):
+class NearFarScalarValue(BaseCZMLObject):
     """A near-far scalar value specified as four values [NearDistance, NearValue, FarDistance, FarValue].
 
      If the array has four elements, the value is constant. If it has five or more elements, they are time-tagged
@@ -288,27 +285,6 @@ class NearFarScalarValue(BaseCZMLObject, Deletable):
 
     def to_json(self):
         return list(self.values)
-
-
-@attr.s(repr=False, frozen=True, kw_only=True)
-class Uri(BaseCZMLObject, Deletable):
-    """A URI value.
-
-    The URI can optionally vary with time.
-    """
-
-    delete = attr.ib(default=None)
-    uri = attr.ib(default=None)
-
-    def __attrs_post_init__(self):
-        try:
-            parse_data_uri(self.uri)
-        except ValueError as e:
-            if not is_url(self.uri):
-                raise ValueError("uri must be a URL or a data URI") from e
-
-    def to_json(self):
-        return self.uri
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)

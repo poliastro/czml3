@@ -16,7 +16,6 @@ from czml3.types import (
     RgbaValue,
     TimeInterval,
     UnitQuaternionValue,
-    Uri,
     format_datetime_like,
 )
 
@@ -145,13 +144,6 @@ def test_bad_rgba_5_color_values_raises_error():
         RgbaValue(values=[0, 0.1, 0.3, 0.3, 255])
 
     assert "Color values must be integers in the range 0-255." in excinfo.exconly()
-
-
-def test_bad_uri_raises_error():
-    with pytest.raises(ValueError) as excinfo:
-        Uri(uri="a")
-
-    assert "uri must be a URL or a data URI" in excinfo.exconly()
 
 
 def test_bad_rgbaf_size_values_raises_error():

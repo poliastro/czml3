@@ -1,4 +1,5 @@
 import attr
+from w3lib.url import is_url, parse_data_uri
 
 from .base import BaseCZMLObject
 from .common import Deletable, HasAlignment, Interpolatable
@@ -444,3 +445,24 @@ class Model(BaseCZMLObject):
     distanceDisplayCondition = attr.ib(default=None)
     nodeTransformations = attr.ib(default=None)
     articulations = attr.ib(default=None)
+
+
+@attr.s(repr=False, frozen=True, kw_only=True)
+class Uri(BaseCZMLObject, Deletable):
+    """A URI value.
+
+    The URI can optionally vary with time.
+    """
+
+    delete = attr.ib(default=None)
+    uri = attr.ib(default=None)
+
+    def __attrs_post_init__(self):
+        try:
+            parse_data_uri(self.uri)
+        except ValueError as e:
+            if not is_url(self.uri):
+                raise ValueError("uri must be a URL or a data URI") from e
+
+    def to_json(self):
+        return self.uri

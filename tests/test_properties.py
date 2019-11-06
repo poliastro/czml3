@@ -26,6 +26,7 @@ from czml3.properties import (
     ShadowMode,
     SolidColorMaterial,
     StripeMaterial,
+    Uri,
 )
 from czml3.types import (
     Cartesian3Value,
@@ -35,7 +36,6 @@ from czml3.types import (
     NearFarScalarValue,
     Sequence,
     UnitQuaternionValue,
-    Uri,
 )
 
 
@@ -429,3 +429,10 @@ def test_model():
     )
 
     assert repr(result) == expected_result
+
+
+def test_bad_uri_raises_error():
+    with pytest.raises(ValueError) as excinfo:
+        Uri(uri="a")
+
+    assert "uri must be a URL or a data URI" in excinfo.exconly()
