@@ -12,10 +12,11 @@ from czml3.properties import (
     DistanceDisplayCondition,
     EyeOffset,
     GridMaterial,
-    HeightReference,
     ImageMaterial,
     Material,
+    Model,
     NearFarScalar,
+    Orientation,
     Point,
     Polyline,
     PolylineMaterial,
@@ -31,11 +32,11 @@ from czml3.types import (
     CartographicDegreesListValue,
     ClassificationTypeValue,
     DistanceDisplayConditionValue,
-    HeightReferenceValue,
     IntervalValue,
     NearFarScalarValue,
     Sequence,
     ShadowModeValue,
+    UnitQuaternionValue,
     Uri,
 )
 
@@ -407,12 +408,28 @@ def test_multiple_interval_value():
     assert repr(prop) == expected_result
 
 
-def test_height_reference():
+def test_orientation():
     expected_result = """{
-    "heightReference": "CLAMP_TO_GROUND"
+    "unitQuaternion": [
+        0,
+        0,
+        0,
+        1
+    ]
 }"""
-    height_reference = HeightReference(
-        heightReference=HeightReferenceValue(string="CLAMP_TO_GROUND")
+
+    result = Orientation(unitQuaternion=UnitQuaternionValue(values=[0, 0, 0, 1]))
+
+    assert repr(result) == expected_result
+
+
+def test_model():
+    expected_result = """{
+    "gltf": "https://sandcastle.cesium.com/SampleData/models/CesiumAir/Cesium_Air.glb"
+}"""
+
+    result = Model(
+        gltf="https://sandcastle.cesium.com/SampleData/models/CesiumAir/Cesium_Air.glb"
     )
 
-    assert repr(height_reference) == expected_result
+    assert repr(result) == expected_result

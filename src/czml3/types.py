@@ -32,8 +32,13 @@ def format_datetime_like(dt_object):
 
 
 class _TimeTaggedCoords(BaseCZMLObject):
+
+    NUM_COORDS: int
+
     def __init__(self, *, values):
-        if not (len(values) == 3 or len(values) % 4 == 0):
+        if not (
+            len(values) == self.NUM_COORDS or len(values) % (self.NUM_COORDS + 1) == 0
+        ):
             raise ValueError(
                 "Input values must have either 3 or N * 4 values, "
                 "where N is the number of time-tagged samples."
@@ -179,6 +184,8 @@ class Cartesian3Value(_TimeTaggedCoords):
 
     """
 
+    NUM_COORDS = 3
+
 
 class CartographicRadiansValue(_TimeTaggedCoords):
     """A geodetic, WGS84 position specified as [Longitude, Latitude, Height].
@@ -191,6 +198,8 @@ class CartographicRadiansValue(_TimeTaggedCoords):
 
     """
 
+    NUM_COORDS = 3
+
 
 class CartographicDegreesValue(_TimeTaggedCoords):
     """A geodetic, WGS84 position specified as [Longitude, Latitude, Height].
@@ -202,6 +211,8 @@ class CartographicDegreesValue(_TimeTaggedCoords):
     where Time is an ISO 8601 date and time string or seconds since epoch.
 
     """
+
+    NUM_COORDS = 3
 
 
 class StringValue(BaseCZMLObject, Deletable):
@@ -417,21 +428,6 @@ class TimeInterval(BaseCZMLObject):
         return "{start}/{end}".format(start=start, end=end)
 
 
-class HeightReferenceValue(BaseCZMLObject):
-    """The height reference of an object, which indicates if the object's position is relative to terrain or not."""
-
-    def __init__(self, *, string):
-        valid_values = ["NONE", "CLAMP_TO_GROUND", "RELATIVE_TO_GROUND"]
-
-        if string not in valid_values:
-            raise ValueError("Invalid height reference value.")
-
-        self._string = string
-
-    def to_json(self):
-        return self._string
-
-
 class IntervalValue(BaseCZMLObject):
     """Value over some interval."""
 
@@ -459,3 +455,16 @@ class Sequence(BaseCZMLObject):
 
     def to_json(self):
         return list(self._values)
+
+
+class UnitQuaternionValue(_TimeTaggedCoords):
+    """A set of 4-dimensional coordinates used to represent rotation in 3-dimensional space.
+
+    It's specified as [X, Y, Z, W]. If the array has four elements, the value is constant.
+    If it has five or more elements, they are time-tagged samples arranged as
+    [Time, X, Y, Z, W, Time, X, Y, Z, W, ...],
+    where Time is an ISO 8601 date and time string or seconds since epoch.
+
+    """
+
+    NUM_COORDS = 4
