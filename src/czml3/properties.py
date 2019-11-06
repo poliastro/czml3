@@ -3,6 +3,7 @@ import attr
 from .base import BaseCZMLObject
 from .common import Deletable, HasAlignment, Interpolatable
 from .enums import ClockRanges, ClockSteps, LabelStyles
+from .types import RgbafValue, RgbaValue
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
@@ -32,6 +33,10 @@ class SolidColorMaterial(BaseCZMLObject):
     """A material that fills the surface with a solid color."""
 
     color = attr.ib(default=None)
+
+    @classmethod
+    def from_list(cls, color):
+        return cls(color=Color.from_list(color))
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
@@ -84,6 +89,46 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
     delete = attr.ib(default=None)
     rgba = attr.ib(default=None)
     rgbaf = attr.ib(default=None)
+
+    @classmethod
+    def from_list(cls, color):
+        if all(isinstance(v, int) for v in color):
+            if len(color) == 3:
+                color = color + [255]
+            else:
+                color = color[:]
+
+            return cls(rgba=RgbaValue(values=color))
+        else:
+            if len(color) == 3:
+                color = color + [1.0]
+            else:
+                color = color[:]
+
+            return cls(rgbaf=RgbafValue(values=color))
+
+    @classmethod
+    def from_hex(cls, color):
+        if color > 0xFFFFFF:
+            values = [
+                (color & 0xFF000000) >> 24,
+                (color & 0x00FF0000) >> 16,
+                (color & 0x0000FF00) >> 8,
+                (color & 0x000000FF) >> 0,
+            ]
+        else:
+            values = [
+                (color & 0xFF0000) >> 16,
+                (color & 0x00FF00) >> 8,
+                (color & 0x0000FF) >> 0,
+                0xFF,
+            ]
+
+        return cls.from_list(values)
+
+    @classmethod
+    def from_str(cls, color):
+        return cls.from_hex(int(color.rsplit("#")[-1], 16))
 
 
 # noinspection PyPep8Naming

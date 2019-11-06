@@ -18,6 +18,7 @@ from czml3.properties import (
     PolylineMaterial,
     Position,
     PositionList,
+    SolidColorMaterial,
 )
 from czml3.types import Cartesian3Value, StringValue
 
@@ -70,7 +71,7 @@ def test_packet_label():
                 0.2,
                 0.3,
                 0.4,
-                1
+                1.0
             ]
         },
         "outlineColor": {
@@ -88,8 +89,8 @@ def test_packet_label():
         id="0",
         label=Label(
             font="20px sans-serif",
-            fillColor=Color(rgbaf=[0.2, 0.3, 0.4, 1]),
-            outlineColor=Color(rgba=[0, 233, 255, 2]),
+            fillColor=Color.from_list([0.2, 0.3, 0.4]),
+            outlineColor=Color.from_list([0, 233, 255, 2]),
             outlineWidth=2.0,
         ),
     )
@@ -321,7 +322,7 @@ def test_packet_point():
         }
     }
 }"""
-    packet = Packet(id="id_00", point=Point(color=Color(rgba=[255, 0, 0, 255])))
+    packet = Packet(id="id_00", point=Point(color=Color.from_list([255, 0, 0, 255])))
 
     assert repr(packet) == expected_result
 
@@ -360,7 +361,9 @@ def test_packet_polyline():
             positions=PositionList(
                 cartographicDegrees=[-75, 43, 500000, -125, 43, 500000]
             ),
-            material=PolylineMaterial(solidColor=Color(rgba=[255, 0, 0, 255])),
+            material=PolylineMaterial(
+                solidColor=SolidColorMaterial.from_list([255, 0, 0, 255])
+            ),
         ),
     )
 
@@ -428,7 +431,7 @@ def test_packet_polygon():
                 ]
             ),
             granularity=1.0,
-            material=Material(solidColor=Color(rgba=[255, 0, 0, 255])),
+            material=Material(solidColor=SolidColorMaterial.from_list([255, 0, 0])),
         ),
     )
 
