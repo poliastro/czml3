@@ -68,3 +68,15 @@ class ShadowModes(Enum):
     ENABLED = auto()
     CAST_ONLY = auto()
     RECEIVE_ONLY = auto()
+
+
+class ClassificationTypes(Enum):
+    TERRAIN = auto()
+    CESIUM_3D_TILE = auto()
+    BOTH = auto()
+
+
+class ArcTypes(Enum):
+    NONE = auto()
+    GEODESIC = auto()
+    RHUMB = auto()

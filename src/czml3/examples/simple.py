@@ -8,14 +8,22 @@ from czml3.enums import (
     ReferenceFrames,
     VerticalOrigins,
 )
-from czml3.properties import Billboard, Clock, Color, Label, Material, Path, Position
+from czml3.properties import (
+    Billboard,
+    Clock,
+    Color,
+    Label,
+    Material,
+    Path,
+    Position,
+    SolidColorMaterial,
+)
 from czml3.types import IntervalValue, Sequence, TimeInterval
 
 accesses_id = "9927edc4-e87a-4e1f-9b8b-0bfb3b05b227"
 start = dt.datetime(2012, 3, 15, 10, tzinfo=dt.timezone.utc)
 end = dt.datetime(2012, 3, 16, 10, tzinfo=dt.timezone.utc)
 
-#
 simple = Document(
     [
         Preamble(
@@ -94,8 +102,8 @@ simple = Document(
                 outlineWidth=2,
                 text="Pennsylvania",
                 verticalOrigin=VerticalOrigins.CENTER,
-                fillColor=Color(rgba=[255, 0, 0, 255]),
-                outlineColor=Color(rgba=[0, 0, 0, 255]),
+                fillColor=Color.from_list([255, 0, 0]),
+                outlineColor=Color.from_list([0, 0, 0]),
             ),
             position=Position(
                 cartesian=[1152255.80150063, -4694317.951340558, 4147335.9067563135]
@@ -128,8 +136,8 @@ simple = Document(
                 style=LabelStyles.FILL_AND_OUTLINE,
                 text="AGI",
                 verticalOrigin=VerticalOrigins.CENTER,
-                fillColor=Color(rgba=[0, 255, 255, 255]),
-                outlineColor=Color(rgba=[0, 0, 0, 255]),
+                fillColor=Color.from_list([0, 255, 255]),
+                outlineColor=Color.from_list([0, 0, 0]),
             ),
             position=Position(
                 cartesian=[1216469.9357990976, -4736121.71856379, 4081386.8856866374]
@@ -162,14 +170,14 @@ simple = Document(
                 style=LabelStyles.FILL_AND_OUTLINE,
                 text="Geoeye 1",
                 verticalOrigin=VerticalOrigins.CENTER,
-                fillColor=Color(rgba=[0, 255, 0, 255]),
-                outlineColor=Color(rgba=[0, 0, 0, 255]),
+                fillColor=Color.from_list([0, 255, 0]),
+                outlineColor=Color.from_list([0, 0, 0]),
             ),
             path=Path(
                 show=Sequence([IntervalValue(start=start, end=end, value=True)]),
                 width=1,
                 resolution=120,
-                material=Material(solidColor=Color(rgba=[0, 255, 0, 255])),
+                material=Material(solidColor=SolidColorMaterial.from_list([0, 255, 0])),
             ),
             position=Position(
                 interpolationAlgorithm=InterpolationAlgorithms.LAGRANGE,

@@ -3,7 +3,8 @@ import json
 import warnings
 from enum import Enum
 from json import JSONEncoder
-from typing import List
+
+import attr
 
 from .constants import ISO8601_FORMAT_Z
 
@@ -24,9 +25,8 @@ class CZMLEncoder(JSONEncoder):
         return super().default(o)
 
 
+@attr.s(repr=False, frozen=True)
 class BaseCZMLObject:
-    KNOWN_PROPERTIES = []  # type: List[str]
-
     def __repr__(self):
         return self.dumps(indent=4)
 
@@ -45,7 +45,7 @@ class BaseCZMLObject:
         if getattr(self, "delete", False):
             properties_list = NON_DELETE_PROPERTIES
         else:
-            properties_list = self.KNOWN_PROPERTIES
+            properties_list = list(attr.asdict(self).keys())
 
         obj_dict = {}
         for property_name in properties_list:

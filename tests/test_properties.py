@@ -2,6 +2,7 @@ import datetime as dt
 
 import pytest
 
+from czml3.enums import ArcTypes, ClassificationTypes, ShadowModes
 from czml3.properties import (
     ArcType,
     Box,
@@ -25,19 +26,16 @@ from czml3.properties import (
     ShadowMode,
     SolidColorMaterial,
     StripeMaterial,
+    Uri,
 )
 from czml3.types import (
-    ArcTypeValue,
     Cartesian3Value,
     CartographicDegreesListValue,
-    ClassificationTypeValue,
     DistanceDisplayConditionValue,
     IntervalValue,
     NearFarScalarValue,
     Sequence,
-    ShadowModeValue,
     UnitQuaternionValue,
-    Uri,
 )
 
 
@@ -102,7 +100,7 @@ def test_arc_type():
     expected_result = """{
     "arcType": "NONE"
 }"""
-    arc_type = ArcType(arcType=ArcTypeValue(string="NONE"))
+    arc_type = ArcType(arcType=ArcTypes.NONE)
     assert repr(arc_type) == expected_result
 
 
@@ -110,7 +108,7 @@ def test_shadow_mode():
     expected_result = """{
     "shadowMode": "ENABLED"
 }"""
-    shadow_mode = ShadowMode(shadowMode=ShadowModeValue(string="ENABLED"))
+    shadow_mode = ShadowMode(shadowMode=ShadowModes.ENABLED)
     assert repr(shadow_mode) == expected_result
 
 
@@ -145,7 +143,7 @@ def test_polyline():
             distanceDisplayCondition=DistanceDisplayConditionValue(values=[14, 81])
         ),
         classificationType=ClassificationType(
-            classificationType=ClassificationTypeValue(string="CESIUM_3D_TILE")
+            classificationType=ClassificationTypes.CESIUM_3D_TILE
         ),
     )
     assert repr(pol) == expected_result
@@ -164,13 +162,11 @@ def test_material_solid_color():
         }
     }
 }"""
-    mat = Material(solidColor=SolidColorMaterial(color=Color(rgba=[200, 100, 30, 255])))
+    mat = Material(solidColor=SolidColorMaterial.from_list([200, 100, 30]))
 
     assert repr(mat) == expected_result
 
-    pol_mat = PolylineMaterial(
-        solidColor=SolidColorMaterial(color=Color(rgba=[200, 100, 30, 255]))
-    )
+    pol_mat = PolylineMaterial(solidColor=SolidColorMaterial.from_list([200, 100, 30]))
     assert repr(pol_mat) == expected_result
 
 
@@ -198,7 +194,7 @@ def test_material_image():
         image=ImageMaterial(
             image=Uri(uri="https://site.com/image.png"),
             repeat=[2, 2],
-            color=Color(rgba=[200, 100, 30, 255]),
+            color=Color.from_list([200, 100, 30]),
         )
     )
     assert repr(mat) == expected_result
@@ -207,7 +203,7 @@ def test_material_image():
         image=ImageMaterial(
             image=Uri(uri="https://site.com/image.png"),
             repeat=[2, 2],
-            color=Color(rgba=[200, 100, 30, 255]),
+            color=Color.from_list([200, 100, 30]),
         )
     )
     assert repr(pol_mat) == expected_result
@@ -239,7 +235,7 @@ def test_material_grid():
 }"""
 
     pol_mat = GridMaterial(
-        color=Color(rgba=[20, 20, 30, 255]),
+        color=Color.from_list([20, 20, 30]),
         cellAlpha=1.0,
         lineCount=[16, 16],
         lineThickness=[2.0, 2.0],
@@ -272,8 +268,8 @@ def test_material_stripe():
 }"""
 
     pol_mat = StripeMaterial(
-        evenColor=Color(rgba=[0, 0, 0, 255]),
-        oddColor=Color(rgba=[255, 255, 255, 255]),
+        evenColor=Color.from_list([0, 0, 0]),
+        oddColor=Color.from_list([255, 255, 255]),
         offset=0.3,
         repeat=4,
     )
@@ -302,8 +298,8 @@ def test_material_checkerboard():
 }"""
 
     pol_mat = CheckerboardMaterial(
-        evenColor=Color(rgba=[0, 0, 0, 255]),
-        oddColor=Color(rgba=[255, 255, 255, 255]),
+        evenColor=Color.from_list([0, 0, 0]),
+        oddColor=Color.from_list([255, 255, 255]),
         repeat=4,
     )
     assert repr(pol_mat) == expected_result
@@ -433,3 +429,10 @@ def test_model():
     )
 
     assert repr(result) == expected_result
+
+
+def test_bad_uri_raises_error():
+    with pytest.raises(ValueError) as excinfo:
+        Uri(uri="a")
+
+    assert "uri must be a URL or a data URI" in excinfo.exconly()
