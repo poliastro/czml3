@@ -12,8 +12,6 @@ CZML_VERSION = "1.0"
 class Preamble(BaseCZMLObject):
     """The preamble packet."""
 
-    KNOWN_PROPERTIES = ["id", "version", "name", "clock"]
-
     version = attr.ib(default=CZML_VERSION)
     name = attr.ib(default=None)
     clock = attr.ib(default=None)
@@ -30,34 +28,6 @@ class Packet(BaseCZMLObject):
     See https://github.com/AnalyticalGraphicsInc/czml-writer/wiki/Packet
     for further information.
     """
-
-    # https://github.com/AnalyticalGraphicsInc/czml-writer/wiki/Packet
-    KNOWN_PROPERTIES = [
-        "id",
-        "delete",
-        "name",
-        "parent",
-        "description",
-        "availability",
-        "properties",
-        "position",
-        "orientation",
-        "viewFrom",
-        "billboard",
-        "box",
-        "corridor",
-        "cylinder",
-        "ellipse",
-        "ellipsoid",
-        "label",
-        "model",
-        "path",
-        "point",
-        "polygon",
-        "polyline",
-        "rectangle",
-        "wall",
-    ]
 
     id = attr.ib(factory=lambda: str(uuid4()))
     delete = attr.ib(default=None)

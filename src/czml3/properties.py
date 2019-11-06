@@ -19,8 +19,6 @@ from .types import (
 class Material(BaseCZMLObject):
     """A definition of how a surface is colored or shaded."""
 
-    KNOWN_PROPERTIES = ["solidColor", "image", "grid", "stripe", "checkerboard"]
-
     solidColor = attr.ib(
         default=None,
         converter=lambda c: SolidColorMaterial(color=c) if isinstance(c, Color) else c,
@@ -34,18 +32,6 @@ class Material(BaseCZMLObject):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class PolylineMaterial(BaseCZMLObject):
     """"A definition of how a surface is colored or shaded."""
-
-    KNOWN_PROPERTIES = [
-        "solidColor",
-        "polylineOutline",
-        "polylineArrow",
-        "polylineDash",
-        "polylineGlow",
-        "image",
-        "grid",
-        "stripe",
-        "checkerboard",
-    ]
 
     solidColor = attr.ib(
         default=None,
@@ -61,22 +47,12 @@ class PolylineMaterial(BaseCZMLObject):
 class SolidColorMaterial(BaseCZMLObject):
     """A material that fills the surface with a solid color."""
 
-    KNOWN_PROPERTIES = ["color"]
-
     color = attr.ib(default=None)
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
 class GridMaterial(BaseCZMLObject):
     """A material that fills the surface with a two-dimensional grid."""
-
-    KNOWN_PROPERTIES = [
-        "color",
-        "cellAlpha",
-        "lineCount",
-        "lineThickness",
-        "lineOffset",
-    ]
 
     color = attr.ib(default=None)
     cellAlpha = attr.ib(default=0.1)
@@ -88,8 +64,6 @@ class GridMaterial(BaseCZMLObject):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class StripeMaterial(BaseCZMLObject):
     """A material that fills the surface with alternating colors."""
-
-    KNOWN_PROPERTIES = ["orientation", "evenColor", "oddColor", "offset", "repeat"]
 
     orientation = attr.ib(
         default="HORIZONTAL"
@@ -104,8 +78,6 @@ class StripeMaterial(BaseCZMLObject):
 class CheckerboardMaterial(BaseCZMLObject):
     """A material that fills the surface with alternating colors."""
 
-    KNOWN_PROPERTIES = ["orientation", "evenColor", "oddColor", "offset", "repeat"]
-
     evenColor = attr.ib(default=None)
     oddColor = attr.ib(default=None)
     repeat = attr.ib(default=None)
@@ -114,8 +86,6 @@ class CheckerboardMaterial(BaseCZMLObject):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class ImageMaterial(BaseCZMLObject):
     """A material that fills the surface with an image."""
-
-    KNOWN_PROPERTIES = ["image", "repeat", "color", "transparent"]
 
     image = attr.ib(default=None)
     repeat = attr.ib(default=[1, 1])
@@ -126,8 +96,6 @@ class ImageMaterial(BaseCZMLObject):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class Color(BaseCZMLObject, Interpolatable, Deletable):
     """A color. The color can optionally vary over time."""
-
-    KNOWN_PROPERTIES = ["delete", "rgba", "rgbaf", "reference"]
 
     delete = attr.ib(default=None)
     rgba = attr.ib(
@@ -144,17 +112,6 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class Position(BaseCZMLObject, Interpolatable, Deletable):
     """Defines a position. The position can optionally vary over time."""
-
-    KNOWN_PROPERTIES = [
-        "delete",
-        "epoch",
-        "interpolationAlgorithm",
-        "interpolationDegree",
-        "referenceFrame",
-        "cartesian",
-        "cartographicRadians",
-        "cartographicDegrees",
-    ]
 
     delete = attr.ib(default=None)
     epoch = attr.ib(default=None)
@@ -201,29 +158,6 @@ class Billboard(BaseCZMLObject, HasAlignment):
     A billboard is sometimes called a marker.
     """
 
-    KNOWN_PROPERTIES = [
-        "show",
-        "image",
-        "scale",
-        "pixelOffset",
-        "eyeOffset",
-        "horizontalOrigin",
-        "verticalOrigin",
-        "heightReference",
-        "color",
-        "rotation",
-        "alignedAxis",
-        "sizeInMeters",
-        "width",
-        "height",
-        "scaleByDistance",
-        "translucencyByDistance",
-        "pixelOffsetScaleByDistance",
-        "imageSubRegion",
-        "distanceDisplayCondition",
-        "disableDepthTestDistance",
-    ]
-
     image = attr.ib(converter=lambda i: Uri(uri=i) if isinstance(i, str) else i)
     show = attr.ib(default=None)
     scale = attr.ib(default=None)
@@ -235,8 +169,6 @@ class Billboard(BaseCZMLObject, HasAlignment):
 class EllipsoidRadii(BaseCZMLObject, Deletable, Interpolatable):
     """The radii of an ellipsoid."""
 
-    KNOWN_PROPERTIES = ["cartesian", "reference"]
-
     cartesian = attr.ib(default=None)
     reference = attr.ib(default=None)
 
@@ -244,31 +176,6 @@ class EllipsoidRadii(BaseCZMLObject, Deletable, Interpolatable):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class Polygon(BaseCZMLObject):
     """A polygon, which is a closed figure on the surface of the Earth."""
-
-    KNOWN_PROPERTIES = [
-        "show",
-        "positions",
-        "holes",
-        "arcType",
-        "height",
-        "heightReference",
-        "extrudedHeight",
-        "extrudedHeightReference",
-        "stRotation",
-        "granularity",
-        "fill",
-        "material",
-        "outline",
-        "outlineColor",
-        "outlineWidth",
-        "perPositionHeight",
-        "closeTop",
-        "closeBottom",
-        "shadows",
-        "distanceDisplayCondition",
-        "classificationType",
-        "zIndex",
-    ]
 
     positions = attr.ib()
     show = attr.ib(default=None)
@@ -284,22 +191,6 @@ class Polygon(BaseCZMLObject):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class Polyline(BaseCZMLObject):
     """A polyline, which is a line in the scene composed of multiple segments."""
-
-    KNOWN_PROPERTIES = [
-        "show",
-        "positions",
-        "arcType",
-        "width",
-        "granularity",
-        "material",
-        "followSurface",
-        "shadows",
-        "depthFailMaterial",
-        "distanceDisplayCondition",
-        "clampToGround",
-        "classificationType",
-        "zIndex",
-    ]
 
     positions = attr.ib()
     show = attr.ib(default=None)
@@ -320,8 +211,6 @@ class Polyline(BaseCZMLObject):
 class ArcType(BaseCZMLObject, Deletable):
     """The type of an arc."""
 
-    KNOWN_PROPERTIES = ["arcType", "reference"]
-
     arcType = attr.ib(default=None)
     reference = attr.ib(default=None)
 
@@ -329,8 +218,6 @@ class ArcType(BaseCZMLObject, Deletable):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class ShadowMode(BaseCZMLObject, Deletable):
     """Whether or not an object casts or receives shadows from each light source when shadows are enabled."""
-
-    KNOWN_PROPERTIES = ["shadowMode", "reference"]
 
     shadowMode = attr.ib(default=None)
     referenec = attr.ib(default=None)
@@ -340,8 +227,6 @@ class ShadowMode(BaseCZMLObject, Deletable):
 class ClassificationType(BaseCZMLObject, Deletable):
     """Whether a classification affects terrain, 3D Tiles, or both."""
 
-    KNOWN_PROPERTIES = ["classificationType", "reference"]
-
     classificationType = attr.ib(default=None)
     reference = attr.ib(default=None)
 
@@ -350,8 +235,6 @@ class ClassificationType(BaseCZMLObject, Deletable):
 class DistanceDisplayCondition(BaseCZMLObject, Interpolatable, Deletable):
     """Indicates the visibility of an object based on the distance to the camera."""
 
-    KNOWN_PROPERTIES = ["distanceDisplayCondition", "reference"]
-
     distanceDisplayCondition = attr.ib(default=None)
     reference = attr.ib(default=None)
 
@@ -359,14 +242,6 @@ class DistanceDisplayCondition(BaseCZMLObject, Interpolatable, Deletable):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class PositionList(BaseCZMLObject, Deletable):
     """A list of positions."""
-
-    KNOWN_PROPERTIES = [
-        "referenceFrame",
-        "cartersian",
-        "cartographicRadians",
-        "cartographicDegrees",
-        "references",
-    ]
 
     referenceFrame = attr.ib(default=None)
     cartesian = attr.ib(default=None)
@@ -378,22 +253,6 @@ class PositionList(BaseCZMLObject, Deletable):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class Ellipsoid(BaseCZMLObject):
     """A closed quadric surface that is a three-dimensional analogue of an ellipse."""
-
-    KNOWN_PROPERTIES = [
-        "radii",
-        "show",
-        "heightReference",
-        "fill",
-        "material",
-        "outline",
-        "outlineColor",
-        "outlineWidth",
-        "stackPartitions",
-        "slicePartitions",
-        "subdivisions",
-        "shadows",
-        "distanceDisplayCondition",
-    ]
 
     radii = attr.ib()
     show = attr.ib(default=None)
@@ -412,19 +271,6 @@ class Ellipsoid(BaseCZMLObject):
 class Box(BaseCZMLObject):
     """A box, which is a closed rectangular cuboid."""
 
-    KNOWN_PROPERTIES = [
-        "show",
-        "dimensions",
-        "heightReference",
-        "fill",
-        "material",
-        "outline",
-        "outlineColor",
-        "outlineWidth",
-        "shadows",
-        "distanceDisplayCondition",
-    ]
-
     show = attr.ib(default=None)
     dimensions = attr.ib(default=None)
     heightReference = attr.ib(default=None)
@@ -441,17 +287,19 @@ class Box(BaseCZMLObject):
 class BoxDimensions(BaseCZMLObject, Interpolatable):
     """The width, depth, and height of a box."""
 
-    KNOWN_PROPERTIES = ["cartesian", "reference"]
-
     cartesian = attr.ib(default=None)
     reference = attr.ib(default=None)
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
 class EyeOffset(BaseCZMLObject, Deletable):
-    """An offset in eye coordinates which can optionally vary over time. Eye coordinates are a left-handed coordinate system where the X-axis points toward the viewer's right, the Y-axis poitns up, and the Z-axis points into the screen."""
+    """An offset in eye coordinates which can optionally vary over time.
 
-    KNOWN_PROPERTIES = ["cartesian", "reference"]
+    Eye coordinates are a left-handed coordinate system
+    where the X-axis points toward the viewer's right,
+    the Y-axis poitns up, and the Z-axis points into the screen.
+
+    """
 
     cartesian = attr.ib(default=None)
     reference = attr.ib(default=None)
@@ -460,8 +308,6 @@ class EyeOffset(BaseCZMLObject, Deletable):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class HeightReference(BaseCZMLObject, Deletable):
     """The height reference of an object, which indicates if the object's position is relative to terrain or not."""
-
-    KNOWN_PROPERTIES = ["heightReference", "reference"]
 
     heightReference = attr.ib(default=None)
     reference = attr.ib(default=None)
@@ -475,8 +321,6 @@ class Clock(BaseCZMLObject):
     The start and stop time are configured using the interval property.
 
     """
-
-    KNOWN_PROPERTIES = ["currentTime", "multiplier", "range", "step"]
 
     currentTime = attr.ib(default=None)
     multiplier = attr.ib(default=1.0)
@@ -497,16 +341,6 @@ class Path(BaseCZMLObject):
 
     """
 
-    KNOWN_PROPERTIES = [
-        "show",
-        "leadTime",
-        "trailTime",
-        "width",
-        "resolution",
-        "material",
-        "distanceDisplayCondition",
-    ]
-
     show = attr.ib(default=None)
     leadTime = attr.ib(default=None)
     trailTime = attr.ib(default=None)
@@ -519,19 +353,6 @@ class Path(BaseCZMLObject):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class Point(BaseCZMLObject):
     """A point, or viewport-aligned circle."""
-
-    KNOWN_PROPERTIES = [
-        "show",
-        "pixelSize",
-        "heightReference",
-        "color",
-        "outlineColor",
-        "outlineWidth",
-        "scaleByDistance",
-        "translucencyByDistance",
-        "distanceDisplayCondition",
-        "disableDepthTestDistance",
-    ]
 
     show = attr.ib(default=None)
     pixelSize = attr.ib(default=None)
@@ -555,8 +376,6 @@ class NearFarScalar(BaseCZMLObject, Interpolatable, Deletable):
     less than the near distance or greater than the far distance, respectively.
     """
 
-    KNOWN_PROPERTIES = ["nearFarScalar", "reference"]
-
     nearFarScalar = attr.ib(default=None)
     reference = attr.ib(default=None)
 
@@ -565,30 +384,6 @@ class NearFarScalar(BaseCZMLObject, Interpolatable, Deletable):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class Label(BaseCZMLObject, HasAlignment):
     """A string of text."""
-
-    KNOWN_PROPERTIES = [
-        "show",
-        "text",
-        "font",
-        "style",
-        "scale",
-        "showBackground",
-        "backgroundColor",
-        "backgroundPadding",
-        "pixelOffset",
-        "eyeOffset",
-        "horizontalOrigin",
-        "verticalOrigin",
-        "heightReference",
-        "fillColor",
-        "outlineColor",
-        "outlineWidth",
-        "translucencyByDistance",
-        "pixelOffsetScaleByDistance",
-        "scaleByDistance",
-        "distanceDisplayCondition",
-        "disableDepthTestDistance",
-    ]
 
     show = attr.ib(default=True)
     text = attr.ib(default=None)
@@ -615,12 +410,6 @@ class Orientation(BaseCZMLObject):
 
     """
 
-    KNOWN_PROPERTIES = [
-        "unitQuaternion",
-        "reference",
-        "velocityReference",
-    ]
-
     unitQuaternion = attr.ib(
         default=None,
         converter=lambda q: UnitQuaternionValue(values=q)
@@ -634,26 +423,6 @@ class Orientation(BaseCZMLObject):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class Model(BaseCZMLObject):
     """A 3D model."""
-
-    KNOWN_PROPERTIES = [
-        "show",
-        "gltf",
-        "scale",
-        "minimumPixelSize",
-        "maximumScale",
-        "incrementallyLoadTextures",
-        "runAnimations",
-        "shadows",
-        "heightReference",
-        "silhouetteColor",
-        "silhouetteSize",
-        "color",
-        "colorBlendMode",
-        "colorBlendAmount",
-        "distanceDisplayCondition",
-        "nodeTransformations",
-        "articulations",
-    ]
 
     show = attr.ib(default=None)
     gltf = attr.ib(converter=lambda u: Uri(uri=u) if not isinstance(u, Uri) else u)
