@@ -315,19 +315,19 @@ class Uri(BaseCZMLObject, Deletable):
 class TimeInterval(BaseCZMLObject):
     """A time interval, specified in ISO8601 interval format."""
 
-    _start = attr.ib(default=None, converter=format_datetime_like)
-    _end = attr.ib(default=None, converter=format_datetime_like)
+    _start = attr.ib(default=None)
+    _end = attr.ib(default=None)
 
     def to_json(self):
         if self._start is None:
             start = "0000-00-00T00:00:00Z"
         else:
-            start = self._start
+            start = format_datetime_like(self._start)
 
         if self._end is None:
             end = "9999-12-31T24:00:00Z"
         else:
-            end = self._end
+            end = format_datetime_like(self._end)
 
         return "{start}/{end}".format(start=start, end=end)
 

@@ -3,26 +3,13 @@ import attr
 from .base import BaseCZMLObject
 from .common import Deletable, HasAlignment, Interpolatable
 from .enums import ClockRanges, ClockSteps, LabelStyles
-from .types import (
-    Cartesian3Value,
-    CartographicDegreesValue,
-    CartographicRadiansValue,
-    FontValue,
-    RgbafValue,
-    RgbaValue,
-    UnitQuaternionValue,
-    Uri,
-)
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
 class Material(BaseCZMLObject):
     """A definition of how a surface is colored or shaded."""
 
-    solidColor = attr.ib(
-        default=None,
-        converter=lambda c: SolidColorMaterial(color=c) if isinstance(c, Color) else c,
-    )
+    solidColor = attr.ib(default=None)
     image = attr.ib(default=None)
     grid = attr.ib(default=None)
     stripe = attr.ib(default=None)
@@ -33,10 +20,7 @@ class Material(BaseCZMLObject):
 class PolylineMaterial(BaseCZMLObject):
     """"A definition of how a surface is colored or shaded."""
 
-    solidColor = attr.ib(
-        default=None,
-        converter=lambda c: SolidColorMaterial(color=c) if isinstance(c, Color) else c,
-    )
+    solidColor = attr.ib(default=None)
     image = attr.ib(default=None)
     grid = attr.ib(default=None)
     stripe = attr.ib(default=None)
@@ -98,14 +82,8 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
     """A color. The color can optionally vary over time."""
 
     delete = attr.ib(default=None)
-    rgba = attr.ib(
-        default=None,
-        converter=lambda v: RgbaValue(values=v) if isinstance(v, list) else v,
-    )
-    rgbaf = attr.ib(
-        default=None,
-        converter=lambda v: RgbafValue(values=v) if isinstance(v, list) else v,
-    )
+    rgba = attr.ib(default=None)
+    rgbaf = attr.ib(default=None)
 
 
 # noinspection PyPep8Naming
@@ -118,22 +96,9 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
     interpolationAlgorithm = attr.ib(default=None)
     interpolationDegree = attr.ib(default=None)
     referenceFrame = attr.ib(default=None)
-    cartesian = attr.ib(
-        default=None,
-        converter=lambda v: Cartesian3Value(values=v) if isinstance(v, list) else v,
-    )
-    cartographicRadians = attr.ib(
-        default=None,
-        converter=lambda v: CartographicRadiansValue(values=v)
-        if isinstance(v, list)
-        else v,
-    )
-    cartographicDegrees = attr.ib(
-        default=None,
-        converter=lambda v: CartographicDegreesValue(values=v)
-        if isinstance(v, list)
-        else v,
-    )
+    cartesian = attr.ib(default=None)
+    cartographicRadians = attr.ib(default=None)
+    cartographicDegrees = attr.ib(default=None)
 
     def __attrs_post_init__(self,):
         if all(
@@ -158,7 +123,7 @@ class Billboard(BaseCZMLObject, HasAlignment):
     A billboard is sometimes called a marker.
     """
 
-    image = attr.ib(converter=lambda i: Uri(uri=i) if isinstance(i, str) else i)
+    image = attr.ib()
     show = attr.ib(default=None)
     scale = attr.ib(default=None)
     horizontalOrigin = attr.ib(default=None)
@@ -387,9 +352,7 @@ class Label(BaseCZMLObject, HasAlignment):
 
     show = attr.ib(default=True)
     text = attr.ib(default=None)
-    font = attr.ib(
-        default=None, converter=lambda f: FontValue(font=f) if isinstance(f, str) else f
-    )
+    font = attr.ib(default=None)
     style = attr.ib(default=LabelStyles.FILL)
     scale = attr.ib(default=None)
     showBackground = attr.ib(default=None)
@@ -410,12 +373,7 @@ class Orientation(BaseCZMLObject):
 
     """
 
-    unitQuaternion = attr.ib(
-        default=None,
-        converter=lambda q: UnitQuaternionValue(values=q)
-        if not isinstance(q, UnitQuaternionValue)
-        else q,
-    )
+    unitQuaternion = attr.ib(default=None)
     reference = attr.ib(default=None)
     velocityReference = attr.ib(default=None)
 
@@ -425,7 +383,7 @@ class Model(BaseCZMLObject):
     """A 3D model."""
 
     show = attr.ib(default=None)
-    gltf = attr.ib(converter=lambda u: Uri(uri=u) if not isinstance(u, Uri) else u)
+    gltf = attr.ib()
     scale = attr.ib(default=None)
     minimumPixelSize = attr.ib(default=None)
     maximumScale = attr.ib(default=None)
