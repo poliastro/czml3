@@ -21,7 +21,17 @@ czml3 is a Python library to write CZML.
 What is CZML?
 =============
 
-[TODO]
+From the official
+`CZML Guide <https://github.com/AnalyticalGraphicsInc/czml-writer/wiki/CZML-Guide>`_:
+
+  CZML is a JSON format for describing a time-dynamic graphical scene,
+  primarily for display in a web browser running Cesium.
+  It describes lines, points, billboards, models, and other graphical primitives,
+  and specifies how they change with time.
+  While Cesium has a rich client-side API,
+  CZML allows it to be data-driven
+  so that a generic Cesium viewer can display a rich scene
+  without the need for any custom code.
 
 Installation
 ============
