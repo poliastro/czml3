@@ -447,11 +447,12 @@ class Uri(BaseCZMLObject, Deletable):
 
     uri = attr.ib(default=None)
 
-    def __attrs_post_init__(self):
+    @uri.validator
+    def _check_uri(self, attribute, value):
         try:
-            parse_data_uri(self.uri)
+            parse_data_uri(value)
         except ValueError as e:
-            if not is_url(self.uri):
+            if not is_url(value):
                 raise ValueError("uri must be a URL or a data URI") from e
 
     def to_json(self):
