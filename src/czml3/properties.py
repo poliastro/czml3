@@ -168,7 +168,7 @@ class Billboard(BaseCZMLObject, HasAlignment):
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
-class EllipsoidRadii(BaseCZMLObject, Deletable, Interpolatable):
+class EllipsoidRadii(BaseCZMLObject, Interpolatable, Deletable):
     """The radii of an ellipsoid."""
 
     cartesian = attr.ib(default=None)
