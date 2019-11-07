@@ -1,3 +1,12 @@
+# v0.4.0
+
+* Rewrite internals using `attrs`!
+* Properly support packet comparison
+* Use unique container ids for the CZML widget
+* New properties `Model` and `Orientation`
+* New type `UnitQuaternionValue`
+* Some new enumerations
+
 # v0.3.0
 
 * Changelog!
