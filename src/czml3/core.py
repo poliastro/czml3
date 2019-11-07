@@ -12,13 +12,11 @@ CZML_VERSION = "1.0"
 class Preamble(BaseCZMLObject):
     """The preamble packet."""
 
+    id = attr.ib(init=False, default="document")
+
     version = attr.ib(default=CZML_VERSION)
     name = attr.ib(default=None)
     clock = attr.ib(default=None)
-
-    @property
-    def id(self):
-        return "document"
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)

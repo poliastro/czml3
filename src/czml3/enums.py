@@ -80,3 +80,8 @@ class ArcTypes(Enum):
     NONE = auto()
     GEODESIC = auto()
     RHUMB = auto()
+
+
+class StripeOrientations(Enum):
+    HORIZONTAL = auto()
+    VERTICAL = auto()

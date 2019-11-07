@@ -37,10 +37,10 @@ class _TimeTaggedCoords(BaseCZMLObject):
 
     values = attr.ib()
 
-    def __attrs_post_init__(self):
+    @values.validator
+    def _check_values(self, attribute, value):
         if not (
-            len(self.values) == self.NUM_COORDS
-            or len(self.values) % (self.NUM_COORDS + 1) == 0
+            len(value) == self.NUM_COORDS or len(value) % (self.NUM_COORDS + 1) == 0
         ):
             raise ValueError(
                 "Input values must have either 3 or N * 4 values, "
@@ -73,20 +73,21 @@ class RgbafValue(BaseCZMLObject):
 
     values = attr.ib()
 
-    def __attrs_post_init__(self):
-        if not (len(self.values) == 4 or len(self.values) % 5 == 0):
+    @values.validator
+    def _check_values(self, attribute, value):
+        if not (len(value) == 4 or len(value) % 5 == 0):
             raise ValueError(
                 "Input values must have either 4 or N * 5 values, "
                 "where N is the number of time-tagged samples."
             )
 
-        if len(self.values) == 4:
-            if not all([0 <= val <= 1 for val in self.values]):
+        if len(value) == 4:
+            if not all([0 <= val <= 1 for val in value]):
                 raise ValueError("Color values must be floats in the range 0-1.")
 
         else:
-            for i in range(0, len(self.values), 5):
-                v = self.values[i + 1 : i + 5]
+            for i in range(0, len(value), 5):
+                v = value[i + 1 : i + 5]
 
                 if not all([0 <= val <= 1 for val in v]):
                     raise ValueError("Color values must be floats in the range 0-1.")
@@ -109,20 +110,21 @@ class RgbaValue(BaseCZMLObject):
 
     values = attr.ib()
 
-    def __attrs_post_init__(self):
-        if not (len(self.values) == 4 or len(self.values) % 5 == 0):
+    @values.validator
+    def _check_values(self, attribute, value):
+        if not (len(value) == 4 or len(value) % 5 == 0):
             raise ValueError(
                 "Input values must have either 4 or N * 5 values, "
                 "where N is the number of time-tagged samples."
             )
 
-        if len(self.values) == 4:
-            if not all([type(val) is int and 0 <= val <= 255 for val in self.values]):
+        if len(value) == 4:
+            if not all([type(val) is int and 0 <= val <= 255 for val in value]):
                 raise ValueError("Color values must be integers in the range 0-255.")
 
         else:
-            for i in range(0, len(self.values), 5):
-                v = self.values[i + 1 : i + 5]
+            for i in range(0, len(value), 5):
+                v = value[i + 1 : i + 5]
 
                 if not all([type(val) is int and 0 <= val <= 255 for val in v]):
                     raise ValueError(
@@ -142,10 +144,11 @@ class ReferenceValue(BaseCZMLObject):
 
     string = attr.ib(default=None)
 
-    def __attrs_post_init__(self):
-        if not isinstance(self.string, str):
+    @string.validator
+    def _check_string(self, attribute, value):
+        if not isinstance(value, str):
             raise ValueError("Reference must be a string")
-        if "#" not in self.string:
+        if "#" not in value:
             raise ValueError(
                 "Invalid reference string format. Input must be of the form id#property"
             )
@@ -218,8 +221,9 @@ class CartographicRadiansListValue(BaseCZMLObject):
 
     values = attr.ib()
 
-    def __attrs_post_init__(self):
-        if len(self.values) % 3 != 0:
+    @values.validator
+    def _check_values(self, attribute, value):
+        if len(value) % 3 != 0:
             raise ValueError(
                 "Invalid values. Input values should be arrays of size 3 * N"
             )
@@ -235,8 +239,9 @@ class CartographicDegreesListValue(BaseCZMLObject):
 
     values = attr.ib()
 
-    def __attrs_post_init__(self):
-        if len(self.values) % 3 != 0:
+    @values.validator
+    def _check_values(self, attribute, value):
+        if len(value) % 3 != 0:
             raise ValueError(
                 "Invalid values. Input values should be arrays of size 3 * N"
             )
@@ -255,8 +260,9 @@ class DistanceDisplayConditionValue(BaseCZMLObject):
 
     values = attr.ib(default=None)
 
-    def __attrs_post_init__(self):
-        if len(self.values) != 2 and len(self.values) % 3 != 0:
+    @values.validator
+    def _check_values(self, attribute, value):
+        if len(value) != 2 and len(value) % 3 != 0:
             raise ValueError(
                 "Invalid values. Input values should be arrays of size either 2 or 3 * N"
             )
@@ -276,8 +282,9 @@ class NearFarScalarValue(BaseCZMLObject):
 
     values = attr.ib(default=None)
 
-    def __attrs_post_init__(self):
-        if not (len(self.values) == 4 or len(self.values) % 5 == 0):
+    @values.validator
+    def _check_values(self, attribute, value):
+        if not (len(value) == 4 or len(value) % 5 == 0):
             raise ValueError(
                 "Input values must have either 4 or N * 5 values, "
                 "where N is the number of time-tagged samples."

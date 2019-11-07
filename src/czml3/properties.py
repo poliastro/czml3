@@ -3,7 +3,7 @@ from w3lib.url import is_url, parse_data_uri
 
 from .base import BaseCZMLObject
 from .common import Deletable, HasAlignment, Interpolatable
-from .enums import ClockRanges, ClockSteps, LabelStyles
+from .enums import ClockRanges, ClockSteps, LabelStyles, StripeOrientations
 from .types import RgbafValue, RgbaValue
 
 
@@ -55,9 +55,7 @@ class GridMaterial(BaseCZMLObject):
 class StripeMaterial(BaseCZMLObject):
     """A material that fills the surface with alternating colors."""
 
-    orientation = attr.ib(
-        default="HORIZONTAL"
-    )  # TODO: https://github.com/AnalyticalGraphicsInc/czml-writer/wiki/StripeOrientationValue
+    orientation = attr.ib(default=StripeOrientations.HORIZONTAL)
     evenColor = attr.ib(default=None)
     oddColor = attr.ib(default=None)
     offset = attr.ib(default=0.0)
@@ -87,7 +85,6 @@ class ImageMaterial(BaseCZMLObject):
 class Color(BaseCZMLObject, Interpolatable, Deletable):
     """A color. The color can optionally vary over time."""
 
-    delete = attr.ib(default=None)
     rgba = attr.ib(default=None)
     rgbaf = attr.ib(default=None)
 
@@ -137,10 +134,6 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
 class Position(BaseCZMLObject, Interpolatable, Deletable):
     """Defines a position. The position can optionally vary over time."""
 
-    delete = attr.ib(default=None)
-    epoch = attr.ib(default=None)
-    interpolationAlgorithm = attr.ib(default=None)
-    interpolationDegree = attr.ib(default=None)
     referenceFrame = attr.ib(default=None)
     cartesian = attr.ib(default=None)
     cartographicRadians = attr.ib(default=None)
@@ -172,8 +165,6 @@ class Billboard(BaseCZMLObject, HasAlignment):
     image = attr.ib()
     show = attr.ib(default=None)
     scale = attr.ib(default=None)
-    horizontalOrigin = attr.ib(default=None)
-    verticalOrigin = attr.ib(default=None)
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
@@ -403,8 +394,6 @@ class Label(BaseCZMLObject, HasAlignment):
     scale = attr.ib(default=None)
     showBackground = attr.ib(default=None)
     backgroundColor = attr.ib(default=None)
-    horizontalOrigin = attr.ib(default=None)
-    verticalOrigin = attr.ib(default=None)
     fillColor = attr.ib(default=None)
     outlineColor = attr.ib(default=None)
     outlineWidth = attr.ib(default=1.0)
@@ -454,14 +443,14 @@ class Uri(BaseCZMLObject, Deletable):
     The URI can optionally vary with time.
     """
 
-    delete = attr.ib(default=None)
     uri = attr.ib(default=None)
 
-    def __attrs_post_init__(self):
+    @uri.validator
+    def _check_uri(self, attribute, value):
         try:
-            parse_data_uri(self.uri)
+            parse_data_uri(value)
         except ValueError as e:
-            if not is_url(self.uri):
+            if not is_url(value):
                 raise ValueError("uri must be a URL or a data URI") from e
 
     def to_json(self):
