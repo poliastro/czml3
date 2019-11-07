@@ -3,7 +3,7 @@ from w3lib.url import is_url, parse_data_uri
 
 from .base import BaseCZMLObject
 from .common import Deletable, HasAlignment, Interpolatable
-from .enums import ClockRanges, ClockSteps, LabelStyles
+from .enums import ClockRanges, ClockSteps, LabelStyles, StripeOrientations
 from .types import RgbafValue, RgbaValue
 
 
@@ -55,9 +55,7 @@ class GridMaterial(BaseCZMLObject):
 class StripeMaterial(BaseCZMLObject):
     """A material that fills the surface with alternating colors."""
 
-    orientation = attr.ib(
-        default="HORIZONTAL"
-    )  # TODO: https://github.com/AnalyticalGraphicsInc/czml-writer/wiki/StripeOrientationValue
+    orientation = attr.ib(default=StripeOrientations.HORIZONTAL)
     evenColor = attr.ib(default=None)
     oddColor = attr.ib(default=None)
     offset = attr.ib(default=0.0)
