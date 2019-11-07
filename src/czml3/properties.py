@@ -87,7 +87,6 @@ class ImageMaterial(BaseCZMLObject):
 class Color(BaseCZMLObject, Interpolatable, Deletable):
     """A color. The color can optionally vary over time."""
 
-    delete = attr.ib(default=None)
     rgba = attr.ib(default=None)
     rgbaf = attr.ib(default=None)
 
@@ -137,10 +136,6 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
 class Position(BaseCZMLObject, Interpolatable, Deletable):
     """Defines a position. The position can optionally vary over time."""
 
-    delete = attr.ib(default=None)
-    epoch = attr.ib(default=None)
-    interpolationAlgorithm = attr.ib(default=None)
-    interpolationDegree = attr.ib(default=None)
     referenceFrame = attr.ib(default=None)
     cartesian = attr.ib(default=None)
     cartographicRadians = attr.ib(default=None)
@@ -172,8 +167,6 @@ class Billboard(BaseCZMLObject, HasAlignment):
     image = attr.ib()
     show = attr.ib(default=None)
     scale = attr.ib(default=None)
-    horizontalOrigin = attr.ib(default=None)
-    verticalOrigin = attr.ib(default=None)
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
@@ -403,8 +396,6 @@ class Label(BaseCZMLObject, HasAlignment):
     scale = attr.ib(default=None)
     showBackground = attr.ib(default=None)
     backgroundColor = attr.ib(default=None)
-    horizontalOrigin = attr.ib(default=None)
-    verticalOrigin = attr.ib(default=None)
     fillColor = attr.ib(default=None)
     outlineColor = attr.ib(default=None)
     outlineWidth = attr.ib(default=1.0)
@@ -454,7 +445,6 @@ class Uri(BaseCZMLObject, Deletable):
     The URI can optionally vary with time.
     """
 
-    delete = attr.ib(default=None)
     uri = attr.ib(default=None)
 
     def __attrs_post_init__(self):
