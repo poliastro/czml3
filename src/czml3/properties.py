@@ -400,7 +400,7 @@ class Label(BaseCZMLObject, HasAlignment):
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
-class Orientation(BaseCZMLObject):
+class Orientation(BaseCZMLObject, Interpolatable, Deletable):
     """Defines an orientation.
 
     An orientation is a rotation that takes a vector expressed in the "body" axes of the object
