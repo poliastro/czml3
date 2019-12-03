@@ -21,6 +21,10 @@ require.config({{
 require(['cesium'], function (dependency) {{
     var czml = {czml};
 
+    var ion_token = '{ion_token}';
+    if (ion_token !== '') {{
+        Cesium.Ion.defaultAccessToken = ion_token;
+    }}
     var viewer = new Cesium.Viewer('cesiumContainer-{container_id}', {{
         shouldAnimate : true
     }});
@@ -53,6 +57,7 @@ require(['cesium'], function (dependency) {{
 class CZMLWidget:
     document = attr.ib(default=Document([Preamble()]))
     cesium_version = attr.ib(default="1.62")
+    ion_token = attr.ib(default="")
 
     _container_id = attr.ib(factory=uuid4)
 
@@ -61,6 +66,7 @@ class CZMLWidget:
             cesium_version=self.cesium_version,
             czml=self.document.dumps(),
             container_id=self._container_id,
+            ion_token=self.ion_token,
         )
 
     def to_html(self):
