@@ -6,7 +6,7 @@ from .core import Document, Preamble
 
 CESIUM_TPL = """
 <link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/{cesium_version}/Build/Cesium/Widgets/widgets.css" type="text/css">
-<div id="cesiumContainer-{container_id}" style="width:100%; height:100%;"><div>
+<div id="cesiumContainer-{container_id}" style="width:100%; height:100%;"></div>
 <script type="text/javascript">
 {script}
 </script>"""
