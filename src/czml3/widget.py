@@ -18,7 +18,7 @@ require.config({{
     }}
 }});
 
-require(['cesium'], function (dependency) {{
+require(['cesium'], function (Cesium) {{
     var czml = {czml};
 
     var ion_token = '{ion_token}';
@@ -56,7 +56,7 @@ require(['cesium'], function (dependency) {{
 @attr.s
 class CZMLWidget:
     document = attr.ib(default=Document([Preamble()]))
-    cesium_version = attr.ib(default="1.62")
+    cesium_version = attr.ib(default="1.64")
     ion_token = attr.ib(default="")
 
     _container_id = attr.ib(factory=uuid4)
