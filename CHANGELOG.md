@@ -1,3 +1,9 @@
+# v0.5.0
+
+* Upgrade for Cesium 1.64
+* Allow for custom Ion access tokens
+* Fix HTML output
+
 # v0.4.0
 
 * Rewrite internals using `attrs`!
