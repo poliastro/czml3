@@ -1,3 +1,7 @@
+# v0.5.1
+
+* Fix widget for non-local Jupyter notebook deployments
+
 # v0.5.0
 
 * Upgrade for Cesium 1.64
