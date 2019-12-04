@@ -18,6 +18,15 @@ require.config({{
     }}
 }});
 
+// Set this global variable to avoid problems with non-local Jupyter deployments
+// Basically this line:
+// https://github.com/AnalyticalGraphicsInc/cesium/blob/1.64/Source/Core/buildModuleUrl.js#L13
+// Fails because of this:
+// https://github.com/jupyter/notebook/blob/6.0.2/notebook/templates/page.html#L25-L27
+// Also, finding out about CESIUM_BASE_URL was not very straightforward,
+// see https://github.com/AnalyticalGraphicsInc/cesium/issues/8327
+var CESIUM_BASE_URL = 'https://cesium.com/downloads/cesiumjs/releases/{cesium_version}/Build/Cesium/'
+
 require(['cesium'], function (Cesium) {{
     var czml = {czml};
 
