@@ -1,3 +1,7 @@
+# v0.5.2
+
+* Fix packaging
+
 # v0.5.1
 
 * Fix widget for non-local Jupyter notebook deployments
