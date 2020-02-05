@@ -40,12 +40,12 @@ You can install czml3 using pip::
 
   $ pip install czml3
 
+or conda:
+
+  $ conda install czml3 --channel conda-forge
+
 czml3 requires Python >= 3.6. Would you like to help us
 `supporting Python 3.5 <https://github.com/poliastro/czml3/pull/12>`_ as well?
-
-Let us know if you want to lend a hand
-by `making czml3 available on conda-forge <https://github.com/poliastro/czml3/issues/13>`_
-too.
 
 Examples
 ========
