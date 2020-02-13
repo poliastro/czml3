@@ -43,6 +43,7 @@ class Packet(BaseCZMLObject):
     point = attr.ib(default=None)
     polygon = attr.ib(default=None)
     polyline = attr.ib(default=None)
+    rectangle = attr.ib(default=None)
 
 
 @attr.s(repr=False, frozen=True)
