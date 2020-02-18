@@ -1,14 +1,14 @@
+import base64
 import os
 import tempfile
-import base64
+
 import pytest
 
-from czml3 import Document
-from czml3 import Packet, Preamble
+from czml3 import Document, Packet, Preamble
 from czml3.properties import (
-    Material,
-    ImageMaterial,
     CartographicRectangle,
+    ImageMaterial,
+    Material,
     RectangleCoordinates,
 )
 
