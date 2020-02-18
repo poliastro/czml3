@@ -93,7 +93,9 @@ def test_make_czml_png_rectangle_file(filename, wsen, remove_output):
     filename = os.path.join(TESTS_DIR, filename)
     base64_str = filename_content_as_base64(filename)
     packet = make_image_rectangle_packet(wsen, base64_str)
-    out_filename = get_named_temporary_filenme('_'+os.path.basename(filename)+".czml")
+    out_filename = get_named_temporary_filenme(
+        "_" + os.path.basename(filename) + ".czml"
+    )
     save_czml_to_file(packet, out_filename)
     exists = os.path.isfile(out_filename)
     if remove_output:
