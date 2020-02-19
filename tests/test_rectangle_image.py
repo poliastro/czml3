@@ -78,24 +78,13 @@ def save_czml_to_file(packet, out_filename):
         print(czml_doc, file=f)
 
 
-def get_named_temporary_filenme(suffix="", dir_name=""):
-    filename = next(tempfile._get_candidate_names()) + suffix
-    if dir_name is None:
-        return filename
-    else:
-        if dir_name == "":
-            dir_name = tempfile._get_default_tempdir()
-        return os.path.join(dir_name, filename)
-
-
 @pytest.mark.parametrize("filename, wsen, remove_output", [(*DEFAULT_TEST_FILE, True)])
 def test_make_czml_png_rectangle_file(filename, wsen, remove_output):
     filename = os.path.join(TESTS_DIR, filename)
     base64_str = filename_content_as_base64(filename)
     packet = make_image_rectangle_packet(wsen, base64_str)
-    out_filename = get_named_temporary_filenme(
-        "_" + os.path.basename(filename) + ".czml"
-    )
+    prefix = "_" + os.path.basename(filename) + ".czml"
+    out_filename = tempfile.mktemp(prefix)
     save_czml_to_file(packet, out_filename)
     exists = os.path.isfile(out_filename)
     if remove_output:
