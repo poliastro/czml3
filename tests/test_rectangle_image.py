@@ -23,6 +23,16 @@ def image():
     return base64_data.decode("utf-8")
 
 
+def test_rectangle_coordinates_invalid_if_nothing_given():
+    with pytest.raises(ValueError) as excinfo:
+        RectangleCoordinates()
+
+    assert (
+        "One of cartesian, cartographicDegrees or cartographicRadians must be given"
+        in excinfo.exconly()
+    )
+
+
 def test_packet_rectangles(image):
     wsen = [20, 40, 21, 41]
 
