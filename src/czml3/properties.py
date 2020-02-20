@@ -295,7 +295,7 @@ class BoxDimensions(BaseCZMLObject, Interpolatable):
 
 # noinspection PyPep8Naming
 @attr.s(repr=False, frozen=True, kw_only=True)
-class CartographicRectangle(BaseCZMLObject, Interpolatable, Deletable):
+class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
 
     """A cartographic rectangle, which conforms to the curvature of the globe and
     can be placed on the surface or at altitude and can optionally be extruded into a volume."""
