@@ -5,12 +5,7 @@ import tempfile
 import pytest
 
 from czml3 import Document, Packet, Preamble
-from czml3.properties import (
-    CartographicRectangle,
-    ImageMaterial,
-    Material,
-    RectangleCoordinates,
-)
+from czml3.properties import ImageMaterial, Material, Rectangle, RectangleCoordinates
 
 
 @pytest.fixture
@@ -61,7 +56,7 @@ def test_packet_rectangles(image):
 
     rectangle_packet = Packet(
         id="id_00",
-        rectangle=CartographicRectangle(
+        rectangle=Rectangle(
             coordinates=RectangleCoordinates(wsenDegrees=wsen),
             fill=True,
             material=Material(
@@ -82,7 +77,7 @@ def test_make_czml_png_rectangle_file(image):
 
     rectangle_packet = Packet(
         id="id_00",
-        rectangle=CartographicRectangle(
+        rectangle=Rectangle(
             coordinates=RectangleCoordinates(wsenDegrees=wsen),
             fill=True,
             material=Material(
