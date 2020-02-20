@@ -293,6 +293,34 @@ class BoxDimensions(BaseCZMLObject, Interpolatable):
     reference = attr.ib(default=None)
 
 
+# noinspection PyPep8Naming
+@attr.s(repr=False, frozen=True, kw_only=True)
+class CartographicRectangle(BaseCZMLObject, Interpolatable, Deletable):
+
+    """A cartographic rectangle, which conforms to the curvature of the globe and
+    can be placed on the surface or at altitude and can optionally be extruded into a volume."""
+
+    coordinates = attr.ib(default=None)
+    fill = attr.ib(default=None)
+    material = attr.ib(default=None)
+
+
+# noinspection PyPep8Naming
+@attr.s(repr=False, frozen=True, kw_only=True)
+class RectangleCoordinates(BaseCZMLObject, Interpolatable, Deletable):
+    """A set of coordinates describing a cartographic rectangle on the surface of the ellipsoid."""
+
+    reference = attr.ib(default=None)
+    wsen = attr.ib(default=None)
+    wsenDegrees = attr.ib(default=None)
+
+    def __attrs_post_init__(self,):
+        if all(val is None for val in (self.wsen, self.wsenDegrees,)):
+            raise ValueError(
+                "One of cartesian, cartographicDegrees or cartographicRadians must be given"
+            )
+
+
 @attr.s(repr=False, frozen=True, kw_only=True)
 class EyeOffset(BaseCZMLObject, Deletable):
     """An offset in eye coordinates which can optionally vary over time.
