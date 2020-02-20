@@ -1,3 +1,7 @@
+# v0.5.3
+
+* Add `Rectangle` and `RectangleCoordinates`
+
 # v0.5.2
 
 * Fix packaging
