@@ -11,8 +11,8 @@
    :target: https://github.com/poliastro/czml3/raw/master/LICENSE
 
 .. |matrix| image:: https://img.shields.io/matrix/poliastro-czml:matrix.org.svg?style=flat-square
-   :alt: Join the chat at https://chat.openastronomy.org/#/room/#poliastro-czml:matrix.org
-   :target: https://chat.openastronomy.org/#/room/#poliastro-czml:matrix.org
+   :alt: Join the chat at https://openastronomy.riot.im/#/room/#poliastro-czml:matrix.org
+   :target: https://openastronomy.riot.im/#/room/#poliastro-czml:matrix.org
 
 |circleci| |codecov| |license| |matrix|
 
@@ -111,7 +111,7 @@ If you find any issue on czml3 or have questions,
 please `open an issue on our repository <https://github.com/poliastro/czml3/issues/new>`_
 and join `our chat`_!
 
-.. _`our chat`: https://chat.openastronomy.org/#/room/#poliastro-czml:matrix.org
+.. _`our chat`: https://openastronomy.riot.im/#/room/#poliastro-czml:matrix.org
 
 Contributing
 ============
