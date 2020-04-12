@@ -11,6 +11,8 @@ from czml3.properties import (
     ClassificationType,
     Color,
     DistanceDisplayCondition,
+    Ellipsoid,
+    EllipsoidRadii,
     EyeOffset,
     GridMaterial,
     ImageMaterial,
@@ -364,6 +366,15 @@ def test_position_cartographic_degrees():
     assert repr(pos) == expected_result
 
 
+def test_position_reference():
+    expected_result = """{
+    "reference": "satellite"
+}"""
+    pos = Position(reference="satellite")
+
+    assert repr(pos) == expected_result
+
+
 def test_single_interval_value():
     expected_result = """{
     "interval": "2019-01-01T00:00:00Z/2019-01-02T00:00:00Z",
@@ -436,3 +447,22 @@ def test_bad_uri_raises_error():
         Uri(uri="a")
 
     assert "uri must be a URL or a data URI" in excinfo.exconly()
+
+
+def test_ellisoid():
+    expected_result = """{
+    "radii": {
+        "cartesian": [
+            20.0,
+            30.0,
+            40.0
+        ]
+    },
+    "fill": false,
+    "outline": true
+}"""
+
+    ell = Ellipsoid(
+        radii=EllipsoidRadii(cartesian=[20.0, 30.0, 40.0]), fill=False, outline=True
+    )
+    assert repr(ell) == expected_result

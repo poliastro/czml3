@@ -138,6 +138,8 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
     cartesian = attr.ib(default=None)
     cartographicRadians = attr.ib(default=None)
     cartographicDegrees = attr.ib(default=None)
+    cartesianVelocity = attr.ib(default=None)
+    reference = attr.ib(default=None)
 
     def __attrs_post_init__(self,):
         if all(
@@ -146,6 +148,8 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
                 self.cartesian,
                 self.cartographicDegrees,
                 self.cartographicRadians,
+                self.cartesianVelocity,
+                self.reference,
             )
         ):
             raise ValueError(
@@ -173,6 +177,77 @@ class EllipsoidRadii(BaseCZMLObject, Interpolatable, Deletable):
 
     cartesian = attr.ib(default=None)
     reference = attr.ib(default=None)
+
+
+@attr.s(repr=False, frozen=True, kw_only=True)
+class Corridor(BaseCZMLObject):
+    """A corridor , which is a shape defined by a centerline and width that conforms to the
+    curvature of the body shape. It can can optionally be extruded into a volume."""
+
+    positions = attr.ib()
+    show = attr.ib(default=None)
+    width = attr.ib()
+    height = attr.ib(default=None)
+    heightReference = attr.ib(default=None)
+    extrudedHeight = attr.ib(default=None)
+    extrudedHeightReference = attr.ib(default=None)
+    cornerType = attr.ib(default=None)
+    granularity = attr.ib(default=None)
+    fill = attr.ib(default=None)
+    material = attr.ib(default=None)
+    outline = attr.ib(default=None)
+    outlineColor = attr.ib(default=None)
+    outlineWidth = attr.ib(default=None)
+    shadows = attr.ib(default=None)
+    distanceDisplayCondition = attr.ib(default=None)
+    classificationType = attr.ib(default=None)
+    zIndex = attr.ib(default=None)
+
+
+@attr.s(repr=False, frozen=True, kw_only=True)
+class Cylinder(BaseCZMLObject):
+    """A cylinder, which is a special cone defined by length, top and bottom radius."""
+
+    length = attr.ib()
+    show = attr.ib(default=None)
+    topRadius = attr.ib()
+    bottomRadius = attr.ib()
+    heightReference = attr.ib(default=None)
+    fill = attr.ib(default=None)
+    material = attr.ib(default=None)
+    outline = attr.ib(default=None)
+    outlineColor = attr.ib(default=None)
+    outlineWidth = attr.ib(default=None)
+    numberOfVerticalLines = attr.ib(default=None)
+    slices = attr.ib(default=None)
+    shadows = attr.ib(default=None)
+    distanceDisplayCondition = attr.ib(default=None)
+
+
+@attr.s(repr=False, frozen=True, kw_only=True)
+class Ellipse(BaseCZMLObject):
+    """An ellipse, which is a close curve, on or above Earth's surface."""
+
+    semiMajorAxis = attr.ib()
+    semiMinorAxis = attr.ib()
+    show = attr.ib(default=None)
+    height = attr.ib(default=None)
+    heightReference = attr.ib(default=None)
+    extrudedHeight = attr.ib(default=None)
+    extrudedHeightReference = attr.ib(default=None)
+    rotation = attr.ib(default=None)
+    stRotation = attr.ib(default=None)
+    granularity = attr.ib(default=None)
+    fill = attr.ib(default=None)
+    material = attr.ib(default=None)
+    outline = attr.ib(default=None)
+    outlineColor = attr.ib(default=None)
+    outlineWidth = attr.ib(default=None)
+    numberOfVerticalLines = attr.ib(default=None)
+    shadows = attr.ib(default=None)
+    distanceDisplayCondition = attr.ib(default=None)
+    classificationType = attr.ib(default=None)
+    zIndex = attr.ib(default=None)
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
@@ -394,6 +469,34 @@ class Point(BaseCZMLObject):
     translucencyByDistance = attr.ib(default=None)
     distanceDisplayCondition = attr.ib(default=None)
     disableDepthTestDistance = attr.ib(default=None)
+
+
+@attr.s(repr=False, frozen=True, kw_only=True)
+class TileSet(BaseCZMLObject):
+    """A 3D Tiles tileset."""
+
+    show = attr.ib(default=None)
+    uri = attr.ib()
+    maximumScreenSpaceError = attr.ib(default=None)
+
+
+@attr.s(repr=False, frozen=True, kw_only=True)
+class Wall(BaseCZMLObject):
+    """A two-dimensional wall defined as a line strip and optional maximum and minimum heights.
+     It  conforms to the curvature of the globe and can be placed along the surface or at altitude."""
+
+    show = attr.ib(default=None)
+    positions = attr.ib()
+    minimumHeights = attr.ib(default=None)
+    maximumHeights = attr.ib(default=None)
+    granularity = attr.ib(default=None)
+    fill = attr.ib(default=None)
+    material = attr.ib(default=None)
+    outline = attr.ib(default=None)
+    outlineColor = attr.ib(default=None)
+    outlineWidth = attr.ib(default=None)
+    shadows = attr.ib(default=None)
+    distanceDisplayCondition = attr.ib(default=None)
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
