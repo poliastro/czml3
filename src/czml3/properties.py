@@ -138,6 +138,8 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
     cartesian = attr.ib(default=None)
     cartographicRadians = attr.ib(default=None)
     cartographicDegrees = attr.ib(default=None)
+    cartesianVelocity = attr.ib(default=None)
+    reference = attr.ib(default=None)
 
     def __attrs_post_init__(self,):
         if all(
@@ -146,6 +148,8 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
                 self.cartesian,
                 self.cartographicDegrees,
                 self.cartographicRadians,
+                self.cartesianVelocity,
+                self.reference,
             )
         ):
             raise ValueError(
