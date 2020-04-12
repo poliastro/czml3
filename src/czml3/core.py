@@ -36,7 +36,13 @@ class Packet(BaseCZMLObject):
     properties = attr.ib(default=None)
     position = attr.ib(default=None)
     orientation = attr.ib(default=None)
+    viewFrom = attr.ib(default=None)
     billboard = attr.ib(default=None)
+    box = attr.ib(default=None)
+    corridor = attr.ib(default=None)
+    cylinder = attr.ib(default=None)
+    ellipse = attr.ib(default=None)
+    ellipsoid = attr.ib(default=None)
     label = attr.ib(default=None)
     model = attr.ib(default=None)
     path = attr.ib(default=None)
@@ -44,6 +50,8 @@ class Packet(BaseCZMLObject):
     polygon = attr.ib(default=None)
     polyline = attr.ib(default=None)
     rectangle = attr.ib(default=None)
+    tileset = attr.ib(default=None)
+    wall = attr.ib(default=None)
 
 
 @attr.s(repr=False, frozen=True)
