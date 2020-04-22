@@ -37,6 +37,13 @@ def test_preamble_has_given_name():
     assert preamble.name == expected_name
 
 
+def test_preamble_has_given_description():
+    expected_description = "czml document description"
+    preamble = Preamble(description=expected_description)
+
+    assert preamble.description == expected_description
+
+
 def test_auto_generated_id():
     packet = Packet()
 
