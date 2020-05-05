@@ -16,6 +16,7 @@ class Preamble(BaseCZMLObject):
 
     version = attr.ib(default=CZML_VERSION)
     name = attr.ib(default=None)
+    description = attr.ib(default=None)
     clock = attr.ib(default=None)
 
 
