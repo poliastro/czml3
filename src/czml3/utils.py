@@ -12,9 +12,9 @@ def get_color_list(timestamps, colors, rgbaf=False):
 
     Parameters
     ----------
-    :param list(str) timestamps: The li"st of the timestamps (ISO 8601 date or seconds since epoch)
+    :param list(str) timestamps: The list of the timestamps (ISO 8601 date or seconds since epoch)
     :param str/int/list colors : A list of valid colors
-    :param bool rgbaf: If set to True, returns rgbaf values, else return rgba
+    :param bool rgbaf: If set to True, returns rgbaf values, else return rgba values
     """
     # Check if colors is a valid list of colors
     if all(Color.is_valid(v) for v in colors):
