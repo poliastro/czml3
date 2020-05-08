@@ -113,7 +113,7 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
             try:
                 n = int(color.rsplit("#")[-1], 16)
                 return 0 <= n <= 0xFFFFFFFF
-            except:
+            except ValueError:
                 return False
         return False
 
