@@ -5,6 +5,20 @@ from czml3.types import RgbafValue, RgbaValue
 from czml3.utils import get_color
 
 
+def test_get_color_list_of_colors():
+    expected_color = [
+        Color(rgba=RgbaValue(values=[255, 204, 0, 255])),
+        Color(rgba=RgbaValue(values=[255, 204, 0, 255])),
+        Color(rgbaf=RgbafValue(values=[1.0, 0.8, 0.0, 1.0])),
+    ]
+    assert get_color(["#ffcc00", 0xFFCC00, [1.0, 0.8, 0.0, 1.0]]) == expected_color
+    assert get_color(["#ffcc00ff", 0xFFCC00FF, [1.0, 0.8, 0.0, 1.0]]) == expected_color
+    assert (
+        get_color([[255, 204, 0], [255, 204, 0, 255], [1.0, 0.8, 0.0, 1.0]])
+        == expected_color
+    )
+
+
 def test_get_color_rgba():
     expected_color = Color(rgba=RgbaValue(values=[255, 204, 0, 255]))
 
@@ -24,7 +38,7 @@ def test_get_color_rgbaf():
     assert get_color([1.0, 0.8, 0.0, 1.0]) == expected_color
 
 
-@pytest.mark.parametrize("input", ["a", [0, 0, 0, 0, 0], [1.0, 1.0]])
+@pytest.mark.parametrize("input", ["a", [0, 0, 0, 0, -300], [0.3, 0.3, 0.1, 1.0, 1.0]])
 def test_get_color_invalid_input_raises_error(input):
     with pytest.raises(ValueError):
         get_color(input)
