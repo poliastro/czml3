@@ -89,8 +89,37 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
     rgbaf = attr.ib(default=None)
 
     @classmethod
+    def is_valid(cls, color):
+        """Determines if the input is a valid color"""
+        # [R, G, B] or [R, G, B, A]
+        if (
+            isinstance(color, list)
+            and all([issubclass(type(v), int) for v in color])
+            and (3 <= len(color) <= 4)
+        ):
+            return all(0 <= v <= 255 for v in color)
+        # [r, g, b] or [r, g, b, a] (float)
+        elif (
+            isinstance(color, list)
+            and all([issubclass(type(v), float) for v in color])
+            and (3 <= len(color) <= 4)
+        ):
+            return all(0 <= v <= 1 for v in color)
+        # Hexadecimal RGBA
+        elif issubclass(type(color), int):
+            return 0 <= color <= 0xFFFFFFFF
+        # RGBA string
+        elif isinstance(color, str):
+            try:
+                n = int(color.rsplit("#")[-1], 16)
+                return 0 <= n <= 0xFFFFFFFF
+            except:
+                return False
+        return False
+
+    @classmethod
     def from_list(cls, color):
-        if all(isinstance(v, int) for v in color):
+        if all(issubclass(type(v), int) for v in color):
             if len(color) == 3:
                 color = color + [255]
             else:
