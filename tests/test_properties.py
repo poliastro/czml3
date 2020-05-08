@@ -36,8 +36,6 @@ from czml3.types import (
     DistanceDisplayConditionValue,
     IntervalValue,
     NearFarScalarValue,
-    RgbafValue,
-    RgbaValue,
     Sequence,
     UnitQuaternionValue,
 )
