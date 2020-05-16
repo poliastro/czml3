@@ -172,6 +172,28 @@ def test_material_solid_color():
     assert repr(pol_mat) == expected_result
 
 
+def test_color_isvalid():
+    assert Color.is_valid([255, 204, 0, 55])
+    assert Color.is_valid([255, 204, 55])
+    assert Color.is_valid(0xFF3223)
+    assert Color.is_valid(32)
+    assert Color.is_valid(0xFF322332)
+    assert Color.is_valid("#FF3223")
+    assert Color.is_valid("#FF322332")
+
+
+def test_color_isvalid_false():
+    assert Color.is_valid([256, 204, 0, 55]) is False
+    assert Color.is_valid([-204, 0, 55]) is False
+    assert Color.is_valid([249.1, 204.3, 55.4]) is False
+    assert Color.is_valid([255, 204]) is False
+    assert Color.is_valid([255, 232, 300]) is False
+    assert Color.is_valid(0xFF3223324) is False
+    assert Color.is_valid(-3) is False
+    assert Color.is_valid("totally valid color") is False
+    assert Color.is_valid("#FF322332432") is False
+
+
 def test_material_image():
     expected_result = """{
     "image": {
