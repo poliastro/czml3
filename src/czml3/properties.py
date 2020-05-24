@@ -16,6 +16,16 @@ class Material(BaseCZMLObject):
     grid = attr.ib(default=None)
     stripe = attr.ib(default=None)
     checkerboard = attr.ib(default=None)
+    polylineOutline = attr.ib(default=None)  # NOTE: Not present in documentation
+
+
+@attr.s(repr=False, frozen=True, kw_only=True)
+class PolylineOutlineMaterial(BaseCZMLObject):
+    """"A definition of how a surface is colored or shaded."""
+
+    color = attr.ib(default=None)
+    outlineColor = attr.ib(default=None)
+    outlineWidth = attr.ib(default=None)
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
