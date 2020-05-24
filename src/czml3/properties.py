@@ -208,6 +208,7 @@ class Billboard(BaseCZMLObject, HasAlignment):
     image = attr.ib()
     show = attr.ib(default=None)
     scale = attr.ib(default=None)
+    eyeOffset = attr.ib(default=None)
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
