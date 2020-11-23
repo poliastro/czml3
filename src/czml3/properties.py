@@ -27,6 +27,14 @@ class PolylineOutlineMaterial(BaseCZMLObject):
     outlineColor = attr.ib(default=None)
     outlineWidth = attr.ib(default=None)
 
+@attr.s(repr=False, frozen=True, kw_only=True)
+class PolylineDashMaterial(BaseCZMLObject):
+    """"A definition of how a polyline should be dashed with two colors"""
+
+    color = attr.ib(default=None)
+    gapColor = attr.ib(default=None)
+    dashLength = attr.ib(default=None)
+    dashPattern = attr.ib(default=None)
 
 @attr.s(repr=False, frozen=True, kw_only=True)
 class PolylineMaterial(BaseCZMLObject):
@@ -37,6 +45,7 @@ class PolylineMaterial(BaseCZMLObject):
     grid = attr.ib(default=None)
     stripe = attr.ib(default=None)
     checkerboard = attr.ib(default=None)
+    polylineDash = attr.ib(default=None)
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
