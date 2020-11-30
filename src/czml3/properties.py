@@ -568,6 +568,7 @@ class Label(BaseCZMLObject, HasAlignment):
     fillColor = attr.ib(default=None)
     outlineColor = attr.ib(default=None)
     outlineWidth = attr.ib(default=1.0)
+    pixelOffset = attr.ib(default=None)
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
