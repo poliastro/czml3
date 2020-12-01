@@ -340,7 +340,7 @@ def test_position_no_values_raises_error():
         Position()
 
     assert (
-        "One of cartesian, cartographicDegrees or cartographicRadians must be given"
+        "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
         in exc.exconly()
     )
 

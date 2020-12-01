@@ -203,7 +203,8 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
             )
         ):
             raise ValueError(
-                "One of cartesian, cartographicDegrees or cartographicRadians must be given"
+                "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
+            )
             )
 
 
