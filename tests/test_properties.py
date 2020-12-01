@@ -29,6 +29,7 @@ from czml3.properties import (
     SolidColorMaterial,
     StripeMaterial,
     Uri,
+    ViewFrom,
 )
 from czml3.types import (
     Cartesian3Value,
@@ -395,6 +396,41 @@ def test_position_reference():
     pos = Position(reference="satellite")
 
     assert repr(pos) == expected_result
+
+
+def test_viewfrom_reference():
+    expected_result = """{
+    "reference": "satellite"
+}"""
+    v = ViewFrom(reference="satellite")
+
+    assert repr(v) == expected_result
+
+
+def test_viewfrom_cartesian():
+    expected_result = """{
+    "cartesian": [
+        -1000,
+        0,
+        300
+    ]
+}"""
+    v = ViewFrom(cartesian=Cartesian3Value(values=[-1000, 0, 300]))
+
+    assert repr(v) == expected_result
+
+
+def test_viewfrom_has_delete():
+    v = ViewFrom(delete=True, cartesian=[])
+
+    assert v.delete
+
+
+def test_viewfrom_no_values_raises_error():
+    with pytest.raises(ValueError) as exc:
+        ViewFrom()
+
+    assert "One of cartesian or reference must be given" in exc.exconly()
 
 
 def test_single_interval_value():
