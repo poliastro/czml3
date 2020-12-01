@@ -205,6 +205,28 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
             raise ValueError(
                 "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
             )
+
+
+# noinspection PyPep8Naming
+@attr.s(repr=False, frozen=True, kw_only=True)
+class ViewFrom(BaseCZMLObject, Interpolatable, Deletable):
+    """suggested initial camera position offset when tracking this object.
+
+    ViewFrom can optionally vary over time."""
+
+    cartesian = attr.ib(default=None)
+    reference = attr.ib(default=None)
+
+    def __attrs_post_init__(self,):
+        if all(
+            val is None
+            for val in (
+                self.cartesian,
+                self.reference,
+            )
+        ):
+            raise ValueError(
+                "One of cartesian or reference must be given"
             )
 
 
