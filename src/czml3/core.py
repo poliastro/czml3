@@ -37,7 +37,7 @@ class Packet(BaseCZMLObject):
     properties = attr.ib(default=None)
     position = attr.ib(default=None)
     orientation = attr.ib(default=None)
-    viewFrom = attr.ib(default=None)
+    viewfrom = attr.ib(default=None)
     billboard = attr.ib(default=None)
     box = attr.ib(default=None)
     corridor = attr.ib(default=None)
