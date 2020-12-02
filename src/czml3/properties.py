@@ -29,6 +29,22 @@ class PolylineOutlineMaterial(BaseCZMLObject):
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
+class PolylineGlowMaterial(BaseCZMLObject):
+    """"A material that fills the surface of a line with a glowing color."""
+
+    color = attr.ib(default=None)
+    glowPower = attr.ib(default=None)
+    taperPower = attr.ib(default=None)
+
+
+@attr.s(repr=False, frozen=True, kw_only=True)
+class PolylineArrowMaterial(BaseCZMLObject):
+    """"A material that fills the surface of a line with an arrow."""
+
+    color = attr.ib(default=None)
+
+
+@attr.s(repr=False, frozen=True, kw_only=True)
 class PolylineDashMaterial(BaseCZMLObject):
     """"A definition of how a polyline should be dashed with two colors"""
 
@@ -203,8 +219,23 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
             )
         ):
             raise ValueError(
-                "One of cartesian, cartographicDegrees or cartographicRadians must be given"
+                "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
             )
+
+
+# noinspection PyPep8Naming
+@attr.s(repr=False, frozen=True, kw_only=True)
+class ViewFrom(BaseCZMLObject, Interpolatable, Deletable):
+    """suggested initial camera position offset when tracking this object.
+
+    ViewFrom can optionally vary over time."""
+
+    cartesian = attr.ib(default=None)
+    reference = attr.ib(default=None)
+
+    def __attrs_post_init__(self,):
+        if all(val is None for val in (self.cartesian, self.reference,)):
+            raise ValueError("One of cartesian or reference must be given")
 
 
 # noinspection PyPep8Naming
