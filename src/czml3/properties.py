@@ -29,6 +29,22 @@ class PolylineOutlineMaterial(BaseCZMLObject):
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
+class PolylineGlowMaterial(BaseCZMLObject):
+    """"A material that fills the surface of a line with a glowing color."""
+
+    color = attr.ib(default=None)
+    glowPower = attr.ib(default=None)
+    taperPower = attr.ib(default=None)
+
+
+@attr.s(repr=False, frozen=True, kw_only=True)
+class PolylineArrowMaterial(BaseCZMLObject):
+    """"A material that fills the surface of a line with an arrow."""
+
+    color = attr.ib(default=None)
+
+
+@attr.s(repr=False, frozen=True, kw_only=True)
 class PolylineDashMaterial(BaseCZMLObject):
     """"A definition of how a polyline should be dashed with two colors"""
 

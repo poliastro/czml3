@@ -22,7 +22,11 @@ from czml3.properties import (
     Orientation,
     Point,
     Polyline,
+    PolylineArrowMaterial,
+    PolylineDashMaterial,
+    PolylineGlowMaterial,
     PolylineMaterial,
+    PolylineOutlineMaterial,
     Position,
     PositionList,
     ShadowMode,
@@ -171,6 +175,100 @@ def test_material_solid_color():
 
     pol_mat = PolylineMaterial(solidColor=SolidColorMaterial.from_list([200, 100, 30]))
     assert repr(pol_mat) == expected_result
+
+
+def test_arrowmaterial_color():
+    expected_result = """{
+    "color": {
+        "rgba": [
+            200,
+            100,
+            30,
+            255
+        ]
+    }
+}"""
+    pamat = PolylineArrowMaterial(color=Color(rgba=[200, 100, 30, 255]))
+
+    assert repr(pamat) == expected_result
+
+
+def test_dashmaterial_colors():
+    expected_result = """{
+    "color": {
+        "rgba": [
+            200,
+            100,
+            30,
+            255
+        ]
+    },
+    "gapColor": {
+        "rgba": [
+            100,
+            200,
+            0,
+            255
+        ]
+    },
+    "dashLength": 16,
+    "dashPattern": 255
+}"""
+    dashmat = PolylineDashMaterial(
+        color=Color(rgba=[200, 100, 30, 255]),
+        gapColor=Color(rgba=[100, 200, 0, 255]),
+        dashLength=16,
+        dashPattern=255,
+    )
+
+    assert repr(dashmat) == expected_result
+
+
+def test_glowmaterial_color():
+    expected_result = """{
+    "color": {
+        "rgba": [
+            200,
+            100,
+            30,
+            255
+        ]
+    },
+    "glowPower": 0.7,
+    "taperPower": 0.3
+}"""
+    glowmat = PolylineGlowMaterial(
+        color=Color(rgba=[200, 100, 30, 255]), glowPower=0.7, taperPower=0.3
+    )
+    assert repr(glowmat) == expected_result
+
+
+def test_outline_material_colors():
+    expected_result = """{
+    "color": {
+        "rgba": [
+            200,
+            100,
+            30,
+            255
+        ]
+    },
+    "outlineColor": {
+        "rgba": [
+            100,
+            200,
+            0,
+            255
+        ]
+    },
+    "outlineWidth": 3
+}"""
+    omat = PolylineOutlineMaterial(
+        color=Color(rgba=[200, 100, 30, 255]),
+        outlineColor=Color(rgba=[100, 200, 0, 255]),
+        outlineWidth=3,
+    )
+    assert repr(omat) == expected_result
 
 
 def test_color_isvalid():
