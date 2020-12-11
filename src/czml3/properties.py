@@ -207,7 +207,7 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
     cartesianVelocity = attr.ib(default=None)
     reference = attr.ib(default=None)
 
-    def __attrs_post_init__(self,):
+    def __attrs_post_init__(self):
         if all(
             val is None
             for val in (
@@ -233,8 +233,14 @@ class ViewFrom(BaseCZMLObject, Interpolatable, Deletable):
     cartesian = attr.ib(default=None)
     reference = attr.ib(default=None)
 
-    def __attrs_post_init__(self,):
-        if all(val is None for val in (self.cartesian, self.reference,)):
+    def __attrs_post_init__(self):
+        if all(
+            val is None
+            for val in (
+                self.cartesian,
+                self.reference,
+            )
+        ):
             raise ValueError("One of cartesian or reference must be given")
 
 
@@ -471,8 +477,14 @@ class RectangleCoordinates(BaseCZMLObject, Interpolatable, Deletable):
     wsen = attr.ib(default=None)
     wsenDegrees = attr.ib(default=None)
 
-    def __attrs_post_init__(self,):
-        if all(val is None for val in (self.wsen, self.wsenDegrees,)):
+    def __attrs_post_init__(self):
+        if all(
+            val is None
+            for val in (
+                self.wsen,
+                self.wsenDegrees,
+            )
+        ):
             raise ValueError(
                 "One of cartesian, cartographicDegrees or cartographicRadians must be given"
             )
@@ -565,7 +577,7 @@ class TileSet(BaseCZMLObject):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class Wall(BaseCZMLObject):
     """A two-dimensional wall defined as a line strip and optional maximum and minimum heights.
-     It  conforms to the curvature of the globe and can be placed along the surface or at altitude."""
+    It conforms to the curvature of the globe and can be placed along the surface or at altitude."""
 
     show = attr.ib(default=None)
     positions = attr.ib()
@@ -583,7 +595,7 @@ class Wall(BaseCZMLObject):
 
 @attr.s(repr=False, frozen=True, kw_only=True)
 class NearFarScalar(BaseCZMLObject, Interpolatable, Deletable):
-    """ A numeric value which will be linearly interpolated between two values based on an object's distance from the
+    """A numeric value which will be linearly interpolated between two values based on an object's distance from the
      camera, in eye coordinates.
 
     The computed value will interpolate between the near value and the far value while the camera distance falls
