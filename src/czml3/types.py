@@ -1,4 +1,5 @@
 import datetime as dt
+from typing import List, Union
 
 import attr
 from dateutil.parser import isoparse as parse_iso_date
@@ -61,7 +62,7 @@ class FontValue(BaseCZMLObject):
         return self.font
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class RgbafValue(BaseCZMLObject):
     """A color specified as an array of color components [Red, Green, Blue, Alpha]
      where each component is in the range 0.0-1.0. If the array has four elements,
@@ -71,7 +72,7 @@ class RgbafValue(BaseCZMLObject):
 
     """
 
-    values = attr.ib()
+    values: List[Union[str, float]] = attr.ib()
 
     @values.validator
     def _check_values(self, attribute, value):
@@ -96,7 +97,7 @@ class RgbafValue(BaseCZMLObject):
         return list(self.values)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class RgbaValue(BaseCZMLObject):
     """A color specified as an array of color components [Red, Green, Blue, Alpha]
     where each component is in the range 0-255. If the array has four elements,
@@ -108,7 +109,7 @@ class RgbaValue(BaseCZMLObject):
 
     """
 
-    values = attr.ib()
+    values: List[Union[str, int]] = attr.ib()
 
     @values.validator
     def _check_values(self, attribute, value):
