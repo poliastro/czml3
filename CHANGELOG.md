@@ -1,3 +1,24 @@
+# v0.5.4
+
+* Add several new properties: `ViewFrom`, `Box`, `Corridor`,
+  `Cylinder`, `Ellipse`, `Ellipsoid`, `TileSet`, `Wall`
+* Add new materials: `PolylineOutlineMaterial`, `PolylineGlowMaterial`,
+  `PolylineArrowMaterial`, `PolylineDashMaterial`
+* Add `Position.cartesianVelocity`, `Billboard.eyeOffset`, and
+  `Label.pixelOffset`
+* Add utilities to create and validate colors: `Color.is_valid`,
+  `utils.get_color_list`
+* Other minor additions and bug fixes
+
+Thanks to all contributors!
+
+- Clément Jonglez
+- Eleftheria Chatziargyriou
+- Idan Miara
+- Joris Olympio
+- Juan Luis Cano Rodríguez
+- Michael Haberler
+
 # v0.5.3
 
 * Add `Rectangle` and `RectangleCoordinates`
