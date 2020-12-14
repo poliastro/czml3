@@ -179,16 +179,20 @@ def test_material_solid_color():
 
 def test_arrowmaterial_color():
     expected_result = """{
-    "color": {
-        "rgba": [
-            200,
-            100,
-            30,
-            255
-        ]
+    "polylineArrow": {
+        "color": {
+            "rgba": [
+                200,
+                100,
+                30,
+                255
+            ]
+        }
     }
 }"""
-    pamat = PolylineArrowMaterial(color=Color(rgba=[200, 100, 30, 255]))
+    pamat = PolylineArrowMaterial(
+        polylineArrow=SolidColorMaterial.from_list([200, 100, 30])
+    )
 
     assert repr(pamat) == expected_result
 
