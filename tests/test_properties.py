@@ -283,6 +283,7 @@ def test_color_isvalid():
     assert Color.is_valid(0xFF322332)
     assert Color.is_valid("#FF3223")
     assert Color.is_valid("#FF322332")
+    assert Color.is_valid((0.127568, 0.566949, 0.550556, 1.0))
 
 
 def test_color_isvalid_false():
@@ -295,6 +296,7 @@ def test_color_isvalid_false():
     assert Color.is_valid(-3) is False
     assert Color.is_valid("totally valid color") is False
     assert Color.is_valid("#FF322332432") is False
+    assert Color.is_valid((0.127568, 0.566949, 0.550556, 1.0,3.0)) is False
 
 
 def test_material_image():
@@ -626,3 +628,15 @@ def test_ellisoid():
         radii=EllipsoidRadii(cartesian=[20.0, 30.0, 40.0]), fill=False, outline=True
     )
     assert repr(ell) == expected_result
+
+def test_color_from_tuple():
+    expected_result = """{
+    "rgba": [
+        0.127568,
+        0.566949,
+        0.550556,
+        1.0
+    ]
+}"""
+    tc = Color(rgba=(0.127568, 0.566949, 0.550556, 1.0))
+    assert repr(tc) == expected_result
