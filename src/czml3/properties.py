@@ -41,7 +41,7 @@ class PolylineGlowMaterial(BaseCZMLObject):
 class PolylineArrowMaterial(BaseCZMLObject):
     """"A material that fills the surface of a line with an arrow."""
 
-    polylineArrow = attr.ib(default=None)
+    color = attr.ib(default=None)
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
