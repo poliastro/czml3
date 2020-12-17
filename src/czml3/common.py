@@ -1,35 +1,36 @@
 # noinspection PyPep8Naming
 import datetime as dt
+from typing import Optional
 
 import attr
 
 from .enums import HorizontalOrigins, InterpolationAlgorithms, VerticalOrigins
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class Deletable:
     """A property whose value may be deleted."""
 
-    delete: bool = attr.ib(default=None)
+    delete: Optional[bool] = None
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class Interpolatable:
     """A property whose value may be determined by interpolating.
 
     The interpolation happens over provided time-tagged samples.
     """
 
-    epoch: dt.datetime = attr.ib(default=None)
-    interpolationAlgorithm: InterpolationAlgorithms = attr.ib(default=None)
-    interpolationDegree: int = attr.ib(default=None)
+    epoch: Optional[dt.datetime] = None
+    interpolationAlgorithm: Optional[InterpolationAlgorithms] = None
+    interpolationDegree: Optional[int] = None
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class HasAlignment:
     """A property that can be horizontally or vertically aligned."""
 
-    horizontalOrigin: HorizontalOrigins = attr.ib(default=None)
-    verticalOrigin: VerticalOrigins = attr.ib(default=None)
+    horizontalOrigin: Optional[HorizontalOrigins] = None
+    verticalOrigin: Optional[VerticalOrigins] = None

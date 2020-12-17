@@ -145,7 +145,7 @@ def test_polyline():
         positions=PositionList(
             cartographicDegrees=CartographicDegreesListValue(values=[20, 30, 10])
         ),
-        arcType=ArcType(arcType="GEODESIC"),
+        arcType=ArcType(arcType=ArcTypes.GEODESIC),
         distanceDisplayCondition=DistanceDisplayCondition(
             distanceDisplayCondition=DistanceDisplayConditionValue(values=[14, 81])
         ),

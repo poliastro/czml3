@@ -1,10 +1,33 @@
+from typing import Any, List, Optional, Union
+
 import attr
 from w3lib.url import is_url, parse_data_uri
 
 from .base import BaseCZMLObject
 from .common import Deletable, HasAlignment, Interpolatable
-from .enums import ClockRanges, ClockSteps, LabelStyles, StripeOrientations
-from .types import RgbafValue, RgbaValue
+from .enums import (
+    ArcTypes,
+    ClassificationTypes,
+    ClockRanges,
+    ClockSteps,
+    LabelStyles,
+    ReferenceFrames,
+    ShadowModes,
+    StripeOrientations,
+)
+from .types import (
+    Cartesian3Value,
+    CartographicDegreesListValue,
+    CartographicDegreesValue,
+    CartographicRadiansListValue,
+    CartographicRadiansValue,
+    DistanceDisplayConditionValue,
+    NearFarScalarValue,
+    ReferenceValue,
+    RgbafValue,
+    RgbaValue,
+    UnitQuaternionValue,
+)
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
@@ -118,12 +141,12 @@ class ImageMaterial(BaseCZMLObject):
     transparent = attr.ib(default=False)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class Color(BaseCZMLObject, Interpolatable, Deletable):
     """A color. The color can optionally vary over time."""
 
-    rgba = attr.ib(default=None)
-    rgbaf = attr.ib(default=None)
+    rgba: Optional[Union[RgbaValue, List[int]]] = None  # TODO: Add classmethod?
+    rgbaf: Optional[RgbafValue] = None
 
     @classmethod
     def is_valid(cls, color):
@@ -200,18 +223,22 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class Position(BaseCZMLObject, Interpolatable, Deletable):
     """Defines a position. The position can optionally vary over time."""
 
-    referenceFrame = attr.ib(default=None)
-    cartesian = attr.ib(default=None)
-    cartographicRadians = attr.ib(default=None)
-    cartographicDegrees = attr.ib(default=None)
-    cartesianVelocity = attr.ib(default=None)
-    reference = attr.ib(default=None)
+    referenceFrame: Optional[ReferenceFrames] = None
+    cartesian: Optional[
+        Union[Cartesian3Value, List[float]]
+    ] = None  # TODO: Add classmethod?
+    cartographicRadians: Optional[CartographicRadiansValue] = None
+    cartographicDegrees: Optional[
+        Union[CartographicDegreesValue, List[float]]
+    ] = None  # TODO: Add classmethod?
+    cartesianVelocity: Optional[Any] = None  # TODO: Implement class
+    reference: Optional[Union[ReferenceValue, str]] = None  # TODO: Add classmethod?
 
-    def __attrs_post_init__(self,):
+    def __attrs_post_init__(self):
         if all(
             val is None
             for val in (
@@ -228,22 +255,30 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class ViewFrom(BaseCZMLObject, Interpolatable, Deletable):
     """suggested initial camera position offset when tracking this object.
 
     ViewFrom can optionally vary over time."""
 
-    cartesian = attr.ib(default=None)
-    reference = attr.ib(default=None)
+    cartesian: Optional[
+        Union[Cartesian3Value, List[float]]
+    ] = None  # TODO: Add classmethod?
+    reference: Optional[Union[ReferenceValue, str]] = None  # TODO: Add classmethod?
 
-    def __attrs_post_init__(self,):
-        if all(val is None for val in (self.cartesian, self.reference,)):
+    def __attrs_post_init__(self):
+        if all(
+            val is None
+            for val in (
+                self.cartesian,
+                self.reference,
+            )
+        ):
             raise ValueError("One of cartesian or reference must be given")
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class Billboard(BaseCZMLObject, HasAlignment):
     """A billboard, or viewport-aligned image.
 
@@ -251,18 +286,20 @@ class Billboard(BaseCZMLObject, HasAlignment):
     A billboard is sometimes called a marker.
     """
 
-    image = attr.ib()
-    show = attr.ib(default=None)
-    scale = attr.ib(default=None)
-    eyeOffset = attr.ib(default=None)
+    image: Union["Uri", str]  # TODO: Add classmethod?
+    show: Optional[bool] = None
+    scale: Optional[float] = None
+    eyeOffset: Optional["EyeOffset"] = None
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class EllipsoidRadii(BaseCZMLObject, Interpolatable, Deletable):
     """The radii of an ellipsoid."""
 
-    cartesian = attr.ib(default=None)
-    reference = attr.ib(default=None)
+    cartesian: Optional[
+        Union[Cartesian3Value, List[float]]
+    ] = None  # TODO: Add classmethod?
+    reference: Optional[Union[ReferenceValue, str]] = None  # TODO: Add classmethod?
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
@@ -274,9 +311,13 @@ class Corridor(BaseCZMLObject):
     show = attr.ib(default=None)
     width = attr.ib()
     height = attr.ib(default=None)
-    heightReference = attr.ib(default=None)
+    heightreference: Optional[
+        Union[ReferenceValue, str]
+    ] = None  # TODO: Add classmethod?
     extrudedHeight = attr.ib(default=None)
-    extrudedHeightReference = attr.ib(default=None)
+    extrudedHeightreference: Optional[
+        Union[ReferenceValue, str]
+    ] = None  # TODO: Add classmethod?
     cornerType = attr.ib(default=None)
     granularity = attr.ib(default=None)
     fill = attr.ib(default=None)
@@ -370,47 +411,51 @@ class Polyline(BaseCZMLObject):
     zIndex = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class ArcType(BaseCZMLObject, Deletable):
     """The type of an arc."""
 
-    arcType = attr.ib(default=None)
-    reference = attr.ib(default=None)
+    arcType: Optional[ArcTypes] = None
+    reference: Optional[Union[ReferenceValue, str]] = None  # TODO: Add classmethod?
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class ShadowMode(BaseCZMLObject, Deletable):
     """Whether or not an object casts or receives shadows from each light source when shadows are enabled."""
 
-    shadowMode = attr.ib(default=None)
-    referenec = attr.ib(default=None)
+    shadowMode: Optional[ShadowModes] = attr.ib(default=None)
+    reference: Optional[Union[ReferenceValue, str]] = None  # TODO: Add classmethod?
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class ClassificationType(BaseCZMLObject, Deletable):
     """Whether a classification affects terrain, 3D Tiles, or both."""
 
-    classificationType = attr.ib(default=None)
-    reference = attr.ib(default=None)
+    classificationType: Optional[ClassificationTypes] = None
+    reference: Optional[Union[ReferenceValue, str]] = None  # TODO: Add classmethod?
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class DistanceDisplayCondition(BaseCZMLObject, Interpolatable, Deletable):
     """Indicates the visibility of an object based on the distance to the camera."""
 
-    distanceDisplayCondition = attr.ib(default=None)
-    reference = attr.ib(default=None)
+    distanceDisplayCondition: Optional[DistanceDisplayConditionValue] = None
+    reference: Optional[Union[ReferenceValue, str]] = None  # TODO: Add classmethod?
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class PositionList(BaseCZMLObject, Deletable):
     """A list of positions."""
 
-    referenceFrame = attr.ib(default=None)
-    cartesian = attr.ib(default=None)
-    cartographicRadians = attr.ib(default=None)
-    cartographicDegrees = attr.ib(default=None)
-    references = attr.ib(default=None)
+    referenceFrame: Optional[ReferenceFrames] = None
+    cartesian: Optional[Any] = None  # TODO: Implement class
+    cartographicRadians: Optional[
+        Union[CartographicRadiansListValue, List[float]]
+    ] = None  # TODO: Add classmethod?
+    cartographicDegrees: Optional[
+        Union[CartographicDegreesListValue, List[float]]
+    ] = None  # TODO: Add classmethod?
+    references: Optional[Any] = None  # TODO: Implement class
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
@@ -446,43 +491,49 @@ class Box(BaseCZMLObject):
     distanceDisplayCondition = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class BoxDimensions(BaseCZMLObject, Interpolatable):
     """The width, depth, and height of a box."""
 
-    cartesian = attr.ib(default=None)
-    reference = attr.ib(default=None)
+    cartesian: Optional[Cartesian3Value] = None
+    reference: Optional[Union[ReferenceValue, str]] = None  # TODO: Add classmethod?
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
 
     """A cartographic rectangle, which conforms to the curvature of the globe and
     can be placed on the surface or at altitude and can optionally be extruded into a volume."""
 
-    coordinates = attr.ib(default=None)
-    fill = attr.ib(default=None)
-    material = attr.ib(default=None)
+    coordinates: Optional["RectangleCoordinates"] = None
+    fill: Optional[bool] = True
+    material: Optional[Material] = None
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class RectangleCoordinates(BaseCZMLObject, Interpolatable, Deletable):
     """A set of coordinates describing a cartographic rectangle on the surface of the ellipsoid."""
 
-    reference = attr.ib(default=None)
-    wsen = attr.ib(default=None)
-    wsenDegrees = attr.ib(default=None)
+    reference: Optional[Union[ReferenceValue, str]] = None  # TODO: Add classmethod?
+    wsen: Optional[Any] = None  # TODO: Implement class
+    wsenDegrees: Optional[Any] = None  # TODO: Implement class
 
-    def __attrs_post_init__(self,):
-        if all(val is None for val in (self.wsen, self.wsenDegrees,)):
+    def __attrs_post_init__(self):
+        if all(
+            val is None
+            for val in (
+                self.wsen,
+                self.wsenDegrees,
+            )
+        ):
             raise ValueError(
                 "One of cartesian, cartographicDegrees or cartographicRadians must be given"
             )
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class EyeOffset(BaseCZMLObject, Deletable):
     """An offset in eye coordinates which can optionally vary over time.
 
@@ -492,16 +543,16 @@ class EyeOffset(BaseCZMLObject, Deletable):
 
     """
 
-    cartesian = attr.ib(default=None)
-    reference = attr.ib(default=None)
+    cartesian: Optional[Cartesian3Value] = None
+    reference: Optional[Union[ReferenceValue, str]] = None  # TODO: Add classmethod?
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class HeightReference(BaseCZMLObject, Deletable):
     """The height reference of an object, which indicates if the object's position is relative to terrain or not."""
 
-    heightReference = attr.ib(default=None)
-    reference = attr.ib(default=None)
+    heightReference: Optional[Any] = None  # TODO: Implement class
+    reference: Optional[Union[ReferenceValue, str]] = None  # TODO: Add classmethod?
 
 
 # noinspection PyPep8Naming
@@ -569,7 +620,7 @@ class TileSet(BaseCZMLObject):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class Wall(BaseCZMLObject):
     """A two-dimensional wall defined as a line strip and optional maximum and minimum heights.
-     It  conforms to the curvature of the globe and can be placed along the surface or at altitude."""
+    It conforms to the curvature of the globe and can be placed along the surface or at altitude."""
 
     show = attr.ib(default=None)
     positions = attr.ib()
@@ -585,9 +636,9 @@ class Wall(BaseCZMLObject):
     distanceDisplayCondition = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class NearFarScalar(BaseCZMLObject, Interpolatable, Deletable):
-    """ A numeric value which will be linearly interpolated between two values based on an object's distance from the
+    """A numeric value which will be linearly interpolated between two values based on an object's distance from the
      camera, in eye coordinates.
 
     The computed value will interpolate between the near value and the far value while the camera distance falls
@@ -595,29 +646,29 @@ class NearFarScalar(BaseCZMLObject, Interpolatable, Deletable):
     less than the near distance or greater than the far distance, respectively.
     """
 
-    nearFarScalar = attr.ib(default=None)
-    reference = attr.ib(default=None)
+    nearFarScalar: Optional[NearFarScalarValue] = None
+    reference: Optional[Union[ReferenceValue, str]] = None  # TODO: Add classmethod?
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class Label(BaseCZMLObject, HasAlignment):
     """A string of text."""
 
-    show = attr.ib(default=True)
-    text = attr.ib(default=None)
-    font = attr.ib(default=None)
-    style = attr.ib(default=LabelStyles.FILL)
-    scale = attr.ib(default=None)
-    showBackground = attr.ib(default=None)
-    backgroundColor = attr.ib(default=None)
-    fillColor = attr.ib(default=None)
-    outlineColor = attr.ib(default=None)
-    outlineWidth = attr.ib(default=1.0)
-    pixelOffset = attr.ib(default=None)
+    show: bool = True
+    text: Optional[str] = None
+    font: Optional[str] = None
+    style: LabelStyles = LabelStyles.FILL
+    scale: Optional[float] = None
+    showBackground: Optional[bool] = None
+    backgroundColor: Optional[Color] = None
+    fillColor: Optional[Color] = None
+    outlineColor: Optional[Color] = None
+    outlineWidth: float = 1.0
+    pixelOffset: Optional[Any] = None  # TODO: Implement class
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class Orientation(BaseCZMLObject, Interpolatable, Deletable):
     """Defines an orientation.
 
@@ -626,9 +677,9 @@ class Orientation(BaseCZMLObject, Interpolatable, Deletable):
 
     """
 
-    unitQuaternion = attr.ib(default=None)
-    reference = attr.ib(default=None)
-    velocityReference = attr.ib(default=None)
+    unitQuaternion: Optional[UnitQuaternionValue] = None
+    reference: Optional[Union[ReferenceValue, str]] = None  # TODO: Add classmethod?
+    velocityReference: Optional[Any] = None  # TODO: Implement class
 
 
 @attr.s(repr=False, frozen=True, kw_only=True)
@@ -654,14 +705,14 @@ class Model(BaseCZMLObject):
     articulations = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(auto_attribs=True, repr=False, frozen=True, kw_only=True)
 class Uri(BaseCZMLObject, Deletable):
     """A URI value.
 
     The URI can optionally vary with time.
     """
 
-    uri = attr.ib(default=None)
+    uri: Optional[str] = None
 
     @uri.validator
     def _check_uri(self, attribute, value):

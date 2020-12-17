@@ -27,7 +27,7 @@ def get_color_list(timestamps, colors, rgbaf=False):
         color_r = (
             lambda c: c.rgbaf.values
             if c.rgbaf
-            else list(map(lambda x: x / 255, c.rgba.values))
+            else list(map(lambda x: float(x / 255), c.rgba.values))
         )
     else:
         color_r = (

@@ -141,7 +141,7 @@ def test_bad_rgba_4_values_raises_error():
 def test_bad_rgba_5_color_values_raises_error():
 
     with pytest.raises(ValueError) as excinfo:
-        RgbaValue(values=[0, 0.1, 0.3, 0.3, 255])
+        RgbaValue(values=[0, 0.1, 0.3, 0.3, 255])  # type: ignore
 
     assert "Color values must be integers in the range 0-255." in excinfo.exconly()
 
