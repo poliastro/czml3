@@ -7,7 +7,7 @@ from .enums import ClockRanges, ClockSteps, LabelStyles, StripeOrientations
 from .types import RgbafValue, RgbaValue
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Material(BaseCZMLObject):
     """A definition of how a surface is colored or shaded."""
 
@@ -19,7 +19,7 @@ class Material(BaseCZMLObject):
     polylineOutline = attr.ib(default=None)  # NOTE: Not present in documentation
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class PolylineOutlineMaterial(BaseCZMLObject):
     """"A definition of how a surface is colored or shaded."""
 
@@ -28,7 +28,7 @@ class PolylineOutlineMaterial(BaseCZMLObject):
     outlineWidth = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class PolylineGlowMaterial(BaseCZMLObject):
     """"A material that fills the surface of a line with a glowing color."""
 
@@ -37,14 +37,14 @@ class PolylineGlowMaterial(BaseCZMLObject):
     taperPower = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class PolylineArrowMaterial(BaseCZMLObject):
     """"A material that fills the surface of a line with an arrow."""
 
     color = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class PolylineDashMaterial(BaseCZMLObject):
     """"A definition of how a polyline should be dashed with two colors"""
 
@@ -54,7 +54,7 @@ class PolylineDashMaterial(BaseCZMLObject):
     dashPattern = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class PolylineMaterial(BaseCZMLObject):
     """"A definition of how a surface is colored or shaded."""
 
@@ -66,7 +66,7 @@ class PolylineMaterial(BaseCZMLObject):
     polylineDash = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class SolidColorMaterial(BaseCZMLObject):
     """A material that fills the surface with a solid color."""
 
@@ -77,7 +77,7 @@ class SolidColorMaterial(BaseCZMLObject):
         return cls(color=Color.from_list(color))
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class GridMaterial(BaseCZMLObject):
     """A material that fills the surface with a two-dimensional grid."""
 
@@ -88,7 +88,7 @@ class GridMaterial(BaseCZMLObject):
     lineOffset = attr.ib(default=[0.0, 0.0])
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class StripeMaterial(BaseCZMLObject):
     """A material that fills the surface with alternating colors."""
 
@@ -99,7 +99,7 @@ class StripeMaterial(BaseCZMLObject):
     repeat = attr.ib(default=1.0)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class CheckerboardMaterial(BaseCZMLObject):
     """A material that fills the surface with alternating colors."""
 
@@ -108,7 +108,7 @@ class CheckerboardMaterial(BaseCZMLObject):
     repeat = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class ImageMaterial(BaseCZMLObject):
     """A material that fills the surface with an image."""
 
@@ -118,7 +118,7 @@ class ImageMaterial(BaseCZMLObject):
     transparent = attr.ib(default=False)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Color(BaseCZMLObject, Interpolatable, Deletable):
     """A color. The color can optionally vary over time."""
 
@@ -200,7 +200,7 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Position(BaseCZMLObject, Interpolatable, Deletable):
     """Defines a position. The position can optionally vary over time."""
 
@@ -228,7 +228,7 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class ViewFrom(BaseCZMLObject, Interpolatable, Deletable):
     """suggested initial camera position offset when tracking this object.
 
@@ -243,7 +243,7 @@ class ViewFrom(BaseCZMLObject, Interpolatable, Deletable):
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Billboard(BaseCZMLObject, HasAlignment):
     """A billboard, or viewport-aligned image.
 
@@ -257,7 +257,7 @@ class Billboard(BaseCZMLObject, HasAlignment):
     eyeOffset = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class EllipsoidRadii(BaseCZMLObject, Interpolatable, Deletable):
     """The radii of an ellipsoid."""
 
@@ -265,7 +265,7 @@ class EllipsoidRadii(BaseCZMLObject, Interpolatable, Deletable):
     reference = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Corridor(BaseCZMLObject):
     """A corridor , which is a shape defined by a centerline and width that conforms to the
     curvature of the body shape. It can can optionally be extruded into a volume."""
@@ -290,7 +290,7 @@ class Corridor(BaseCZMLObject):
     zIndex = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Cylinder(BaseCZMLObject):
     """A cylinder, which is a special cone defined by length, top and bottom radius."""
 
@@ -310,7 +310,7 @@ class Cylinder(BaseCZMLObject):
     distanceDisplayCondition = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Ellipse(BaseCZMLObject):
     """An ellipse, which is a close curve, on or above Earth's surface."""
 
@@ -336,7 +336,7 @@ class Ellipse(BaseCZMLObject):
     zIndex = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Polygon(BaseCZMLObject):
     """A polygon, which is a closed figure on the surface of the Earth."""
 
@@ -351,7 +351,7 @@ class Polygon(BaseCZMLObject):
     zIndex = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Polyline(BaseCZMLObject):
     """A polyline, which is a line in the scene composed of multiple segments."""
 
@@ -370,7 +370,7 @@ class Polyline(BaseCZMLObject):
     zIndex = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class ArcType(BaseCZMLObject, Deletable):
     """The type of an arc."""
 
@@ -378,7 +378,7 @@ class ArcType(BaseCZMLObject, Deletable):
     reference = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class ShadowMode(BaseCZMLObject, Deletable):
     """Whether or not an object casts or receives shadows from each light source when shadows are enabled."""
 
@@ -386,7 +386,7 @@ class ShadowMode(BaseCZMLObject, Deletable):
     referenec = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class ClassificationType(BaseCZMLObject, Deletable):
     """Whether a classification affects terrain, 3D Tiles, or both."""
 
@@ -394,7 +394,7 @@ class ClassificationType(BaseCZMLObject, Deletable):
     reference = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class DistanceDisplayCondition(BaseCZMLObject, Interpolatable, Deletable):
     """Indicates the visibility of an object based on the distance to the camera."""
 
@@ -402,7 +402,7 @@ class DistanceDisplayCondition(BaseCZMLObject, Interpolatable, Deletable):
     reference = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class PositionList(BaseCZMLObject, Deletable):
     """A list of positions."""
 
@@ -413,7 +413,7 @@ class PositionList(BaseCZMLObject, Deletable):
     references = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Ellipsoid(BaseCZMLObject):
     """A closed quadric surface that is a three-dimensional analogue of an ellipse."""
 
@@ -430,7 +430,7 @@ class Ellipsoid(BaseCZMLObject):
     subdivisions = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Box(BaseCZMLObject):
     """A box, which is a closed rectangular cuboid."""
 
@@ -446,7 +446,7 @@ class Box(BaseCZMLObject):
     distanceDisplayCondition = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class BoxDimensions(BaseCZMLObject, Interpolatable):
     """The width, depth, and height of a box."""
 
@@ -455,7 +455,7 @@ class BoxDimensions(BaseCZMLObject, Interpolatable):
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
 
     """A cartographic rectangle, which conforms to the curvature of the globe and
@@ -467,7 +467,7 @@ class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class RectangleCoordinates(BaseCZMLObject, Interpolatable, Deletable):
     """A set of coordinates describing a cartographic rectangle on the surface of the ellipsoid."""
 
@@ -482,7 +482,7 @@ class RectangleCoordinates(BaseCZMLObject, Interpolatable, Deletable):
             )
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class EyeOffset(BaseCZMLObject, Deletable):
     """An offset in eye coordinates which can optionally vary over time.
 
@@ -496,7 +496,7 @@ class EyeOffset(BaseCZMLObject, Deletable):
     reference = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class HeightReference(BaseCZMLObject, Deletable):
     """The height reference of an object, which indicates if the object's position is relative to terrain or not."""
 
@@ -505,7 +505,7 @@ class HeightReference(BaseCZMLObject, Deletable):
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Clock(BaseCZMLObject):
     """Initial settings for a simulated clock when a document is loaded.
 
@@ -520,7 +520,7 @@ class Clock(BaseCZMLObject):
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Path(BaseCZMLObject):
     """A path, which is a polyline defined by the motion of an object over time.
 
@@ -541,7 +541,7 @@ class Path(BaseCZMLObject):
     distanceDisplayCondition = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Point(BaseCZMLObject):
     """A point, or viewport-aligned circle."""
 
@@ -557,7 +557,7 @@ class Point(BaseCZMLObject):
     disableDepthTestDistance = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class TileSet(BaseCZMLObject):
     """A 3D Tiles tileset."""
 
@@ -566,7 +566,7 @@ class TileSet(BaseCZMLObject):
     maximumScreenSpaceError = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Wall(BaseCZMLObject):
     """A two-dimensional wall defined as a line strip and optional maximum and minimum heights.
     It conforms to the curvature of the globe and can be placed along the surface or at altitude."""
@@ -585,7 +585,7 @@ class Wall(BaseCZMLObject):
     distanceDisplayCondition = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class NearFarScalar(BaseCZMLObject, Interpolatable, Deletable):
     """A numeric value which will be linearly interpolated between two values based on an object's distance from the
      camera, in eye coordinates.
@@ -600,7 +600,7 @@ class NearFarScalar(BaseCZMLObject, Interpolatable, Deletable):
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Label(BaseCZMLObject, HasAlignment):
     """A string of text."""
 
@@ -617,7 +617,7 @@ class Label(BaseCZMLObject, HasAlignment):
     pixelOffset = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Orientation(BaseCZMLObject, Interpolatable, Deletable):
     """Defines an orientation.
 
@@ -631,7 +631,7 @@ class Orientation(BaseCZMLObject, Interpolatable, Deletable):
     velocityReference = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Model(BaseCZMLObject):
     """A 3D model."""
 
@@ -654,7 +654,7 @@ class Model(BaseCZMLObject):
     articulations = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Uri(BaseCZMLObject, Deletable):
     """A URI value.
 
