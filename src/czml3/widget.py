@@ -4,9 +4,19 @@ import attr
 
 from .core import Document, Preamble
 
+TERRAIN = {
+    "Cesium": "Cesium.createWorldTerrain()",
+    "Ellipsoid": "new Cesium.EllipsoidTerrainProvider()",
+}
+
+IMAGERY = {
+    "Bing_Aerial": "Cesium.createWorldImagery()",
+    "OSM": "new Cesium.OpenStreetMapImageryProvider()",
+}
+
 CESIUM_TPL = """
 <link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/{cesium_version}/Build/Cesium/Widgets/widgets.css" type="text/css">
-<div id="cesiumContainer-{container_id}" style="width:100%; height:100%;"></div>
+<div id="cesiumContainer-{container_id}" style="width:100%; height:{widget_height};"></div>
 <script type="text/javascript">
 {script}
 </script>"""
@@ -35,6 +45,8 @@ require(['cesium'], function (Cesium) {{
         Cesium.Ion.defaultAccessToken = ion_token;
     }}
     var viewer = new Cesium.Viewer('cesiumContainer-{container_id}', {{
+        terrainProvider: {terrain},
+        imageryProvider: {imagery},
         shouldAnimate : true
     }});
 
@@ -65,8 +77,10 @@ require(['cesium'], function (Cesium) {{
 @attr.s
 class CZMLWidget:
     document = attr.ib(default=Document([Preamble()]))
-    cesium_version = attr.ib(default="1.64")
+    cesium_version = attr.ib(default="1.76")
     ion_token = attr.ib(default="")
+    terrain = attr.ib(default=TERRAIN["Cesium"])
+    imagery = attr.ib(default=IMAGERY["Bing_Aerial"])
 
     _container_id = attr.ib(factory=uuid4)
 
@@ -76,13 +90,16 @@ class CZMLWidget:
             czml=self.document.dumps(),
             container_id=self._container_id,
             ion_token=self.ion_token,
+            terrain=self.terrain,
+            imagery=self.imagery,
         )
 
-    def to_html(self):
+    def to_html(self, widget_height="400px"):
         return CESIUM_TPL.format(
             cesium_version=self.cesium_version,
             script=self.build_script(),
             container_id=self._container_id,
+            widget_height=widget_height,
         )
 
     def _repr_html_(self):
