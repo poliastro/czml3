@@ -6,7 +6,7 @@ from .core import Document, Preamble
 
 CESIUM_TPL = """
 <link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/{cesium_version}/Build/Cesium/Widgets/widgets.css" type="text/css">
-<div id="cesiumContainer-{container_id}" style="width:100%; height:100%;"></div>
+<div id="cesiumContainer-{container_id}" style="width:100%; height:{widget_height};"></div>
 <script type="text/javascript">
 {script}
 </script>"""
@@ -78,11 +78,12 @@ class CZMLWidget:
             ion_token=self.ion_token,
         )
 
-    def to_html(self):
+    def to_html(self, widget_height="400px"):
         return CESIUM_TPL.format(
             cesium_version=self.cesium_version,
             script=self.build_script(),
             container_id=self._container_id,
+            widget_height=widget_height,
         )
 
     def _repr_html_(self):
