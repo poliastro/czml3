@@ -63,7 +63,7 @@ def test_packet_repr_id_only():
 }"""
     packet = Packet(id="id_00")
 
-    assert repr(packet) == expected_result
+    assert str(packet) == expected_result
 
 
 def test_packet_label():
@@ -102,7 +102,7 @@ def test_packet_label():
         ),
     )
 
-    assert repr(packet) == expected_result
+    assert str(packet) == expected_result
 
 
 def test_packet_repr_id_name():
@@ -112,7 +112,7 @@ def test_packet_repr_id_name():
 }"""
     packet = Packet(id="id_00", name="Test Packet")
 
-    assert repr(packet) == expected_result
+    assert str(packet) == expected_result
 
 
 def test_packet_with_delete_has_nothing_else():
@@ -122,7 +122,7 @@ def test_packet_with_delete_has_nothing_else():
 }"""
     packet = Packet(id="id_00", delete=True, name="No Name In Packet")
 
-    assert repr(packet) == expected_result
+    assert str(packet) == expected_result
 
 
 def test_packet_dumps():
@@ -161,7 +161,7 @@ def test_packet_constant_cartesian_position_perfect():
 }"""
     packet = Packet(id="MyObject", position=Position(cartesian=[0.0, 0.0, 0.0]))
 
-    assert repr(packet) == expected_result
+    assert str(packet) == expected_result
 
 
 def test_packet_constant_cartesian_position():
@@ -177,7 +177,7 @@ def test_packet_constant_cartesian_position():
 }"""
     packet = Packet(id="MyObject", position=Position(cartesian=[0.0, 0.0, 0.0]))
 
-    assert repr(packet) == expected_result
+    assert str(packet) == expected_result
 
 
 @pytest.mark.xfail
@@ -214,7 +214,7 @@ def test_packet_dynamic_cartesian_position_perfect():
         ),
     )
 
-    assert repr(packet) == expected_result
+    assert str(packet) == expected_result
 
 
 def test_packet_dynamic_cartesian_position():
@@ -253,7 +253,7 @@ def test_packet_dynamic_cartesian_position():
         ),
     )
 
-    assert repr(packet) == expected_result
+    assert str(packet) == expected_result
 
 
 def test_packet_description():
@@ -266,7 +266,7 @@ def test_packet_description():
     packet_str = Packet(id="id_00", name="Name", description=string)
     packet_val = Packet(id="id_00", name="Name", description=StringValue(string=string))
 
-    assert repr(packet_str) == repr(packet_val) == expected_result
+    assert str(packet_str) == str(packet_val) == expected_result
 
 
 def test_packet_custom_properties():
@@ -300,7 +300,7 @@ def test_packet_custom_properties():
 
     packet = Packet(id="id_00", properties=prop_dict)
 
-    assert repr(packet) == expected_result
+    assert str(packet) == expected_result
 
 
 def test_packet_billboard():
@@ -312,7 +312,7 @@ def test_packet_billboard():
 }"""
     packet = Packet(id="id_00", billboard=Billboard(image="file://image.png"))
 
-    assert repr(packet) == expected_result
+    assert str(packet) == expected_result
 
 
 def test_packet_point():
@@ -331,7 +331,7 @@ def test_packet_point():
 }"""
     packet = Packet(id="id_00", point=Point(color=Color.from_list([255, 0, 0, 255])))
 
-    assert repr(packet) == expected_result
+    assert str(packet) == expected_result
 
 
 def test_packet_polyline():
@@ -374,7 +374,7 @@ def test_packet_polyline():
         ),
     )
 
-    assert repr(packet) == expected_result
+    assert str(packet) == expected_result
 
 
 def test_packet_polygon():
@@ -442,4 +442,4 @@ def test_packet_polygon():
         ),
     )
 
-    assert repr(packet) == expected_result
+    assert str(packet) == expected_result

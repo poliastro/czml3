@@ -6,7 +6,7 @@ import attr
 from .enums import HorizontalOrigins, InterpolationAlgorithms, VerticalOrigins
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Deletable:
     """A property whose value may be deleted."""
 
@@ -14,7 +14,7 @@ class Deletable:
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Interpolatable:
     """A property whose value may be determined by interpolating.
 
@@ -27,7 +27,7 @@ class Interpolatable:
 
 
 # noinspection PyPep8Naming
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class HasAlignment:
     """A property that can be horizontally or vertically aligned."""
 

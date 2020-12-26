@@ -30,7 +30,7 @@ def format_datetime_like(dt_object):
     return result
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class _TimeTaggedCoords(BaseCZMLObject):
 
     NUM_COORDS: int
@@ -51,7 +51,7 @@ class _TimeTaggedCoords(BaseCZMLObject):
         return list(self.values)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class FontValue(BaseCZMLObject):
     """A font, specified using the same syntax as the CSS "font" property."""
 
@@ -61,7 +61,7 @@ class FontValue(BaseCZMLObject):
         return self.font
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class RgbafValue(BaseCZMLObject):
     """A color specified as an array of color components [Red, Green, Blue, Alpha]
      where each component is in the range 0.0-1.0. If the array has four elements,
@@ -96,7 +96,7 @@ class RgbafValue(BaseCZMLObject):
         return list(self.values)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class RgbaValue(BaseCZMLObject):
     """A color specified as an array of color components [Red, Green, Blue, Alpha]
     where each component is in the range 0-255. If the array has four elements,
@@ -135,7 +135,7 @@ class RgbaValue(BaseCZMLObject):
         return list(self.values)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class ReferenceValue(BaseCZMLObject):
     """Represents a reference to another property. References can be used to specify that two properties on different
     objects are in fact, the same property.
@@ -157,7 +157,7 @@ class ReferenceValue(BaseCZMLObject):
         return self.string
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Cartesian3Value(_TimeTaggedCoords):
     """A three-dimensional Cartesian value specified as [X, Y, Z].
 
@@ -171,7 +171,7 @@ class Cartesian3Value(_TimeTaggedCoords):
     NUM_COORDS = 3
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class CartographicRadiansValue(_TimeTaggedCoords):
     """A geodetic, WGS84 position specified as [Longitude, Latitude, Height].
 
@@ -186,7 +186,7 @@ class CartographicRadiansValue(_TimeTaggedCoords):
     NUM_COORDS = 3
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class CartographicDegreesValue(_TimeTaggedCoords):
     """A geodetic, WGS84 position specified as [Longitude, Latitude, Height].
 
@@ -201,7 +201,7 @@ class CartographicDegreesValue(_TimeTaggedCoords):
     NUM_COORDS = 3
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class StringValue(BaseCZMLObject):
     """A string value.
 
@@ -214,7 +214,7 @@ class StringValue(BaseCZMLObject):
         return self.string
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class CartographicRadiansListValue(BaseCZMLObject):
     """A list of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...],
     where Longitude and Latitude are in radians and Height is in meters."""
@@ -232,7 +232,7 @@ class CartographicRadiansListValue(BaseCZMLObject):
         return list(self.values)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class CartographicDegreesListValue(BaseCZMLObject):
     """A list of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...],
     where Longitude and Latitude are in degrees and Height is in meters."""
@@ -250,7 +250,7 @@ class CartographicDegreesListValue(BaseCZMLObject):
         return list(self.values)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class DistanceDisplayConditionValue(BaseCZMLObject):
     """A value indicating the visibility of an object based on the distance to the camera, specified as two values
     [NearDistance, FarDistance]. If the array has two elements, the value is constant. If it has three or more elements,
@@ -271,7 +271,7 @@ class DistanceDisplayConditionValue(BaseCZMLObject):
         return list(self.values)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class NearFarScalarValue(BaseCZMLObject):
     """A near-far scalar value specified as four values [NearDistance, NearValue, FarDistance, FarValue].
 
@@ -294,7 +294,7 @@ class NearFarScalarValue(BaseCZMLObject):
         return list(self.values)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class TimeInterval(BaseCZMLObject):
     """A time interval, specified in ISO8601 interval format."""
 
@@ -315,7 +315,7 @@ class TimeInterval(BaseCZMLObject):
         return "{start}/{end}".format(start=start, end=end)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class IntervalValue(BaseCZMLObject):
     """Value over some interval."""
 
@@ -335,7 +335,7 @@ class IntervalValue(BaseCZMLObject):
         return obj_dict
 
 
-@attr.s(repr=False, frozen=True)
+@attr.s(str=False, frozen=True)
 class Sequence(BaseCZMLObject):
     """Sequence, list, array of objects."""
 
@@ -345,7 +345,7 @@ class Sequence(BaseCZMLObject):
         return list(self._values)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class UnitQuaternionValue(_TimeTaggedCoords):
     """A set of 4-dimensional coordinates used to represent rotation in 3-dimensional space.
 

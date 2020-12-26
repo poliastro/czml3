@@ -25,9 +25,9 @@ class CZMLEncoder(JSONEncoder):
         return super().default(o)
 
 
-@attr.s(repr=False, frozen=True)
+@attr.s(str=False, frozen=True)
 class BaseCZMLObject:
-    def __repr__(self):
+    def __str__(self):
         return self.dumps(indent=4)
 
     def dumps(self, *args, **kwargs):

@@ -54,12 +54,12 @@ When using czml3 in an interactive interpreter,
 all objects show as nice CZML (JSON)::
 
   >>> from czml3 import Packet
-  >>> Packet()
+  >>> print(Packet())
   {
       "id": "adae4d3a-7087-4fda-a70b-d18a262a890e"
   }
   >>> packet0 = Packet(id="Facility/AGI", name="AGI")
-  >>> packet0
+  >>> print(packet0)
   {
       "id": "Facility/AGI",
       "name": "AGI"
@@ -70,7 +70,7 @@ all objects show as nice CZML (JSON)::
 And there are more complex examples available::
 
   >>> from czml3.examples import simple
-  >>> simple
+  >>> print(simple)
   [
       {
           "id": "document",

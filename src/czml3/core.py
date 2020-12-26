@@ -8,7 +8,7 @@ from .types import Sequence
 CZML_VERSION = "1.0"
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Preamble(BaseCZMLObject):
     """The preamble packet."""
 
@@ -20,7 +20,7 @@ class Preamble(BaseCZMLObject):
     clock = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True)
 class Packet(BaseCZMLObject):
     """A CZML Packet.
 
@@ -55,7 +55,7 @@ class Packet(BaseCZMLObject):
     wall = attr.ib(default=None)
 
 
-@attr.s(repr=False, frozen=True)
+@attr.s(str=False, frozen=True)
 class Document(Sequence):
     """A CZML document, consisting on a list of packets."""
 

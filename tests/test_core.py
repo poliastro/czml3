@@ -9,4 +9,4 @@ def test_empty_preamble_has_id_and_version():
 
     packet = Preamble()
 
-    assert repr(packet) == expected_result
+    assert str(packet) == expected_result

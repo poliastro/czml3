@@ -22,7 +22,7 @@ def test_doc_repr():
 
     document = Document([packet])
 
-    assert repr(document) == expected_result
+    assert str(document) == expected_result
 
 
 def test_doc_dumps():

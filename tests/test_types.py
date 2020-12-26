@@ -42,7 +42,7 @@ def test_distance_display_condition():
     dist = DistanceDisplayConditionValue(
         values=[0, 150, 15000000, 300, 10000, 15000000, 600, 150, 15000000]
     )
-    assert repr(dist) == expected_result
+    assert str(dist) == expected_result
 
 
 def test_cartographic_radian_list():
@@ -52,7 +52,7 @@ def test_cartographic_radian_list():
     0
 ]"""
     car = CartographicRadiansListValue(values=[0, 1, 0])
-    assert repr(car) == expected_result
+    assert str(car) == expected_result
 
 
 def test_invalid_cartograpic_radian_list():
@@ -72,7 +72,7 @@ def test_cartograpic_degree_list():
     50
 ]"""
     car = CartographicDegreesListValue(values=[15, 25, 50])
-    assert repr(car) == expected_result
+    assert str(car) == expected_result
 
 
 def test_invalid_cartograpic_degree_list():
@@ -97,7 +97,7 @@ def test_reference_value():
     expected_result = '"id#property"'
     reference = ReferenceValue(string="id#property")
 
-    assert repr(reference) == expected_result
+    assert str(reference) == expected_result
 
 
 def test_invalid_reference_value():
@@ -114,7 +114,7 @@ def test_font_value():
     expected_result = '"20px sans-serif"'
     font = FontValue(font="20px sans-serif")
 
-    assert repr(font) == expected_result
+    assert str(font) == expected_result
 
 
 def test_font_property_value():
@@ -172,7 +172,7 @@ def test_default_time_interval():
     expected_result = '"0000-00-00T00:00:00Z/9999-12-31T24:00:00Z"'
     time_interval = TimeInterval()
 
-    assert repr(time_interval) == expected_result
+    assert str(time_interval) == expected_result
 
 
 def test_custom_time_interval():
@@ -184,7 +184,7 @@ def test_custom_time_interval():
 
     time_interval = TimeInterval(start=start, end=end)
 
-    assert repr(time_interval) == expected_result
+    assert str(time_interval) == expected_result
 
 
 def test_bad_time_raises_error():
@@ -223,4 +223,4 @@ def test_quaternion_value():
 
     result = UnitQuaternionValue(values=[0, 0, 0, 1])
 
-    assert repr(result) == expected_result
+    assert str(result) == expected_result

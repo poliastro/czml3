@@ -61,7 +61,7 @@ def test_box():
     box = Box(
         show=True, dimensions=BoxDimensions(cartesian=Cartesian3Value(values=[5, 6, 3]))
     )
-    assert repr(box) == expected_result
+    assert str(box) == expected_result
 
 
 def test_eyeOffset():
@@ -74,7 +74,7 @@ def test_eyeOffset():
 }"""
 
     eyeOffset = EyeOffset(cartesian=Cartesian3Value(values=[1, 2, 3]))
-    assert repr(eyeOffset) == expected_result
+    assert str(eyeOffset) == expected_result
 
 
 def test_point():
@@ -100,7 +100,7 @@ def test_point():
         ),
         disableDepthTestDistance=1.2,
     )
-    assert repr(pnt) == expected_result
+    assert str(pnt) == expected_result
 
 
 def test_arc_type():
@@ -108,7 +108,7 @@ def test_arc_type():
     "arcType": "NONE"
 }"""
     arc_type = ArcType(arcType=ArcTypes.NONE)
-    assert repr(arc_type) == expected_result
+    assert str(arc_type) == expected_result
 
 
 def test_shadow_mode():
@@ -116,7 +116,7 @@ def test_shadow_mode():
     "shadowMode": "ENABLED"
 }"""
     shadow_mode = ShadowMode(shadowMode=ShadowModes.ENABLED)
-    assert repr(shadow_mode) == expected_result
+    assert str(shadow_mode) == expected_result
 
 
 def test_polyline():
@@ -153,7 +153,7 @@ def test_polyline():
             classificationType=ClassificationTypes.CESIUM_3D_TILE
         ),
     )
-    assert repr(pol) == expected_result
+    assert str(pol) == expected_result
 
 
 def test_material_solid_color():
@@ -171,10 +171,10 @@ def test_material_solid_color():
 }"""
     mat = Material(solidColor=SolidColorMaterial.from_list([200, 100, 30]))
 
-    assert repr(mat) == expected_result
+    assert str(mat) == expected_result
 
     pol_mat = PolylineMaterial(solidColor=SolidColorMaterial.from_list([200, 100, 30]))
-    assert repr(pol_mat) == expected_result
+    assert str(pol_mat) == expected_result
 
 
 def test_arrowmaterial_color():
@@ -190,7 +190,7 @@ def test_arrowmaterial_color():
 }"""
     pamat = PolylineArrowMaterial(color=Color(rgba=[200, 100, 30, 255]))
 
-    assert repr(pamat) == expected_result
+    assert str(pamat) == expected_result
 
 
 def test_dashmaterial_colors():
@@ -221,7 +221,7 @@ def test_dashmaterial_colors():
         dashPattern=255,
     )
 
-    assert repr(dashmat) == expected_result
+    assert str(dashmat) == expected_result
 
 
 def test_glowmaterial_color():
@@ -240,7 +240,7 @@ def test_glowmaterial_color():
     glowmat = PolylineGlowMaterial(
         color=Color(rgba=[200, 100, 30, 255]), glowPower=0.7, taperPower=0.3
     )
-    assert repr(glowmat) == expected_result
+    assert str(glowmat) == expected_result
 
 
 def test_outline_material_colors():
@@ -268,7 +268,7 @@ def test_outline_material_colors():
         outlineColor=Color(rgba=[100, 200, 0, 255]),
         outlineWidth=3,
     )
-    assert repr(omat) == expected_result
+    assert str(omat) == expected_result
 
 
 def test_color_isvalid():
@@ -326,7 +326,7 @@ def test_material_image():
             color=Color.from_list([200, 100, 30]),
         )
     )
-    assert repr(mat) == expected_result
+    assert str(mat) == expected_result
 
     pol_mat = PolylineMaterial(
         image=ImageMaterial(
@@ -335,7 +335,7 @@ def test_material_image():
             color=Color.from_list([200, 100, 30]),
         )
     )
-    assert repr(pol_mat) == expected_result
+    assert str(pol_mat) == expected_result
 
 
 def test_material_grid():
@@ -370,7 +370,7 @@ def test_material_grid():
         lineThickness=[2.0, 2.0],
         lineOffset=[0.3, 0.4],
     )
-    assert repr(pol_mat) == expected_result
+    assert str(pol_mat) == expected_result
 
 
 def test_material_stripe():
@@ -402,7 +402,7 @@ def test_material_stripe():
         offset=0.3,
         repeat=4,
     )
-    assert repr(pol_mat) == expected_result
+    assert str(pol_mat) == expected_result
 
 
 def test_material_checkerboard():
@@ -431,7 +431,7 @@ def test_material_checkerboard():
         oddColor=Color.from_list([255, 255, 255]),
         repeat=4,
     )
-    assert repr(pol_mat) == expected_result
+    assert str(pol_mat) == expected_result
 
 
 def test_position_has_delete():
@@ -457,7 +457,7 @@ def test_position_with_delete_has_nothing_else():
     pos_list = Position(delete=True, cartesian=[1, 2, 3])
     pos_val = Position(delete=True, cartesian=Cartesian3Value(values=[1, 2, 3]))
 
-    assert repr(pos_list) == repr(pos_val) == expected_result
+    assert str(pos_list) == str(pos_val) == expected_result
 
 
 def test_position_has_given_epoch():
@@ -477,7 +477,7 @@ def test_position_renders_epoch():
         epoch=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc), cartesian=[]
     )
 
-    assert repr(pos) == expected_result
+    assert str(pos) == expected_result
 
 
 def test_position_cartographic_degrees():
@@ -490,7 +490,7 @@ def test_position_cartographic_degrees():
 }"""
     pos = Position(cartographicDegrees=[10.0, 20.0, 0.0])
 
-    assert repr(pos) == expected_result
+    assert str(pos) == expected_result
 
 
 def test_position_reference():
@@ -499,7 +499,7 @@ def test_position_reference():
 }"""
     pos = Position(reference="satellite")
 
-    assert repr(pos) == expected_result
+    assert str(pos) == expected_result
 
 
 def test_viewfrom_reference():
@@ -508,7 +508,7 @@ def test_viewfrom_reference():
 }"""
     v = ViewFrom(reference="satellite")
 
-    assert repr(v) == expected_result
+    assert str(v) == expected_result
 
 
 def test_viewfrom_cartesian():
@@ -521,7 +521,7 @@ def test_viewfrom_cartesian():
 }"""
     v = ViewFrom(cartesian=Cartesian3Value(values=[-1000, 0, 300]))
 
-    assert repr(v) == expected_result
+    assert str(v) == expected_result
 
 
 def test_viewfrom_has_delete():
@@ -548,7 +548,7 @@ def test_single_interval_value():
 
     prop = IntervalValue(start=start, end=end, value=True)
 
-    assert repr(prop) == expected_result
+    assert str(prop) == expected_result
 
 
 def test_multiple_interval_value():
@@ -574,7 +574,7 @@ def test_multiple_interval_value():
         ]
     )
 
-    assert repr(prop) == expected_result
+    assert str(prop) == expected_result
 
 
 def test_orientation():
@@ -589,7 +589,7 @@ def test_orientation():
 
     result = Orientation(unitQuaternion=UnitQuaternionValue(values=[0, 0, 0, 1]))
 
-    assert repr(result) == expected_result
+    assert str(result) == expected_result
 
 
 def test_model():
@@ -601,7 +601,7 @@ def test_model():
         gltf="https://sandcastle.cesium.com/SampleData/models/CesiumAir/Cesium_Air.glb"
     )
 
-    assert repr(result) == expected_result
+    assert str(result) == expected_result
 
 
 def test_bad_uri_raises_error():
@@ -627,7 +627,7 @@ def test_ellisoid():
     ell = Ellipsoid(
         radii=EllipsoidRadii(cartesian=[20.0, 30.0, 40.0]), fill=False, outline=True
     )
-    assert repr(ell) == expected_result
+    assert str(ell) == expected_result
 
 
 def test_color_rgbaf_from_tuple():
@@ -640,7 +640,7 @@ def test_color_rgbaf_from_tuple():
     ]
 }"""
     tc = Color.from_tuple((0.127568, 0.566949, 0.550556, 1.0))
-    assert repr(tc) == expected_result
+    assert str(tc) == expected_result
 
 
 def test_color_rgba_from_tuple():
@@ -653,4 +653,4 @@ def test_color_rgba_from_tuple():
     ]
 }"""
     tc = Color.from_tuple((100, 200, 255))
-    assert repr(tc) == expected_result
+    assert str(tc) == expected_result

@@ -69,7 +69,7 @@ def test_packet_rectangles(image):
         ),
     )
 
-    assert repr(rectangle_packet) == expected_result
+    assert str(rectangle_packet) == expected_result
 
 
 def test_make_czml_png_rectangle_file(image):
