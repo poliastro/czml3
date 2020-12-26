@@ -137,7 +137,7 @@ class RgbaValue(BaseCZMLObject):
 
 @attr.s(repr=False, frozen=True, kw_only=True)
 class ReferenceValue(BaseCZMLObject):
-    """ Represents a reference to another property. References can be used to specify that two properties on different
+    """Represents a reference to another property. References can be used to specify that two properties on different
     objects are in fact, the same property.
 
     """
@@ -217,7 +217,7 @@ class StringValue(BaseCZMLObject):
 @attr.s(repr=False, frozen=True, kw_only=True)
 class CartographicRadiansListValue(BaseCZMLObject):
     """A list of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...],
-     where Longitude and Latitude are in radians and Height is in meters."""
+    where Longitude and Latitude are in radians and Height is in meters."""
 
     values = attr.ib()
 
