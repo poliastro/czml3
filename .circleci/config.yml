@@ -60,6 +60,14 @@ jobs:
     environment:
       TOXENV: py38
 
+  test_py39:
+    <<: *test-template
+    docker:
+      - image: python:3.9
+
+    environment:
+      TOXENV: py39
+
   coverage:
     <<: *test-template
 
@@ -94,6 +102,9 @@ workflows:
           requires:
             - quality
       - test_py38:
+          requires:
+            - quality
+      - test_py39:
           requires:
             - quality
       - coverage:
