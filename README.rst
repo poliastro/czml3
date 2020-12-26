@@ -44,8 +44,7 @@ or conda::
 
   $ conda install czml3 --channel conda-forge
 
-czml3 requires Python >= 3.6. Would you like to help us
-`supporting Python 3.5 <https://github.com/poliastro/czml3/pull/12>`_ as well?
+czml3 requires Python >= 3.6.
 
 Examples
 ========
