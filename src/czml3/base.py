@@ -1,12 +1,9 @@
-import datetime as dt
 import json
 import warnings
 from enum import Enum
 from json import JSONEncoder
 
 import attr
-
-from .constants import ISO8601_FORMAT_Z
 
 NON_DELETE_PROPERTIES = ["id", "delete"]
 
@@ -18,9 +15,6 @@ class CZMLEncoder(JSONEncoder):
 
         elif isinstance(o, Enum):
             return o.name
-
-        elif isinstance(o, dt.datetime):
-            return o.astimezone(dt.timezone.utc).strftime(ISO8601_FORMAT_Z)
 
         return super().default(o)
 

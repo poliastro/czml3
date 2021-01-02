@@ -2,6 +2,7 @@ import datetime as dt
 
 import pytest
 
+from czml3.constants import ISO8601_FORMAT_Z
 from czml3.enums import ArcTypes, ClassificationTypes, ShadowModes
 from czml3.properties import (
     ArcType,
@@ -462,10 +463,11 @@ def test_position_with_delete_has_nothing_else():
 
 def test_position_has_given_epoch():
     expected_epoch = dt.datetime(2019, 6, 11, 12, 26, 58, tzinfo=dt.timezone.utc)
+    expected_epoch_str = expected_epoch.strftime(ISO8601_FORMAT_Z)
 
-    pos = Position(epoch=expected_epoch, cartesian=[])
+    pos = Position(epoch=expected_epoch_str, cartesian=[])
 
-    assert pos.epoch == expected_epoch
+    assert pos.epoch == expected_epoch_str
 
 
 def test_position_renders_epoch():
@@ -473,8 +475,10 @@ def test_position_renders_epoch():
     "epoch": "2019-03-20T12:00:00Z",
     "cartesian": []
 }"""
+    epoch = dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc)
     pos = Position(
-        epoch=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc), cartesian=[]
+        epoch=epoch.strftime(ISO8601_FORMAT_Z),
+        cartesian=[],
     )
 
     assert str(pos) == expected_result
@@ -546,7 +550,11 @@ def test_single_interval_value():
     start = dt.datetime(2019, 1, 1, tzinfo=dt.timezone.utc)
     end = dt.datetime(2019, 1, 2, tzinfo=dt.timezone.utc)
 
-    prop = IntervalValue(start=start, end=end, value=True)
+    prop = IntervalValue(
+        start=start.strftime(ISO8601_FORMAT_Z),
+        end=end.strftime(ISO8601_FORMAT_Z),
+        value=True,
+    )
 
     assert str(prop) == expected_result
 
