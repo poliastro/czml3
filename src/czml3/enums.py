@@ -9,6 +9,14 @@ class InterpolationAlgorithms(Enum):
     HERMITE = auto()
 
 
+class ExtrapolationTypes(Enum):
+    """The type of extrapolation to perform when a value is requested at a time after any available samples."""
+
+    NONE = auto()
+    HOLD = auto()
+    EXTRAPOLATE = auto()
+
+
 class ReferenceFrames(Enum):
     """The reference frame in which cartesian positions are specified."""
 
