@@ -1,5 +1,5 @@
 from enum import EnumMeta
-from typing import List, Optional, Union
+from typing import Any, List, Optional, Union
 
 import attr
 
@@ -35,7 +35,7 @@ def is_optional_type(t):
 
 
 def enum_fields(cls, fields):
-    new_fields = []  # type: List[attr.Attribute]
+    new_fields = []  # type: List[attr.Attribute[Any]]
     for field in fields:
         if field.type and is_optional_type(field.type):
             field_type = field.type.__args__[0]
