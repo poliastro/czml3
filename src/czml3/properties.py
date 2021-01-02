@@ -2,9 +2,25 @@ import attr
 from w3lib.url import is_url, parse_data_uri
 
 from .base import BaseCZMLObject
-from .common import Deletable, HasAlignment, Interpolatable
-from .enums import ClockRanges, ClockSteps, LabelStyles, StripeOrientations
+from .common import Deletable, Interpolatable
+from .enums import (
+    ClockRanges,
+    ClockSteps,
+    HorizontalOrigins,
+    LabelStyles,
+    StripeOrientations,
+    VerticalOrigins,
+)
 from .types import RgbafValue, RgbaValue
+
+
+# noinspection PyPep8Naming
+@attr.s(str=False, frozen=True, kw_only=True)
+class HasAlignment:
+    """A property that can be horizontally or vertically aligned."""
+
+    horizontalOrigin: HorizontalOrigins = attr.ib(default=None)
+    verticalOrigin: VerticalOrigins = attr.ib(default=None)
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
