@@ -48,7 +48,6 @@ def get_color_list(timestamps, colors, rgbaf=False):
 
 
 def get_color(color):
-
     """
     A helper function to make color setting more versatile. What the ``color`` parameter determines depends on
     its type.
