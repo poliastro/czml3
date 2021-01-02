@@ -4,9 +4,10 @@ import datetime as dt
 import attr
 
 from .enums import InterpolationAlgorithms
+from .meta import enum_fields
 
 
-@attr.s(str=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True, field_transformer=enum_fields)
 class Deletable:
     """A property whose value may be deleted."""
 
@@ -14,7 +15,7 @@ class Deletable:
 
 
 # noinspection PyPep8Naming
-@attr.s(str=False, frozen=True, kw_only=True)
+@attr.s(str=False, frozen=True, kw_only=True, field_transformer=enum_fields)
 class Interpolatable:
     """A property whose value may be determined by interpolating.
 
