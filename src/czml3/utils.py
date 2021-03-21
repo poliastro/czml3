@@ -27,7 +27,7 @@ def get_color_list(timestamps, colors, rgbaf=False):
         color_r = (
             lambda c: c.rgbaf.values
             if c.rgbaf
-            else list(map(lambda x: x / 255, c.rgba.values))
+            else list(map(lambda x: float(x / 255), c.rgba.values))
         )
     else:
         color_r = (
@@ -48,7 +48,6 @@ def get_color_list(timestamps, colors, rgbaf=False):
 
 
 def get_color(color):
-
     """
     A helper function to make color setting more versatile. What the ``color`` parameter determines depends on
     its type.
