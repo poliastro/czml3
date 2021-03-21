@@ -1,6 +1,7 @@
 # noinspection PyPep8Naming
+from __future__ import annotations
+
 import datetime as dt
-from typing import Optional
 
 import attr
 
@@ -11,7 +12,7 @@ from .enums import InterpolationAlgorithms
 class Deletable:
     """A property whose value may be deleted."""
 
-    delete: Optional[bool] = attr.ib(default=None)
+    delete: bool | None = attr.ib(default=None)
 
 
 # noinspection PyPep8Naming
@@ -22,6 +23,6 @@ class Interpolatable:
     The interpolation happens over provided time-tagged samples.
     """
 
-    epoch: Optional[dt.datetime] = attr.ib(default=None)
-    interpolationAlgorithm: Optional[InterpolationAlgorithms] = attr.ib(default=None)
-    interpolationDegree: Optional[int] = attr.ib(default=None)
+    epoch: dt.datetime | None = attr.ib(default=None)
+    interpolationAlgorithm: InterpolationAlgorithms | None = attr.ib(default=None)
+    interpolationDegree: int | None = attr.ib(default=None)

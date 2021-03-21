@@ -1,4 +1,4 @@
-from typing import Optional
+from __future__ import annotations
 
 import attr
 from w3lib.url import is_url, parse_data_uri
@@ -21,8 +21,8 @@ from .types import RgbafValue, RgbaValue
 class HasAlignment:
     """A property that can be horizontally or vertically aligned."""
 
-    horizontalOrigin: Optional[HorizontalOrigins] = attr.ib(default=None)
-    verticalOrigin: Optional[VerticalOrigins] = attr.ib(default=None)
+    horizontalOrigin: HorizontalOrigins | None = attr.ib(default=None)
+    verticalOrigin: VerticalOrigins | None = attr.ib(default=None)
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
