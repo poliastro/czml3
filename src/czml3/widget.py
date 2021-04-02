@@ -3,14 +3,14 @@ import attr
 from .core import Document, Preamble
 
 TERRAIN = {
-            "Cesium": "Cesium.createWorldTerrain()",
-            "Ellipsoid": "new Cesium.EllipsoidTerrainProvider()",
-        }
+    "Cesium": "Cesium.createWorldTerrain()",
+    "Ellipsoid": "new Cesium.EllipsoidTerrainProvider()",
+}
 
 IMAGERY = {
-            "Bing_Aerial": "Cesium.createWorldImagery()", 
-            "OSM": "new Cesium.OpenStreetMapImageryProvider()",
-        }
+    "Bing_Aerial": "Cesium.createWorldImagery()", 
+    "OSM": "new Cesium.OpenStreetMapImageryProvider()",
+}
 
 CESIUM_TPL = """
 <link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/{cesium_version}/Build/Cesium/Widgets/widgets.css" type="text/css">
@@ -24,10 +24,10 @@ console.log('Open Full Screen Called');
   if (elem.requestFullscreen) {{
   console.log('condition1', elem.id);
     elem.webkitRequestFullScreen();
-  }} else if (elem.webkitRequestFullscreen) {{ 
+  }} else if (elem.webkitRequestFullscreen) {{
   console.log('condition2', elem.id);
     elem.webkitRequestFullScreen();
-  }} else if (elem.msRequestFullscreen) {{ 
+  }} else if (elem.msRequestFullscreen) {{
   console.log('condition3', elem.id);
     elem.msRequestFullscreen();
   }}
@@ -96,6 +96,7 @@ require(['cesium'], function (Cesium) {{
     viewer.dataSources.add(Cesium.CzmlDataSource.load(czml));
 }});
 """
+
 
 class CZMLWidget:
 
