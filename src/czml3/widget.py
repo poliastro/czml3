@@ -4,22 +4,51 @@ import attr
 
 from .core import Document, Preamble
 
-TERRAIN = {
-    "Cesium": "Cesium.createWorldTerrain()",
-    "Ellipsoid": "new Cesium.EllipsoidTerrainProvider()",
-}
 
-IMAGERY = {
-    "Bing_Aerial": "Cesium.createWorldImagery()",
-    "OSM": "new Cesium.OpenStreetMapImageryProvider()",
-}
+
+
+
+TERRAIN = {"Cesium": "Cesium.createWorldTerrain()",
+"Ellipsoid": "new Cesium.EllipsoidTerrainProvider()",}
+
+IMAGERY = {"Bing_Aerial": "Cesium.createWorldImagery()", 
+"OSM": "new Cesium.OpenStreetMapImageryProvider()",}
 
 CESIUM_TPL = """
 <link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/{cesium_version}/Build/Cesium/Widgets/widgets.css" type="text/css">
-<div id="cesiumContainer-{container_id}" style="width:100%; height:{widget_height};"></div>
+<div id="cesiumContainer-{container_id}" class = "fullscreen" style="width:100%; height:{widget_height};" allowfullscreen></div>
 <script type="text/javascript">
 {script}
-</script>"""
+/*** Custom Binding the JS Code with each element's FULL-SCREEN Button. Does not work currently because
+Full-screen buttons need human intervention to be triggered.***/
+function openFullscreen(elem) {{
+console.log('Open Full Screen Called');
+  if (elem.requestFullscreen) {{
+  console.log('condition1', elem.id);
+    elem.webkitRequestFullScreen();
+  }} else if (elem.webkitRequestFullscreen) {{ 
+  console.log('condition2', elem.id);
+    elem.webkitRequestFullScreen();
+  }} else if (elem.msRequestFullscreen) {{ 
+  console.log('condition3', elem.id);
+    elem.msRequestFullscreen();
+  }}
+}}
+
+widget_element = document.getElementById("cesiumContainer-{container_id}");
+button_class = "cesium-button cesium-fullscreenButton";
+
+setTimeout(function(){{
+
+widget_element.getElementsByClassName(button_class)[0].addEventListener('click',function(){{openFullscreen(document.getElementById("cesiumContainer-{container_id}"));}});
+console.log(widget_element.getElementsByClassName(button_class)[0]);
+}}, 150);
+/*** Custom Script for binding the Full Screen button ends ***/
+
+</script>
+
+
+"""
 
 SCRIPT_TPL = """
 require.config({{
@@ -74,15 +103,43 @@ require(['cesium'], function (Cesium) {{
 """
 
 
-@attr.s
-class CZMLWidget:
-    document = attr.ib(default=Document([Preamble()]))
-    cesium_version = attr.ib(default="1.76")
-    ion_token = attr.ib(default="")
-    terrain = attr.ib(default=TERRAIN["Cesium"])
-    imagery = attr.ib(default=IMAGERY["Bing_Aerial"])
 
-    _container_id = attr.ib(factory=uuid4)
+class CZMLWidget:
+
+    def __init__(self, **kwargs):
+        try:
+            self.document = kwargs['document']
+        except:
+            self.document = attr.ib(default=Document([Preamble()]))._default
+        try:
+
+            self.cesium_version = kwargs['cesium_version']
+        except:
+            # 1.79.1 being the latest one while building this module
+            self.cesium_version = kwargs['1.79.1']
+
+        try:
+            if kwargs['ion_token'] == '':
+                raise ValueError('Cesium Ion tokens cannot be empty strings')
+            else:
+                self.ion_token = kwargs['ion_token']
+        except:
+            raise ValueError('Cesium ion token is not defined, please get your free token from https://cesium.com/ion/tokens')
+        try:
+            self.terrain = kwargs['terrain']
+        except:
+            self.terrain = attr.ib(default=TERRAIN["Cesium"])._default
+        try:
+            self.imagery = kwargs['imagery']
+        except:
+            self.imagery = attr.ib(default=IMAGERY["Bing_Aerial"])._default
+
+        try:
+            self._container_id = kwargs['container_id']
+        except:
+            self._container_id = attr.ib(default=uuid4)._default
+
+
 
     def build_script(self):
         return SCRIPT_TPL.format(
@@ -104,3 +161,12 @@ class CZMLWidget:
 
     def _repr_html_(self):
         return self.to_html()
+
+    def request_full_screen(self):
+        import IPython
+        return IPython.core.display.HTML(f'''
+        <script >
+        console.log("{self._container_id}");
+            document.getElementById('cesiumContainer-{self._container_id}').requestFullscreen();
+        </script>
+        ''')
