@@ -8,7 +8,7 @@ TERRAIN = {
 }
 
 IMAGERY = {
-    "Bing_Aerial": "Cesium.createWorldImagery()", 
+    "Bing_Aerial": "Cesium.createWorldImagery()",
     "OSM": "new Cesium.OpenStreetMapImageryProvider()",
 }
 
