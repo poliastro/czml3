@@ -2,11 +2,15 @@ from uuid import uuid4
 import attr
 from .core import Document, Preamble
 
-TERRAIN = {"Cesium": "Cesium.createWorldTerrain()",
-"Ellipsoid": "new Cesium.EllipsoidTerrainProvider()",}
+TERRAIN = {
+            "Cesium": "Cesium.createWorldTerrain()",
+            "Ellipsoid": "new Cesium.EllipsoidTerrainProvider()",
+        }
 
-IMAGERY = {"Bing_Aerial": "Cesium.createWorldImagery()", 
-"OSM": "new Cesium.OpenStreetMapImageryProvider()",}
+IMAGERY = {
+            "Bing_Aerial": "Cesium.createWorldImagery()", 
+            "OSM": "new Cesium.OpenStreetMapImageryProvider()",
+        }
 
 CESIUM_TPL = """
 <link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/{cesium_version}/Build/Cesium/Widgets/widgets.css" type="text/css">
