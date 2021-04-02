@@ -1,12 +1,6 @@
 from uuid import uuid4
-
 import attr
-
 from .core import Document, Preamble
-
-
-
-
 
 TERRAIN = {"Cesium": "Cesium.createWorldTerrain()",
 "Ellipsoid": "new Cesium.EllipsoidTerrainProvider()",}
@@ -44,10 +38,7 @@ widget_element.getElementsByClassName(button_class)[0].addEventListener('click',
 console.log(widget_element.getElementsByClassName(button_class)[0]);
 }}, 150);
 /*** Custom Script for binding the Full Screen button ends ***/
-
 </script>
-
-
 """
 
 SCRIPT_TPL = """
@@ -102,44 +93,37 @@ require(['cesium'], function (Cesium) {{
 }});
 """
 
-
-
 class CZMLWidget:
 
     def __init__(self, **kwargs):
         try:
             self.document = kwargs['document']
-        except:
+        except KeyError:
             self.document = attr.ib(default=Document([Preamble()]))._default
         try:
-
             self.cesium_version = kwargs['cesium_version']
-        except:
+        except KeyError:
             # 1.79.1 being the latest one while building this module
             self.cesium_version = kwargs['1.79.1']
-
         try:
             if kwargs['ion_token'] == '':
                 raise ValueError('Cesium Ion tokens cannot be empty strings')
             else:
                 self.ion_token = kwargs['ion_token']
-        except:
+        except KeyError:
             raise ValueError('Cesium ion token is not defined, please get your free token from https://cesium.com/ion/tokens')
         try:
             self.terrain = kwargs['terrain']
-        except:
+        except KeyError:
             self.terrain = attr.ib(default=TERRAIN["Cesium"])._default
         try:
             self.imagery = kwargs['imagery']
-        except:
+        except KeyError:
             self.imagery = attr.ib(default=IMAGERY["Bing_Aerial"])._default
-
         try:
             self._container_id = kwargs['container_id']
-        except:
+        except KeyError:
             self._container_id = attr.ib(default=uuid4)._default
-
-
 
     def build_script(self):
         return SCRIPT_TPL.format(
