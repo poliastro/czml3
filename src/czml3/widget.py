@@ -1,6 +1,8 @@
+import warnings
 from uuid import uuid4
 
 import attr
+import IPython
 
 from .core import Document, Preamble
 
@@ -16,10 +18,11 @@ IMAGERY = {
 
 CESIUM_TPL = """
 <link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/{cesium_version}/Build/Cesium/Widgets/widgets.css" type="text/css">
-<div id="cesiumContainer-{container_id}" style="width:100%; height:{widget_height};"></div>
+<div id="cesiumContainer-{container_id}" style="width:100%; height:{widget_height};" ></div>
 <script type="text/javascript">
 {script}
-</script>"""
+</script>
+"""
 
 SCRIPT_TPL = """
 require.config({{
@@ -76,13 +79,26 @@ require(['cesium'], function (Cesium) {{
 
 @attr.s
 class CZMLWidget:
+
     document = attr.ib(default=Document([Preamble()]))
-    cesium_version = attr.ib(default="1.76")
-    ion_token = attr.ib(default="")
+
+    cesium_version = attr.ib(default="1.79.1")
+
+    ion_token = attr.ib(default="no_token")
+
     terrain = attr.ib(default=TERRAIN["Cesium"])
+
     imagery = attr.ib(default=IMAGERY["Bing_Aerial"])
 
     _container_id = attr.ib(factory=uuid4)
+
+    @ion_token.validator
+    def _check_ion_token(self, attribute, value):
+        if value == "no_token" or value == "" or value is None:
+            warnings.warn(
+                "No ion_token Provided. Some features may not work. Please get your free token at https://cesium.com/ion/tokens",
+                FutureWarning,
+            )
 
     def build_script(self):
         return SCRIPT_TPL.format(
@@ -104,3 +120,14 @@ class CZMLWidget:
 
     def _repr_html_(self):
         return self.to_html()
+
+    def request_full_screen(self):
+
+        return IPython.core.display.HTML(
+            f"""
+        <script >
+        console.log("{self._container_id}");
+            document.getElementById('cesiumContainer-{self._container_id}').requestFullscreen();
+        </script>
+        """
+        )
