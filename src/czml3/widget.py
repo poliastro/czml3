@@ -1,7 +1,11 @@
-from uuid import uuid4
-import attr
-from .core import Document, Preamble
 import warnings
+from uuid import uuid4
+
+import attr
+import IPython
+
+from .core import Document, Preamble
+
 TERRAIN = {
     "Cesium": "Cesium.createWorldTerrain()",
     "Ellipsoid": "new Cesium.EllipsoidTerrainProvider()",
@@ -77,21 +81,24 @@ require(['cesium'], function (Cesium) {{
 class CZMLWidget:
 
     document = attr.ib(default=Document([Preamble()]))
-    
+
     cesium_version = attr.ib(default="1.79.1")
-    
+
     ion_token = attr.ib(default="no_token")
-    
+
     terrain = attr.ib(default=TERRAIN["Cesium"])
-    
+
     imagery = attr.ib(default=IMAGERY["Bing_Aerial"])
-    
+
     _container_id = attr.ib(factory=uuid4)
 
     @ion_token.validator
     def _check_ion_token(self, attribute, value):
         if value == "no_token" or value == "" or value is None:
-            warnings.warn("No ion_token Provided. Some features may not work. Please get your free token at https://cesium.com/ion/tokens", FutureWarning)
+            warnings.warn(
+                "No ion_token Provided. Some features may not work. Please get your free token at https://cesium.com/ion/tokens",
+                FutureWarning,
+            )
 
     def build_script(self):
         return SCRIPT_TPL.format(
@@ -115,10 +122,12 @@ class CZMLWidget:
         return self.to_html()
 
     def request_full_screen(self):
-        import IPython
-        return IPython.core.display.HTML(f'''
+
+        return IPython.core.display.HTML(
+            f"""
         <script >
         console.log("{self._container_id}");
             document.getElementById('cesiumContainer-{self._container_id}').requestFullscreen();
         </script>
-        ''')
+        """
+        )
