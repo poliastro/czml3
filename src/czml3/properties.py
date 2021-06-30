@@ -228,6 +228,7 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
     cartographicDegrees = attr.ib(default=None)
     cartesianVelocity = attr.ib(default=None)
     reference = attr.ib(default=None)
+    interval = attr.ib(default=None)
 
     def __attrs_post_init__(self):
         if all(
@@ -238,10 +239,12 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
                 self.cartographicRadians,
                 self.cartesianVelocity,
                 self.reference,
+                self.interval,
             )
         ):
             raise ValueError(
-                "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
+                "One of cartesian, cartographicDegrees, cartographicRadians, cartesianVelocity, epoch, interval or "
+                "reference must be  given "
             )
 
 

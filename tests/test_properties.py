@@ -42,7 +42,7 @@ from czml3.types import (
     IntervalValue,
     NearFarScalarValue,
     Sequence,
-    UnitQuaternionValue,
+    UnitQuaternionValue, TimeInterval,
 )
 
 
@@ -445,8 +445,8 @@ def test_position_no_values_raises_error():
         Position()
 
     assert (
-        "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
-        in exc.exconly()
+            "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
+            in exc.exconly()
     )
 
 
@@ -499,6 +499,15 @@ def test_position_reference():
 }"""
     pos = Position(reference="satellite")
 
+    assert str(pos) == expected_result
+
+
+def test_position_interval():
+    expected_result = """{
+    "interval": "2012-08-04T16:00:00Z/2012-08-04T17:00:00Z"
+}"""
+    pos = Position(interval=TimeInterval(start="2012-08-04T16:00:00Z", end="2012-08-04T17:00:00Z"))
+    print(pos)
     assert str(pos) == expected_result
 
 
