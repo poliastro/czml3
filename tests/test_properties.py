@@ -44,7 +44,8 @@ from czml3.types import (
     IntervalValue,
     NearFarScalarValue,
     Sequence,
-    UnitQuaternionValue, TimeInterval,
+    TimeInterval,
+    UnitQuaternionValue,
 )
 
 
