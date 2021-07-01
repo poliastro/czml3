@@ -33,7 +33,7 @@ from czml3.properties import (
     SolidColorMaterial,
     StripeMaterial,
     Uri,
-    ViewFrom,
+    ViewFrom, Holes, Polygon,
 )
 from czml3.types import (
     Cartesian3Value,
@@ -117,6 +117,49 @@ def test_shadow_mode():
 }"""
     shadow_mode = ShadowMode(shadowMode=ShadowModes.ENABLED)
     assert str(shadow_mode) == expected_result
+
+
+def test_polygon():
+    expected_result = """{
+    "positions": {
+        "cartographicDegrees": [
+            49,
+            48,
+            39
+        ]
+    },
+    "material": {
+        "solidColor": {
+            "color": {
+                "rgba": [
+                    0,
+                    255,
+                    0,
+                    150
+                ]
+            }
+        }
+    },
+    "height": 50000,
+    "extrudedHeight": 200000
+}"""
+    poly = Polygon(
+        positions=PositionList(
+            cartographicDegrees=CartographicDegreesListValue(
+                values=[49, 48, 39]
+            )
+        ),
+        material=Material(
+            solidColor=SolidColorMaterial(
+                color=Color(
+                    rgba=[0, 255, 0, 150]
+                )
+            )
+        ),
+        height=50000,
+        extrudedHeight=200000
+    )
+    assert str(poly) == expected_result
 
 
 def test_polyline():
@@ -504,8 +547,53 @@ def test_position_interval():
     "interval": "2012-08-04T16:00:00Z/2012-08-04T17:00:00Z"
 }"""
     pos = Position(interval=TimeInterval(start="2012-08-04T16:00:00Z", end="2012-08-04T17:00:00Z"))
-    print(pos)
+
     assert str(pos) == expected_result
+
+
+def test_holes_has_delete():
+    hole = Holes(delete=True, cartographicDegrees=[])
+    assert hole.delete
+
+
+def test_holes_no_values_raises_error():
+    with pytest.raises(ValueError) as exc:
+        Holes()
+
+    assert ("One of cartographicDegrees, interval, or references must be given" in exc.exconly())
+
+
+def test_holes_has_cartographic_degrees():
+    expected_result = """{
+    "cartographicDegrees": [
+        10.0,
+        20.0,
+        0.0
+    ]
+}"""
+    hole = Holes(cartographicDegrees=[10.0, 20.0, 0.0])
+
+    assert expected_result == str(hole)
+
+
+def test_holes_has_interval():
+    expected_result = """{
+    "interval": "2012-08-04T16:00:00Z/2012-08-04T17:00:00Z"
+}"""
+    hole = Holes(interval=TimeInterval(start="2012-08-04T16:00:00Z", end="2012-08-04T17:00:00Z"))
+
+    assert str(hole) == expected_result
+
+
+def test_hole_has_reference():
+    expected_result = """{
+    "references": [
+        "satellite"
+    ]
+}"""
+    hole = Holes(references=["satellite"])
+
+    assert str(hole) == expected_result
 
 
 def test_viewfrom_reference():

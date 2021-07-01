@@ -82,6 +82,8 @@ class PolylineMaterial(BaseCZMLObject):
     stripe = attr.ib(default=None)
     checkerboard = attr.ib(default=None)
     polylineDash = attr.ib(default=None)
+    polylineArrow = attr.ib(default=None)
+    polylineGlow = attr.ib(default=None)
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -248,6 +250,25 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
             )
 
 
+@attr.s(str=False, frozen=True, kw_only=True)
+class Holes(BaseCZMLObject, Interpolatable, Deletable):
+    """Defines holes for a polygon"""
+    cartographicDegrees = attr.ib(default=None)
+    interval = attr.ib(default=None)
+    references = attr.ib(default=None)
+
+    def __attrs_post_init__(self):
+        if all(
+            val is None
+            for val in (
+                self.cartographicDegrees,
+                self.interval,
+                self.references,
+            )
+        ):
+            raise ValueError("One of cartographicDegrees, interval, or references must be given")
+
+
 # noinspection PyPep8Naming
 @attr.s(str=False, frozen=True, kw_only=True)
 class ViewFrom(BaseCZMLObject, Interpolatable, Deletable):
@@ -370,6 +391,10 @@ class Polygon(BaseCZMLObject):
     distanceDisplayCondition = attr.ib(default=None)
     classificationType = attr.ib(default=None)
     zIndex = attr.ib(default=None)
+    perPositionHeight = attr.ib(default=None)
+    holes = attr.ib(default=None)
+    height = attr.ib(default=None)
+    extrudedHeight = attr.ib(default=None)
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
