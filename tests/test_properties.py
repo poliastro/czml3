@@ -444,10 +444,7 @@ def test_position_no_values_raises_error():
     with pytest.raises(ValueError) as exc:
         Position()
 
-    assert (
-            "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
-            in exc.exconly()
-    )
+    assert ("One of cartesian, cartographicDegrees, cartographicRadians or reference must be given" in exc.exconly())
 
 
 def test_position_with_delete_has_nothing_else():
