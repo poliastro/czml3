@@ -15,12 +15,14 @@ from czml3.properties import (
     EllipsoidRadii,
     EyeOffset,
     GridMaterial,
+    Holes,
     ImageMaterial,
     Material,
     Model,
     NearFarScalar,
     Orientation,
     Point,
+    Polygon,
     Polyline,
     PolylineArrowMaterial,
     PolylineDashMaterial,
@@ -33,7 +35,7 @@ from czml3.properties import (
     SolidColorMaterial,
     StripeMaterial,
     Uri,
-    ViewFrom, Holes, Polygon,
+    ViewFrom,
 )
 from czml3.types import (
     Cartesian3Value,
