@@ -79,8 +79,8 @@ class CZMLWidget:
     document = attr.ib(default=Document([Preamble()]))
     cesium_version = attr.ib(default="1.76")
     ion_token = attr.ib(default="")
-    terrain = attr.ib(default=TERRAIN["Cesium"])
-    imagery = attr.ib(default=IMAGERY["Bing_Aerial"])
+    terrain = attr.ib(default=TERRAIN["Ellipsoid"])
+    imagery = attr.ib(default=IMAGERY["OSM"])
 
     _container_id = attr.ib(factory=uuid4)
 
