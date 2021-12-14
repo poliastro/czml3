@@ -77,7 +77,7 @@ require(['cesium'], function (Cesium) {{
 @attr.s
 class CZMLWidget:
     document = attr.ib(default=Document([Preamble()]))
-    cesium_version = attr.ib(default="1.76")
+    cesium_version = attr.ib(default="1.88")
     ion_token = attr.ib(default="")
     terrain = attr.ib(default=TERRAIN["Ellipsoid"])
     imagery = attr.ib(default=IMAGERY["OSM"])
