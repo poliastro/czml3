@@ -1,6 +1,7 @@
 import datetime as dt
 
 from czml3 import Document, Packet, Preamble
+from czml3.constants import ISO8601_FORMAT_Z
 from czml3.enums import (
     HorizontalOrigins,
     InterpolationAlgorithms,
@@ -29,7 +30,11 @@ simple = Document(
         Preamble(
             name="simple",
             clock=IntervalValue(
-                start=start, end=end, value=Clock(currentTime=start, multiplier=60)
+                start=start.strftime(ISO8601_FORMAT_Z),
+                end=end.strftime(ISO8601_FORMAT_Z),
+                value=Clock(
+                    currentTime=start.strftime(ISO8601_FORMAT_Z), multiplier=60
+                ),
             ),
         ),
         Packet(id=accesses_id, name="Accesses", description="List of Accesses"),
@@ -183,7 +188,7 @@ simple = Document(
                 interpolationAlgorithm=InterpolationAlgorithms.LAGRANGE,
                 interpolationDegree=5,
                 referenceFrame=ReferenceFrames.INERTIAL,
-                epoch=start,
+                epoch=start.strftime(ISO8601_FORMAT_Z),
                 cartesian=[
                     0,
                     4650397.56551457,

@@ -1,95 +1,95 @@
-from enum import Enum, auto
+from enum import Enum
 
 
 class InterpolationAlgorithms(Enum):
     """The interpolation algorithm to use when interpolating."""
 
-    LINEAR = auto()
-    LAGRANGE = auto()
-    HERMITE = auto()
+    LINEAR = "LINEAR"
+    LAGRANGE = "LAGRANGE"
+    HERMITE = "HERMITE"
 
 
 class ExtrapolationTypes(Enum):
     """The type of extrapolation to perform when a value is requested at a time after any available samples."""
 
-    NONE = auto()
-    HOLD = auto()
-    EXTRAPOLATE = auto()
+    NONE = "NONE"
+    HOLD = "HOLD"
+    EXTRAPOLATE = "EXTRAPOLATE"
 
 
 class ReferenceFrames(Enum):
     """The reference frame in which cartesian positions are specified."""
 
-    FIXED = auto()
-    INERTIAL = auto()
+    FIXED = "FIXED"
+    INERTIAL = "INERTIAL"
 
 
 class LabelStyles(Enum):
     """The style of a label."""
 
-    FILL = auto()
-    OUTLINE = auto()
-    FILL_AND_OUTLINE = auto()
+    FILL = "FILL"
+    OUTLINE = "OUTLINE"
+    FILL_AND_OUTLINE = "FILL_AND_OUTLINE"
 
 
 class ClockRanges(Enum):
     """The behavior of a clock when its current time reaches its start or end time."""
 
-    UNBOUNDED = auto()
-    CLAMPED = auto()
-    LOOP_STOP = auto()
+    UNBOUNDED = "UNBOUNDED"
+    CLAMPED = "CLAMPED"
+    LOOP_STOP = "LOOP_STOP"
 
 
 class ClockSteps(Enum):
-    TICK_DEPENDENT = auto()
-    SYSTEM_CLOCK_MULTIPLIER = auto()
-    SYSTEM_CLOCK = auto()
+    TICK_DEPENDENT = "TICK_DEPENDENT"
+    SYSTEM_CLOCK_MULTIPLIER = "SYSTEM_CLOCK_MULTIPLIER"
+    SYSTEM_CLOCK = "SYSTEM_CLOCK"
 
 
 class VerticalOrigins(Enum):
-    BASELINE = auto()
-    BOTTOM = auto()
-    CENTER = auto()
-    TOP = auto()
+    BASELINE = "BASELINE"
+    BOTTOM = "BOTTOM"
+    CENTER = "CENTER"
+    TOP = "TOP"
 
 
 class HorizontalOrigins(Enum):
-    LEFT = auto()
-    CENTER = auto()
-    RIGHT = auto()
+    LEFT = "LEFT"
+    CENTER = "CENTER"
+    RIGHT = "RIGHT"
 
 
 class HeightReferences(Enum):
-    NONE = auto()
-    CLAMP_TO_GROUND = auto()
-    RELATIVE_TO_GROUND = auto()
+    NONE = "NONE"
+    CLAMP_TO_GROUND = "CLAMP_TO_GROUND"
+    RELATIVE_TO_GROUND = "RELATIVE_TO_GROUND"
 
 
 class ColorBlendModes(Enum):
-    HIGHLIGHT = auto()
-    REPLACE = auto()
-    MIX = auto()
+    HIGHLIGHT = "HIGHLIGHT"
+    REPLACE = "REPLACE"
+    MIX = "MIX"
 
 
 class ShadowModes(Enum):
-    DISABLED = auto()
-    ENABLED = auto()
-    CAST_ONLY = auto()
-    RECEIVE_ONLY = auto()
+    DISABLED = "DISABLED"
+    ENABLED = "ENABLED"
+    CAST_ONLY = "CAST_ONLY"
+    RECEIVE_ONLY = "RECEIVE_ONLY"
 
 
 class ClassificationTypes(Enum):
-    TERRAIN = auto()
-    CESIUM_3D_TILE = auto()
-    BOTH = auto()
+    TERRAIN = "TERRAIN"
+    CESIUM_3D_TILE = "CESIUM_3D_TILE"
+    BOTH = "BOTH"
 
 
 class ArcTypes(Enum):
-    NONE = auto()
-    GEODESIC = auto()
-    RHUMB = auto()
+    NONE = "NONE"
+    GEODESIC = "GEODESIC"
+    RHUMB = "RHUMB"
 
 
 class StripeOrientations(Enum):
-    HORIZONTAL = auto()
-    VERTICAL = auto()
+    HORIZONTAL = "HORIZONTAL"
+    VERTICAL = "VERTICAL"
