@@ -38,8 +38,8 @@ class Material(BaseCZMLObject):
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
-class PolylineOutlineMaterial(BaseCZMLObject):
-    """"A definition of how a surface is colored or shaded."""
+class PolylineOutline(BaseCZMLObject):
+    """A definition of how a surface is colored or shaded."""
 
     color = attr.ib(default=None)
     outlineColor = attr.ib(default=None)
@@ -47,8 +47,15 @@ class PolylineOutlineMaterial(BaseCZMLObject):
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
-class PolylineGlowMaterial(BaseCZMLObject):
-    """"A material that fills the surface of a line with a glowing color."""
+class PolylineOutlineMaterial(BaseCZMLObject):
+    """A definition of the material wrapper for a polyline outline."""
+
+    polylineOutline = attr.ib(default=None)
+
+
+@attr.s(str=False, frozen=True, kw_only=True)
+class PolylineGlow(BaseCZMLObject):
+    """A definition of how a glowing polyline appears."""
 
     color = attr.ib(default=None)
     glowPower = attr.ib(default=None)
@@ -56,15 +63,29 @@ class PolylineGlowMaterial(BaseCZMLObject):
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
-class PolylineArrowMaterial(BaseCZMLObject):
-    """"A material that fills the surface of a line with an arrow."""
+class PolylineGlowMaterial(BaseCZMLObject):
+    """A material that fills the surface of a line with a glowing color."""
+
+    polylineGlow = attr.ib(default=None)
+
+
+@attr.s(str=False, frozen=True, kw_only=True)
+class PolylineArrow(BaseCZMLObject):
+    """A definition of how a polyline arrow appears."""
 
     color = attr.ib(default=None)
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
-class PolylineDashMaterial(BaseCZMLObject):
-    """"A definition of how a polyline should be dashed with two colors"""
+class PolylineArrowMaterial(BaseCZMLObject):
+    """A material that fills the surface of a line with an arrow."""
+
+    polylineArrow = attr.ib(default=None)
+
+
+@attr.s(str=False, frozen=True, kw_only=True)
+class PolylineDash(BaseCZMLObject):
+    """A definition of how a polyline should be dashed with two colors."""
 
     color = attr.ib(default=None)
     gapColor = attr.ib(default=None)
@@ -73,8 +94,15 @@ class PolylineDashMaterial(BaseCZMLObject):
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
+class PolylineDashMaterial(BaseCZMLObject):
+    """A material that provides a how a polyline should be dashed."""
+
+    polylineDash = attr.ib(default=None)
+
+
+@attr.s(str=False, frozen=True, kw_only=True)
 class PolylineMaterial(BaseCZMLObject):
-    """"A definition of how a surface is colored or shaded."""
+    """A definition of how a surface is colored or shaded."""
 
     solidColor = attr.ib(default=None)
     image = attr.ib(default=None)
