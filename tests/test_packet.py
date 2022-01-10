@@ -15,15 +15,15 @@ from czml3.properties import (
     Point,
     Polygon,
     Polyline,
-    PolylineOutline,
-    PolylineOutlineMaterial,
+    PolylineArrow,
+    PolylineArrowMaterial,
+    PolylineDash,
+    PolylineDashMaterial,
     PolylineGlow,
     PolylineGlowMaterial,
-    PolylineArrow,
-    PolylineDash,
     PolylineMaterial,
-    PolylineArrowMaterial,
-    PolylineDashMaterial,
+    PolylineOutline,
+    PolylineOutlineMaterial,
     Position,
     PositionList,
     SolidColorMaterial,
@@ -384,7 +384,7 @@ def test_packet_polyline():
 
     assert str(packet) == expected_result
 
-# TODO: 
+
 def test_packet_polyline_outline():
     expected_result = """{
     "id": "id_00",
@@ -489,7 +489,6 @@ def test_packet_polyline_glow():
     )
 
     assert str(packet) == expected_result
-
 
 
 def test_packet_polyline_arrow():
