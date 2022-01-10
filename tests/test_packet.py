@@ -15,7 +15,15 @@ from czml3.properties import (
     Point,
     Polygon,
     Polyline,
+    PolylineOutline,
+    PolylineOutlineMaterial,
+    PolylineGlow,
+    PolylineGlowMaterial,
+    PolylineArrow,
+    PolylineDash,
     PolylineMaterial,
+    PolylineArrowMaterial,
+    PolylineDashMaterial,
     Position,
     PositionList,
     SolidColorMaterial,
@@ -372,6 +380,203 @@ def test_packet_polyline():
                 solidColor=SolidColorMaterial.from_list([255, 0, 0, 255])
             ),
         ),
+    )
+
+    assert str(packet) == expected_result
+
+# TODO: 
+def test_packet_polyline_outline():
+    expected_result = """{
+    "id": "id_00",
+    "polyline": {
+        "positions": {
+            "cartographicDegrees": [
+                -75,
+                43,
+                500000,
+                -125,
+                43,
+                500000
+            ]
+        },
+        "material": {
+            "polylineOutline": {
+                "color": {
+                    "rgba": [
+                        255,
+                        0,
+                        0,
+                        255
+                    ]
+                },
+                "outlineColor": {
+                    "rgba": [
+                        255,
+                        0,
+                        0,
+                        255
+                    ]
+                },
+                "outlineWidth": 2
+            }
+        }
+    }
+}"""
+    packet = Packet(
+        id="id_00",
+        polyline=Polyline(
+            positions=PositionList(
+                cartographicDegrees=[-75, 43, 500000, -125, 43, 500000]
+            ),
+            material=PolylineOutlineMaterial(
+                polylineOutline=PolylineOutline(
+                    color=Color.from_list([255, 0, 0, 255]),
+                    outlineColor=Color.from_list([255, 0, 0, 255]),
+                    outlineWidth=2
+                )
+            )
+        )
+    )
+
+    assert str(packet) == expected_result
+
+
+# TODO:
+def test_packet_polyline_glow():
+    expected_result = """{
+    "id": "id_00",
+    "polyline": {
+        "positions": {
+            "cartographicDegrees": [
+                -75,
+                43,
+                500000,
+                -125,
+                43,
+                500000
+            ]
+        },
+        "material": {
+            "polylineGlow": {
+                "color": {
+                    "rgba": [
+                        255,
+                        0,
+                        0,
+                        255
+                    ]
+                },
+                "glowPower": 0.2,
+                "taperPower": 0.5
+            }
+        }
+    }
+}"""
+    packet = Packet(
+        id="id_00",
+        polyline=Polyline(
+            positions=PositionList(
+                cartographicDegrees=[-75, 43, 500000, -125, 43, 500000]
+            ),
+            material=PolylineGlowMaterial(
+                polylineGlow=PolylineGlow(
+                    color=Color.from_list([255, 0, 0, 255]),
+                    glowPower=0.2,
+                    taperPower=0.5
+                )
+            )
+        )
+    )
+
+    assert str(packet) == expected_result
+
+
+
+def test_packet_polyline_arrow():
+    expected_result = """{
+    "id": "id_00",
+    "polyline": {
+        "positions": {
+            "cartographicDegrees": [
+                -75,
+                43,
+                500000,
+                -125,
+                43,
+                500000
+            ]
+        },
+        "material": {
+            "polylineArrow": {
+                "color": {
+                    "rgba": [
+                        255,
+                        0,
+                        0,
+                        255
+                    ]
+                }
+            }
+        }
+    }
+}"""
+    packet = Packet(
+        id="id_00",
+        polyline=Polyline(
+            positions=PositionList(
+                cartographicDegrees=[-75, 43, 500000, -125, 43, 500000]
+            ),
+            material=PolylineArrowMaterial(
+                polylineArrow=PolylineArrow(
+                    color=Color.from_list([255, 0, 0, 255])
+                )
+            )
+        )
+    )
+
+    assert str(packet) == expected_result
+
+
+def test_packet_polyline_dashed():
+    expected_result = """{
+    "id": "id_00",
+    "polyline": {
+        "positions": {
+            "cartographicDegrees": [
+                -75,
+                43,
+                500000,
+                -125,
+                43,
+                500000
+            ]
+        },
+        "material": {
+            "polylineDash": {
+                "color": {
+                    "rgba": [
+                        255,
+                        0,
+                        0,
+                        255
+                    ]
+                }
+            }
+        }
+    }
+}"""
+    packet = Packet(
+        id="id_00",
+        polyline=Polyline(
+            positions=PositionList(
+                cartographicDegrees=[-75, 43, 500000, -125, 43, 500000]
+            ),
+            material=PolylineDashMaterial(
+                polylineDash=PolylineDash(
+                    color=Color.from_list([255, 0, 0, 255])
+                )
+            )
+        )
     )
 
     assert str(packet) == expected_result
