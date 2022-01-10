@@ -436,6 +436,11 @@ class Ellipsoid(BaseCZMLObject):
     """A closed quadric surface that is a three-dimensional analogue of an ellipse."""
 
     radii = attr.ib()
+    innerRadii = attr.ib(default=None)
+    minimumClock = attr.ib(default=None)
+    maximumClock = attr.ib(default=None)
+    minimumCone = attr.ib(default=None)
+    maximumCone = attr.ib(default=None)
     show = attr.ib(default=None)
     heightReference = attr.ib(default=None)
     fill = attr.ib(default=None)

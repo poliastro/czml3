@@ -611,7 +611,7 @@ def test_bad_uri_raises_error():
     assert "uri must be a URL or a data URI" in excinfo.exconly()
 
 
-def test_ellisoid():
+def test_ellipsoid():
     expected_result = """{
     "radii": {
         "cartesian": [
@@ -626,6 +626,71 @@ def test_ellisoid():
 
     ell = Ellipsoid(
         radii=EllipsoidRadii(cartesian=[20.0, 30.0, 40.0]), fill=False, outline=True
+    )
+    assert str(ell) == expected_result
+
+
+def test_ellipsoid_parameters():
+    expected_result = """{
+    "radii": {
+        "cartesian": [
+            500000.0,
+            500000.0,
+            500000.0
+        ]
+    },
+    "innerRadii": {
+        "cartesian": [
+            10000.0,
+            10000.0,
+            10000.0
+        ]
+    },
+    "minimumClock": -15.0,
+    "maximumClock": 15.0,
+    "minimumCone": 75.0,
+    "maximumCone": 105.0,
+    "material": {
+        "solidColor": {
+            "rgba": [
+                255,
+                0,
+                0,
+                100
+            ]
+        }
+    },
+    "outline": true,
+    "outlineColor": {
+        "rgbaf": [
+            0,
+            0,
+            0,
+            1
+        ]
+    }
+}"""
+
+    ell = Ellipsoid(
+        radii=EllipsoidRadii(
+            cartesian=[500000.0, 500000.0, 500000.0]
+        ),
+        innerRadii=EllipsoidRadii(
+            cartesian=[10000.0, 10000.0, 10000.0]
+        ),
+        minimumClock=-15.0,
+        maximumClock=15.0,
+        minimumCone=75.0,
+        maximumCone=105.0,
+        material=Material(
+            solidColor=Color(
+                rgba=[255, 0, 0, 100]
+            ),
+        ),
+        outline=True,
+        outlineColor=Color(
+            rgbaf=[0, 0, 0, 1]
+        ),
     )
     assert str(ell) == expected_result
 
