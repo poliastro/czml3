@@ -148,16 +148,16 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
         """Determines if the input is a valid color"""
         # [R, G, B] or [R, G, B, A]
         if (
-            isinstance(color, (list, tuple))
-            and all([issubclass(type(v), int) for v in color])
-            and (3 <= len(color) <= 4)
+                isinstance(color, (list, tuple))
+                and all([issubclass(type(v), int) for v in color])
+                and (3 <= len(color) <= 4)
         ):
             return all(0 <= v <= 255 for v in color)
         # [r, g, b] or [r, g, b, a] (float)
         elif (
-            isinstance(color, (list, tuple))
-            and all([issubclass(type(v), float) for v in color])
-            and (3 <= len(color) <= 4)
+                isinstance(color, (list, tuple))
+                and all([issubclass(type(v), float) for v in color])
+                and (3 <= len(color) <= 4)
         ):
             return all(0 <= v <= 1 for v in color)
         # Hexadecimal RGBA
@@ -231,14 +231,14 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
 
     def __attrs_post_init__(self):
         if all(
-            val is None
-            for val in (
-                self.cartesian,
-                self.cartographicDegrees,
-                self.cartographicRadians,
-                self.cartesianVelocity,
-                self.reference,
-            )
+                val is None
+                for val in (
+                        self.cartesian,
+                        self.cartographicDegrees,
+                        self.cartographicRadians,
+                        self.cartesianVelocity,
+                        self.reference,
+                )
         ):
             raise ValueError(
                 "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
@@ -480,7 +480,6 @@ class BoxDimensions(BaseCZMLObject, Interpolatable):
 # noinspection PyPep8Naming
 @attr.s(str=False, frozen=True, kw_only=True)
 class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
-
     """A cartographic rectangle, which conforms to the curvature of the globe and
     can be placed on the surface or at altitude and can optionally be extruded into a volume."""
 
