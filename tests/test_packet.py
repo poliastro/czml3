@@ -432,10 +432,10 @@ def test_packet_polyline_outline():
                 polylineOutline=PolylineOutline(
                     color=Color.from_list([255, 0, 0, 255]),
                     outlineColor=Color.from_list([255, 0, 0, 255]),
-                    outlineWidth=2
+                    outlineWidth=2,
                 )
-            )
-        )
+            ),
+        ),
     )
 
     assert str(packet) == expected_result
@@ -482,10 +482,10 @@ def test_packet_polyline_glow():
                 polylineGlow=PolylineGlow(
                     color=Color.from_list([255, 0, 0, 255]),
                     glowPower=0.2,
-                    taperPower=0.5
+                    taperPower=0.5,
                 )
-            )
-        )
+            ),
+        ),
     )
 
     assert str(packet) == expected_result
@@ -526,11 +526,9 @@ def test_packet_polyline_arrow():
                 cartographicDegrees=[-75, 43, 500000, -125, 43, 500000]
             ),
             material=PolylineArrowMaterial(
-                polylineArrow=PolylineArrow(
-                    color=Color.from_list([255, 0, 0, 255])
-                )
-            )
-        )
+                polylineArrow=PolylineArrow(color=Color.from_list([255, 0, 0, 255]))
+            ),
+        ),
     )
 
     assert str(packet) == expected_result
@@ -571,11 +569,9 @@ def test_packet_polyline_dashed():
                 cartographicDegrees=[-75, 43, 500000, -125, 43, 500000]
             ),
             material=PolylineDashMaterial(
-                polylineDash=PolylineDash(
-                    color=Color.from_list([255, 0, 0, 255])
-                )
-            )
-        )
+                polylineDash=PolylineDash(color=Color.from_list([255, 0, 0, 255]))
+            ),
+        ),
     )
 
     assert str(packet) == expected_result

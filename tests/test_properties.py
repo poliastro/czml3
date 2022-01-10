@@ -195,9 +195,7 @@ def test_arrowmaterial_color():
     }
 }"""
     pamat = PolylineArrowMaterial(
-        polylineArrow=PolylineArrow(
-            color=Color(rgba=[200, 100, 30, 255])
-        ),
+        polylineArrow=PolylineArrow(color=Color(rgba=[200, 100, 30, 255])),
     )
 
     assert str(pamat) == expected_result
@@ -287,7 +285,7 @@ def test_outline_material_colors():
         polylineOutline=PolylineOutline(
             color=Color(rgba=[200, 100, 30, 255]),
             outlineColor=Color(rgba=[100, 200, 0, 255]),
-            outlineWidth=3
+            outlineWidth=3,
         )
     )
     assert str(omat) == expected_result
