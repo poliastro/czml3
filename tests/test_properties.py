@@ -1,6 +1,7 @@
 import datetime as dt
 
 import pytest
+
 from czml3.enums import ArcTypes, ClassificationTypes, ShadowModes
 from czml3.properties import (
     ArcType,
@@ -444,8 +445,8 @@ def test_position_no_values_raises_error():
         Position()
 
     assert (
-            "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
-            in exc.exconly()
+        "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
+        in exc.exconly()
     )
 
 
@@ -671,25 +672,17 @@ def test_ellipsoid_parameters():
 }"""
 
     ell = Ellipsoid(
-        radii=EllipsoidRadii(
-            cartesian=[500000.0, 500000.0, 500000.0]
-        ),
-        innerRadii=EllipsoidRadii(
-            cartesian=[10000.0, 10000.0, 10000.0]
-        ),
+        radii=EllipsoidRadii(cartesian=[500000.0, 500000.0, 500000.0]),
+        innerRadii=EllipsoidRadii(cartesian=[10000.0, 10000.0, 10000.0]),
         minimumClock=-15.0,
         maximumClock=15.0,
         minimumCone=75.0,
         maximumCone=105.0,
         material=Material(
-            solidColor=Color(
-                rgba=[255, 0, 0, 100]
-            ),
+            solidColor=Color(rgba=[255, 0, 0, 100]),
         ),
         outline=True,
-        outlineColor=Color(
-            rgbaf=[0, 0, 0, 1]
-        ),
+        outlineColor=Color(rgbaf=[0, 0, 0, 1]),
     )
     assert str(ell) == expected_result
 

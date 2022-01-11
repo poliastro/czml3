@@ -39,7 +39,7 @@ class Material(BaseCZMLObject):
 
 @attr.s(str=False, frozen=True, kw_only=True)
 class PolylineOutlineMaterial(BaseCZMLObject):
-    """"A definition of how a surface is colored or shaded."""
+    """ "A definition of how a surface is colored or shaded."""
 
     color = attr.ib(default=None)
     outlineColor = attr.ib(default=None)
@@ -48,7 +48,7 @@ class PolylineOutlineMaterial(BaseCZMLObject):
 
 @attr.s(str=False, frozen=True, kw_only=True)
 class PolylineGlowMaterial(BaseCZMLObject):
-    """"A material that fills the surface of a line with a glowing color."""
+    """ "A material that fills the surface of a line with a glowing color."""
 
     color = attr.ib(default=None)
     glowPower = attr.ib(default=None)
@@ -57,14 +57,14 @@ class PolylineGlowMaterial(BaseCZMLObject):
 
 @attr.s(str=False, frozen=True, kw_only=True)
 class PolylineArrowMaterial(BaseCZMLObject):
-    """"A material that fills the surface of a line with an arrow."""
+    """ "A material that fills the surface of a line with an arrow."""
 
     color = attr.ib(default=None)
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
 class PolylineDashMaterial(BaseCZMLObject):
-    """"A definition of how a polyline should be dashed with two colors"""
+    """ "A definition of how a polyline should be dashed with two colors"""
 
     color = attr.ib(default=None)
     gapColor = attr.ib(default=None)
@@ -74,7 +74,7 @@ class PolylineDashMaterial(BaseCZMLObject):
 
 @attr.s(str=False, frozen=True, kw_only=True)
 class PolylineMaterial(BaseCZMLObject):
-    """"A definition of how a surface is colored or shaded."""
+    """ "A definition of how a surface is colored or shaded."""
 
     solidColor = attr.ib(default=None)
     image = attr.ib(default=None)
@@ -148,16 +148,16 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
         """Determines if the input is a valid color"""
         # [R, G, B] or [R, G, B, A]
         if (
-                isinstance(color, (list, tuple))
-                and all([issubclass(type(v), int) for v in color])
-                and (3 <= len(color) <= 4)
+            isinstance(color, (list, tuple))
+            and all([issubclass(type(v), int) for v in color])
+            and (3 <= len(color) <= 4)
         ):
             return all(0 <= v <= 255 for v in color)
         # [r, g, b] or [r, g, b, a] (float)
         elif (
-                isinstance(color, (list, tuple))
-                and all([issubclass(type(v), float) for v in color])
-                and (3 <= len(color) <= 4)
+            isinstance(color, (list, tuple))
+            and all([issubclass(type(v), float) for v in color])
+            and (3 <= len(color) <= 4)
         ):
             return all(0 <= v <= 1 for v in color)
         # Hexadecimal RGBA
@@ -231,14 +231,14 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
 
     def __attrs_post_init__(self):
         if all(
-                val is None
-                for val in (
-                        self.cartesian,
-                        self.cartographicDegrees,
-                        self.cartographicRadians,
-                        self.cartesianVelocity,
-                        self.reference,
-                )
+            val is None
+            for val in (
+                self.cartesian,
+                self.cartographicDegrees,
+                self.cartographicRadians,
+                self.cartesianVelocity,
+                self.reference,
+            )
         ):
             raise ValueError(
                 "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
