@@ -22,10 +22,14 @@ from czml3.properties import (
     Orientation,
     Point,
     Polyline,
+    PolylineArrow,
     PolylineArrowMaterial,
+    PolylineDash,
     PolylineDashMaterial,
+    PolylineGlow,
     PolylineGlowMaterial,
     PolylineMaterial,
+    PolylineOutline,
     PolylineOutlineMaterial,
     Position,
     PositionList,
@@ -179,46 +183,54 @@ def test_material_solid_color():
 
 def test_arrowmaterial_color():
     expected_result = """{
-    "color": {
-        "rgba": [
-            200,
-            100,
-            30,
-            255
-        ]
+    "polylineArrow": {
+        "color": {
+            "rgba": [
+                200,
+                100,
+                30,
+                255
+            ]
+        }
     }
 }"""
-    pamat = PolylineArrowMaterial(color=Color(rgba=[200, 100, 30, 255]))
+    pamat = PolylineArrowMaterial(
+        polylineArrow=PolylineArrow(color=Color(rgba=[200, 100, 30, 255])),
+    )
 
     assert str(pamat) == expected_result
 
 
 def test_dashmaterial_colors():
     expected_result = """{
-    "color": {
-        "rgba": [
-            200,
-            100,
-            30,
-            255
-        ]
-    },
-    "gapColor": {
-        "rgba": [
-            100,
-            200,
-            0,
-            255
-        ]
-    },
-    "dashLength": 16,
-    "dashPattern": 255
+    "polylineDash": {
+        "color": {
+            "rgba": [
+                200,
+                100,
+                30,
+                255
+            ]
+        },
+        "gapColor": {
+            "rgba": [
+                100,
+                200,
+                0,
+                255
+            ]
+        },
+        "dashLength": 16,
+        "dashPattern": 255
+    }
 }"""
     dashmat = PolylineDashMaterial(
-        color=Color(rgba=[200, 100, 30, 255]),
-        gapColor=Color(rgba=[100, 200, 0, 255]),
-        dashLength=16,
-        dashPattern=255,
+        polylineDash=PolylineDash(
+            color=Color(rgba=[200, 100, 30, 255]),
+            gapColor=Color(rgba=[100, 200, 0, 255]),
+            dashLength=16,
+            dashPattern=255,
+        ),
     )
 
     assert str(dashmat) == expected_result
@@ -226,47 +238,55 @@ def test_dashmaterial_colors():
 
 def test_glowmaterial_color():
     expected_result = """{
-    "color": {
-        "rgba": [
-            200,
-            100,
-            30,
-            255
-        ]
-    },
-    "glowPower": 0.7,
-    "taperPower": 0.3
+    "polylineGlow": {
+        "color": {
+            "rgba": [
+                200,
+                100,
+                30,
+                255
+            ]
+        },
+        "glowPower": 0.7,
+        "taperPower": 0.3
+    }
 }"""
     glowmat = PolylineGlowMaterial(
-        color=Color(rgba=[200, 100, 30, 255]), glowPower=0.7, taperPower=0.3
+        polylineGlow=PolylineGlow(
+            color=Color(rgba=[200, 100, 30, 255]), glowPower=0.7, taperPower=0.3
+        )
     )
     assert str(glowmat) == expected_result
 
 
 def test_outline_material_colors():
     expected_result = """{
-    "color": {
-        "rgba": [
-            200,
-            100,
-            30,
-            255
-        ]
-    },
-    "outlineColor": {
-        "rgba": [
-            100,
-            200,
-            0,
-            255
-        ]
-    },
-    "outlineWidth": 3
+    "polylineOutline": {
+        "color": {
+            "rgba": [
+                200,
+                100,
+                30,
+                255
+            ]
+        },
+        "outlineColor": {
+            "rgba": [
+                100,
+                200,
+                0,
+                255
+            ]
+        },
+        "outlineWidth": 3
+    }
 }"""
     omat = PolylineOutlineMaterial(
-        color=Color(rgba=[200, 100, 30, 255]),
-        outlineColor=Color(rgba=[100, 200, 0, 255]),
-        outlineWidth=3,
+        polylineOutline=PolylineOutline(
+            color=Color(rgba=[200, 100, 30, 255]),
+            outlineColor=Color(rgba=[100, 200, 0, 255]),
+            outlineWidth=3,
+        )
     )
     assert str(omat) == expected_result
 
