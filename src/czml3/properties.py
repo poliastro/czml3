@@ -86,7 +86,7 @@ class PolylineArrowMaterial(BaseCZMLObject):
 @attr.s(str=False, frozen=True, kw_only=True)
 class PolylineDash(BaseCZMLObject):
     """A definition of how a polyline should be dashed with two colors."""
-    
+
     color = attr.ib(default=None)
     gapColor = attr.ib(default=None)
     dashLength = attr.ib(default=None)
