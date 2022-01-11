@@ -464,6 +464,11 @@ class Ellipsoid(BaseCZMLObject):
     """A closed quadric surface that is a three-dimensional analogue of an ellipse."""
 
     radii = attr.ib()
+    innerRadii = attr.ib(default=None)
+    minimumClock = attr.ib(default=None)
+    maximumClock = attr.ib(default=None)
+    minimumCone = attr.ib(default=None)
+    maximumCone = attr.ib(default=None)
     show = attr.ib(default=None)
     heightReference = attr.ib(default=None)
     fill = attr.ib(default=None)
@@ -503,7 +508,6 @@ class BoxDimensions(BaseCZMLObject, Interpolatable):
 # noinspection PyPep8Naming
 @attr.s(str=False, frozen=True, kw_only=True)
 class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
-
     """A cartographic rectangle, which conforms to the curvature of the globe and
     can be placed on the surface or at altitude and can optionally be extruded into a volume."""
 
