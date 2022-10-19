@@ -9,12 +9,12 @@ def test_get_color_list_of_colors_rgba():
     expected_color = Color(
         rgba=RgbaValue(
             values=[
-                "0000-00-00T00:00:00Z",
+                "0000-00-00T00:00:00.000000Z",
                 255,
                 204,
                 0,
                 255,
-                "9999-12-31T24:00:00Z",
+                "9999-12-31T24:00:00.000000Z",
                 255,
                 204,
                 0,
@@ -24,14 +24,15 @@ def test_get_color_list_of_colors_rgba():
     )
     assert (
         get_color_list(
-            ["0000-00-00T00:00:00Z", "9999-12-31T24:00:00Z"],
+            ["0000-00-00T00:00:00.000000Z", "9999-12-31T24:00:00.000000Z"],
             [[1.0, 0.8, 0.0, 1.0], 0xFFCC00FF],
         )
         == expected_color
     )
     assert (
         get_color_list(
-            ["0000-00-00T00:00:00Z", "9999-12-31T24:00:00Z"], ["#ffcc00ff", 0xFFCC00]
+            ["0000-00-00T00:00:00.000000Z", "9999-12-31T24:00:00.000000Z"],
+            ["#ffcc00ff", 0xFFCC00],
         )
         == expected_color
     )
@@ -41,12 +42,12 @@ def test_get_color_list_of_colors_rgbaf():
     expected_color = Color(
         rgbaf=RgbafValue(
             values=[
-                "0000-00-00T00:00:00Z",
+                "0000-00-00T00:00:00.000000Z",
                 1.0,
                 0.8,
                 0.0,
                 1.0,
-                "9999-12-31T24:00:00Z",
+                "9999-12-31T24:00:00.000000Z",
                 1.0,
                 0.8,
                 0.0,
@@ -56,7 +57,7 @@ def test_get_color_list_of_colors_rgbaf():
     )
     assert (
         get_color_list(
-            ["0000-00-00T00:00:00Z", "9999-12-31T24:00:00Z"],
+            ["0000-00-00T00:00:00.000000Z", "9999-12-31T24:00:00.000000Z"],
             [[1.0, 0.8, 0.0, 1.0], 0xFFCC00],
             rgbaf=True,
         )
@@ -64,7 +65,7 @@ def test_get_color_list_of_colors_rgbaf():
     )
     assert (
         get_color_list(
-            ["0000-00-00T00:00:00Z", "9999-12-31T24:00:00Z"],
+            ["0000-00-00T00:00:00.000000Z", "9999-12-31T24:00:00.000000Z"],
             [[255, 204, 0], 0xFFCC00FF],
             rgbaf=True,
         )
@@ -75,7 +76,7 @@ def test_get_color_list_of_colors_rgbaf():
 def test_get_color_list_of_colors_invalid():
     with pytest.raises(ValueError):
         get_color_list(
-            ["0000-00-00T00:00:00Z", "9999-12-31T24:00:00Z"],
+            ["0000-00-00T00:00:00.000000Z", "9999-12-31T24:00:00.000000Z"],
             [[300, 204, 0], -0xFFCC00FF],
             rgbaf=True,
         )

@@ -490,7 +490,7 @@ def test_position_has_given_epoch():
 
 def test_position_renders_epoch():
     expected_result = """{
-    "epoch": "2019-03-20T12:00:00Z",
+    "epoch": "2019-03-20T12:00:00.000000Z",
     "cartesian": []
 }"""
     pos = Position(
@@ -559,7 +559,7 @@ def test_viewfrom_no_values_raises_error():
 
 def test_single_interval_value():
     expected_result = """{
-    "interval": "2019-01-01T00:00:00Z/2019-01-02T00:00:00Z",
+    "interval": "2019-01-01T00:00:00.000000Z/2019-01-02T00:00:00.000000Z",
     "boolean": true
 }"""
 
@@ -574,11 +574,11 @@ def test_single_interval_value():
 def test_multiple_interval_value():
     expected_result = """[
     {
-        "interval": "2019-01-01T00:00:00Z/2019-01-02T00:00:00Z",
+        "interval": "2019-01-01T00:00:00.000000Z/2019-01-02T00:00:00.000000Z",
         "boolean": true
     },
     {
-        "interval": "2019-01-02T00:00:00Z/2019-01-03T00:00:00Z",
+        "interval": "2019-01-02T00:00:00.000000Z/2019-01-03T00:00:00.000000Z",
         "boolean": false
     }
 ]"""
