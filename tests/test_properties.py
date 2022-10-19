@@ -597,6 +597,32 @@ def test_multiple_interval_value():
     assert str(prop) == expected_result
 
 
+def test_multiple_interval_decimal_value():
+    expected_result = """[
+    {
+        "interval": "2019-01-01T01:02:03.456789Z/2019-01-02T01:02:03.456789Z",
+        "boolean": true
+    },
+    {
+        "interval": "2019-01-02T01:02:03.456789Z/2019-01-03T01:02:03.456789Z",
+        "boolean": false
+    }
+]"""
+
+    start0 = dt.datetime(2019, 1, 1, 1, 2, 3, 456789, tzinfo=dt.timezone.utc)
+    end0 = start1 = dt.datetime(2019, 1, 2, 1, 2, 3, 456789, tzinfo=dt.timezone.utc)
+    end1 = dt.datetime(2019, 1, 3, 1, 2, 3, 456789, tzinfo=dt.timezone.utc)
+
+    prop = Sequence(
+        [
+            IntervalValue(start=start0, end=end0, value=True),
+            IntervalValue(start=start1, end=end1, value=False),
+        ]
+    )
+
+    assert str(prop) == expected_result
+
+
 def test_orientation():
     expected_result = """{
     "unitQuaternion": [
