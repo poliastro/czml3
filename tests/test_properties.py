@@ -490,7 +490,7 @@ def test_position_has_given_epoch():
 
 def test_position_renders_epoch():
     expected_result = """{
-    "epoch": "2019-03-20T12:00:00Z",
+    "epoch": "2019-03-20T12:00:00.000000Z",
     "cartesian": []
 }"""
     pos = Position(
@@ -559,7 +559,7 @@ def test_viewfrom_no_values_raises_error():
 
 def test_single_interval_value():
     expected_result = """{
-    "interval": "2019-01-01T00:00:00Z/2019-01-02T00:00:00Z",
+    "interval": "2019-01-01T00:00:00.000000Z/2019-01-02T00:00:00.000000Z",
     "boolean": true
 }"""
 
@@ -574,11 +574,11 @@ def test_single_interval_value():
 def test_multiple_interval_value():
     expected_result = """[
     {
-        "interval": "2019-01-01T00:00:00Z/2019-01-02T00:00:00Z",
+        "interval": "2019-01-01T00:00:00.000000Z/2019-01-02T00:00:00.000000Z",
         "boolean": true
     },
     {
-        "interval": "2019-01-02T00:00:00Z/2019-01-03T00:00:00Z",
+        "interval": "2019-01-02T00:00:00.000000Z/2019-01-03T00:00:00.000000Z",
         "boolean": false
     }
 ]"""
@@ -586,6 +586,32 @@ def test_multiple_interval_value():
     start0 = dt.datetime(2019, 1, 1, tzinfo=dt.timezone.utc)
     end0 = start1 = dt.datetime(2019, 1, 2, tzinfo=dt.timezone.utc)
     end1 = dt.datetime(2019, 1, 3, tzinfo=dt.timezone.utc)
+
+    prop = Sequence(
+        [
+            IntervalValue(start=start0, end=end0, value=True),
+            IntervalValue(start=start1, end=end1, value=False),
+        ]
+    )
+
+    assert str(prop) == expected_result
+
+
+def test_multiple_interval_decimal_value():
+    expected_result = """[
+    {
+        "interval": "2019-01-01T01:02:03.456789Z/2019-01-02T01:02:03.456789Z",
+        "boolean": true
+    },
+    {
+        "interval": "2019-01-02T01:02:03.456789Z/2019-01-03T01:02:03.456789Z",
+        "boolean": false
+    }
+]"""
+
+    start0 = dt.datetime(2019, 1, 1, 1, 2, 3, 456789, tzinfo=dt.timezone.utc)
+    end0 = start1 = dt.datetime(2019, 1, 2, 1, 2, 3, 456789, tzinfo=dt.timezone.utc)
+    end1 = dt.datetime(2019, 1, 3, 1, 2, 3, 456789, tzinfo=dt.timezone.utc)
 
     prop = Sequence(
         [

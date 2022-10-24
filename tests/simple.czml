@@ -5,8 +5,8 @@
     "name":"simple",
     "version":"1.0",
     "clock":{
-      "interval":"2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
-      "currentTime":"2012-03-15T10:00:00Z",
+      "interval":"2012-03-15T10:00:00.000000Z/2012-03-16T10:00:00.000000Z",
+      "currentTime":"2012-03-15T10:00:00.000000Z",
       "multiplier":60,
       "range":"LOOP_STOP",
       "step":"SYSTEM_CLOCK_MULTIPLIER"
@@ -135,7 +135,7 @@
     "name":"AGI to ISS",
     "parent":"9927edc4-e87a-4e1f-9b8b-0bfb3b05b227",
     "availability":[
-      "2012-03-15T10:52:19.3940000000002Z/2012-03-15T11:02:24.5570000000007Z","2012-03-15T12:28:24.0339999999997Z/2012-03-15T12:38:34.6399999999994Z","2012-03-15T14:06:02.09799999999814Z/2012-03-15T14:14:48.5310000000027Z","2012-03-15T15:43:15.2350000000006Z/2012-03-15T15:52:06.56500000000233Z","2012-03-15T17:19:26.3190000000031Z/2012-03-15T17:29:36.0240000000049Z","2012-03-15T18:55:44.7079999999987Z/2012-03-15T19:05:17.7339999999967Z","2012-03-16T09:56:05.90600000001723Z/2012-03-16T10:00:00Z"
+      "2012-03-15T10:52:19.3940000000002Z/2012-03-15T11:02:24.5570000000007Z","2012-03-15T12:28:24.0339999999997Z/2012-03-15T12:38:34.6399999999994Z","2012-03-15T14:06:02.09799999999814Z/2012-03-15T14:14:48.5310000000027Z","2012-03-15T15:43:15.2350000000006Z/2012-03-15T15:52:06.56500000000233Z","2012-03-15T17:19:26.3190000000031Z/2012-03-15T17:29:36.0240000000049Z","2012-03-15T18:55:44.7079999999987Z/2012-03-15T19:05:17.7339999999967Z","2012-03-16T09:56:05.90600000001723Z/2012-03-16T10:00:00.000000Z"
     ],
     "description":"<h2>Access times</h2><table class='sky-infoBox-access-table'><tr><th>Start</th><th>End</th><th>Duration</th></tr><tr><td> 2012-03-15 10:52:19.394Z </td><td>2012-03-15 11:02:24.557Z </td><td> 605.163s </td></tr><tr><td> 2012-03-15 12:28:24.034Z </td><td>2012-03-15 12:38:34.640Z </td><td> 610.606s </td></tr><tr><td> 2012-03-15 14:06:02.098Z </td><td>2012-03-15 14:14:48.531Z </td><td> 526.433s </td></tr><tr><td> 2012-03-15 15:43:15.235Z </td><td>2012-03-15 15:52:06.565Z </td><td> 531.330s </td></tr><tr><td> 2012-03-15 17:19:26.319Z </td><td>2012-03-15 17:29:36.024Z </td><td> 609.705s </td></tr><tr><td> 2012-03-15 18:55:44.708Z </td><td>2012-03-15 19:05:17.734Z </td><td> 573.026s </td></tr><tr><td> 2012-03-16 09:56:05.906Z </td><td>2012-03-16 10:00:00.000Z </td><td> 234.094s </td></tr></table>",
     "polyline":{
@@ -193,7 +193,7 @@
           "boolean":false
         },
         {
-          "interval":"2012-03-16T09:56:05.90600000001723Z/2012-03-16T10:00:00Z",
+          "interval":"2012-03-16T09:56:05.90600000001723Z/2012-03-16T10:00:00.000000Z",
           "boolean":true
         }
       ],
@@ -243,7 +243,7 @@
   {
     "id":"AreaTarget/Pennsylvania",
     "name":"Pennsylvania",
-    "availability":"2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
+    "availability":"2012-03-15T10:00:00.000000Z/2012-03-16T10:00:00.000000Z",
     "description":"<!--HTML-->\r\n<p>Pennsylvania, officially the Commonwealth of Pennsylvania, is a U.S. state that is located in the Northeastern and Mid-Atlantic regions of the United States, and the Great Lakes region. The state borders Delaware to the southeast, Maryland to the south, West Virginia to the southwest, Ohio to the west, Lake Erie and Ontario, Canada to the northwest, New York to the north and New Jersey to the east. The Appalachian Mountains run through the middle of the state.\r\nPennsylvania is the 33rd most extensive, the 6th most populous, and the 9th most densely populated of the 50 United States. The state's four most populous cities are Philadelphia, Pittsburgh, Allentown, and Erie. The state capital is Harrisburg. Pennsylvania has 51 miles (82 km) of coastline along Lake Erie and 57 miles (92 km) of shoreline along the Delaware Estuary. The state is one of the 13 original founding states of the U.S.</p>",
     "label":{
       "fillColor":{
@@ -306,7 +306,7 @@
   {
     "id":"Facility/AGI",
     "name":"AGI",
-    "availability":"2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
+    "availability":"2012-03-15T10:00:00.000000Z/2012-03-16T10:00:00.000000Z",
     "description":"<!--HTML-->\r\n<p>\r\nAnalytical Graphics, Inc. (AGI) develops commercial modeling and analysis software used by more than 40,000 global space, defense and intelligence professionals. AGI founded Cesium to meet the need for a cross-platform virtual globe with dynamic-data visualization. AGI continues to invest heavily in Cesium's development and facilitate the growth of the user and contributor community.\r\n</p>",
     "billboard":{
       "eyeOffset":{
@@ -358,7 +358,7 @@
   {
     "id":"Satellite/Geoeye1",
     "name":"Geoeye1",
-    "availability":"2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
+    "availability":"2012-03-15T10:00:00.000000Z/2012-03-16T10:00:00.000000Z",
     "description":"<!--HTML-->\r\n<p>GeoEye-1 is a high-resolution earth observation satellite owned by GeoEye, which was launched in September 2008.</p>\r\n\r\n<p>On December 1, 2004, General Dynamics C4 Systems announced it had been awarded a contract worth approximately $209 million to build the OrbView-5 satellite. Its sensor is designed by the ITT Exelis.</p>\r\n\r\n<p>The satellite, now known as GeoEye-1, was originally scheduled for April 2008 but lost its 30-day launch slot to a U.S. government mission which had been delayed. It was rescheduled for launch August 22, 2008 from Vandenberg Air Force Base aboard a Delta II launch vehicle. The launch was postponed to September 4, 2008, due to unavailability of the Big Crow telemetry-relay aircraft. It was delayed again to September 6 because Hurricane Hanna interfered with its launch crews.</p>\r\n\r\n<p>The launch took place successfully on September 6, 2008 at 11:50:57 a.m. PDT (18:50:57 UTC). The GeoEye-1 satellite separated successfully from its Delta II launch vehicle at 12:49 p.m. PDT (19:49 UTC), 58 minutes and 56 seconds after launch.</p>",
     "billboard":{
       "eyeOffset":{
@@ -404,7 +404,7 @@
     "path":{
       "show":[
         {
-          "interval":"2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
+          "interval":"2012-03-15T10:00:00.000000Z/2012-03-16T10:00:00.000000Z",
           "boolean":true
         }
       ],
@@ -421,8 +421,8 @@
       "resolution":120,
       "leadTime":[
         {
-          "interval":"2012-03-15T10:00:00Z/2012-03-15T10:39:30.5752243210009Z",
-          "epoch":"2012-03-15T10:00:00Z",
+          "interval":"2012-03-15T10:00:00.000000Z/2012-03-15T10:39:30.5752243210009Z",
+          "epoch":"2012-03-15T10:00:00.000000Z",
           "number":[
             0,5903.376977238004,
             5903.376977238004,0
@@ -541,7 +541,7 @@
           ]
         },
         {
-          "interval":"2012-03-16T08:21:36.5644517090113Z/2012-03-16T10:00:00Z",
+          "interval":"2012-03-16T08:21:36.5644517090113Z/2012-03-16T10:00:00.000000Z",
           "epoch":"2012-03-16T08:21:36.5644517090113Z",
           "number":[
             0,5903.435548290989,
@@ -551,8 +551,8 @@
       ],
       "trailTime":[
         {
-          "interval":"2012-03-15T10:00:00Z/2012-03-15T10:39:30.5752243210009Z",
-          "epoch":"2012-03-15T10:00:00Z",
+          "interval":"2012-03-15T10:00:00.000000Z/2012-03-15T10:39:30.5752243210009Z",
+          "epoch":"2012-03-15T10:00:00.000000Z",
           "number":[
             0,0,
             5903.376977238004,5903.376977238004
@@ -671,7 +671,7 @@
           ]
         },
         {
-          "interval":"2012-03-16T08:21:36.5644517090113Z/2012-03-16T10:00:00Z",
+          "interval":"2012-03-16T08:21:36.5644517090113Z/2012-03-16T10:00:00.000000Z",
           "epoch":"2012-03-16T08:21:36.5644517090113Z",
           "number":[
             0,0,
@@ -684,7 +684,7 @@
       "interpolationAlgorithm":"LAGRANGE",
       "interpolationDegree":5,
       "referenceFrame":"INERTIAL",
-      "epoch":"2012-03-15T10:00:00Z",
+      "epoch":"2012-03-15T10:00:00.000000Z",
       "cartesian":[
         0,4650397.56551457,-3390535.52275848,-4087729.48877329,
         300,3169722.12564676,-2787480.80604407,-5661647.74541255,
@@ -988,7 +988,7 @@
     "id":"Satellite/Geoeye1/Sensor/Sensor",
     "name":"Sensor",
     "parent":"Satellite/Geoeye1",
-    "availability":"2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
+    "availability":"2012-03-15T10:00:00.000000Z/2012-03-16T10:00:00.000000Z",
     "description":"<!--HTML-->\r\nGeoEye-1 primary optical sensor",
     "agi_rectangularSensor":{
       "xHalfAngle":0.03490658503988659,
@@ -1046,7 +1046,7 @@
     "orientation":{
       "interpolationAlgorithm":"LAGRANGE",
       "interpolationDegree":1,
-      "epoch":"2012-03-15T10:00:00Z",
+      "epoch":"2012-03-15T10:00:00.000000Z",
       "unitQuaternion":[
         0,0.45652188368372576,-0.049580035995243577,-0.8819344359461565,0.10640131785324795,
         300,0.309688526062018,-0.0592870464529779,-0.945283886004075,0.0837641797515638,
@@ -1346,7 +1346,7 @@
   {
     "id":"Satellite/ISS",
     "name":"ISS",
-    "availability":"2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
+    "availability":"2012-03-15T10:00:00.000000Z/2012-03-16T10:00:00.000000Z",
     "description":"<!--HTML-->\r\n<p>The International Space Station (ISS) is a space station, or a habitable artificial satellite in low Earth orbit. It is a modular structure whose first component was launched in 1998. Now the largest artificial body in orbit, it can often be seen at the appropriate time with the naked eye from Earth. The ISS consists of pressurised modules, external trusses, solar arrays and other components. ISS components have been launched by American Space Shuttles as well as Russian Proton and Soyuz rockets. In 1984 the ESA was invited to participate in Space Station Freedom. In 1993, after the USSR ended, the United States and Russia merged Mir-2 and Freedom together.\r\nThe ISS serves as a microgravity and space environment research laboratory in which crew members conduct experiments in biology, human biology, physics, astronomy, meteorology and other fields. The station is suited for the testing of spacecraft systems and equipment required for missions to the Moon and Mars.</p>\r\n\r\n<p>Since the arrival of Expedition 1 on 2 November 2000, the station has been continuously occupied for 13 years and 86 days, the longest continuous human presence in space. (In 2010, the station surpassed the previous record of almost 10 years (or 3,634 days) held by Mir.) The station is serviced by a variety of visiting spacecraft: Soyuz, Progress, the Automated Transfer Vehicle, the H-II Transfer Vehicle, Dragon, and Cygnus. It has been visited by astronauts and cosmonauts from 15 different nations.</p>\r\n\r\n<p>After the U.S. Space Shuttle program ended in 2011, Soyuz rockets became the only provider of transport for astronauts at the International Space Station.\r\nThe ISS programme is a joint project among five participating space agencies: NASA, Roskosmos, JAXA, ESA, and CSA. The ownership and use of the space station is established by intergovernmental treaties and agreements. The station is divided into two sections, the Russian Orbital Segment (ROS) and the United States Orbital Segment (USOS), which is shared by many nations. The ISS maintains an orbit with an altitude of between 330 km (205 mi) and 435 km (270 mi) by means of reboost manoeuvres using the engines of the Zvezda module or visiting spacecraft. It completes 15.410 orbits per day. The ISS is funded until 2024, and may operate until 2028. The Russian Federal Space Agency, Roskosmos (RKA) has proposed using the ISS to commission modules for a new space station, called OPSEK, before the remainder of the ISS is deorbited. ISS is the ninth space station to be inhabited by crews, following the Soviet and later Russian Salyut, Almaz, and Mir stations, and Skylab from the US.</p>",
     "billboard":{
       "eyeOffset":{
@@ -1392,7 +1392,7 @@
     "path":{
       "show":[
         {
-          "interval":"2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
+          "interval":"2012-03-15T10:00:00.000000Z/2012-03-16T10:00:00.000000Z",
           "boolean":true
         }
       ],
@@ -1409,8 +1409,8 @@
       "resolution":120,
       "leadTime":[
         {
-          "interval":"2012-03-15T10:00:00Z/2012-03-15T10:44:56.1031157730031Z",
-          "epoch":"2012-03-15T10:00:00Z",
+          "interval":"2012-03-15T10:00:00.000000Z/2012-03-15T10:44:56.1031157730031Z",
+          "epoch":"2012-03-15T10:00:00.000000Z",
           "number":[
             0,5537.546684141998,
             5537.546684141998,0
@@ -1537,7 +1537,7 @@
           ]
         },
         {
-          "interval":"2012-03-16T08:27:42.5600708879647Z/2012-03-16T10:00:00Z",
+          "interval":"2012-03-16T08:27:42.5600708879647Z/2012-03-16T10:00:00.000000Z",
           "epoch":"2012-03-16T08:27:42.5600708879647Z",
           "number":[
             0,5537.439929112035,
@@ -1547,8 +1547,8 @@
       ],
       "trailTime":[
         {
-          "interval":"2012-03-15T10:00:00Z/2012-03-15T10:44:56.1031157730031Z",
-          "epoch":"2012-03-15T10:00:00Z",
+          "interval":"2012-03-15T10:00:00.000000Z/2012-03-15T10:44:56.1031157730031Z",
+          "epoch":"2012-03-15T10:00:00.000000Z",
           "number":[
             0,0,
             5537.546684141998,5537.546684141998
@@ -1675,7 +1675,7 @@
           ]
         },
         {
-          "interval":"2012-03-16T08:27:42.5600708879647Z/2012-03-16T10:00:00Z",
+          "interval":"2012-03-16T08:27:42.5600708879647Z/2012-03-16T10:00:00.000000Z",
           "epoch":"2012-03-16T08:27:42.5600708879647Z",
           "number":[
             0,0,
@@ -1688,7 +1688,7 @@
       "interpolationAlgorithm":"LAGRANGE",
       "interpolationDegree":5,
       "referenceFrame":"INERTIAL",
-      "epoch":"2012-03-15T10:00:00Z",
+      "epoch":"2012-03-15T10:00:00.000000Z",
       "cartesian":[
         0,3849424.41859634,5535808.90838488,-469609.955032837,
         300,2403397.25163735,5923118.10887596,-2208538.08732886,
@@ -1997,7 +1997,7 @@
   {
     "id":"Satellite/Molniya_1-92",
     "name":"Molniya_1-92",
-    "availability":"2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
+    "availability":"2012-03-15T10:00:00.000000Z/2012-03-16T10:00:00.000000Z",
     "description":"<!--HTML-->\r\n<p>Molniya, meaning \"lightning\", was a military communications satellite system used by the Soviet Union. The satellites were placed into highly eccentric elliptical orbits known as Molniya orbits, characterised by an inclination of +63.4 degrees and a period of around 12 hours. Such orbits allowed them to remain visible to sites in polar regions for extended periods, unlike geostationary satellites in geosynchronous orbits with a 24-hour orbital period.\r\nThe Molniya program was authorized by a government decree in late 1960. After some initial failures in 1964, the first operational satellite, Molniya 1-01, was successfully launched on April 23, 1965.\r\nSince October 1967, Molniya satellites have been used by Russia to broadcast their national Orbita television network.</p>",
     "billboard":{
       "eyeOffset":{
@@ -2043,7 +2043,7 @@
     "path":{
       "show":[
         {
-          "interval":"2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
+          "interval":"2012-03-15T10:00:00.000000Z/2012-03-16T10:00:00.000000Z",
           "boolean":true
         }
       ],
@@ -2060,8 +2060,8 @@
       "resolution":120,
       "leadTime":[
         {
-          "interval":"2012-03-15T10:00:00Z/2012-03-15T13:11:42.0607217289944Z",
-          "epoch":"2012-03-15T10:00:00Z",
+          "interval":"2012-03-15T10:00:00.000000Z/2012-03-15T13:11:42.0607217289944Z",
+          "epoch":"2012-03-15T10:00:00.000000Z",
           "number":[
             0,43058.246637085,
             43058.246637085,0
@@ -2076,7 +2076,7 @@
           ]
         },
         {
-          "interval":"2012-03-15T22:02:21.7533629149984Z/2012-03-16T10:00:00Z",
+          "interval":"2012-03-15T22:02:21.7533629149984Z/2012-03-16T10:00:00.000000Z",
           "epoch":"2012-03-15T22:02:21.7533629149984Z",
           "number":[
             0,43058.246637085,
@@ -2086,8 +2086,8 @@
       ],
       "trailTime":[
         {
-          "interval":"2012-03-15T10:00:00Z/2012-03-15T13:11:42.0607217289944Z",
-          "epoch":"2012-03-15T10:00:00Z",
+          "interval":"2012-03-15T10:00:00.000000Z/2012-03-15T13:11:42.0607217289944Z",
+          "epoch":"2012-03-15T10:00:00.000000Z",
           "number":[
             0,0,
             43058.246637085,43058.246637085
@@ -2102,7 +2102,7 @@
           ]
         },
         {
-          "interval":"2012-03-15T22:02:21.7533629149984Z/2012-03-16T10:00:00Z",
+          "interval":"2012-03-15T22:02:21.7533629149984Z/2012-03-16T10:00:00.000000Z",
           "epoch":"2012-03-15T22:02:21.7533629149984Z",
           "number":[
             0,0,
@@ -2115,7 +2115,7 @@
       "interpolationAlgorithm":"LAGRANGE",
       "interpolationDegree":5,
       "referenceFrame":"INERTIAL",
-      "epoch":"2012-03-15T10:00:00Z",
+      "epoch":"2012-03-15T10:00:00.000000Z",
       "cartesian":[
         0,-14516939.0194339,-3368384.25750661,30226792.3721741,
         300,-14236743.3163964,-3919702.51855093,29582289.9003049,

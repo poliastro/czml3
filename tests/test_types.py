@@ -180,7 +180,7 @@ def test_custom_time_interval():
     start = dt.datetime(2019, 1, 1, 12, 0, tzinfo=dt.timezone.utc)
     end = dt.datetime(2019, 9, 2, 23, 59, 59, tzinfo=tz)
 
-    expected_result = '"2019-01-01T12:00:00Z/2019-09-02T21:59:59Z"'
+    expected_result = '"2019-01-01T12:00:00.000000Z/2019-09-02T21:59:59.000000Z"'
 
     time_interval = TimeInterval(start=start, end=end)
 
@@ -205,7 +205,7 @@ def test_astropy_time_retains_input_format():
 
 
 def test_astropy_time_format():
-    expected_result = "2012-03-15T10:16:06Z"
+    expected_result = "2012-03-15T10:16:06.974Z"
     time = astropy.time.Time("2012-03-15T10:16:06.97400000000198Z")
 
     result = format_datetime_like(time)
