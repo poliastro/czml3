@@ -33,7 +33,7 @@ def get_color_list(timestamps, colors, rgbaf=False):
         color_r = (
             lambda c: c.rgba.values
             if c.rgba
-            else list(map(lambda x: round(x * 255), c.rgbaf.values))
+            else list(map(lambda x: int(round(x * 255)), c.rgbaf.values))
         )
 
     # Get combined list of timestamps and colors
