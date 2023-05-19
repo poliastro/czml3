@@ -2,6 +2,7 @@ from uuid import uuid4
 
 import attr
 
+from .properties import Path, Point
 from .base import BaseCZMLObject
 from .types import Sequence
 
@@ -53,6 +54,129 @@ class Packet(BaseCZMLObject):
     rectangle = attr.ib(default=None)
     tileset = attr.ib(default=None)
     wall = attr.ib(default=None)
+
+    def _svg(self):
+        x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
+        svg_elements = []
+        for attr_name in self.__dict__.keys():
+            attr = getattr(self, attr_name)
+            if not isinstance(attr, BaseCZMLObject):
+                continue
+            if isinstance(attr, Point) and self.position is not None:
+                # colour
+                if attr.color is None:
+                    colour = "black"
+                elif attr.color.rgba is not None:
+                    colour = f'rgba({",".join([str(c) for c in attr.color.rgba])})'
+                elif attr.color.rgbaf is not None:
+                    colour = (
+                        f'rgba({",".join([str(c * 255) for c in attr.color.rgbaf])})'
+                    )
+                else:
+                    raise AttributeError
+
+                # get coordinates
+                x_coords, y_coords = self.position._get_xy_coords()
+
+                # create SVG elements
+                for x, y in zip(x_coords, y_coords):
+                    svg_elements.append(
+                        f'<circle fill="{colour}" cx="{x}" cy="{y}" r="1" />'
+                    )
+
+                # bounds
+                for x in x_coords:
+                    if x < x_min:
+                        x_min = x
+                    if x > x_max:
+                        x_max = x
+                for y in y_coords:
+                    if y < y_min:
+                        y_min = y
+                    if y > y_max:
+                        y_max = y
+            elif isinstance(attr, Path) and self.position is not None:
+                # get coordinates
+                x_coords, y_coords = self.position._get_xy_coords()
+
+                # colour
+                if attr.material is None:
+                    colour = "black"
+                elif hasattr(attr.material.solidColor.color.rgba, "values"):
+                    colour = f'rgba({",".join([str(c) for c in attr.material.solidColor.color.rgba.values])})'
+                elif hasattr(attr.material.solidColor.color.rgbaf, "values"):
+                    colour = f'rgba({",".join([str(c * 255) for c in attr.material.solidColor.color.rgbaf.values])})'
+                else:
+                    raise AttributeError
+
+                # create SVG element
+                points = " ".join([f"{x},{y}" for x, y in zip(x_coords, y_coords)])
+                svg_elements.append(
+                    f'<polyline stroke="{colour}" fill="none" points="{points}" />'
+                )
+
+                # bounds
+                for x in x_coords:
+                    if x < x_min:
+                        x_min = x
+                    if x > x_max:
+                        x_max = x
+                for y in y_coords:
+                    if y < y_min:
+                        y_min = y
+                    if y > y_max:
+                        y_max = y
+            else:
+                try:
+                    (
+                        _,
+                        tmp_svg_elements,
+                        _,
+                        tmp_x_min,
+                        tmp_x_max,
+                        tmp_y_min,
+                        tmp_y_max,
+                    ) = attr._svg()
+                    svg_elements.append(tmp_svg_elements)
+
+                    # bounds
+                    if tmp_x_min < x_min:
+                        x_min = tmp_x_min
+                    if tmp_x_max > x_max:
+                        x_max = tmp_x_max
+                    if tmp_y_min < y_min:
+                        y_min = tmp_y_min
+                    if tmp_y_max > y_max:
+                        y_max = tmp_y_max
+
+                except NotImplementedError:
+                    pass
+        if len(svg_elements) == 0:
+            return ""
+
+        # frame
+        if x_min == x_max and y_min == y_max:
+            x_min *= 0.99
+            y_min *= 0.99
+            x_max *= 1.01
+            y_max *= 1.01
+        else:
+            expand = 0.04
+            widest_part = max([x_max - x_min, y_max - y_min])
+            expand_amount = widest_part * expand
+            x_min -= expand_amount
+            y_min -= expand_amount
+            x_max += expand_amount
+            y_max += expand_amount
+        dx = x_max - x_min
+        dy = y_max - y_min
+        width = min([max([100.0, dx]), 300])
+        height = min([max([100.0, dy]), 300])
+
+        # create SVG string
+        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
+        svg_end = "</g></svg>"
+        return svg_start, "".join(svg_elements), svg_end, x_min, x_max, y_min, y_max
 
 
 @attr.s(str=False, frozen=True)

@@ -1,6 +1,8 @@
 from __future__ import annotations
+import math
 
 import attr
+from typing import Union, Tuple, List
 from w3lib.url import is_url, parse_data_uri
 
 from .base import BaseCZMLObject
@@ -13,7 +15,12 @@ from .enums import (
     StripeOrientations,
     VerticalOrigins,
 )
-from .types import RgbafValue, RgbaValue
+from .types import (
+    RgbafValue,
+    RgbaValue,
+    CartographicDegreesListValue,
+    CartographicRadiansListValue,
+)
 
 
 # noinspection PyPep8Naming
@@ -272,6 +279,69 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
                 "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
             )
 
+    def _get_xy_coords(
+        self, factor: Union[float, int] = 100
+    ) -> Tuple[List[Union[int, float]], List[Union[int, float]]]:
+        coords = []
+        if self.cartographicRadians is not None:
+            coords.extend(
+                [math.degrees(v) for v in self.cartographicRadians]
+            )  # altitude not relevant
+        if self.cartographicDegrees is not None:
+            coords.extend(self.cartographicDegrees)
+        x_coords = [x * factor for x in coords[::3]]
+        y_coords = [y * factor for y in coords[1::3]]
+        return x_coords, y_coords
+
+    def _svg(self) -> Tuple[str, str, str, float, float, float, float]:
+        if self.cartographicRadians is None and self.cartographicDegrees is None:
+            return "", "", "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+
+        # get coordinates
+        x_coords, y_coords = self._get_xy_coords()
+
+        # create SVG elements
+        svg_elements = []
+        for x, y in zip(x_coords, y_coords):
+            svg_elements.append(f'<circle fill="black" cx="{x}" cy="{y}" r="1" />')
+
+        # bounds
+        x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
+        for x in x_coords:
+            if x < x_min:
+                x_min = x
+            if x > x_max:
+                x_max = x
+        for y in y_coords:
+            if y < y_min:
+                y_min = y
+            if y > y_max:
+                y_max = y
+
+        # frame
+        if x_min == x_max and y_min == y_max:
+            x_min *= 0.99
+            y_min *= 0.99
+            x_max *= 1.01
+            y_max *= 1.01
+        else:
+            expand = 0.04
+            widest_part = max([x_max - x_min, y_max - y_min])
+            expand_amount = widest_part * expand
+            x_min -= expand_amount
+            y_min -= expand_amount
+            x_max += expand_amount
+            y_max += expand_amount
+        dx = x_max - x_min
+        dy = y_max - y_min
+        width = min([max([100.0, dx]), 300])
+        height = min([max([100.0, dy]), 300])
+
+        # create SVG string
+        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
+        svg_end = "</g></svg>"
+        return svg_start, "".join(svg_elements), svg_end, x_min, x_max, y_min, y_max
+
 
 # noinspection PyPep8Naming
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -336,6 +406,68 @@ class Corridor(BaseCZMLObject):
     classificationType = attr.ib(default=None)
     zIndex = attr.ib(default=None)
 
+    def _svg(self) -> Tuple[str, str, str, float, float, float, float]:
+        if (
+            self.positions.cartographicRadians is None
+            and self.positions.cartographicDegrees is None
+        ):
+            return "", "", "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+
+        # get coordinates
+        (
+            x_coords,
+            y_coords,
+        ) = self.positions._get_xy_coords()  # TODO need to account for width
+
+        # create SVG element
+        points = " ".join([f"{x},{y}" for x, y in zip(x_coords, y_coords)])
+        if self.material is None:
+            colour = "black"
+        elif hasattr(self.material.solidColor.color.rgba, "values"):
+            colour = f'rgba({",".join([str(c) for c in self.material.solidColor.color.rgba.values])})'
+        elif hasattr(self.material.solidColor.color.rgbaf, "values"):
+            colour = f'rgba({",".join([str(c * 255) for c in self.material.solidColor.color.rgbaf.values])})'
+        else:
+            raise AttributeError
+        svg_element = f'<polyline stroke="{colour}" fill="none" points="{points}" />'
+
+        # bounds
+        x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
+        for x in x_coords:
+            if x < x_min:
+                x_min = x
+            if x > x_max:
+                x_max = x
+        for y in y_coords:
+            if y < y_min:
+                y_min = y
+            if y > y_max:
+                y_max = y
+
+        # frame
+        if x_min == x_max and y_min == y_max:
+            x_min *= 0.99
+            y_min *= 0.99
+            x_max *= 1.01
+            y_max *= 1.01
+        else:
+            expand = 0.04
+            widest_part = max([x_max - x_min, y_max - y_min])
+            expand_amount = widest_part * expand
+            x_min -= expand_amount
+            y_min -= expand_amount
+            x_max += expand_amount
+            y_max += expand_amount
+        dx = x_max - x_min
+        dy = y_max - y_min
+        width = min([max([100.0, dx]), 300])
+        height = min([max([100.0, dy]), 300])
+
+        # create SVG string
+        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
+        svg_end = "</g></svg>"
+        return svg_start, svg_element, svg_end, x_min, x_max, y_min, y_max
+
 
 @attr.s(str=False, frozen=True, kw_only=True)
 class Cylinder(BaseCZMLObject):
@@ -397,6 +529,66 @@ class Polygon(BaseCZMLObject):
     classificationType = attr.ib(default=None)
     zIndex = attr.ib(default=None)
 
+    def _svg(self) -> Tuple[str, str, str, float, float, float, float]:
+        if (
+            self.positions.cartographicRadians is None
+            and self.positions.cartographicDegrees is None
+        ):
+            return "", "", "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+
+        # get coordinates
+        x_coords, y_coords = self.positions._get_xy_coords()
+
+        # create SVG element
+        points = [f"{x},{y}" for x, y in zip(x_coords, y_coords)]
+        d = f"M {points[0]} L {' L '.join(points[1:])} z"
+        if self.material is None:
+            colour = "black"
+        elif hasattr(self.material.solidColor.color.rgba, "values"):
+            colour = f'rgba({",".join([str(c) for c in self.material.solidColor.color.rgba.values])})'
+        elif hasattr(self.material.solidColor.color.rgbaf, "values"):
+            colour = f'rgba({",".join([str(c) for c in  self.material.solidColor.color.rgbaf.values])})'
+        else:
+            raise AttributeError
+        svg_element = f'<path d="{d}" fill="{colour}"/>'
+
+        # bounds
+        x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
+        for x in x_coords:
+            if x < x_min:
+                x_min = x
+            if x > x_max:
+                x_max = x
+        for y in y_coords:
+            if y < y_min:
+                y_min = y
+            if y > y_max:
+                y_max = y
+
+        # frame
+        if x_min == x_max and y_min == y_max:
+            x_min *= 0.99
+            y_min *= 0.99
+            x_max *= 1.01
+            y_max *= 1.01
+        else:
+            expand = 0.04
+            widest_part = max([x_max - x_min, y_max - y_min])
+            expand_amount = widest_part * expand
+            x_min -= expand_amount
+            y_min -= expand_amount
+            x_max += expand_amount
+            y_max += expand_amount
+        dx = x_max - x_min
+        dy = y_max - y_min
+        width = min([max([100.0, dx]), 300])
+        height = min([max([100.0, dy]), 300])
+
+        # create SVG string
+        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
+        svg_end = "</g></svg>"
+        return svg_start, svg_element, svg_end, x_min, x_max, y_min, y_max
+
 
 @attr.s(str=False, frozen=True, kw_only=True)
 class Polyline(BaseCZMLObject):
@@ -415,6 +607,65 @@ class Polyline(BaseCZMLObject):
     clampToGround = attr.ib(default=None)
     classificationType = attr.ib(default=None)
     zIndex = attr.ib(default=None)
+
+    def _svg(self) -> Tuple[str, str, str, float, float, float, float]:
+        if (
+            self.positions.cartographicRadians is None
+            and self.positions.cartographicDegrees is None
+        ):
+            return "", "", "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+
+        # get coordinates
+        x_coords, y_coords = self.positions._get_xy_coords()
+
+        # create SVG element
+        points = " ".join([f"{x},{y}" for x, y in zip(x_coords, y_coords)])
+        if self.material is None:
+            colour = "black"
+        elif hasattr(self.material.solidColor.color.rgba, "values"):
+            colour = f'rgba({",".join([str(c) for c in  self.material.solidColor.color.rgba.values])})'
+        elif hasattr(self.material.solidColor.color.rgbaf, "values"):
+            colour = f'rgba({",".join([str(c) for c in self.material.solidColor.color.rgbaf.values])})'
+        else:
+            raise AttributeError
+        svg_element = f'<polyline stroke="{colour}" fill="none" points="{points}" />'
+
+        # bounds
+        x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
+        for x in x_coords:
+            if x < x_min:
+                x_min = x
+            if x > x_max:
+                x_max = x
+        for y in y_coords:
+            if y < y_min:
+                y_min = y
+            if y > y_max:
+                y_max = y
+
+        # frame
+        if x_min == x_max and y_min == y_max:
+            x_min *= 0.99
+            y_min *= 0.99
+            x_max *= 1.01
+            y_max *= 1.01
+        else:
+            expand = 0.04
+            widest_part = max([x_max - x_min, y_max - y_min])
+            expand_amount = widest_part * expand
+            x_min -= expand_amount
+            y_min -= expand_amount
+            x_max += expand_amount
+            y_max += expand_amount
+        dx = x_max - x_min
+        dy = y_max - y_min
+        width = min([max([100.0, dx]), 300])
+        height = min([max([100.0, dy]), 300])
+
+        # create SVG string
+        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
+        svg_end = "</g></svg>"
+        return svg_start, svg_element, svg_end, x_min, x_max, y_min, y_max
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -458,6 +709,77 @@ class PositionList(BaseCZMLObject, Deletable):
     cartographicRadians = attr.ib(default=None)
     cartographicDegrees = attr.ib(default=None)
     references = attr.ib(default=None)
+
+    def _get_xy_coords(
+        self, factor: Union[float, int] = 100
+    ) -> Tuple[List[Union[int, float]], List[Union[int, float]]]:
+        coords = []
+        if self.cartographicRadians is not None:
+            if isinstance(self.cartographicDegrees, CartographicRadiansListValue):
+                coords.extend(
+                    [math.degrees(v) for v in self.cartographicRadians.values]
+                )  # altitude not relevant
+            else:
+                coords.extend(
+                    [math.degrees(v) for v in self.cartographicRadians]
+                )  # altitude not relevant
+        if self.cartographicDegrees is not None:
+            if isinstance(self.cartographicDegrees, CartographicDegreesListValue):
+                coords.extend(self.cartographicDegrees.values)
+            else:
+                coords.extend(self.cartographicDegrees)
+        x_coords = [x * factor for x in coords[::3]]
+        y_coords = [y * factor for y in coords[1::3]]
+        return x_coords, y_coords
+
+    def _svg(self) -> Tuple[str, str, str, float, float, float, float]:
+        if self.cartographicRadians is None and self.cartographicDegrees is None:
+            return "", "", "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+
+        # get coordinates
+        x_coords, y_coords = self._get_xy_coords()
+
+        # create SVG elements
+        svg_elements = []
+        for x, y in zip(x_coords, y_coords):
+            svg_elements.append(f'<circle fill="black" cx="{x}" cy="{y}" r="1" />')
+
+        # bounds
+        x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
+        for x in x_coords:
+            if x < x_min:
+                x_min = x
+            if x > x_max:
+                x_max = x
+        for y in y_coords:
+            if y < y_min:
+                y_min = y
+            if y > y_max:
+                y_max = y
+
+        # frame
+        if x_min == x_max and y_min == y_max:
+            x_min *= 0.99
+            y_min *= 0.99
+            x_max *= 1.01
+            y_max *= 1.01
+        else:
+            expand = 0.04
+            widest_part = max([x_max - x_min, y_max - y_min])
+            expand_amount = widest_part * expand
+            x_min -= expand_amount
+            y_min -= expand_amount
+            x_max += expand_amount
+            y_max += expand_amount
+        dx = x_max - x_min
+        dy = y_max - y_min
+        width = min([max([100.0, dx]), 300])
+        height = min([max([100.0, dy]), 300])
+
+        # create SVG string
+        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
+        svg_end = "</g></svg>"
+        return svg_start, "".join(svg_elements), svg_end, x_min, x_max, y_min, y_max
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -510,11 +832,46 @@ class BoxDimensions(BaseCZMLObject, Interpolatable):
 @attr.s(str=False, frozen=True, kw_only=True)
 class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
     """A cartographic rectangle, which conforms to the curvature of the globe and
-    can be placed on the surface or at altitude and can optionally be extruded into a volume."""
+    can be placed on the surface or at altitude and can optionally be extruded into a volume.
+    """
 
     coordinates = attr.ib(default=None)
     fill = attr.ib(default=None)
     material = attr.ib(default=None)
+
+    def _svg(self) -> Tuple[str, str, str, float, float, float, float]:
+        if self.coordinates is None:
+            return "", "", "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+
+        # get coordinates
+        deg_long0, deg_lat0, deg_long1, deg_lat1 = self.coordinates._get_xy_coords()
+
+        # create SVG element
+        points = f"{deg_long0},{deg_lat0} {deg_long0},{deg_lat1} {deg_long1},{deg_lat1} {deg_long1},{deg_lat0} {deg_long0},{deg_lat0}"
+        if self.material is None:
+            colour = "black"
+        elif hasattr(self.material.solidColor.color.rgba, "values"):
+            colour = f'rgba({",".join([str(c) for c in self.material.solidColor.color.rgba.values])})'
+        elif hasattr(self.material.solidColor.color.rgbaf, "values"):
+            colour = f'rgba({",".join([str(c) for c in self.material.solidColor.color.rgbaf.values])})'
+        else:
+            raise AttributeError
+        svg_element = f'<polyline stroke="{colour}" fill="none" points="{points}" />'
+
+        # frame
+        x_min = deg_long0 * 0.99
+        y_min = deg_lat0 * 0.99
+        x_max = deg_long1 * 1.01
+        y_max = deg_lat1 * 1.01
+        dx = x_max - x_min
+        dy = y_max - y_min
+        width = min([max([100.0, dx]), 300])
+        height = min([max([100.0, dy]), 300])
+
+        # create SVG string
+        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
+        svg_end = "</g></svg>"
+        return svg_start, svg_element, svg_end, x_min, x_max, y_min, y_max
 
 
 # noinspection PyPep8Naming
@@ -531,6 +888,19 @@ class RectangleCoordinates(BaseCZMLObject, Interpolatable, Deletable):
             raise ValueError(
                 "One of cartesian, cartographicDegrees or cartographicRadians must be given"
             )
+
+    def _get_xy_coords(
+        self, factor: Union[float, int] = 100
+    ) -> Tuple[
+        Union[int, float], Union[int, float], Union[int, float], Union[int, float]
+    ]:
+        deg_long0, deg_lat0, deg_long1, deg_lat1 = self.wsenDegrees
+        return (
+            deg_long0 * factor,
+            deg_lat0 * factor,
+            deg_long1 * factor,
+            deg_lat1 * factor,
+        )
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -634,6 +1004,65 @@ class Wall(BaseCZMLObject):
     outlineWidth = attr.ib(default=None)
     shadows = attr.ib(default=None)
     distanceDisplayCondition = attr.ib(default=None)
+
+    def _svg(self) -> Tuple[str, str, str, float, float, float, float]:
+        if (
+            self.positions.cartographicRadians is None
+            and self.positions.cartographicDegrees is None
+        ):
+            return "", "", "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+
+        # get coordinates
+        x_coords, y_coords = self.positions._get_xy_coords()
+
+        # create SVG element
+        points = " ".join([f"{x},{y}" for x, y in zip(x_coords, y_coords)])
+        if self.material is None:
+            colour = "black"
+        elif hasattr(self.material.solidColor.color.rgba, "values"):
+            colour = f'rgba({",".join([str(c) for c in self.material.solidColor.color.rgba.values])})'
+        elif hasattr(self.material.solidColor.color.rgbaf, "values"):
+            colour = f'rgba({",".join([str(c) for c in self.material.solidColor.color.rgbaf.values])})'
+        else:
+            raise AttributeError
+        svg_element = f'<polyline stroke="{colour}" fill="none" points="{points}" />'
+
+        # bounds
+        x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
+        for x in x_coords:
+            if x < x_min:
+                x_min = x
+            if x > x_max:
+                x_max = x
+        for y in y_coords:
+            if y < y_min:
+                y_min = y
+            if y > y_max:
+                y_max = y
+
+        # frame
+        if x_min == x_max and y_min == y_max:
+            x_min *= 0.99
+            y_min *= 0.99
+            x_max *= 1.01
+            y_max *= 1.01
+        else:
+            expand = 0.04
+            widest_part = max([x_max - x_min, y_max - y_min])
+            expand_amount = widest_part * expand
+            x_min -= expand_amount
+            y_min -= expand_amount
+            x_max += expand_amount
+            y_max += expand_amount
+        dx = x_max - x_min
+        dy = y_max - y_min
+        width = min([max([100.0, dx]), 300])
+        height = min([max([100.0, dy]), 300])
+
+        # create SVG string
+        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
+        svg_end = "</g></svg>"
+        return svg_start, svg_element, svg_end, x_min, x_max, y_min, y_max
 
 
 @attr.s(str=False, frozen=True, kw_only=True)

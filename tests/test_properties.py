@@ -22,6 +22,7 @@ from czml3.properties import (
     Orientation,
     Point,
     Polyline,
+    Polygon,
     PolylineArrow,
     PolylineArrowMaterial,
     PolylineDash,
@@ -48,6 +49,7 @@ from czml3.types import (
     Sequence,
     UnitQuaternionValue,
 )
+from czml3.core import Packet
 
 
 def test_box():
@@ -158,6 +160,153 @@ def test_polyline():
         ),
     )
     assert str(pol) == expected_result
+
+
+def test_polyline_svg():
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="300" height="300" viewBox="1960.0 2960.0 1080.0 1080.0"><g transform="matrix(1,0,0,-1,0,7000.0)"><polyline stroke="rgba(200,100,30,255)" fill="none" points="2000,3000 2500,3500 3000,4000" /></g></svg>'
+    pol = Polyline(
+        positions=PositionList(
+            cartographicDegrees=CartographicDegreesListValue(
+                values=[20, 30, 10, 25, 35, 10, 30, 40, 10]
+            )
+        ),
+        arcType=ArcType(arcType="GEODESIC"),
+        distanceDisplayCondition=DistanceDisplayCondition(
+            distanceDisplayCondition=DistanceDisplayConditionValue(values=[14, 81])
+        ),
+        classificationType=ClassificationType(
+            classificationType=ClassificationTypes.CESIUM_3D_TILE
+        ),
+        material=Material(solidColor=SolidColorMaterial.from_list([200, 100, 30])),
+    )
+    str_svg = pol._repr_svg_()
+    assert str_svg == expected_result
+
+
+def test_polygon_svg():
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="300" height="300" viewBox="1940.0 2940.0 1620.0 1120.0"><g transform="matrix(1,0,0,-1,0,7000.0)"><path d="M 2000,3000 L 3500,3500 L 2000,4000 z" fill="rgba(200,100,30,255)"/></g></svg>'
+    pol = Polygon(
+        positions=PositionList(
+            cartographicDegrees=CartographicDegreesListValue(
+                values=[20, 30, 10, 35, 35, 10, 20, 40, 10]
+            )
+        ),
+        material=Material(solidColor=SolidColorMaterial.from_list([200, 100, 30])),
+    )
+    str_svg = pol._repr_svg_()
+    assert expected_result == str_svg
+
+
+def test_no_svg():
+    pnt = Point(
+        show=True,
+        pixelSize=10,
+        scaleByDistance=NearFarScalar(
+            nearFarScalar=NearFarScalarValue(values=[150, 2.0, 15000000, 0.5])
+        ),
+        disableDepthTestDistance=1.2,
+        color=Color(rgba=[200, 100, 30, 255]),
+    )
+    assert pnt._repr_svg_() == ""
+
+
+def test_position_svg():
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="100.0" height="100.0" viewBox="990.0 1980.0 20.0 40.0"><g transform="matrix(1,0,0,-1,0,4000.0)"><circle fill="black" cx="1000.0" cy="2000.0" r="1" /></g></svg>'
+    pos = Position(cartographicDegrees=[10.0, 20.0, 0.0])
+    str_svg = pos._repr_svg_()
+    assert str_svg == expected_result
+
+
+def test_positionlist_svg():
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="108.0" height="108.0" viewBox="996.0 1096.0 108.0 108.0"><g transform="matrix(1,0,0,-1,0,2300.0)"><circle fill="black" cx="1000.0" cy="1100.0" r="1" /><circle fill="black" cx="1100" cy="1200" r="1" /></g></svg>'
+    pos = PositionList(cartographicDegrees=[10.0, 11.0, 0.0, 11, 12, 0])
+    str_svg = pos._repr_svg_()
+    assert str_svg == expected_result
+
+
+def test_packet_svg():
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="261.3599999999997" height="261.3599999999997" viewBox="3586.32 3586.32 261.3599999999997 261.3599999999997"><g transform="matrix(1,0,0,-1,0,7434.0)"><circle fill="black" cx="3800" cy="3800" r="1" /><circle fill="rgba(200,100,30,255)" cx="3800" cy="3800" r="1" /><path d="M 3720.0000000000005,3729.9999999999995 L 3800,3800 L 3750.0,3690.0 z" fill="rgba(200,100,30,255)"/><polyline stroke="rgba(0,255,0,255)" fill="none" points="3700,3700 3600,3600" /></g></svg>'
+    p = Packet(
+        id="AreaTarget/Pennsylvania",
+        name="Pennsylvania",
+        position=Position(cartographicDegrees=[38, 38, 10]),
+        point=Point(
+            show=True,
+            pixelSize=10,
+            scaleByDistance=NearFarScalar(
+                nearFarScalar=NearFarScalarValue(values=[150, 2.0, 15000000, 0.5])
+            ),
+            disableDepthTestDistance=1.2,
+            color=Color(rgba=[200, 100, 30, 255]),
+        ),
+        polygon=Polygon(
+            positions=PositionList(
+                cartographicDegrees=CartographicDegreesListValue(
+                    values=[37.2, 37.3, 10, 38, 38, 10, 37.5, 36.9, 10]
+                )
+            ),
+            material=Material(solidColor=SolidColorMaterial.from_list([200, 100, 30])),
+        ),
+        polyline=Polyline(
+            material=Material(solidColor=SolidColorMaterial.from_list([0, 255, 0])),
+            positions=PositionList(
+                cartographicDegrees=CartographicDegreesListValue(
+                    values=[37, 37, 10, 36, 36, 10]
+                )
+            ),
+            arcType=ArcType(arcType="GEODESIC"),
+            distanceDisplayCondition=DistanceDisplayCondition(
+                distanceDisplayCondition=DistanceDisplayConditionValue(values=[14, 81])
+            ),
+            classificationType=ClassificationType(
+                classificationType=ClassificationTypes.CESIUM_3D_TILE
+            ),
+        ),
+    )
+    str_svg = p._repr_svg_()
+    assert str_svg == expected_result
+
+
+def test_packet_svg_no_color():
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="261.3599999999997" height="261.3599999999997" viewBox="3586.32 3586.32 261.3599999999997 261.3599999999997"><g transform="matrix(1,0,0,-1,0,7434.0)"><circle fill="black" cx="3800" cy="3800" r="1" /><circle fill="rgba(200,100,30,255)" cx="3800" cy="3800" r="1" /><path d="M 3720.0000000000005,3729.9999999999995 L 3800,3800 L 3750.0,3690.0 z" fill="black"/><polyline stroke="black" fill="none" points="3700,3700 3600,3600" /></g></svg>'
+    p = Packet(
+        id="AreaTarget/Pennsylvania",
+        name="Pennsylvania",
+        position=Position(cartographicDegrees=[38, 38, 10]),
+        point=Point(
+            show=True,
+            pixelSize=10,
+            scaleByDistance=NearFarScalar(
+                nearFarScalar=NearFarScalarValue(values=[150, 2.0, 15000000, 0.5])
+            ),
+            disableDepthTestDistance=1.2,
+            color=Color(rgba=[200, 100, 30, 255]),
+        ),
+        polygon=Polygon(
+            positions=PositionList(
+                cartographicDegrees=CartographicDegreesListValue(
+                    values=[37.2, 37.3, 10, 38, 38, 10, 37.5, 36.9, 10]
+                )
+            ),
+            # material=Material(solidColor=SolidColorMaterial.from_list([200, 100, 30])),
+        ),
+        polyline=Polyline(
+            positions=PositionList(
+                cartographicDegrees=CartographicDegreesListValue(
+                    values=[37, 37, 10, 36, 36, 10]
+                )
+            ),
+            arcType=ArcType(arcType="GEODESIC"),
+            distanceDisplayCondition=DistanceDisplayCondition(
+                distanceDisplayCondition=DistanceDisplayConditionValue(values=[14, 81])
+            ),
+            classificationType=ClassificationType(
+                classificationType=ClassificationTypes.CESIUM_3D_TILE
+            ),
+        ),
+    )
+    str_svg = p._repr_svg_()
+    assert str_svg == expected_result
 
 
 def test_material_solid_color():

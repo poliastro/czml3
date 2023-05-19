@@ -1,7 +1,8 @@
+from typing import Union
 import datetime as dt
 import json
 import warnings
-from enum import Enum
+from enum import Enum, auto
 from json import JSONEncoder
 
 import attr
@@ -53,3 +54,13 @@ class BaseCZMLObject:
                 obj_dict[property_name] = getattr(self, property_name)
 
         return obj_dict
+
+    def _svg(self):
+        raise NotImplementedError
+
+    def _repr_svg_(self):
+        try:
+            s1, s2, s3, _, _, _, _ = self._svg()
+            return "".join((s1, s2, s3))
+        except NotImplementedError:
+            return ""
