@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 import attr
+from typing import Tuple
 
 from .properties import Path, Point
 from .base import BaseCZMLObject
@@ -55,7 +56,7 @@ class Packet(BaseCZMLObject):
     tileset = attr.ib(default=None)
     wall = attr.ib(default=None)
 
-    def _svg(self):
+    def _svg(self) -> Tuple[str, float, float, float, float]:
         x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
         svg_elements = []
         for attr_name in self.__dict__.keys():
@@ -129,9 +130,7 @@ class Packet(BaseCZMLObject):
             else:
                 try:
                     (
-                        _,
                         tmp_svg_elements,
-                        _,
                         tmp_x_min,
                         tmp_x_max,
                         tmp_y_min,
@@ -152,7 +151,7 @@ class Packet(BaseCZMLObject):
                 except NotImplementedError:
                     pass
         if len(svg_elements) == 0:
-            return ""
+            return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
         # frame
         if x_min == x_max and y_min == y_max:
@@ -168,15 +167,9 @@ class Packet(BaseCZMLObject):
             y_min -= expand_amount
             x_max += expand_amount
             y_max += expand_amount
-        dx = x_max - x_min
-        dy = y_max - y_min
-        width = min([max([100.0, dx]), 300])
-        height = min([max([100.0, dy]), 300])
 
         # create SVG string
-        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
-        svg_end = "</g></svg>"
-        return svg_start, "".join(svg_elements), svg_end, x_min, x_max, y_min, y_max
+        return "".join(svg_elements), x_min, x_max, y_min, y_max
 
 
 @attr.s(str=False, frozen=True)

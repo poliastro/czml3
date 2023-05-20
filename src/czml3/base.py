@@ -60,7 +60,15 @@ class BaseCZMLObject:
 
     def _repr_svg_(self):
         try:
-            s1, s2, s3, _, _, _, _ = self._svg()
-            return "".join((s1, s2, s3))
+            svg_elements, x_min, x_max, y_min, y_max = self._svg()
+
+            # create SVG
+            dx = x_max - x_min
+            dy = y_max - y_min
+            width = min([max([100.0, dx]), 300])
+            height = min([max([100.0, dy]), 300])
+            svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
+            svg_end = "</g></svg>"
+            return "".join((svg_start, svg_elements, svg_end))
         except NotImplementedError:
             return ""

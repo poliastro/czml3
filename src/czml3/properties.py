@@ -293,9 +293,9 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         y_coords = [y * factor for y in coords[1::3]]
         return x_coords, y_coords
 
-    def _svg(self) -> Tuple[str, str, str, float, float, float, float]:
+    def _svg(self) -> Tuple[str, float, float, float, float]:
         if self.cartographicRadians is None and self.cartographicDegrees is None:
-            return "", "", "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+            return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
         # get coordinates
         x_coords, y_coords = self._get_xy_coords()
@@ -332,15 +332,8 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
             y_min -= expand_amount
             x_max += expand_amount
             y_max += expand_amount
-        dx = x_max - x_min
-        dy = y_max - y_min
-        width = min([max([100.0, dx]), 300])
-        height = min([max([100.0, dy]), 300])
 
-        # create SVG string
-        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
-        svg_end = "</g></svg>"
-        return svg_start, "".join(svg_elements), svg_end, x_min, x_max, y_min, y_max
+        return "".join(svg_elements), x_min, x_max, y_min, y_max
 
 
 # noinspection PyPep8Naming
@@ -406,12 +399,12 @@ class Corridor(BaseCZMLObject):
     classificationType = attr.ib(default=None)
     zIndex = attr.ib(default=None)
 
-    def _svg(self) -> Tuple[str, str, str, float, float, float, float]:
+    def _svg(self) -> Tuple[str, float, float, float, float]:
         if (
             self.positions.cartographicRadians is None
             and self.positions.cartographicDegrees is None
         ):
-            return "", "", "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+            return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
         # get coordinates
         (
@@ -458,15 +451,8 @@ class Corridor(BaseCZMLObject):
             y_min -= expand_amount
             x_max += expand_amount
             y_max += expand_amount
-        dx = x_max - x_min
-        dy = y_max - y_min
-        width = min([max([100.0, dx]), 300])
-        height = min([max([100.0, dy]), 300])
 
-        # create SVG string
-        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
-        svg_end = "</g></svg>"
-        return svg_start, svg_element, svg_end, x_min, x_max, y_min, y_max
+        return svg_element, x_min, x_max, y_min, y_max
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -529,12 +515,12 @@ class Polygon(BaseCZMLObject):
     classificationType = attr.ib(default=None)
     zIndex = attr.ib(default=None)
 
-    def _svg(self) -> Tuple[str, str, str, float, float, float, float]:
+    def _svg(self) -> Tuple[str, float, float, float, float]:
         if (
             self.positions.cartographicRadians is None
             and self.positions.cartographicDegrees is None
         ):
-            return "", "", "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+            return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
         # get coordinates
         x_coords, y_coords = self.positions._get_xy_coords()
@@ -579,15 +565,8 @@ class Polygon(BaseCZMLObject):
             y_min -= expand_amount
             x_max += expand_amount
             y_max += expand_amount
-        dx = x_max - x_min
-        dy = y_max - y_min
-        width = min([max([100.0, dx]), 300])
-        height = min([max([100.0, dy]), 300])
 
-        # create SVG string
-        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
-        svg_end = "</g></svg>"
-        return svg_start, svg_element, svg_end, x_min, x_max, y_min, y_max
+        return svg_element, x_min, x_max, y_min, y_max
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -608,12 +587,12 @@ class Polyline(BaseCZMLObject):
     classificationType = attr.ib(default=None)
     zIndex = attr.ib(default=None)
 
-    def _svg(self) -> Tuple[str, str, str, float, float, float, float]:
+    def _svg(self) -> Tuple[str, float, float, float, float]:
         if (
             self.positions.cartographicRadians is None
             and self.positions.cartographicDegrees is None
         ):
-            return "", "", "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+            return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
         # get coordinates
         x_coords, y_coords = self.positions._get_xy_coords()
@@ -657,15 +636,8 @@ class Polyline(BaseCZMLObject):
             y_min -= expand_amount
             x_max += expand_amount
             y_max += expand_amount
-        dx = x_max - x_min
-        dy = y_max - y_min
-        width = min([max([100.0, dx]), 300])
-        height = min([max([100.0, dy]), 300])
 
-        # create SVG string
-        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
-        svg_end = "</g></svg>"
-        return svg_start, svg_element, svg_end, x_min, x_max, y_min, y_max
+        return svg_element, x_min, x_max, y_min, y_max
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -732,9 +704,9 @@ class PositionList(BaseCZMLObject, Deletable):
         y_coords = [y * factor for y in coords[1::3]]
         return x_coords, y_coords
 
-    def _svg(self) -> Tuple[str, str, str, float, float, float, float]:
+    def _svg(self) -> Tuple[str, float, float, float, float]:
         if self.cartographicRadians is None and self.cartographicDegrees is None:
-            return "", "", "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+            return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
         # get coordinates
         x_coords, y_coords = self._get_xy_coords()
@@ -771,15 +743,8 @@ class PositionList(BaseCZMLObject, Deletable):
             y_min -= expand_amount
             x_max += expand_amount
             y_max += expand_amount
-        dx = x_max - x_min
-        dy = y_max - y_min
-        width = min([max([100.0, dx]), 300])
-        height = min([max([100.0, dy]), 300])
 
-        # create SVG string
-        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
-        svg_end = "</g></svg>"
-        return svg_start, "".join(svg_elements), svg_end, x_min, x_max, y_min, y_max
+        return "".join(svg_elements), x_min, x_max, y_min, y_max
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -839,9 +804,9 @@ class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
     fill = attr.ib(default=None)
     material = attr.ib(default=None)
 
-    def _svg(self) -> Tuple[str, str, str, float, float, float, float]:
+    def _svg(self) -> Tuple[str, float, float, float, float]:
         if self.coordinates is None:
-            return "", "", "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+            return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
         # get coordinates
         deg_long0, deg_lat0, deg_long1, deg_lat1 = self.coordinates._get_xy_coords()
@@ -863,15 +828,8 @@ class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
         y_min = deg_lat0 * 0.99
         x_max = deg_long1 * 1.01
         y_max = deg_lat1 * 1.01
-        dx = x_max - x_min
-        dy = y_max - y_min
-        width = min([max([100.0, dx]), 300])
-        height = min([max([100.0, dy]), 300])
 
-        # create SVG string
-        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
-        svg_end = "</g></svg>"
-        return svg_start, svg_element, svg_end, x_min, x_max, y_min, y_max
+        return svg_element, x_min, x_max, y_min, y_max
 
 
 # noinspection PyPep8Naming
@@ -1005,12 +963,12 @@ class Wall(BaseCZMLObject):
     shadows = attr.ib(default=None)
     distanceDisplayCondition = attr.ib(default=None)
 
-    def _svg(self) -> Tuple[str, str, str, float, float, float, float]:
+    def _svg(self) -> Tuple[str, float, float, float, float]:
         if (
             self.positions.cartographicRadians is None
             and self.positions.cartographicDegrees is None
         ):
-            return "", "", "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+            return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
         # get coordinates
         x_coords, y_coords = self.positions._get_xy_coords()
@@ -1054,15 +1012,8 @@ class Wall(BaseCZMLObject):
             y_min -= expand_amount
             x_max += expand_amount
             y_max += expand_amount
-        dx = x_max - x_min
-        dy = y_max - y_min
-        width = min([max([100.0, dx]), 300])
-        height = min([max([100.0, dy]), 300])
 
-        # create SVG string
-        svg_start = f'<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="{width}" height="{height}" viewBox="{x_min} {y_min} {dx} {dy}"><g transform="matrix(1,0,0,-1,0,{y_min + y_max})">'
-        svg_end = "</g></svg>"
-        return svg_start, svg_element, svg_end, x_min, x_max, y_min, y_max
+        return svg_element, x_min, x_max, y_min, y_max
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
