@@ -1,8 +1,7 @@
-from typing import Union
 import datetime as dt
 import json
 import warnings
-from enum import Enum, auto
+from enum import Enum
 from json import JSONEncoder
 
 import attr

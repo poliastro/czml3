@@ -56,7 +56,7 @@ class Packet(BaseCZMLObject):
     tileset = attr.ib(default=None)
     wall = attr.ib(default=None)
 
-    def _svg(self) -> Tuple[str, float, float, float, float]:
+    def _svg(self) -> Tuple[str, float, float, float, float]:  # noqa
         x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
         svg_elements = []
         for attr_name in self.__dict__.keys():
