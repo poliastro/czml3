@@ -225,7 +225,7 @@ def test_positionlist_svg():
 
 
 def test_packet_svg():
-    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="261.3599999999997" height="261.3599999999997" viewBox="3586.32 3586.32 261.3599999999997 261.3599999999997"><g transform="matrix(1,0,0,-1,0,7434.0)"><circle fill="black" cx="3800" cy="3800" r="1" /><circle fill="rgba(200,100,30,255)" cx="3800" cy="3800" r="1" /><path d="M 3720.0000000000005,3729.9999999999995 L 3800,3800 L 3750.0,3690.0 z" fill="rgba(200,100,30,255)"/><polyline stroke="rgba(0,255,0,255)" fill="none" points="3700,3700 3600,3600" /></g></svg>'
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="216.0" height="216.0" viewBox="3592.0 3592.0 216.0 216.0"><g transform="matrix(1,0,0,-1,0,7400.0)"><circle fill="black" cx="3800" cy="3800" r="1" /><circle fill="rgba(200,100,30,255)" cx="3800" cy="3800" r="1" /><path d="M 3720.0000000000005,3729.9999999999995 L 3800,3800 L 3750.0,3690.0 z" fill="rgba(200,100,30,255)"/><polyline stroke="rgba(0,255,0,255)" fill="none" points="3700,3700 3600,3600" /></g></svg>'
     p = Packet(
         id="AreaTarget/Pennsylvania",
         name="Pennsylvania",

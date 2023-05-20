@@ -153,21 +153,6 @@ class Packet(BaseCZMLObject):
         if len(svg_elements) == 0:
             return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
-        # frame
-        if x_min == x_max and y_min == y_max:
-            x_min *= 0.99
-            y_min *= 0.99
-            x_max *= 1.01
-            y_max *= 1.01
-        else:
-            expand = 0.04
-            widest_part = max([x_max - x_min, y_max - y_min])
-            expand_amount = widest_part * expand
-            x_min -= expand_amount
-            y_min -= expand_amount
-            x_max += expand_amount
-            y_max += expand_amount
-
         # create SVG string
         return "".join(svg_elements), x_min, x_max, y_min, y_max
 

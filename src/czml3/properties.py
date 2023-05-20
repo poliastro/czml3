@@ -318,21 +318,6 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
             if y > y_max:
                 y_max = y
 
-        # frame
-        if x_min == x_max and y_min == y_max:
-            x_min *= 0.99
-            y_min *= 0.99
-            x_max *= 1.01
-            y_max *= 1.01
-        else:
-            expand = 0.04
-            widest_part = max([x_max - x_min, y_max - y_min])
-            expand_amount = widest_part * expand
-            x_min -= expand_amount
-            y_min -= expand_amount
-            x_max += expand_amount
-            y_max += expand_amount
-
         return "".join(svg_elements), x_min, x_max, y_min, y_max
 
 
@@ -437,21 +422,6 @@ class Corridor(BaseCZMLObject):
             if y > y_max:
                 y_max = y
 
-        # frame
-        if x_min == x_max and y_min == y_max:
-            x_min *= 0.99
-            y_min *= 0.99
-            x_max *= 1.01
-            y_max *= 1.01
-        else:
-            expand = 0.04
-            widest_part = max([x_max - x_min, y_max - y_min])
-            expand_amount = widest_part * expand
-            x_min -= expand_amount
-            y_min -= expand_amount
-            x_max += expand_amount
-            y_max += expand_amount
-
         return svg_element, x_min, x_max, y_min, y_max
 
 
@@ -551,21 +521,6 @@ class Polygon(BaseCZMLObject):
             if y > y_max:
                 y_max = y
 
-        # frame
-        if x_min == x_max and y_min == y_max:
-            x_min *= 0.99
-            y_min *= 0.99
-            x_max *= 1.01
-            y_max *= 1.01
-        else:
-            expand = 0.04
-            widest_part = max([x_max - x_min, y_max - y_min])
-            expand_amount = widest_part * expand
-            x_min -= expand_amount
-            y_min -= expand_amount
-            x_max += expand_amount
-            y_max += expand_amount
-
         return svg_element, x_min, x_max, y_min, y_max
 
 
@@ -621,21 +576,6 @@ class Polyline(BaseCZMLObject):
                 y_min = y
             if y > y_max:
                 y_max = y
-
-        # frame
-        if x_min == x_max and y_min == y_max:
-            x_min *= 0.99
-            y_min *= 0.99
-            x_max *= 1.01
-            y_max *= 1.01
-        else:
-            expand = 0.04
-            widest_part = max([x_max - x_min, y_max - y_min])
-            expand_amount = widest_part * expand
-            x_min -= expand_amount
-            y_min -= expand_amount
-            x_max += expand_amount
-            y_max += expand_amount
 
         return svg_element, x_min, x_max, y_min, y_max
 
@@ -729,21 +669,6 @@ class PositionList(BaseCZMLObject, Deletable):
             if y > y_max:
                 y_max = y
 
-        # frame
-        if x_min == x_max and y_min == y_max:
-            x_min *= 0.99
-            y_min *= 0.99
-            x_max *= 1.01
-            y_max *= 1.01
-        else:
-            expand = 0.04
-            widest_part = max([x_max - x_min, y_max - y_min])
-            expand_amount = widest_part * expand
-            x_min -= expand_amount
-            y_min -= expand_amount
-            x_max += expand_amount
-            y_max += expand_amount
-
         return "".join(svg_elements), x_min, x_max, y_min, y_max
 
 
@@ -823,13 +748,7 @@ class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
             raise AttributeError
         svg_element = f'<polyline stroke="{colour}" fill="none" points="{points}" />'
 
-        # frame
-        x_min = deg_long0 * 0.99
-        y_min = deg_lat0 * 0.99
-        x_max = deg_long1 * 1.01
-        y_max = deg_lat1 * 1.01
-
-        return svg_element, x_min, x_max, y_min, y_max
+        return svg_element, deg_long0, deg_long1, deg_lat0, deg_lat1
 
 
 # noinspection PyPep8Naming
@@ -997,21 +916,6 @@ class Wall(BaseCZMLObject):
                 y_min = y
             if y > y_max:
                 y_max = y
-
-        # frame
-        if x_min == x_max and y_min == y_max:
-            x_min *= 0.99
-            y_min *= 0.99
-            x_max *= 1.01
-            y_max *= 1.01
-        else:
-            expand = 0.04
-            widest_part = max([x_max - x_min, y_max - y_min])
-            expand_amount = widest_part * expand
-            x_min -= expand_amount
-            y_min -= expand_amount
-            x_max += expand_amount
-            y_max += expand_amount
 
         return svg_element, x_min, x_max, y_min, y_max
 
