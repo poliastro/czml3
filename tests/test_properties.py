@@ -323,22 +323,23 @@ def test_packet_svg_with_path():
 
 
 def test_packet_svg_no_elements():
-    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="100.0" height="100.0" viewBox="10799998.92 10799998.92 -21599997.84 -21599997.84"><g transform="matrix(1,0,0,-1,0,0.0)"></g></svg>'
-    p = Packet(
-        id="AreaTarget/Pennsylvania",
-        name="Pennsylvania",
-        point=Point(
-            show=True,
-            pixelSize=10,
-            scaleByDistance=NearFarScalar(
-                nearFarScalar=NearFarScalarValue(values=[150, 2.0, 15000000, 0.5])
+    expected_result = "No coordinates found."
+    with pytest.raises(ValueError) as e:
+        p = Packet(
+            id="AreaTarget/Pennsylvania",
+            name="Pennsylvania",
+            point=Point(
+                show=True,
+                pixelSize=10,
+                scaleByDistance=NearFarScalar(
+                    nearFarScalar=NearFarScalarValue(values=[150, 2.0, 15000000, 0.5])
+                ),
+                disableDepthTestDistance=1.2,
+                color=Color(rgba=[200, 100, 30, 255]),
             ),
-            disableDepthTestDistance=1.2,
-            color=Color(rgba=[200, 100, 30, 255]),
-        ),
-    )
-    str_svg = p._repr_svg_()
-    assert str_svg == expected_result
+        )
+        p._repr_svg_()
+    assert str(e.value) == expected_result
 
 
 def test_packet_svg_no_color():

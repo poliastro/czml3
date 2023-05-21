@@ -23,8 +23,6 @@ from .types import (
     RgbaValue,
 )
 
-BOUND_DEFAULT = 9999999.0
-
 
 # noinspection PyPep8Naming
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -300,14 +298,15 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
     def _get_bounds(
         x_coords: List[float], y_coords: List[float]
     ) -> Tuple[float, float, float, float]:
-        if len(x_coords) == 0:
-            x_min, x_max = BOUND_DEFAULT, -BOUND_DEFAULT
-        else:
-            x_min, x_max = min(x_coords), max(x_coords)
-        if len(y_coords) == 0:
-            y_min, y_max = BOUND_DEFAULT, -BOUND_DEFAULT
-        else:
-            y_min, y_max = min(y_coords), max(y_coords)
+        """Extract the coordinates into lists of x,y.
+
+        The factor is required for points that are very close together, which SVG doesn't like.
+
+        :param Union[float, int] factor: factor to multiply values by, defaults to 100.0
+        :return Tuple[List[float], List[float]]: x coordinates,  y coordinates
+        """
+        x_min, x_max = min(x_coords), max(x_coords)
+        y_min, y_max = min(y_coords), max(y_coords)
         return x_min, x_max, y_min, y_max
 
     def _svg(self) -> Tuple[str, float, float, float, float]:
@@ -596,14 +595,15 @@ class PositionList(BaseCZMLObject, Deletable):
     def _get_bounds(
         x_coords: List[float], y_coords: List[float]
     ) -> Tuple[float, float, float, float]:
-        if len(x_coords) == 0:
-            x_min, x_max = BOUND_DEFAULT, -BOUND_DEFAULT
-        else:
-            x_min, x_max = min(x_coords), max(x_coords)
-        if len(y_coords) == 0:
-            y_min, y_max = BOUND_DEFAULT, -BOUND_DEFAULT
-        else:
-            y_min, y_max = min(y_coords), max(y_coords)
+        """Extract the coordinates into lists of x,y.
+
+        The factor is required for points that are very close together, which SVG doesn't like.
+
+        :param Union[float, int] factor: factor to multiply values by, defaults to 100.0
+        :return Tuple[List[float], List[float]]: x coordinates,  y coordinates
+        """
+        x_min, x_max = min(x_coords), max(x_coords)
+        y_min, y_max = min(y_coords), max(y_coords)
         return x_min, x_max, y_min, y_max
 
     def _svg(self) -> Tuple[str, float, float, float, float]:

@@ -62,7 +62,9 @@ class BaseCZMLObject:
             svg_elements, x_min, x_max, y_min, y_max = self._svg()
 
             # adjust SVG frame
-            if x_min == x_max and y_min == y_max:
+            if None in (x_min, x_max, y_min, y_max):  # frame undefined
+                raise ValueError("No coordinates found.")
+            elif x_min == x_max and y_min == y_max:
                 x_min *= 0.99
                 y_min *= 0.99
                 x_max *= 1.01

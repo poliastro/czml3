@@ -57,7 +57,7 @@ class Packet(BaseCZMLObject):
     wall = attr.ib(default=None)
 
     def _svg(self) -> Tuple[str, float, float, float, float]:
-        x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
+        x_min, x_max, y_min, y_max = None, None, None, None
         svg_elements = []
         for attr_name in self.__dict__.keys():
             attr = getattr(self, attr_name)
@@ -127,10 +127,10 @@ class Packet(BaseCZMLObject):
                     continue
 
             # bounds
-            x_min = min(x_min, tmp_x_min)
-            x_max = max(x_max, tmp_x_max)
-            y_min = min(y_min, tmp_y_min)
-            y_max = max(y_max, tmp_y_max)
+            x_min = tmp_x_min if x_min is None else min(x_min, tmp_x_min)
+            x_max = tmp_x_max if x_max is None else max(x_max, tmp_x_max)
+            y_min = tmp_y_min if y_min is None else min(y_min, tmp_y_min)
+            y_max = tmp_y_max if y_max is None else max(y_max, tmp_y_max)
 
         return "".join(svg_elements), x_min, x_max, y_min, y_max
 
