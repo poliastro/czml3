@@ -267,6 +267,25 @@ def test_packet_svg():
     assert str_svg == expected_result
 
 
+def test_packet_svg_no_elements():
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="100.0" height="100.0" viewBox="10799998.92 10799998.92 -21599997.84 -21599997.84"><g transform="matrix(1,0,0,-1,0,0.0)"></g></svg>'
+    p = Packet(
+        id="AreaTarget/Pennsylvania",
+        name="Pennsylvania",
+        point=Point(
+            show=True,
+            pixelSize=10,
+            scaleByDistance=NearFarScalar(
+                nearFarScalar=NearFarScalarValue(values=[150, 2.0, 15000000, 0.5])
+            ),
+            disableDepthTestDistance=1.2,
+            color=Color(rgba=[200, 100, 30, 255]),
+        ),
+    )
+    str_svg = p._repr_svg_()
+    assert str_svg == expected_result
+
+
 def test_packet_svg_no_color():
     expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="216.0" height="216.0" viewBox="3592.0 3592.0 216.0 216.0"><g transform="matrix(1,0,0,-1,0,7400.0)"><circle fill="black" cx="3800" cy="3800" r="1" /><path d="M 3720.0000000000005,3729.9999999999995 L 3800,3800 L 3750.0,3690.0 z" fill="black"/><polyline stroke="black" fill="none" points="3700,3700 3600,3600" /></g></svg>'
     p = Packet(
