@@ -3,7 +3,13 @@ import datetime as dt
 import pytest
 
 from czml3.core import Packet
-from czml3.enums import ArcTypes, ClassificationTypes, ShadowModes
+from czml3.enums import (
+    ArcTypes,
+    ClassificationTypes,
+    InterpolationAlgorithms,
+    ReferenceFrames,
+    ShadowModes,
+)
 from czml3.properties import (
     ArcType,
     Box,
@@ -21,6 +27,7 @@ from czml3.properties import (
     Model,
     NearFarScalar,
     Orientation,
+    Path,
     Point,
     Polygon,
     Polyline,
@@ -224,7 +231,7 @@ def test_positionlist_svg():
     assert str_svg == expected_result
 
 
-def test_packet_svg():
+def test_packet_svg_with_point():
     expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="216.0" height="216.0" viewBox="3592.0 3592.0 216.0 216.0"><g transform="matrix(1,0,0,-1,0,7400.0)"><circle fill="rgba(200,100,30,255)" cx="3800" cy="3800" r="1" /><path d="M 3720.0000000000005,3729.9999999999995 L 3800,3800 L 3750.0,3690.0 z" fill="rgba(200,100,30,255)"/><polyline stroke="rgba(0,255,0,255)" fill="none" points="3700,3700 3600,3600" /></g></svg>'
     p = Packet(
         id="AreaTarget/Pennsylvania",
@@ -238,6 +245,54 @@ def test_packet_svg():
             ),
             disableDepthTestDistance=1.2,
             color=Color(rgba=[200, 100, 30, 255]),
+        ),
+        polygon=Polygon(
+            positions=PositionList(
+                cartographicDegrees=CartographicDegreesListValue(
+                    values=[37.2, 37.3, 10, 38, 38, 10, 37.5, 36.9, 10]
+                )
+            ),
+            material=Material(solidColor=SolidColorMaterial.from_list([200, 100, 30])),
+        ),
+        polyline=Polyline(
+            material=Material(solidColor=SolidColorMaterial.from_list([0, 255, 0])),
+            positions=PositionList(
+                cartographicDegrees=CartographicDegreesListValue(
+                    values=[37, 37, 10, 36, 36, 10]
+                )
+            ),
+            arcType=ArcType(arcType="GEODESIC"),
+            distanceDisplayCondition=DistanceDisplayCondition(
+                distanceDisplayCondition=DistanceDisplayConditionValue(values=[14, 81])
+            ),
+            classificationType=ClassificationType(
+                classificationType=ClassificationTypes.CESIUM_3D_TILE
+            ),
+        ),
+    )
+    str_svg = p._repr_svg_()
+    assert str_svg == expected_result
+
+
+def test_packet_svg_with_path():
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="300" height="300" viewBox="2920.0 2920.0 1160.0 2160.0"><g transform="matrix(1,0,0,-1,0,8000.0)"><polyline stroke="rgba(0,255,0,255)" fill="none" points="3000,3000 3100,3200 3300,5000 4000,3900" /><path d="M 3720.0000000000005,3729.9999999999995 L 3800,3800 L 3750.0,3690.0 z" fill="rgba(200,100,30,255)"/><polyline stroke="rgba(0,255,0,255)" fill="none" points="3700,3700 3600,3600" /></g></svg>'
+    start = dt.datetime(2012, 3, 15, 10, tzinfo=dt.timezone.utc)
+    end = dt.datetime(2012, 3, 16, 10, tzinfo=dt.timezone.utc)
+    p = Packet(
+        id="AreaTarget/Pennsylvania",
+        name="Pennsylvania",
+        position=Position(
+            interpolationAlgorithm=InterpolationAlgorithms.LAGRANGE,
+            interpolationDegree=5,
+            referenceFrame=ReferenceFrames.INERTIAL,
+            epoch=start,
+            cartographicDegrees=[30, 30, 0, 31, 32, 10, 33, 50, 0, 40, 39, 0],
+        ),
+        path=Path(
+            show=Sequence([IntervalValue(start=start, end=end, value=True)]),
+            width=1,
+            resolution=120,
+            material=Material(solidColor=SolidColorMaterial.from_list([0, 255, 0])),
         ),
         polygon=Polygon(
             positions=PositionList(
