@@ -294,30 +294,32 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         y_coords = [y * factor for y in coords[1::3]]
         return x_coords, y_coords
 
+    @staticmethod
+    def _get_bounds(
+        x_coords: List[float], y_coords: List[float]
+    ) -> Tuple[float, float, float, float]:
+        if len(x_coords) == 0:
+            x_min, x_max = 9999999.0, -9999999.0
+        else:
+            x_min, x_max = min(x_coords), max(x_coords)
+        if len(y_coords) == 0:
+            y_min, y_max = 9999999.0, -9999999.0
+        else:
+            y_min, y_max = min(y_coords), max(y_coords)
+        return x_min, x_max, y_min, y_max
+
     def _svg(self) -> Tuple[str, float, float, float, float]:
         if self.cartographicRadians is None and self.cartographicDegrees is None:
             return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
-        # get coordinates
+        # get coordinates and bounds
         x_coords, y_coords = self._get_xy_coords()
+        x_min, x_max, y_min, y_max = self._get_bounds(x_coords, y_coords)
 
         # create SVG elements
         svg_elements = []
         for x, y in zip(x_coords, y_coords):
             svg_elements.append(f'<circle fill="black" cx="{x}" cy="{y}" r="1" />')
-
-        # bounds
-        x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
-        for x in x_coords:
-            if x < x_min:
-                x_min = x
-            if x > x_max:
-                x_max = x
-        for y in y_coords:
-            if y < y_min:
-                y_min = y
-            if y > y_max:
-                y_max = y
 
         return "".join(svg_elements), x_min, x_max, y_min, y_max
 
@@ -392,11 +394,12 @@ class Corridor(BaseCZMLObject):
         ):
             return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
-        # get coordinates
+        # get coordinates and bounds
         (
             x_coords,
             y_coords,
         ) = self.positions._get_xy_coords()  # TODO need to account for width
+        x_min, x_max, y_min, y_max = self.positions._get_bounds(x_coords, y_coords)
 
         # create SVG element
         points = " ".join([f"{x},{y}" for x, y in zip(x_coords, y_coords)])
@@ -409,19 +412,6 @@ class Corridor(BaseCZMLObject):
         else:
             raise AttributeError
         svg_element = f'<polyline stroke="{colour}" fill="none" points="{points}" />'
-
-        # bounds
-        x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
-        for x in x_coords:
-            if x < x_min:
-                x_min = x
-            if x > x_max:
-                x_max = x
-        for y in y_coords:
-            if y < y_min:
-                y_min = y
-            if y > y_max:
-                y_max = y
 
         return svg_element, x_min, x_max, y_min, y_max
 
@@ -493,8 +483,9 @@ class Polygon(BaseCZMLObject):
         ):
             return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
-        # get coordinates
+        # get coordinates and bounds
         x_coords, y_coords = self.positions._get_xy_coords()
+        x_min, x_max, y_min, y_max = self.positions._get_bounds(x_coords, y_coords)
 
         # create SVG element
         points = [f"{x},{y}" for x, y in zip(x_coords, y_coords)]
@@ -508,19 +499,6 @@ class Polygon(BaseCZMLObject):
         else:
             raise AttributeError
         svg_element = f'<path d="{d}" fill="{colour}"/>'
-
-        # bounds
-        x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
-        for x in x_coords:
-            if x < x_min:
-                x_min = x
-            if x > x_max:
-                x_max = x
-        for y in y_coords:
-            if y < y_min:
-                y_min = y
-            if y > y_max:
-                y_max = y
 
         return svg_element, x_min, x_max, y_min, y_max
 
@@ -550,8 +528,9 @@ class Polyline(BaseCZMLObject):
         ):
             return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
-        # get coordinates
+        # get coordinates and bounds
         x_coords, y_coords = self.positions._get_xy_coords()
+        x_min, x_max, y_min, y_max = self.positions._get_bounds(x_coords, y_coords)
 
         # create SVG element
         points = " ".join([f"{x},{y}" for x, y in zip(x_coords, y_coords)])
@@ -564,19 +543,6 @@ class Polyline(BaseCZMLObject):
         else:
             raise AttributeError
         svg_element = f'<polyline stroke="{colour}" fill="none" points="{points}" />'
-
-        # bounds
-        x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
-        for x in x_coords:
-            if x < x_min:
-                x_min = x
-            if x > x_max:
-                x_max = x
-        for y in y_coords:
-            if y < y_min:
-                y_min = y
-            if y > y_max:
-                y_max = y
 
         return svg_element, x_min, x_max, y_min, y_max
 
@@ -645,30 +611,32 @@ class PositionList(BaseCZMLObject, Deletable):
         y_coords = [y * factor for y in coords[1::3]]
         return x_coords, y_coords
 
+    @staticmethod
+    def _get_bounds(
+        x_coords: List[float], y_coords: List[float]
+    ) -> Tuple[float, float, float, float]:
+        if len(x_coords) == 0:
+            x_min, x_max = 9999999.0, -9999999.0
+        else:
+            x_min, x_max = min(x_coords), max(x_coords)
+        if len(y_coords) == 0:
+            y_min, y_max = 9999999.0, -9999999.0
+        else:
+            y_min, y_max = min(y_coords), max(y_coords)
+        return x_min, x_max, y_min, y_max
+
     def _svg(self) -> Tuple[str, float, float, float, float]:
         if self.cartographicRadians is None and self.cartographicDegrees is None:
             return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
-        # get coordinates
+        # get coordinates and bounds
         x_coords, y_coords = self._get_xy_coords()
+        x_min, x_max, y_min, y_max = self._get_bounds(x_coords, y_coords)
 
         # create SVG elements
         svg_elements = []
         for x, y in zip(x_coords, y_coords):
             svg_elements.append(f'<circle fill="black" cx="{x}" cy="{y}" r="1" />')
-
-        # bounds
-        x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
-        for x in x_coords:
-            if x < x_min:
-                x_min = x
-            if x > x_max:
-                x_max = x
-        for y in y_coords:
-            if y < y_min:
-                y_min = y
-            if y > y_max:
-                y_max = y
 
         return "".join(svg_elements), x_min, x_max, y_min, y_max
 
@@ -734,7 +702,7 @@ class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
         if self.coordinates is None:
             return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
-        # get coordinates
+        # get coordinates and bounds
         deg_long0, deg_lat0, deg_long1, deg_lat1 = self.coordinates._get_xy_coords()
 
         # create SVG element
@@ -891,8 +859,9 @@ class Wall(BaseCZMLObject):
         ):
             return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
-        # get coordinates
+        # get coordinates and bounds
         x_coords, y_coords = self.positions._get_xy_coords()
+        x_min, x_max, y_min, y_max = self.positions._get_bounds(x_coords, y_coords)
 
         # create SVG element
         points = " ".join([f"{x},{y}" for x, y in zip(x_coords, y_coords)])
@@ -905,19 +874,6 @@ class Wall(BaseCZMLObject):
         else:
             raise AttributeError
         svg_element = f'<polyline stroke="{colour}" fill="none" points="{points}" />'
-
-        # bounds
-        x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
-        for x in x_coords:
-            if x < x_min:
-                x_min = x
-            if x > x_max:
-                x_max = x
-        for y in y_coords:
-            if y < y_min:
-                y_min = y
-            if y > y_max:
-                y_max = y
 
         return svg_element, x_min, x_max, y_min, y_max
 

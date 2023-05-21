@@ -56,7 +56,7 @@ class Packet(BaseCZMLObject):
     tileset = attr.ib(default=None)
     wall = attr.ib(default=None)
 
-    def _svg(self) -> Tuple[str, float, float, float, float]:  # noqa
+    def _svg(self) -> Tuple[str, float, float, float, float]:
         x_min, x_max, y_min, y_max = 9999999.0, -9999999.0, 9999999.0, -9999999.0
         svg_elements = []
         for attr_name in self.__dict__.keys():
@@ -82,18 +82,15 @@ class Packet(BaseCZMLObject):
 
                 # get coordinates
                 x_coords, y_coords = self.position._get_xy_coords()
+                tmp_x_min, tmp_x_max, tmp_y_min, tmp_y_max = self.position._get_bounds(
+                    x_coords, y_coords
+                )
 
                 # create SVG elements
                 for x, y in zip(x_coords, y_coords):
                     svg_elements.append(
                         f'<circle fill="{colour}" cx="{x}" cy="{y}" r="1" />'
                     )
-
-                # bounds
-                tmp_x_min = min(x_coords)
-                tmp_x_max = max(x_coords)
-                tmp_y_min = min(y_coords)
-                tmp_y_max = max(y_coords)
             elif isinstance(attr, Path) and self.position is not None:
                 # colour
                 if attr.material is None:
@@ -105,20 +102,17 @@ class Packet(BaseCZMLObject):
                 else:
                     raise AttributeError
 
-                # get coordinates
+                # get coordinates and bounds
                 x_coords, y_coords = self.position._get_xy_coords()
+                tmp_x_min, tmp_x_max, tmp_y_min, tmp_y_max = self.position._get_bounds(
+                    x_coords, y_coords
+                )
 
                 # create SVG element
                 points = " ".join([f"{x},{y}" for x, y in zip(x_coords, y_coords)])
                 svg_elements.append(
                     f'<polyline stroke="{colour}" fill="none" points="{points}" />'
                 )
-
-                # bounds
-                tmp_x_min = min(x_coords)
-                tmp_x_max = max(x_coords)
-                tmp_y_min = min(y_coords)
-                tmp_y_max = max(y_coords)
             else:
                 try:
                     (
@@ -133,14 +127,10 @@ class Packet(BaseCZMLObject):
                     continue
 
             # bounds
-            if tmp_x_min < x_min:
-                x_min = tmp_x_min
-            if tmp_x_max > x_max:
-                x_max = tmp_x_max
-            if tmp_y_min < y_min:
-                y_min = tmp_y_min
-            if tmp_y_max > y_max:
-                y_max = tmp_y_max
+            x_min = min(x_min, tmp_x_min)
+            x_max = max(x_max, tmp_x_max)
+            y_min = min(y_min, tmp_y_min)
+            y_max = max(y_max, tmp_y_max)
 
         return "".join(svg_elements), x_min, x_max, y_min, y_max
 
