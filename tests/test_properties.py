@@ -2,6 +2,7 @@ import datetime as dt
 
 import pytest
 
+from czml3.core import Packet
 from czml3.enums import ArcTypes, ClassificationTypes, ShadowModes
 from czml3.properties import (
     ArcType,
@@ -21,8 +22,8 @@ from czml3.properties import (
     NearFarScalar,
     Orientation,
     Point,
-    Polyline,
     Polygon,
+    Polyline,
     PolylineArrow,
     PolylineArrowMaterial,
     PolylineDash,
@@ -49,7 +50,6 @@ from czml3.types import (
     Sequence,
     UnitQuaternionValue,
 )
-from czml3.core import Packet
 
 
 def test_box():

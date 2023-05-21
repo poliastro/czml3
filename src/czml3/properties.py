@@ -1,8 +1,9 @@
 from __future__ import annotations
+
 import math
+from typing import List, Tuple, Union
 
 import attr
-from typing import Union, Tuple, List
 from w3lib.url import is_url, parse_data_uri
 
 from .base import BaseCZMLObject
@@ -16,10 +17,10 @@ from .enums import (
     VerticalOrigins,
 )
 from .types import (
-    RgbafValue,
-    RgbaValue,
     CartographicDegreesListValue,
     CartographicRadiansListValue,
+    RgbafValue,
+    RgbaValue,
 )
 
 
@@ -867,7 +868,8 @@ class TileSet(BaseCZMLObject):
 @attr.s(str=False, frozen=True, kw_only=True)
 class Wall(BaseCZMLObject):
     """A two-dimensional wall defined as a line strip and optional maximum and minimum heights.
-    It conforms to the curvature of the globe and can be placed along the surface or at altitude."""
+    It conforms to the curvature of the globe and can be placed along the surface or at altitude.
+    """
 
     show = attr.ib(default=None)
     positions = attr.ib()

@@ -32,7 +32,6 @@ def format_datetime_like(dt_object):
 
 @attr.s(str=False, frozen=True, kw_only=True)
 class _TimeTaggedCoords(BaseCZMLObject):
-
     NUM_COORDS: int
 
     values = attr.ib()

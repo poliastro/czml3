@@ -1,10 +1,10 @@
+from typing import Tuple
 from uuid import uuid4
 
 import attr
-from typing import Tuple
 
-from .properties import Path, Point, Position, PositionList
 from .base import BaseCZMLObject
+from .properties import Path, Point, Position, PositionList
 from .types import Sequence
 
 CZML_VERSION = "1.0"
