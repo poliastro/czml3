@@ -312,9 +312,6 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         return x_min, x_max, y_min, y_max
 
     def _svg(self) -> Tuple[str, float, float, float, float]:
-        if self.cartographicRadians is None and self.cartographicDegrees is None:
-            return "", BOUND_DEFAULT, -BOUND_DEFAULT, BOUND_DEFAULT, -BOUND_DEFAULT
-
         # get coordinates and bounds
         x_coords, y_coords = self._get_xy_coords()
         x_min, x_max, y_min, y_max = self._get_bounds(x_coords, y_coords)
@@ -391,12 +388,6 @@ class Corridor(BaseCZMLObject):
     zIndex = attr.ib(default=None)
 
     def _svg(self) -> Tuple[str, float, float, float, float]:
-        if (
-            self.positions.cartographicRadians is None
-            and self.positions.cartographicDegrees is None
-        ):
-            return "", BOUND_DEFAULT, -BOUND_DEFAULT, BOUND_DEFAULT, -BOUND_DEFAULT
-
         # get coordinates and bounds
         (
             x_coords,
@@ -480,12 +471,6 @@ class Polygon(BaseCZMLObject):
     zIndex = attr.ib(default=None)
 
     def _svg(self) -> Tuple[str, float, float, float, float]:
-        if (
-            self.positions.cartographicRadians is None
-            and self.positions.cartographicDegrees is None
-        ):
-            return "", BOUND_DEFAULT, -BOUND_DEFAULT, BOUND_DEFAULT, -BOUND_DEFAULT
-
         # get coordinates and bounds
         x_coords, y_coords = self.positions._get_xy_coords()
         x_min, x_max, y_min, y_max = self.positions._get_bounds(x_coords, y_coords)
@@ -525,12 +510,6 @@ class Polyline(BaseCZMLObject):
     zIndex = attr.ib(default=None)
 
     def _svg(self) -> Tuple[str, float, float, float, float]:
-        if (
-            self.positions.cartographicRadians is None
-            and self.positions.cartographicDegrees is None
-        ):
-            return "", BOUND_DEFAULT, -BOUND_DEFAULT, BOUND_DEFAULT, -BOUND_DEFAULT
-
         # get coordinates and bounds
         x_coords, y_coords = self.positions._get_xy_coords()
         x_min, x_max, y_min, y_max = self.positions._get_bounds(x_coords, y_coords)
@@ -629,9 +608,6 @@ class PositionList(BaseCZMLObject, Deletable):
         return x_min, x_max, y_min, y_max
 
     def _svg(self) -> Tuple[str, float, float, float, float]:
-        if self.cartographicRadians is None and self.cartographicDegrees is None:
-            return "", BOUND_DEFAULT, -BOUND_DEFAULT, BOUND_DEFAULT, -BOUND_DEFAULT
-
         # get coordinates and bounds
         x_coords, y_coords = self._get_xy_coords()
         x_min, x_max, y_min, y_max = self._get_bounds(x_coords, y_coords)
@@ -702,9 +678,6 @@ class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
     material = attr.ib(default=None)
 
     def _svg(self) -> Tuple[str, float, float, float, float]:
-        if self.coordinates is None:
-            return "", BOUND_DEFAULT, -BOUND_DEFAULT, BOUND_DEFAULT, -BOUND_DEFAULT
-
         # get coordinates and bounds
         deg_long0, deg_lat0, deg_long1, deg_lat1 = self.coordinates._get_xy_coords()
 
@@ -856,12 +829,6 @@ class Wall(BaseCZMLObject):
     distanceDisplayCondition = attr.ib(default=None)
 
     def _svg(self) -> Tuple[str, float, float, float, float]:
-        if (
-            self.positions.cartographicRadians is None
-            and self.positions.cartographicDegrees is None
-        ):
-            return "", BOUND_DEFAULT, -BOUND_DEFAULT, BOUND_DEFAULT, -BOUND_DEFAULT
-
         # get coordinates and bounds
         x_coords, y_coords = self.positions._get_xy_coords()
         x_min, x_max, y_min, y_max = self.positions._get_bounds(x_coords, y_coords)
