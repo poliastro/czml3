@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, Union
 from uuid import uuid4
 
 import attr
@@ -56,7 +56,15 @@ class Packet(BaseCZMLObject):
     tileset = attr.ib(default=None)
     wall = attr.ib(default=None)
 
-    def _svg(self) -> Tuple[str, float, float, float, float]:
+    def _svg(
+        self,
+    ) -> Tuple[
+        str,
+        Union[None, float],
+        Union[None, float],
+        Union[None, float],
+        Union[None, float],
+    ]:
         x_min, x_max, y_min, y_max = None, None, None, None
         svg_elements = []
         for attr_name in self.__dict__.keys():
@@ -127,10 +135,16 @@ class Packet(BaseCZMLObject):
                     continue
 
             # bounds
-            x_min = tmp_x_min if x_min is None else min(x_min, tmp_x_min)
-            x_max = tmp_x_max if x_max is None else max(x_max, tmp_x_max)
-            y_min = tmp_y_min if y_min is None else min(y_min, tmp_y_min)
-            y_max = tmp_y_max if y_max is None else max(y_max, tmp_y_max)
+            if None in (x_min, x_max, y_min, y_max):
+                x_min = tmp_x_min
+                x_max = tmp_x_max
+                y_min = tmp_y_min
+                y_max = tmp_y_max
+            else:
+                x_min = min(x_min, tmp_x_min)
+                x_max = max(x_max, tmp_x_max)
+                y_min = min(y_min, tmp_y_min)
+                y_max = max(y_max, tmp_y_max)
 
         return "".join(svg_elements), x_min, x_max, y_min, y_max
 
