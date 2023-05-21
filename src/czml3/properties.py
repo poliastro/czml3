@@ -23,7 +23,6 @@ from .types import (
     RgbaValue,
 )
 
-
 BOUND_DEFAULT = 9999999.0
 
 
