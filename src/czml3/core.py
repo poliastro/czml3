@@ -3,7 +3,7 @@ from uuid import uuid4
 import attr
 from typing import Tuple
 
-from .properties import Path, Point
+from .properties import Path, Point, Position, PositionList
 from .base import BaseCZMLObject
 from .types import Sequence
 
@@ -61,9 +61,17 @@ class Packet(BaseCZMLObject):
         svg_elements = []
         for attr_name in self.__dict__.keys():
             attr = getattr(self, attr_name)
-            if not isinstance(attr, BaseCZMLObject):
+            if (
+                not isinstance(attr, BaseCZMLObject)
+                or isinstance(attr, Position)
+                or isinstance(attr, PositionList)  # overwrite this with path or point
+            ):
                 continue
-            if isinstance(attr, Point) and self.position is not None:
+            if (
+                isinstance(attr, Point)
+                and hasattr(self, "position")
+                and self.position is not None
+            ):
                 # colour
                 if attr.color is None:
                     colour = "black"
@@ -96,7 +104,11 @@ class Packet(BaseCZMLObject):
                         y_min = y
                     if y > y_max:
                         y_max = y
-            elif isinstance(attr, Path) and self.position is not None:
+            elif (
+                isinstance(attr, Path)
+                and hasattr(self, "position")
+                and self.position is not None
+            ):
                 # get coordinates
                 x_coords, y_coords = self.position._get_xy_coords()
 
@@ -149,7 +161,7 @@ class Packet(BaseCZMLObject):
                         y_max = tmp_y_max
 
                 except NotImplementedError:
-                    pass
+                    continue
         if len(svg_elements) == 0:
             return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
 
