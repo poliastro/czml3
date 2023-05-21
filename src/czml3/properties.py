@@ -24,6 +24,9 @@ from .types import (
 )
 
 
+BOUND_DEFAULT = 9999999.0
+
+
 # noinspection PyPep8Naming
 @attr.s(str=False, frozen=True, kw_only=True)
 class HasAlignment:
@@ -299,18 +302,18 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         x_coords: List[float], y_coords: List[float]
     ) -> Tuple[float, float, float, float]:
         if len(x_coords) == 0:
-            x_min, x_max = 9999999.0, -9999999.0
+            x_min, x_max = BOUND_DEFAULT, -BOUND_DEFAULT
         else:
             x_min, x_max = min(x_coords), max(x_coords)
         if len(y_coords) == 0:
-            y_min, y_max = 9999999.0, -9999999.0
+            y_min, y_max = BOUND_DEFAULT, -BOUND_DEFAULT
         else:
             y_min, y_max = min(y_coords), max(y_coords)
         return x_min, x_max, y_min, y_max
 
     def _svg(self) -> Tuple[str, float, float, float, float]:
         if self.cartographicRadians is None and self.cartographicDegrees is None:
-            return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+            return "", BOUND_DEFAULT, -BOUND_DEFAULT, BOUND_DEFAULT, -BOUND_DEFAULT
 
         # get coordinates and bounds
         x_coords, y_coords = self._get_xy_coords()
@@ -392,7 +395,7 @@ class Corridor(BaseCZMLObject):
             self.positions.cartographicRadians is None
             and self.positions.cartographicDegrees is None
         ):
-            return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+            return "", BOUND_DEFAULT, -BOUND_DEFAULT, BOUND_DEFAULT, -BOUND_DEFAULT
 
         # get coordinates and bounds
         (
@@ -481,7 +484,7 @@ class Polygon(BaseCZMLObject):
             self.positions.cartographicRadians is None
             and self.positions.cartographicDegrees is None
         ):
-            return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+            return "", BOUND_DEFAULT, -BOUND_DEFAULT, BOUND_DEFAULT, -BOUND_DEFAULT
 
         # get coordinates and bounds
         x_coords, y_coords = self.positions._get_xy_coords()
@@ -526,7 +529,7 @@ class Polyline(BaseCZMLObject):
             self.positions.cartographicRadians is None
             and self.positions.cartographicDegrees is None
         ):
-            return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+            return "", BOUND_DEFAULT, -BOUND_DEFAULT, BOUND_DEFAULT, -BOUND_DEFAULT
 
         # get coordinates and bounds
         x_coords, y_coords = self.positions._get_xy_coords()
@@ -616,18 +619,18 @@ class PositionList(BaseCZMLObject, Deletable):
         x_coords: List[float], y_coords: List[float]
     ) -> Tuple[float, float, float, float]:
         if len(x_coords) == 0:
-            x_min, x_max = 9999999.0, -9999999.0
+            x_min, x_max = BOUND_DEFAULT, -BOUND_DEFAULT
         else:
             x_min, x_max = min(x_coords), max(x_coords)
         if len(y_coords) == 0:
-            y_min, y_max = 9999999.0, -9999999.0
+            y_min, y_max = BOUND_DEFAULT, -BOUND_DEFAULT
         else:
             y_min, y_max = min(y_coords), max(y_coords)
         return x_min, x_max, y_min, y_max
 
     def _svg(self) -> Tuple[str, float, float, float, float]:
         if self.cartographicRadians is None and self.cartographicDegrees is None:
-            return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+            return "", BOUND_DEFAULT, -BOUND_DEFAULT, BOUND_DEFAULT, -BOUND_DEFAULT
 
         # get coordinates and bounds
         x_coords, y_coords = self._get_xy_coords()
@@ -700,7 +703,7 @@ class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
 
     def _svg(self) -> Tuple[str, float, float, float, float]:
         if self.coordinates is None:
-            return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+            return "", BOUND_DEFAULT, -BOUND_DEFAULT, BOUND_DEFAULT, -BOUND_DEFAULT
 
         # get coordinates and bounds
         deg_long0, deg_lat0, deg_long1, deg_lat1 = self.coordinates._get_xy_coords()
@@ -857,7 +860,7 @@ class Wall(BaseCZMLObject):
             self.positions.cartographicRadians is None
             and self.positions.cartographicDegrees is None
         ):
-            return "", 9999999.0, -9999999.0, 9999999.0, -9999999.0
+            return "", BOUND_DEFAULT, -BOUND_DEFAULT, BOUND_DEFAULT, -BOUND_DEFAULT
 
         # get coordinates and bounds
         x_coords, y_coords = self.positions._get_xy_coords()
