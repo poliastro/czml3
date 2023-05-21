@@ -283,8 +283,8 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
             )
 
     def _get_xy_coords(
-        self, factor: Union[float, int] = 100
-    ) -> Tuple[List[Union[int, float]], List[Union[int, float]]]:
+        self, factor: Union[float, int] = 100.0
+    ) -> Tuple[List[float], List[float]]:
         coords = []
         if self.cartographicRadians is not None:
             coords.extend(
@@ -571,8 +571,8 @@ class PositionList(BaseCZMLObject, Deletable):
     references = attr.ib(default=None)
 
     def _get_xy_coords(
-        self, factor: Union[float, int] = 100
-    ) -> Tuple[List[Union[int, float]], List[Union[int, float]]]:
+        self, factor: Union[float, int] = 100.0
+    ) -> Tuple[List[float], List[float]]:
         coords = []
         if self.cartographicRadians is not None:
             if isinstance(self.cartographicDegrees, CartographicRadiansListValue):
@@ -711,10 +711,8 @@ class RectangleCoordinates(BaseCZMLObject, Interpolatable, Deletable):
             )
 
     def _get_xy_coords(
-        self, factor: Union[float, int] = 100
-    ) -> Tuple[
-        Union[int, float], Union[int, float], Union[int, float], Union[int, float]
-    ]:
+        self, factor: Union[float, int] = 100.0
+    ) -> Tuple[float, float, float, float]:
         deg_long0, deg_lat0, deg_long1, deg_lat1 = self.wsenDegrees
         return (
             deg_long0 * factor,
