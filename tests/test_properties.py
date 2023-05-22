@@ -173,7 +173,7 @@ def test_polyline():
 
 
 def test_polyline_svg():
-    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="300" height="300" viewBox="1960.0 2960.0 1080.0 1080.0"><g transform="matrix(1,0,0,-1,0,7000.0)"><polyline stroke="rgba(200,100,30,255)" fill="none" points="2000.0,3000.0 2500.0,3500.0 3000.0,4000.0" /></g></svg>'
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="300.0" height="300.0" viewBox="1960.0 2960.0 1080.0 1080.0"><g transform="matrix(1,0,0,-1,0,7000.0)"><polyline stroke="rgba(200,100,30,255)" fill="none" points="2000.0,3000.0 2500.0,3500.0 3000.0,4000.0" /></g></svg>'
     pol = Polyline(
         positions=PositionList(
             cartographicDegrees=CartographicDegreesListValue(
@@ -194,7 +194,7 @@ def test_polyline_svg():
 
 
 def test_polygon_svg():
-    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="300" height="300" viewBox="1940.0 2940.0 1620.0 1120.0"><g transform="matrix(1,0,0,-1,0,7000.0)"><path d="M 2000.0,3000.0 L 3500.0,3500.0 L 2000.0,4000.0 z" fill="rgba(200,100,30,255)"/></g></svg>'
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="300.0" height="300.0" viewBox="1940.0 2940.0 1620.0 1120.0"><g transform="matrix(1,0,0,-1,0,7000.0)"><path d="M 2000.0,3000.0 L 3500.0,3500.0 L 2000.0,4000.0 z" fill="rgba(200,100,30,255)"/></g></svg>'
     pol = Polygon(
         positions=PositionList(
             cartographicDegrees=CartographicDegreesListValue(
@@ -221,21 +221,21 @@ def test_no_svg():
 
 
 def test_position_svg():
-    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="100.0" height="100.0" viewBox="990.0 1980.0 20.0 40.0"><g transform="matrix(1,0,0,-1,0,4000.0)"><circle fill="black" cx="1000.0" cy="2000.0" r="1" /></g></svg>'
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="100.0" height="100.0" viewBox="990.0 1980.0 20.0 40.0"><g transform="matrix(1,0,0,-1,0,4000.0)"><circle fill="black" cx="1000.0" cy="2000.0" r="2.0" /></g></svg>'
     pos = Position(cartographicDegrees=[10.0, 20.0, 0.0])
     str_svg = pos._repr_svg_()
     assert str_svg == expected_result
 
 
 def test_positionlist_svg():
-    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="108.0" height="108.0" viewBox="996.0 1096.0 108.0 108.0"><g transform="matrix(1,0,0,-1,0,2300.0)"><circle fill="black" cx="1000.0" cy="1100.0" r="1" /><circle fill="black" cx="1100.0" cy="1200.0" r="1" /></g></svg>'
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="108.0" height="108.0" viewBox="996.0 1096.0 108.0 108.0"><g transform="matrix(1,0,0,-1,0,2300.0)"><circle fill="black" cx="1000.0" cy="1100.0" r="2.0" /><circle fill="black" cx="1100.0" cy="1200.0" r="2.0" /></g></svg>'
     pos = PositionList(cartographicDegrees=[10.0, 11.0, 0.0, 11, 12, 0])
     str_svg = pos._repr_svg_()
     assert str_svg == expected_result
 
 
 def test_packet_svg_with_point():
-    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="216.0" height="216.0" viewBox="3592.0 3592.0 216.0 216.0"><g transform="matrix(1,0,0,-1,0,7400.0)"><circle fill="rgba(200,100,30,255)" cx="3800.0" cy="3800.0" r="1" /><path d="M 3720.0000000000005,3729.9999999999995 L 3800.0,3800.0 L 3750.0,3690.0 z" fill="rgba(200,100,30,255)"/><polyline stroke="rgba(0,255,0,255)" fill="none" points="3700.0,3700.0 3600.0,3600.0" /></g></svg>'
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="216.0" height="216.0" viewBox="3592.0 3592.0 216.0 216.0"><g transform="matrix(1,0,0,-1,0,7400.0)"><circle fill="rgba(200,100,30,255)" cx="3800.0" cy="3800.0" r="2.32" /><path d="M 3720.0000000000005,3729.9999999999995 L 3800.0,3800.0 L 3750.0,3690.0 z" fill="rgba(200,100,30,255)"/><polyline stroke="rgba(0,255,0,255)" fill="none" points="3700.0,3700.0 3600.0,3600.0" /></g></svg>'
     p = Packet(
         id="AreaTarget/Pennsylvania",
         name="Pennsylvania",
@@ -278,14 +278,14 @@ def test_packet_svg_with_point():
 
 
 def test_rectangle_svg():
-    expected_restult = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="300" height="300" viewBox="-12040.0 3960.0 1080.0 1080.0"><g transform="matrix(1,0,0,-1,0,9000.0)"><polyline stroke="black" fill="none" points="-12000.0,4000.0 -12000.0,5000.0 -11000.0,5000.0 -11000.0,4000.0 -12000.0,4000.0" /></g></svg>'
+    expected_restult = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="300.0" height="300.0" viewBox="-12040.0 3960.0 1080.0 1080.0"><g transform="matrix(1,0,0,-1,0,9000.0)"><polyline stroke="black" fill="none" points="-12000.0,4000.0 -12000.0,5000.0 -11000.0,5000.0 -11000.0,4000.0 -12000.0,4000.0" /></g></svg>'
     r = Rectangle(coordinates=RectangleCoordinates(wsenDegrees=[-120, 40, -110, 50]))
     str_svg = r._repr_svg_()
     assert str_svg == expected_restult
 
 
 def test_wall_svg():
-    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="300" height="300" viewBox="3707.6000000000004 3677.6 304.7999999999997 334.8000000000002"><g transform="matrix(1,0,0,-1,0,7690.0)"><polyline stroke="black" fill="none" points="3720.0000000000005,3729.9999999999995 3800.0,3800.0 3750.0,3690.0 4000.0,4000.0" /></g></svg>'
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="300.0" height="300.0" viewBox="3707.6000000000004 3677.6 304.7999999999997 334.8000000000002"><g transform="matrix(1,0,0,-1,0,7690.0)"><polyline stroke="black" fill="none" points="3720.0000000000005,3729.9999999999995 3800.0,3800.0 3750.0,3690.0 4000.0,4000.0" /></g></svg>'
     w = Wall(
         positions=PositionList(
             cartographicDegrees=CartographicDegreesListValue(
@@ -298,7 +298,7 @@ def test_wall_svg():
 
 
 def test_packet_svg_with_path():
-    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="300" height="300" viewBox="2920.0 2920.0 1160.0 2160.0"><g transform="matrix(1,0,0,-1,0,8000.0)"><polyline stroke="rgba(0,255,0,255)" fill="none" points="3000.0,3000.0 3100.0,3200.0 3300.0,5000.0 4000.0,3900.0" /><path d="M 3720.0000000000005,3729.9999999999995 L 3800.0,3800.0 L 3750.0,3690.0 z" fill="rgba(200,100,30,255)"/><polyline stroke="rgba(0,255,0,255)" fill="none" points="3700.0,3700.0 3600.0,3600.0" /></g></svg>'
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="300.0" height="300.0" viewBox="2920.0 2920.0 1160.0 2160.0"><g transform="matrix(1,0,0,-1,0,8000.0)"><polyline stroke="rgba(0,255,0,255)" fill="none" points="3000.0,3000.0 3100.0,3200.0 3300.0,5000.0 4000.0,3900.0" /><path d="M 3720.0000000000005,3729.9999999999995 L 3800.0,3800.0 L 3750.0,3690.0 z" fill="rgba(200,100,30,255)"/><polyline stroke="rgba(0,255,0,255)" fill="none" points="3700.0,3700.0 3600.0,3600.0" /></g></svg>'
     start = dt.datetime(2012, 3, 15, 10, tzinfo=dt.timezone.utc)
     end = dt.datetime(2012, 3, 16, 10, tzinfo=dt.timezone.utc)
     p = Packet(
@@ -366,7 +366,7 @@ def test_packet_svg_no_elements():
 
 
 def test_packet_svg_no_color():
-    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="216.0" height="216.0" viewBox="3592.0 3592.0 216.0 216.0"><g transform="matrix(1,0,0,-1,0,7400.0)"><circle fill="black" cx="3800.0" cy="3800.0" r="1" /><path d="M 3720.0000000000005,3729.9999999999995 L 3800.0,3800.0 L 3750.0,3690.0 z" fill="black"/><polyline stroke="black" fill="none" points="3700.0,3700.0 3600.0,3600.0" /></g></svg>'
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="216.0" height="216.0" viewBox="3592.0 3592.0 216.0 216.0"><g transform="matrix(1,0,0,-1,0,7400.0)"><circle fill="black" cx="3800.0" cy="3800.0" r="2.32" /><path d="M 3720.0000000000005,3729.9999999999995 L 3800.0,3800.0 L 3750.0,3690.0 z" fill="black"/><polyline stroke="black" fill="none" points="3700.0,3700.0 3600.0,3600.0" /></g></svg>'
     p = Packet(
         id="AreaTarget/Pennsylvania",
         name="Pennsylvania",

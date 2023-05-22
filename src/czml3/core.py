@@ -97,7 +97,7 @@ class Packet(BaseCZMLObject):
                 # create SVG elements
                 for x, y in zip(x_coords, y_coords):
                     svg_elements.append(
-                        f'<circle fill="{colour}" cx="{x}" cy="{y}" r="1" />'
+                        f'<circle fill="{colour}" cx="{x}" cy="{y}" r="CIRCLE_RADIUS" />'
                     )
             elif isinstance(attr, Path) and self.position is not None:
                 # colour

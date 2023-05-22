@@ -317,7 +317,9 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
         # create SVG elements
         svg_elements = []
         for x, y in zip(x_coords, y_coords):
-            svg_elements.append(f'<circle fill="black" cx="{x}" cy="{y}" r="1" />')
+            svg_elements.append(
+                f'<circle fill="black" cx="{x}" cy="{y}" r="CIRCLE_RADIUS" />'
+            )
 
         return "".join(svg_elements), x_min, x_max, y_min, y_max
 
@@ -614,7 +616,9 @@ class PositionList(BaseCZMLObject, Deletable):
         # create SVG elements
         svg_elements = []
         for x, y in zip(x_coords, y_coords):
-            svg_elements.append(f'<circle fill="black" cx="{x}" cy="{y}" r="1" />')
+            svg_elements.append(
+                f'<circle fill="black" cx="{x}" cy="{y}" r="CIRCLE_RADIUS" />'
+            )
 
         return "".join(svg_elements), x_min, x_max, y_min, y_max
 
