@@ -49,6 +49,7 @@ from czml3.properties import (
     StripeMaterial,
     Uri,
     ViewFrom,
+    Wall,
 )
 from czml3.types import (
     Cartesian3Value,
@@ -281,6 +282,19 @@ def test_rectangle_svg():
     r = Rectangle(coordinates=RectangleCoordinates(wsenDegrees=[-120, 40, -110, 50]))
     str_svg = r._repr_svg_()
     assert str_svg == expected_restult
+
+
+def test_wall_svg():
+    expected_result = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="300" height="300" viewBox="3707.6000000000004 3677.6 304.7999999999997 334.8000000000002"><g transform="matrix(1,0,0,-1,0,7690.0)"><polyline stroke="black" fill="none" points="3720.0000000000005,3729.9999999999995 3800.0,3800.0 3750.0,3690.0 4000.0,4000.0" /></g></svg>'
+    w = Wall(
+        positions=PositionList(
+            cartographicDegrees=CartographicDegreesListValue(
+                values=[37.2, 37.3, 10, 38, 38, 10, 37.5, 36.9, 10, 40, 40, 0]
+            )
+        )
+    )
+    str_svg = w._repr_svg_()
+    assert str_svg == expected_result
 
 
 def test_packet_svg_with_path():
