@@ -42,6 +42,8 @@ from czml3.properties import (
     PolylineOutlineMaterial,
     Position,
     PositionList,
+    Rectangle,
+    RectangleCoordinates,
     ShadowMode,
     SolidColorMaterial,
     StripeMaterial,
@@ -272,6 +274,13 @@ def test_packet_svg_with_point():
     )
     str_svg = p._repr_svg_()
     assert str_svg == expected_result
+
+
+def test_rectangle_svg():
+    expected_restult = '<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMin meet" width="300" height="300" viewBox="-12040.0 3960.0 1080.0 1080.0"><g transform="matrix(1,0,0,-1,0,9000.0)"><polyline stroke="black" fill="none" points="-12000.0,4000.0 -12000.0,5000.0 -11000.0,5000.0 -11000.0,4000.0 -12000.0,4000.0" /></g></svg>'
+    r = Rectangle(coordinates=RectangleCoordinates(wsenDegrees=[-120, 40, -110, 50]))
+    str_svg = r._repr_svg_()
+    assert str_svg == expected_restult
 
 
 def test_packet_svg_with_path():
