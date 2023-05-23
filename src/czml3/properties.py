@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import math
+from typing import List, Tuple, Union
+
 import attr
 from w3lib.url import is_url, parse_data_uri
 
@@ -13,7 +16,12 @@ from .enums import (
     StripeOrientations,
     VerticalOrigins,
 )
-from .types import RgbafValue, RgbaValue
+from .types import (
+    CartographicDegreesListValue,
+    CartographicRadiansListValue,
+    RgbafValue,
+    RgbaValue,
+)
 
 
 # noinspection PyPep8Naming
@@ -272,6 +280,49 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
                 "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
             )
 
+    def _get_xy_coords(
+        self, factor: Union[float, int] = 100.0
+    ) -> Tuple[List[float], List[float]]:
+        coords = []
+        if self.cartographicRadians is not None:
+            coords.extend(
+                [math.degrees(v) for v in self.cartographicRadians]
+            )  # altitude not relevant
+        if self.cartographicDegrees is not None:
+            coords.extend(self.cartographicDegrees)
+        x_coords = [x * factor for x in coords[::3]]
+        y_coords = [y * factor for y in coords[1::3]]
+        return x_coords, y_coords
+
+    @staticmethod
+    def _get_bounds(
+        x_coords: List[float], y_coords: List[float]
+    ) -> Tuple[float, float, float, float]:
+        """Extract the coordinates into lists of x,y.
+
+        The factor is required for points that are very close together, which SVG doesn't like.
+
+        :param Union[float, int] factor: factor to multiply values by, defaults to 100.0
+        :return Tuple[List[float], List[float]]: x coordinates,  y coordinates
+        """
+        x_min, x_max = min(x_coords), max(x_coords)
+        y_min, y_max = min(y_coords), max(y_coords)
+        return x_min, x_max, y_min, y_max
+
+    def _svg(self) -> Tuple[str, float, float, float, float]:
+        # get coordinates and bounds
+        x_coords, y_coords = self._get_xy_coords()
+        x_min, x_max, y_min, y_max = self._get_bounds(x_coords, y_coords)
+
+        # create SVG elements
+        svg_elements = []
+        for x, y in zip(x_coords, y_coords):
+            svg_elements.append(
+                f'<circle fill="black" cx="{x}" cy="{y}" r="CIRCLE_RADIUS" />'
+            )
+
+        return "".join(svg_elements), x_min, x_max, y_min, y_max
+
 
 # noinspection PyPep8Naming
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -336,6 +387,28 @@ class Corridor(BaseCZMLObject):
     classificationType = attr.ib(default=None)
     zIndex = attr.ib(default=None)
 
+    def _svg(self) -> Tuple[str, float, float, float, float]:
+        # get coordinates and bounds
+        (
+            x_coords,
+            y_coords,
+        ) = self.positions._get_xy_coords()  # TODO need to account for width
+        x_min, x_max, y_min, y_max = self.positions._get_bounds(x_coords, y_coords)
+
+        # create SVG element
+        points = " ".join([f"{x},{y}" for x, y in zip(x_coords, y_coords)])
+        if self.material is None:
+            colour = "black"
+        elif hasattr(self.material.solidColor.color.rgba, "values"):
+            colour = f'rgba({",".join([str(c) for c in self.material.solidColor.color.rgba.values])})'
+        elif hasattr(self.material.solidColor.color.rgbaf, "values"):
+            colour = f'rgba({",".join([str(c * 255) for c in self.material.solidColor.color.rgbaf.values])})'
+        else:
+            raise AttributeError
+        svg_element = f'<polyline stroke="{colour}" fill="none" points="{points}" />'
+
+        return svg_element, x_min, x_max, y_min, y_max
+
 
 @attr.s(str=False, frozen=True, kw_only=True)
 class Cylinder(BaseCZMLObject):
@@ -397,6 +470,26 @@ class Polygon(BaseCZMLObject):
     classificationType = attr.ib(default=None)
     zIndex = attr.ib(default=None)
 
+    def _svg(self) -> Tuple[str, float, float, float, float]:
+        # get coordinates and bounds
+        x_coords, y_coords = self.positions._get_xy_coords()
+        x_min, x_max, y_min, y_max = self.positions._get_bounds(x_coords, y_coords)
+
+        # create SVG element
+        points = [f"{x},{y}" for x, y in zip(x_coords, y_coords)]
+        d = f"M {points[0]} L {' L '.join(points[1:])} z"
+        if self.material is None:
+            colour = "black"
+        elif hasattr(self.material.solidColor.color.rgba, "values"):
+            colour = f'rgba({",".join([str(c) for c in self.material.solidColor.color.rgba.values])})'
+        elif hasattr(self.material.solidColor.color.rgbaf, "values"):
+            colour = f'rgba({",".join([str(c) for c in  self.material.solidColor.color.rgbaf.values])})'
+        else:
+            raise AttributeError
+        svg_element = f'<path d="{d}" fill="{colour}"/>'
+
+        return svg_element, x_min, x_max, y_min, y_max
+
 
 @attr.s(str=False, frozen=True, kw_only=True)
 class Polyline(BaseCZMLObject):
@@ -415,6 +508,25 @@ class Polyline(BaseCZMLObject):
     clampToGround = attr.ib(default=None)
     classificationType = attr.ib(default=None)
     zIndex = attr.ib(default=None)
+
+    def _svg(self) -> Tuple[str, float, float, float, float]:
+        # get coordinates and bounds
+        x_coords, y_coords = self.positions._get_xy_coords()
+        x_min, x_max, y_min, y_max = self.positions._get_bounds(x_coords, y_coords)
+
+        # create SVG element
+        points = " ".join([f"{x},{y}" for x, y in zip(x_coords, y_coords)])
+        if self.material is None:
+            colour = "black"
+        elif hasattr(self.material.solidColor.color.rgba, "values"):
+            colour = f'rgba({",".join([str(c) for c in  self.material.solidColor.color.rgba.values])})'
+        elif hasattr(self.material.solidColor.color.rgbaf, "values"):
+            colour = f'rgba({",".join([str(c) for c in self.material.solidColor.color.rgbaf.values])})'
+        else:
+            raise AttributeError
+        svg_element = f'<polyline stroke="{colour}" fill="none" points="{points}" />'
+
+        return svg_element, x_min, x_max, y_min, y_max
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -458,6 +570,57 @@ class PositionList(BaseCZMLObject, Deletable):
     cartographicRadians = attr.ib(default=None)
     cartographicDegrees = attr.ib(default=None)
     references = attr.ib(default=None)
+
+    def _get_xy_coords(
+        self, factor: Union[float, int] = 100.0
+    ) -> Tuple[List[float], List[float]]:
+        coords = []
+        if self.cartographicRadians is not None:
+            if isinstance(self.cartographicDegrees, CartographicRadiansListValue):
+                coords.extend(
+                    [math.degrees(v) for v in self.cartographicRadians.values]
+                )  # altitude not relevant
+            else:
+                coords.extend(
+                    [math.degrees(v) for v in self.cartographicRadians]
+                )  # altitude not relevant
+        if self.cartographicDegrees is not None:
+            if isinstance(self.cartographicDegrees, CartographicDegreesListValue):
+                coords.extend(self.cartographicDegrees.values)
+            else:
+                coords.extend(self.cartographicDegrees)
+        x_coords = [x * factor for x in coords[::3]]
+        y_coords = [y * factor for y in coords[1::3]]
+        return x_coords, y_coords
+
+    @staticmethod
+    def _get_bounds(
+        x_coords: List[float], y_coords: List[float]
+    ) -> Tuple[float, float, float, float]:
+        """Extract the coordinates into lists of x,y.
+
+        The factor is required for points that are very close together, which SVG doesn't like.
+
+        :param Union[float, int] factor: factor to multiply values by, defaults to 100.0
+        :return Tuple[List[float], List[float]]: x coordinates,  y coordinates
+        """
+        x_min, x_max = min(x_coords), max(x_coords)
+        y_min, y_max = min(y_coords), max(y_coords)
+        return x_min, x_max, y_min, y_max
+
+    def _svg(self) -> Tuple[str, float, float, float, float]:
+        # get coordinates and bounds
+        x_coords, y_coords = self._get_xy_coords()
+        x_min, x_max, y_min, y_max = self._get_bounds(x_coords, y_coords)
+
+        # create SVG elements
+        svg_elements = []
+        for x, y in zip(x_coords, y_coords):
+            svg_elements.append(
+                f'<circle fill="black" cx="{x}" cy="{y}" r="CIRCLE_RADIUS" />'
+            )
+
+        return "".join(svg_elements), x_min, x_max, y_min, y_max
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -510,11 +673,30 @@ class BoxDimensions(BaseCZMLObject, Interpolatable):
 @attr.s(str=False, frozen=True, kw_only=True)
 class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
     """A cartographic rectangle, which conforms to the curvature of the globe and
-    can be placed on the surface or at altitude and can optionally be extruded into a volume."""
+    can be placed on the surface or at altitude and can optionally be extruded into a volume.
+    """
 
     coordinates = attr.ib(default=None)
     fill = attr.ib(default=None)
     material = attr.ib(default=None)
+
+    def _svg(self) -> Tuple[str, float, float, float, float]:
+        # get coordinates and bounds
+        deg_long0, deg_lat0, deg_long1, deg_lat1 = self.coordinates._get_xy_coords()
+
+        # create SVG element
+        points = f"{deg_long0},{deg_lat0} {deg_long0},{deg_lat1} {deg_long1},{deg_lat1} {deg_long1},{deg_lat0} {deg_long0},{deg_lat0}"
+        if self.material is None:
+            colour = "black"
+        elif hasattr(self.material.solidColor.color.rgba, "values"):
+            colour = f'rgba({",".join([str(c) for c in self.material.solidColor.color.rgba.values])})'
+        elif hasattr(self.material.solidColor.color.rgbaf, "values"):
+            colour = f'rgba({",".join([str(c) for c in self.material.solidColor.color.rgbaf.values])})'
+        else:
+            raise AttributeError
+        svg_element = f'<polyline stroke="{colour}" fill="none" points="{points}" />'
+
+        return svg_element, deg_long0, deg_long1, deg_lat0, deg_lat1
 
 
 # noinspection PyPep8Naming
@@ -531,6 +713,17 @@ class RectangleCoordinates(BaseCZMLObject, Interpolatable, Deletable):
             raise ValueError(
                 "One of cartesian, cartographicDegrees or cartographicRadians must be given"
             )
+
+    def _get_xy_coords(
+        self, factor: Union[float, int] = 100.0
+    ) -> Tuple[float, float, float, float]:
+        deg_long0, deg_lat0, deg_long1, deg_lat1 = self.wsenDegrees
+        return (
+            deg_long0 * factor,
+            deg_lat0 * factor,
+            deg_long1 * factor,
+            deg_lat1 * factor,
+        )
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -620,7 +813,8 @@ class TileSet(BaseCZMLObject):
 @attr.s(str=False, frozen=True, kw_only=True)
 class Wall(BaseCZMLObject):
     """A two-dimensional wall defined as a line strip and optional maximum and minimum heights.
-    It conforms to the curvature of the globe and can be placed along the surface or at altitude."""
+    It conforms to the curvature of the globe and can be placed along the surface or at altitude.
+    """
 
     show = attr.ib(default=None)
     positions = attr.ib()
@@ -634,6 +828,25 @@ class Wall(BaseCZMLObject):
     outlineWidth = attr.ib(default=None)
     shadows = attr.ib(default=None)
     distanceDisplayCondition = attr.ib(default=None)
+
+    def _svg(self) -> Tuple[str, float, float, float, float]:
+        # get coordinates and bounds
+        x_coords, y_coords = self.positions._get_xy_coords()
+        x_min, x_max, y_min, y_max = self.positions._get_bounds(x_coords, y_coords)
+
+        # create SVG element
+        points = " ".join([f"{x},{y}" for x, y in zip(x_coords, y_coords)])
+        if self.material is None:
+            colour = "black"
+        elif hasattr(self.material.solidColor.color.rgba, "values"):
+            colour = f'rgba({",".join([str(c) for c in self.material.solidColor.color.rgba.values])})'
+        elif hasattr(self.material.solidColor.color.rgbaf, "values"):
+            colour = f'rgba({",".join([str(c) for c in self.material.solidColor.color.rgbaf.values])})'
+        else:
+            raise AttributeError
+        svg_element = f'<polyline stroke="{colour}" fill="none" points="{points}" />'
+
+        return svg_element, x_min, x_max, y_min, y_max
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
