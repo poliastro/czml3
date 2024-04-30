@@ -93,3 +93,8 @@ class ArcTypes(Enum):
 class StripeOrientations(Enum):
     HORIZONTAL = auto()
     VERTICAL = auto()
+
+class CornerTypes(Enum):
+    ROUNDED = auto()
+    MITERED = auto()
+    BEVELED = auto()
