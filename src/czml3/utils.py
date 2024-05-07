@@ -24,14 +24,14 @@ def get_color_list(timestamps, colors, rgbaf=False):
 
     # Quick function to convert between rgba-rgbaf easier
     if rgbaf:
-        color_r = (
-            lambda c: c.rgbaf.values
+        color_r = lambda c: (
+            c.rgbaf.values
             if c.rgbaf
             else list(map(lambda x: float(x / 255), c.rgba.values))
         )
     else:
-        color_r = (
-            lambda c: c.rgba.values
+        color_r = lambda c: (
+            c.rgba.values
             if c.rgba
             else list(map(lambda x: int(round(x * 255)), c.rgbaf.values))
         )

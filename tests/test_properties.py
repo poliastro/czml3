@@ -21,8 +21,8 @@ from czml3.properties import (
     NearFarScalar,
     Orientation,
     Point,
-    Polyline,
     Polygon,
+    Polyline,
     PolylineArrow,
     PolylineArrowMaterial,
     PolylineDash,
@@ -787,10 +787,9 @@ def test_polygon_with_hole():
 }"""
 
     p = Polygon(
-        positions=PositionList(
-            cartographicDegrees=[30.0, 40.0, 1.0]),
-            holes=PositionListOfLists(
-                cartographicDegrees=[[20.0, 20.0, 0.0], [10.0, 10.0, 0.0]]
-        )
+        positions=PositionList(cartographicDegrees=[30.0, 40.0, 1.0]),
+        holes=PositionListOfLists(
+            cartographicDegrees=[[20.0, 20.0, 0.0], [10.0, 10.0, 0.0]]
+        ),
     )
     assert str(p) == expected_result
