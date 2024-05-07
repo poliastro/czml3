@@ -396,6 +396,7 @@ class Polygon(BaseCZMLObject):
     distanceDisplayCondition = attr.ib(default=None)
     classificationType = attr.ib(default=None)
     zIndex = attr.ib(default=None)
+    holes = attr.ib(default=None)
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
