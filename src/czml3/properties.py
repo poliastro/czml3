@@ -450,6 +450,17 @@ class DistanceDisplayCondition(BaseCZMLObject, Interpolatable, Deletable):
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
+class PositionListOfLists(BaseCZMLObject, Deletable):
+    """A list of positions."""
+
+    referenceFrame = attr.ib(default=None)
+    cartesian = attr.ib(default=None)
+    cartographicRadians = attr.ib(default=None)
+    cartographicDegrees = attr.ib(default=None)
+    references = attr.ib(default=None)
+
+
+@attr.s(str=False, frozen=True, kw_only=True)
 class PositionList(BaseCZMLObject, Deletable):
     """A list of positions."""
 
