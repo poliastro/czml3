@@ -2,7 +2,7 @@ version: 2
 jobs:
   quality:
     docker:
-      - image: python:3
+      - image: python:3.9
 
     working_directory: ~/repo
 
