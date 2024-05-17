@@ -775,10 +775,12 @@ def test_polygon_interval():
     }
 }"""
     t = TimeInterval(
-                        start=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc),
-                        end=dt.datetime(2019, 4, 20, 12, tzinfo=dt.timezone.utc),
-                    )
-    poly = Polygon(positions=PositionList(cartographicDegrees=[10.0, 20.0, 0.0], interval=t))
+        start=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc),
+        end=dt.datetime(2019, 4, 20, 12, tzinfo=dt.timezone.utc),
+    )
+    poly = Polygon(
+        positions=PositionList(cartographicDegrees=[10.0, 20.0, 0.0], interval=t)
+    )
     assert str(poly) == expected_result
 
 
@@ -796,8 +798,10 @@ def test_polygon_interval_with_position():
     }
 }"""
     t = TimeInterval(
-                        start=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc),
-                        end=dt.datetime(2019, 4, 20, 12, tzinfo=dt.timezone.utc),
-                    )
-    poly = Polygon(positions=Position(cartographicDegrees=[10.0, 20.0, 0.0], interval=t))
+        start=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc),
+        end=dt.datetime(2019, 4, 20, 12, tzinfo=dt.timezone.utc),
+    )
+    poly = Polygon(
+        positions=Position(cartographicDegrees=[10.0, 20.0, 0.0], interval=t)
+    )
     assert str(poly) == expected_result
