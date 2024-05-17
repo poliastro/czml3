@@ -2,7 +2,6 @@ import datetime as dt
 
 import pytest
 
-from czml3.types import TimeInterval
 from czml3.enums import ArcTypes, ClassificationTypes, ShadowModes
 from czml3.properties import (
     ArcType,
@@ -11,7 +10,6 @@ from czml3.properties import (
     CheckerboardMaterial,
     ClassificationType,
     Color,
-    Polygon,
     DistanceDisplayCondition,
     Ellipsoid,
     EllipsoidRadii,
@@ -23,6 +21,7 @@ from czml3.properties import (
     NearFarScalar,
     Orientation,
     Point,
+    Polygon,
     Polyline,
     PolylineArrow,
     PolylineArrowMaterial,
@@ -48,6 +47,7 @@ from czml3.types import (
     IntervalValue,
     NearFarScalarValue,
     Sequence,
+    TimeInterval,
     UnitQuaternionValue,
 )
 
