@@ -2,6 +2,7 @@ import datetime as dt
 
 import pytest
 
+from czml3.types import TimeInterval
 from czml3.enums import ArcTypes, ClassificationTypes, ShadowModes
 from czml3.properties import (
     ArcType,
@@ -10,6 +11,7 @@ from czml3.properties import (
     CheckerboardMaterial,
     ClassificationType,
     Color,
+    Polygon,
     DistanceDisplayCondition,
     Ellipsoid,
     EllipsoidRadii,
@@ -757,3 +759,24 @@ def test_color_rgba_from_tuple():
 }"""
     tc = Color.from_tuple((100, 200, 255))
     assert str(tc) == expected_result
+
+
+def test_polygon_interval():
+    """This only tests one interval"""
+
+    expected_result = """{
+    "positions": {
+        "cartographicDegrees": [
+            10.0,
+            20.0,
+            0.0
+        ],
+        "interval": "2019-03-20T12:00:00.000000Z/2019-04-20T12:00:00.000000Z"
+    }
+}"""
+    t = TimeInterval(
+                        start=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc),
+                        end=dt.datetime(2019, 4, 20, 12, tzinfo=dt.timezone.utc),
+                    )
+    poly = Polygon(positions=PositionList(cartographicDegrees=[10.0, 20.0, 0.0], interval=t))
+    assert str(poly) == expected_result
