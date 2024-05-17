@@ -256,6 +256,7 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
     cartographicDegrees = attr.ib(default=None)
     cartesianVelocity = attr.ib(default=None)
     reference = attr.ib(default=None)
+    interval = attr.ib(default=None)
 
     def __attrs_post_init__(self):
         if all(
