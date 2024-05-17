@@ -23,18 +23,19 @@ def get_color_list(timestamps, colors, rgbaf=False):
         raise ValueError("Invalid input")
 
     # Quick function to convert between rgba-rgbaf easier
-    if rgbaf:
-        color_r = (
-            lambda c: c.rgbaf.values
-            if c.rgbaf
-            else list(map(lambda x: float(x / 255), c.rgba.values))
-        )
-    else:
-        color_r = (
-            lambda c: c.rgba.values
-            if c.rgba
-            else list(map(lambda x: int(round(x * 255)), c.rgbaf.values))
-        )
+    def color_r(c):
+        if rgbaf:
+            return (
+                c.rgbaf.values
+                if c.rgbaf
+                else list(map(lambda x: float(x / 255), c.rgba.values))
+            )
+        else:
+            return (
+                c.rgba.values
+                if c.rgba
+                else list(map(lambda x: int(round(x * 255)), c.rgbaf.values))
+            )
 
     # Get combined list of timestamps and colors
     time_colr = [[time] + color_r(c) for time, c in zip(timestamps, color_lst)]
