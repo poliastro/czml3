@@ -458,6 +458,7 @@ class PositionList(BaseCZMLObject, Deletable):
     cartographicRadians = attr.ib(default=None)
     cartographicDegrees = attr.ib(default=None)
     references = attr.ib(default=None)
+    interval = attr.ib(default=None)
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
