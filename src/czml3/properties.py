@@ -450,7 +450,7 @@ class DistanceDisplayCondition(BaseCZMLObject, Interpolatable, Deletable):
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
-class PositionList(BaseCZMLObject, Deletable):
+class PositionList(BaseCZMLObject, Interpolatable, Deletable):
     """A list of positions."""
 
     referenceFrame = attr.ib(default=None)
