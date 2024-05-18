@@ -488,6 +488,14 @@ def test_position_has_given_epoch():
     assert pos.epoch == expected_epoch
 
 
+def test_positionlist_has_given_epoch():
+    expected_epoch = dt.datetime(2019, 6, 11, 12, 26, 58, tzinfo=dt.timezone.utc)
+
+    pos = PositionList(epoch=expected_epoch, cartesian=[])
+
+    assert pos.epoch == expected_epoch
+
+
 def test_position_renders_epoch():
     expected_result = """{
     "epoch": "2019-03-20T12:00:00.000000Z",
