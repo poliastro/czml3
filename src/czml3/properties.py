@@ -397,6 +397,7 @@ class Polygon(BaseCZMLObject):
     distanceDisplayCondition = attr.ib(default=None)
     classificationType = attr.ib(default=None)
     zIndex = attr.ib(default=None)
+    holes = attr.ib(default=None)
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -448,6 +449,17 @@ class DistanceDisplayCondition(BaseCZMLObject, Interpolatable, Deletable):
 
     distanceDisplayCondition = attr.ib(default=None)
     reference = attr.ib(default=None)
+
+
+@attr.s(str=False, frozen=True, kw_only=True)
+class PositionListOfLists(BaseCZMLObject, Deletable):
+    """A list of positions."""
+
+    referenceFrame = attr.ib(default=None)
+    cartesian = attr.ib(default=None)
+    cartographicRadians = attr.ib(default=None)
+    cartographicDegrees = attr.ib(default=None)
+    references = attr.ib(default=None)
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -512,7 +524,8 @@ class BoxDimensions(BaseCZMLObject, Interpolatable):
 @attr.s(str=False, frozen=True, kw_only=True)
 class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
     """A cartographic rectangle, which conforms to the curvature of the globe and
-    can be placed on the surface or at altitude and can optionally be extruded into a volume."""
+    can be placed on the surface or at altitude and can optionally be extruded into a volume.
+    """
 
     coordinates = attr.ib(default=None)
     fill = attr.ib(default=None)
@@ -622,7 +635,8 @@ class TileSet(BaseCZMLObject):
 @attr.s(str=False, frozen=True, kw_only=True)
 class Wall(BaseCZMLObject):
     """A two-dimensional wall defined as a line strip and optional maximum and minimum heights.
-    It conforms to the curvature of the globe and can be placed along the surface or at altitude."""
+    It conforms to the curvature of the globe and can be placed along the surface or at altitude.
+    """
 
     show = attr.ib(default=None)
     positions = attr.ib()

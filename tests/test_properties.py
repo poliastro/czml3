@@ -34,6 +34,7 @@ from czml3.properties import (
     PolylineOutlineMaterial,
     Position,
     PositionList,
+    PositionListOfLists,
     ShadowMode,
     SolidColorMaterial,
     StripeMaterial,
@@ -767,6 +768,40 @@ def test_color_rgba_from_tuple():
 }"""
     tc = Color.from_tuple((100, 200, 255))
     assert str(tc) == expected_result
+
+
+def test_polygon_with_hole():
+    expected_result = """{
+    "positions": {
+        "cartographicDegrees": [
+            30.0,
+            40.0,
+            1.0
+        ]
+    },
+    "holes": {
+        "cartographicDegrees": [
+            [
+                20.0,
+                20.0,
+                0.0
+            ],
+            [
+                10.0,
+                10.0,
+                0.0
+            ]
+        ]
+    }
+}"""
+
+    p = Polygon(
+        positions=PositionList(cartographicDegrees=[30.0, 40.0, 1.0]),
+        holes=PositionListOfLists(
+            cartographicDegrees=[[20.0, 20.0, 0.0], [10.0, 10.0, 0.0]]
+        ),
+    )
+    assert str(p) == expected_result
 
 
 def test_polygon_interval():
