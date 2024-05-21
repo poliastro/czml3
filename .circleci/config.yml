@@ -60,6 +60,38 @@ jobs:
     environment:
       TOXENV: py39
 
+  test_py36:
+    <<: *test-template
+    docker:
+      - image: python:3.6
+
+    environment:
+      TOXENV: py36
+
+  test_py310:
+    <<: *test-template
+    docker:
+      - image: python:3.10
+
+    environment:
+      TOXENV: py310
+
+  test_py311:
+    <<: *test-template
+    docker:
+      - image: python:3.11
+
+    environment:
+      TOXENV: py311
+
+  test_py312:
+    <<: *test-template
+    docker:
+      - image: python:3.12
+
+    environment:
+      TOXENV: py312
+
   coverage:
     <<: *test-template
 
@@ -94,6 +126,18 @@ workflows:
           requires:
             - quality
       - test_py39:
+          requires:
+            - quality
+      - test_py36:
+          requires:
+            - quality
+      - test_py310:
+          requires:
+            - quality
+      - test_py311:
+          requires:
+            - quality
+      - test_py312:
           requires:
             - quality
       - coverage:
