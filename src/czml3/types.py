@@ -175,6 +175,21 @@ class Cartesian3Value(_TimeTaggedCoords):
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
+class Cartesian2Value(_TimeTaggedCoords):
+    """A two-dimensional Cartesian value specified as [X, Y].
+
+    If the values has two elements, the value is constant.
+    If it has three or more elements, they are time-tagged samples
+    arranged as [Time, X, Y, Time, X, Y, ...],
+    where Time is an ISO 8601 date and time string or seconds since epoch.
+
+    """
+
+    NUM_COORDS = 2
+    property_name = "cartesian2"
+
+
+@attr.s(str=False, frozen=True, kw_only=True)
 class CartographicRadiansValue(_TimeTaggedCoords):
     """A geodetic, WGS84 position specified as [Longitude, Latitude, Height].
 
