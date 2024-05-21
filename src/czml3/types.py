@@ -34,6 +34,7 @@ def format_datetime_like(dt_object):
 class _TimeTaggedCoords(BaseCZMLObject):
 
     NUM_COORDS: int
+    property_name: str
 
     values = attr.ib()
 
@@ -48,6 +49,8 @@ class _TimeTaggedCoords(BaseCZMLObject):
             )
 
     def to_json(self):
+        if hasattr(self, "property_name"):
+            return {self.property_name: list(self.values)}
         return list(self.values)
 
 
