@@ -16,6 +16,7 @@ from czml3.properties import (
     EyeOffset,
     GridMaterial,
     ImageMaterial,
+    Label,
     Material,
     Model,
     NearFarScalar,
@@ -42,6 +43,7 @@ from czml3.properties import (
     ViewFrom,
 )
 from czml3.types import (
+    Cartesian2Value,
     Cartesian3Value,
     CartographicDegreesListValue,
     DistanceDisplayConditionValue,
@@ -848,3 +850,20 @@ def test_polygon_interval_with_position():
         positions=Position(cartographicDegrees=[10.0, 20.0, 0.0], interval=t)
     )
     assert str(poly) == expected_result
+
+
+def test_label_offset():
+    expected_result = """{
+    "show": true,
+    "style": "FILL",
+    "outlineWidth": 1.0,
+    "pixelOffset": {
+        "cartesian2": [
+            5,
+            5
+        ]
+    }
+}"""
+
+    label = Label(pixelOffset=Cartesian2Value(values=[5, 5]))
+    assert str(label) == expected_result
