@@ -256,6 +256,7 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
     cartographicDegrees = attr.ib(default=None)
     cartesianVelocity = attr.ib(default=None)
     reference = attr.ib(default=None)
+    interval = attr.ib(default=None)
 
     def __attrs_post_init__(self):
         if all(
@@ -462,7 +463,7 @@ class PositionListOfLists(BaseCZMLObject, Deletable):
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
-class PositionList(BaseCZMLObject, Deletable):
+class PositionList(BaseCZMLObject, Interpolatable, Deletable):
     """A list of positions."""
 
     referenceFrame = attr.ib(default=None)
@@ -470,6 +471,7 @@ class PositionList(BaseCZMLObject, Deletable):
     cartographicRadians = attr.ib(default=None)
     cartographicDegrees = attr.ib(default=None)
     references = attr.ib(default=None)
+    interval = attr.ib(default=None)
 
 
 @attr.s(str=False, frozen=True, kw_only=True)

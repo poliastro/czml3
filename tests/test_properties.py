@@ -48,6 +48,7 @@ from czml3.types import (
     IntervalValue,
     NearFarScalarValue,
     Sequence,
+    TimeInterval,
     UnitQuaternionValue,
 )
 
@@ -490,6 +491,14 @@ def test_position_has_given_epoch():
     assert pos.epoch == expected_epoch
 
 
+def test_positionlist_has_given_epoch():
+    expected_epoch = dt.datetime(2019, 6, 11, 12, 26, 58, tzinfo=dt.timezone.utc)
+
+    pos = PositionList(epoch=expected_epoch, cartesian=[])
+
+    assert pos.epoch == expected_epoch
+
+
 def test_position_renders_epoch():
     expected_result = """{
     "epoch": "2019-03-20T12:00:00.000000Z",
@@ -793,3 +802,49 @@ def test_polygon_with_hole():
         ),
     )
     assert str(p) == expected_result
+
+
+def test_polygon_interval():
+    """This only tests one interval"""
+
+    expected_result = """{
+    "positions": {
+        "cartographicDegrees": [
+            10.0,
+            20.0,
+            0.0
+        ],
+        "interval": "2019-03-20T12:00:00.000000Z/2019-04-20T12:00:00.000000Z"
+    }
+}"""
+    t = TimeInterval(
+        start=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc),
+        end=dt.datetime(2019, 4, 20, 12, tzinfo=dt.timezone.utc),
+    )
+    poly = Polygon(
+        positions=PositionList(cartographicDegrees=[10.0, 20.0, 0.0], interval=t)
+    )
+    assert str(poly) == expected_result
+
+
+def test_polygon_interval_with_position():
+    """This only tests one interval"""
+
+    expected_result = """{
+    "positions": {
+        "cartographicDegrees": [
+            10.0,
+            20.0,
+            0.0
+        ],
+        "interval": "2019-03-20T12:00:00.000000Z/2019-04-20T12:00:00.000000Z"
+    }
+}"""
+    t = TimeInterval(
+        start=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc),
+        end=dt.datetime(2019, 4, 20, 12, tzinfo=dt.timezone.utc),
+    )
+    poly = Polygon(
+        positions=Position(cartographicDegrees=[10.0, 20.0, 0.0], interval=t)
+    )
+    assert str(poly) == expected_result
