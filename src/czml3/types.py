@@ -34,6 +34,7 @@ def format_datetime_like(dt_object):
 class _TimeTaggedCoords(BaseCZMLObject):
 
     NUM_COORDS: int
+    property_name: str
 
     values = attr.ib()
 
@@ -48,6 +49,8 @@ class _TimeTaggedCoords(BaseCZMLObject):
             )
 
     def to_json(self):
+        if hasattr(self, "property_name"):
+            return {self.property_name: list(self.values)}
         return list(self.values)
 
 
@@ -169,6 +172,21 @@ class Cartesian3Value(_TimeTaggedCoords):
     """
 
     NUM_COORDS = 3
+
+
+@attr.s(str=False, frozen=True, kw_only=True)
+class Cartesian2Value(_TimeTaggedCoords):
+    """A two-dimensional Cartesian value specified as [X, Y].
+
+    If the values has two elements, the value is constant.
+    If it has three or more elements, they are time-tagged samples
+    arranged as [Time, X, Y, Time, X, Y, ...],
+    where Time is an ISO 8601 date and time string or seconds since epoch.
+
+    """
+
+    NUM_COORDS = 2
+    property_name = "cartesian2"
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
