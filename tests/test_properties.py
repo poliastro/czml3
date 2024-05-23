@@ -1,7 +1,6 @@
 import datetime as dt
 
 import pytest
-
 from czml3.enums import ArcTypes, ClassificationTypes, ShadowModes
 from czml3.properties import (
     ArcType,

@@ -1,5 +1,4 @@
 import pytest
-
 from czml3.widget import CZMLWidget
 
 
