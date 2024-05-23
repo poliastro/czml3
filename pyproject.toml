@@ -1,3 +1,67 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "czml3"
+authors = [
+    {name = "Juan Luis Cano Rodríguez", email = "hello@juanlu.space"},
+]
+description = "Python 3 library to write CZML"
+readme = "README.rst"
+requires-python = ">=3.7"
+keywords = ["czml", "cesium", "orbits"]
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Astronomy",
+]
+dependencies = [
+    "attrs>=19.2",
+    'python-dateutil>=2.7,<3',
+    "w3lib",
+    'tomli; python_version < "3.11"',  # for versioneer
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/poliastro/czml3"
+# Documentation = "https://readthedocs.org"
+Repository = "https://github.com/poliastro/czml3"
+Issues = "https://github.com/poliastro/czml3/issues"
+Changelog = "https://github.com/poliastro/czml3/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = [
+    "astropy",
+    "pytest",
+    "pytest-cov",
+    "pytest-mypy",
+    "types-python-dateutil",
+    "tox",
+    "build",
+    "ruff",
+    "versioneer",
+]
+
+[tool.setuptools]
+include-package-data = true
+dynamic.version = {attr = "czml3.__version__"}
+
 [tool.mypy]
 files = ["src/**/*.py", "tests/**/*.py"]
 warn_redundant_casts = true
@@ -14,7 +78,7 @@ no_implicit_optional = true
 warn_unused_ignores = true
 warn_return_any = true
 no_implicit_reexport = true
-exclude = ['versioneer\.py$', '_version\.py$', 'setup\.py$']
+exclude = ['versioneer\.py$', '_version\.py$']
 
 # More strict checks for library code
 [[tool.mypy.overrides]]
