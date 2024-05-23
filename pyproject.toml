@@ -38,13 +38,6 @@ versionfile_build = "czml3/_version.py"
 tag_prefix = "v"
 parentdir_prefix = "czml3-"
 
-[tool.isort]
-multi_line_output=3
-include_trailing_comma=true
-force_grid_wrap=0
-use_parentheses=true
-line_length=88
-
 [tool.tox]
 legacy_tox_ini = """
     [tox]
@@ -76,25 +69,41 @@ legacy_tox_ini = """
     [testenv:quality]
     description = checks code quality
     deps =
-        black==22.3.0
         build
-        flake8
-        isort
+        ruff
     skip_install = true
     commands =
         python setup.py check --strict --metadata
-        flake8 src tests setup.py
-        isort --check-only --diff --project czml3 --section-default THIRDPARTY src tests
-        black --check src tests --exclude=_version.py
+        ruff check
         python -m build .
 
     [testenv:reformat]
-    description = reformats the code using black and isort
+    description = reformats the code
     deps =
-        black
-        isort
+        ruff format
     skip_install = true
     commands =
-        isort --project czml3 --section-default THIRDPARTY src tests setup.py
-        black src tests setup.py --exclude=_version.py
+        ruff format src tests setup.py --exclude=_version.py
+        ruff check --fix src tests setup.py --exclude=_version.py
 """
+
+[tool.ruff.lint]
+ignore = ["E203", "E266", "E501"]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+    "C","W","B9"
+]
+
+[tool.ruff]
+extend-exclude = ["versioneer.py", "_version.py"]
