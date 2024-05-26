@@ -126,6 +126,9 @@ workflows:
       - test_py311:
           requires:
             - quality
+      - test_py312:
+          requires:
+            - quality
       - coverage:
           requires:
             - quality
