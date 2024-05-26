@@ -1,5 +1,4 @@
 import pytest
-
 from czml3.properties import Color
 from czml3.types import RgbafValue, RgbaValue
 from czml3.utils import get_color, get_color_list

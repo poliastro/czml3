@@ -1,0 +1,14 @@
+[tool.ruff.lint]
+ignore = ["E203", "E266", "E501"]
+select = [
+    "E",  # pycodestyle
+    "F",  # Pyflakes
+    "UP",  # pyupgrade
+    "B",  # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "I",  # isort
+    "C","W","B9"
+]
+
+[tool.ruff]
+extend-exclude = ["versioneer.py", "_version.py"]

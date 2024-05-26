@@ -3,7 +3,6 @@ import os
 import tempfile
 
 import pytest
-
 from czml3 import Document, Packet, Preamble
 from czml3.properties import ImageMaterial, Material, Rectangle, RectangleCoordinates
 
@@ -50,9 +49,7 @@ def test_packet_rectangles(image):
             }}
         }}
     }}
-}}""".format(
-        *wsen, image
-    )
+}}""".format(*wsen, image)
 
     rectangle_packet = Packet(
         id="id_00",

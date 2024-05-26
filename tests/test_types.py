@@ -2,8 +2,6 @@ import datetime as dt
 
 import astropy.time
 import pytest
-from dateutil.tz import tzoffset
-
 from czml3.types import (
     Cartesian3Value,
     CartographicDegreesListValue,
@@ -18,6 +16,7 @@ from czml3.types import (
     UnitQuaternionValue,
     format_datetime_like,
 )
+from dateutil.tz import tzoffset
 
 
 def test_invalid_near_far_scalar_value():
@@ -56,7 +55,6 @@ def test_cartographic_radian_list():
 
 
 def test_invalid_cartograpic_radian_list():
-
     with pytest.raises(ValueError) as excinfo:
         CartographicRadiansListValue(values=[1])
     assert (
@@ -76,7 +74,6 @@ def test_cartograpic_degree_list():
 
 
 def test_invalid_cartograpic_degree_list():
-
     with pytest.raises(ValueError) as excinfo:
         CartographicDegreesListValue(values=[15, 25, 50, 30])
     assert (
@@ -139,7 +136,6 @@ def test_bad_rgba_4_values_raises_error():
 
 
 def test_bad_rgba_5_color_values_raises_error():
-
     with pytest.raises(ValueError) as excinfo:
         RgbaValue(values=[0, 0.1, 0.3, 0.3, 255])
 
@@ -161,7 +157,6 @@ def test_bad_rgbaf_4_values_raises_error():
 
 
 def test_bad_rgbaf_5_color_values_raises_error():
-
     with pytest.raises(ValueError) as excinfo:
         RgbafValue(values=[0, 0.1, 0.3, 0.3, 255])
 
