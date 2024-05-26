@@ -2,7 +2,6 @@ from io import StringIO
 from uuid import UUID
 
 import pytest
-
 from czml3 import CZML_VERSION, Packet, Preamble
 from czml3.enums import InterpolationAlgorithms, ReferenceFrames
 from czml3.properties import (

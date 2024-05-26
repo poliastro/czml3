@@ -26,15 +26,13 @@ def get_color_list(timestamps, colors, rgbaf=False):
     def color_r(c):
         if rgbaf:
             return (
-                c.rgbaf.values
-                if c.rgbaf
-                else list(map(lambda x: float(x / 255), c.rgba.values))
+                c.rgbaf.values if c.rgbaf else [float(x / 255) for x in c.rgba.values]
             )
         else:
             return (
                 c.rgba.values
                 if c.rgba
-                else list(map(lambda x: int(round(x * 255)), c.rgbaf.values))
+                else [int(round(x * 255)) for x in c.rgbaf.values]
             )
 
     # Get combined list of timestamps and colors
@@ -65,8 +63,8 @@ def get_color(color):
         return Color.from_str(color)
     elif issubclass(int, type(color)):
         return Color.from_hex(int(color))
-    elif isinstance(color, list):
-        # If it is a valid color in list form, simply return it
-        if Color.is_valid(color):
-            return Color.from_list(color)
+    elif isinstance(color, list) and Color.is_valid(
+        color
+    ):  # If it is a valid color in list form, simply return it
+        return Color.from_list(color)
     raise ValueError("Invalid input")

@@ -131,7 +131,7 @@ Before you send us a pull request, remember to reformat all the code::
 
   $ tox -e reformat
 
-This will apply black, isort, and lots of love ❤️
+This will apply ruff and lots of love ❤️
 
 License
 =======

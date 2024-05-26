@@ -32,7 +32,6 @@ def format_datetime_like(dt_object):
 
 @attr.s(str=False, frozen=True, kw_only=True)
 class _TimeTaggedCoords(BaseCZMLObject):
-
     NUM_COORDS: int
     property_name: str
 
@@ -85,14 +84,14 @@ class RgbafValue(BaseCZMLObject):
             )
 
         if len(value) == 4:
-            if not all([0 <= val <= 1 for val in value]):
+            if not all(0 <= val <= 1 for val in value):
                 raise ValueError("Color values must be floats in the range 0-1.")
 
         else:
             for i in range(0, len(value), 5):
                 v = value[i + 1 : i + 5]
 
-                if not all([0 <= val <= 1 for val in v]):
+                if not all(0 <= val <= 1 for val in v):
                     raise ValueError("Color values must be floats in the range 0-1.")
 
     def to_json(self):
@@ -122,14 +121,14 @@ class RgbaValue(BaseCZMLObject):
             )
 
         if len(value) == 4:
-            if not all([type(val) is int and 0 <= val <= 255 for val in value]):
+            if not all(isinstance(val, int) and 0 <= val <= 255 for val in value):
                 raise ValueError("Color values must be integers in the range 0-255.")
 
         else:
             for i in range(0, len(value), 5):
                 v = value[i + 1 : i + 5]
 
-                if not all([type(val) is int and 0 <= val <= 255 for val in v]):
+                if not all(isinstance(val, int) and 0 <= val <= 255 for val in v):
                     raise ValueError(
                         "Color values must be integers in the range 0-255."
                     )
@@ -330,7 +329,7 @@ class TimeInterval(BaseCZMLObject):
         else:
             end = format_datetime_like(self._end)
 
-        return "{start}/{end}".format(start=start, end=end)
+        return f"{start}/{end}"
 
 
 @attr.s(str=False, frozen=True, kw_only=True)

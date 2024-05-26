@@ -177,14 +177,14 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
         # [R, G, B] or [R, G, B, A]
         if (
             isinstance(color, (list, tuple))
-            and all([issubclass(type(v), int) for v in color])
+            and all(issubclass(type(v), int) for v in color)
             and (3 <= len(color) <= 4)
         ):
             return all(0 <= v <= 255 for v in color)
         # [r, g, b] or [r, g, b, a] (float)
         elif (
             isinstance(color, (list, tuple))
-            and all([issubclass(type(v), float) for v in color])
+            and all(issubclass(type(v), float) for v in color)
             and (3 <= len(color) <= 4)
         ):
             return all(0 <= v <= 1 for v in color)
@@ -203,17 +203,11 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
     @classmethod
     def from_list(cls, color):
         if all(issubclass(type(v), int) for v in color):
-            if len(color) == 3:
-                color = color + [255]
-            else:
-                color = color[:]
+            color = color + [255] if len(color) == 3 else color[:]
 
             return cls(rgba=RgbaValue(values=color))
         else:
-            if len(color) == 3:
-                color = color + [1.0]
-            else:
-                color = color[:]
+            color = color + [1.0] if len(color) == 3 else color[:]
 
             return cls(rgbaf=RgbafValue(values=color))
 

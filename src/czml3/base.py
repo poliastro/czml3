@@ -32,7 +32,7 @@ class BaseCZMLObject:
 
     def dumps(self, *args, **kwargs):
         if "cls" in kwargs:
-            warnings.warn("Ignoring specified cls", UserWarning)
+            warnings.warn("Ignoring specified cls", UserWarning, stacklevel=2)
 
         kwargs["cls"] = CZMLEncoder
         return json.dumps(self, *args, **kwargs)
