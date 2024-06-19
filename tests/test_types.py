@@ -2,6 +2,8 @@ import datetime as dt
 
 import astropy.time
 import pytest
+from dateutil.tz import tzoffset
+
 from czml3.types import (
     Cartesian3Value,
     CartographicDegreesListValue,
@@ -16,7 +18,6 @@ from czml3.types import (
     UnitQuaternionValue,
     format_datetime_like,
 )
-from dateutil.tz import tzoffset
 
 
 def test_invalid_near_far_scalar_value():
