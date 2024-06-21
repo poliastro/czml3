@@ -16,7 +16,7 @@ extend-exclude = ["versioneer.py", "_version.py"]
 [tool.tox]
 legacy_tox_ini = """
     [tox]
-    envlist = quality, test, pypy, pypy3, py{37,38,39,310,311}, coverage, reformat
+    envlist = quality, test, pypy, pypy3, py{37,38,39,310,311}
 
     [gh-actions]
     python =
@@ -24,7 +24,7 @@ legacy_tox_ini = """
         3.8: py38
         3.9: py39
         3.10: py310
-        3.11: py311, quality, test, pypy, pypy3, coverage, reformat
+        3.11: py311, quality, test, pypy, pypy3
 
     [testenv]
     basepython =
