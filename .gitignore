@@ -103,5 +103,6 @@ venv.bak/
 # mkdocs documentation
 /site
 
-# mypy
+# linters
 .mypy_cache/
+.ruff_cache/
