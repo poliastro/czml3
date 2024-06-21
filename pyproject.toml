@@ -67,4 +67,5 @@ legacy_tox_ini = """
     skip_install = true
     commands =
         ruff format
+        ruff check --fix
 """
