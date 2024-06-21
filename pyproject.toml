@@ -18,6 +18,14 @@ legacy_tox_ini = """
     [tox]
     envlist = quality, test, pypy, pypy3, py{37,38,39,310,311}
 
+    [gh-actions]
+    python =
+        3.7: py37
+        3.8: py38
+        3.9: py39
+        3.10: py310
+        3.11: py311, quality, test, pypy, pypy3
+
     [testenv]
     basepython =
         pypy: {env:PYTHON:pypy}
@@ -49,7 +57,7 @@ legacy_tox_ini = """
     skip_install = true
     commands =
         python setup.py check --strict --metadata
-        ruff check
+        python -m ruff check
         python -m build .
 
     [testenv:reformat]
@@ -58,5 +66,6 @@ legacy_tox_ini = """
         ruff
     skip_install = true
     commands =
-        ruff format
+        python -m ruff format
+        python -m ruff check --fix
 """
