@@ -72,7 +72,7 @@ jobs:
     name: codecov
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@main
+    - uses: actions/checkout@v4
     - uses: codecov/codecov-action@v4.0.1
       with:
         fail_ci_if_error: true # optional (default = false)
