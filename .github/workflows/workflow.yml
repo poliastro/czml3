@@ -1,6 +1,6 @@
 name: czml3 gh actions workflow
 
-on: push
+on: [push, pull_request]
 
 jobs:
   build:
@@ -72,8 +72,7 @@ jobs:
     name: codecov
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@main
-    - uses: codecov/codecov-action@v4
+    - uses: codecov/codecov-action@v4.5.0
       with:
         fail_ci_if_error: true # optional (default = false)
         token: ${{ secrets.CODECOV_TOKEN }} # required
