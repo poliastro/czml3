@@ -75,13 +75,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup Python
         uses: actions/setup-python@v4
-      - name: Generate coverage report
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install pytest
-          python -m pip install pytest-cov
           python -m pip install .[dev]
-          python -m pytest --cov=./ --cov-report=xml:pytest_cov.xml
+      - name: Generate coverage report
+        run: python -m pytest --cov=./ --cov-report=xml:pytest_cov.xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
