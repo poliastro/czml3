@@ -81,13 +81,13 @@ jobs:
           python -m pip install pytest
           python -m pip install pytest-cov
           python -m pip install .[dev]
-          python -m pytest --cov=./ --cov-report=xml:pytest_cov.xml
+          python -m pytest --cov=./ --cov-report=xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           directory: ./coverage/reports/
           fail_ci_if_error: true
-          files: ./coverage.xml,./pytest_cov.xml,!./cache
+          files: ./coverage.xml,!./cache
           flags: unittests
           name: codecov-umbrella
           token: ${{ secrets.CODECOV_TOKEN }}
