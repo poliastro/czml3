@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
-    - uses: codecov/codecov-action@v4
+    - uses: codecov/codecov-action@v4.0.1
       with:
         fail_ci_if_error: true # optional (default = false)
         token: ${{ secrets.CODECOV_TOKEN }} # required
