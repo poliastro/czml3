@@ -77,3 +77,4 @@ jobs:
         fail_ci_if_error: true # optional (default = false)
         token: ${{ secrets.CODECOV_TOKEN }} # required
         verbose: true # optional (default = false)
+        files: ./coverage1.xml,./coverage2.xml,!./cache
