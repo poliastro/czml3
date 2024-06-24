@@ -106,5 +106,3 @@ venv.bak/
 # linters
 .mypy_cache/
 .ruff_cache/
-
-# Other stuff
