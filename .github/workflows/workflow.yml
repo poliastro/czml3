@@ -41,6 +41,5 @@ jobs:
         with:
           fail_ci_if_error: true
           files: ./pytest_cov.xml
-          name: codecov-umbrella
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
