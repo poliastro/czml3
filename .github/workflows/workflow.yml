@@ -35,7 +35,7 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install .[dev]
       - name: Generate coverage report
-        run: python -m pytest --cov=./src/czml3 --cov-report=xml:pytest_cov.xml ./tests
+        run: python -m pytest --cov=./src/czml3 --cov-report=xml ./tests
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
