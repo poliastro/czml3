@@ -28,19 +28,18 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup Python
         uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install .[dev]
       - name: Generate coverage report
-        run: python -m pytest --cov=./ --cov-report=xml:pytest_cov.xml
+        run: python -m pytest --cov=czml3 --cov-report=xml:pytest_cov.xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
-          directory: ./coverage/reports/
           fail_ci_if_error: true
-          files: ./coverage.xml,./pytest_cov.xml,!./cache
-          flags: unittests
-          name: codecov-umbrella
+          files: ./pytest_cov.xml
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
