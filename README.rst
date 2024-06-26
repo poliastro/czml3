@@ -1,9 +1,6 @@
 :Name: czml3
 :Authors: Juan Luis Cano Rodríguez, Eleftheria Chatziargyriou
 
-.. |circleci| image:: https://img.shields.io/circleci/project/github/poliastro/czml3/master.svg?style=flat-square&logo=circleci
-   :target: https://circleci.com/gh/poliastro/czml3
-
 .. |codecov| image:: https://img.shields.io/codecov/c/github/poliastro/czml3.svg?style=flat-square
    :target: https://codecov.io/github/poliastro/czml3?branch=master
 
@@ -14,7 +11,24 @@
    :alt: Join the chat at https://openastronomy.riot.im/#/room/#poliastro-czml:matrix.org
    :target: https://openastronomy.riot.im/#/room/#poliastro-czml:matrix.org
 
-|circleci| |codecov| |license| |matrix|
+.. |pypi-downloads| image:: https://img.shields.io/pepy/dt/czml3?label=pypi%20downloads
+   :alt: Pepy Total Downlods
+
+.. |version| image:: https://img.shields.io/pypi/v/czml3
+   :alt: PyPI - Version
+
+.. |workflow-status| image:: https://img.shields.io/github/actions/workflow/status/poliastro/czml3/workflow.yml?branch=main
+   :alt: GitHub Actions Workflow Status
+
+.. |conda-version| image:: https://img.shields.io/conda/vn/conda-forge/czml3?label=conda
+   :alt: Conda Version
+
+.. |conda-downloads| image:: https://img.shields.io/conda/dn/conda-forge/czml3?label=conda%20downloads
+   :alt: Conda Downloads
+
+
+
+|version| |conda-version| |workflow-status| |codecov| |pypi-downloads| |conda-downloads| |license| |matrix|
 
 czml3 is a Python library to write CZML.
 
