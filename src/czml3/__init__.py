@@ -1,7 +1,6 @@
-from ._version import get_versions
 from .core import CZML_VERSION, Document, Packet, Preamble
 
-__version__ = get_versions()["version"]
-del get_versions
+with open("src/czml3/version.txt") as f:
+    __version__ = f.read()
 
 __all__ = ["Document", "Preamble", "Packet", "CZML_VERSION"]

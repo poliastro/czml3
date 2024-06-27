@@ -10,9 +10,6 @@ select = [
     "C","W","B9"
 ]
 
-[tool.ruff]
-extend-exclude = ["versioneer.py", "_version.py"]
-
 [tool.tox]
 legacy_tox_ini = """
     [tox]

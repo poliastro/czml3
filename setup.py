@@ -1,5 +1,6 @@
 from setuptools import setup
 
-import versioneer
+with open("src/czml3/version.txt") as f:
+    version = f.read()
 
-setup(version=versioneer.get_version(), cmdclass=versioneer.get_cmdclass())
+setup(version=version, package_data={"": ["czml3/version.txt"]})

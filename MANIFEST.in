@@ -1,7 +1,4 @@
 include LICENSE
 
-include versioneer.py
-include src/czml3/_version.py
-
 graft src
 global-exclude *.py[cod] __pycache__ *.so
