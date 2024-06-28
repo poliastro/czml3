@@ -153,8 +153,8 @@ disallow_untyped_defs = true
 # Ignore certain missing imports
 [[tool.mypy.overrides]]
 module = [
-    "astropy",
-    "setuptools",
-    "w3lib",
+    "astropy.*",
+    "setuptools.*",
+    "w3lib.*",
 ]
 ignore_missing_imports = true
