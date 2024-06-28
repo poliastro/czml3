@@ -1,7 +1,5 @@
-from ._version import get_versions
 from .core import CZML_VERSION, Document, Packet, Preamble
 
-__version__ = get_versions()["version"]
-del get_versions
+__version__ = "1.0.0"
 
 __all__ = ["Document", "Preamble", "Packet", "CZML_VERSION"]
