@@ -124,3 +124,37 @@ Changelog = "https://github.com/poliastro/czml3/blob/main/CHANGELOG.md"
 
 [tool.setuptools.dynamic]
 version = {attr = "czml3.__version__"}
+
+[tool.mypy]
+files = [
+    "src/**/*.py",
+    "tests/**/*.py",
+]
+warn_redundant_casts = true
+warn_unused_configs = true
+pretty = true
+show_error_codes = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+#disallow_untyped_calls = true
+#disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_unused_ignores = true
+warn_return_any = true
+no_implicit_reexport = true
+
+# More strict checks for library code
+[[tool.mypy.overrides]]
+module = "czml3"
+disallow_untyped_defs = true
+
+# Ignore certain missing imports
+[[tool.mypy.overrides]]
+module = [
+    "astropy",
+    "setuptools",
+    "w3lib",
+]
+ignore_missing_imports = true
