@@ -38,6 +38,7 @@ from czml3.properties import (
     ShadowMode,
     SolidColorMaterial,
     StripeMaterial,
+    Tileset,
     Uri,
     ViewFrom,
 )
@@ -866,3 +867,14 @@ def test_label_offset():
 
     label = Label(pixelOffset=Cartesian2Value(values=[5, 5]))
     assert str(label) == expected_result
+
+
+def test_tileset():
+    expected_result = """{
+    "show": true,
+    "uri": "../SampleData/Cesium3DTiles/Batched/BatchedColors/tileset.json"
+}"""
+    tileset = Tileset(
+        show=True, uri="../SampleData/Cesium3DTiles/Batched/BatchedColors/tileset.json"
+    )
+    assert str(tileset) == expected_result
