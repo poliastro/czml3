@@ -38,7 +38,7 @@ from czml3.properties import (
     ShadowMode,
     SolidColorMaterial,
     StripeMaterial,
-    TileSet,
+    Tileset,
     Uri,
     ViewFrom,
 )
@@ -874,7 +874,7 @@ def test_tileset():
     "show": true,
     "uri": "../SampleData/Cesium3DTiles/Batched/BatchedColors/tileset.json"
 }"""
-    tileset = TileSet(
+    tileset = Tileset(
         show=True, uri="../SampleData/Cesium3DTiles/Batched/BatchedColors/tileset.json"
     )
     assert str(tileset) == expected_result

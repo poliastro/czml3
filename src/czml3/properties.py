@@ -618,7 +618,7 @@ class Point(BaseCZMLObject):
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
-class TileSet(BaseCZMLObject):
+class Tileset(BaseCZMLObject):
     """A 3D Tiles tileset."""
 
     show = attr.ib(default=None)
