@@ -392,6 +392,8 @@ class Polygon(BaseCZMLObject):
     classificationType = attr.ib(default=None)
     zIndex = attr.ib(default=None)
     holes = attr.ib(default=None)
+    outlineColor = attr.ib(default=None)
+    outline = attr.ib(default=None)
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
@@ -466,6 +468,7 @@ class PositionList(BaseCZMLObject, Interpolatable, Deletable):
     cartographicDegrees = attr.ib(default=None)
     references = attr.ib(default=None)
     interval = attr.ib(default=None)
+    epoch = attr.ib(default=None)
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
