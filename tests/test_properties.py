@@ -845,6 +845,58 @@ def test_polygon_interval():
     assert str(poly) == expected_result
 
 
+def test_polygon_outline():
+    expected_result = """{
+    "positions": {
+        "cartographicDegrees": [
+            10.0,
+            20.0,
+            0.0
+        ]
+    },
+    "material": {
+        "solidColor": {
+            "color": {
+                "rgba": [
+                    255,
+                    100,
+                    0,
+                    100
+                ]
+            }
+        }
+    },
+    "outlineColor": {
+        "rgba": [
+            0,
+            0,
+            0,
+            255
+        ]
+    },
+    "outline": true,
+    "extrudedHeight": 0,
+    "perPositionHeight": true
+}"""
+    poly = Polygon(
+        positions=PositionList(cartographicDegrees=[10.0, 20.0, 0.0]),
+        material=Material(
+            solidColor=SolidColorMaterial(
+                color=Color(
+                    rgba=[255, 100, 0, 100],
+                ),
+            ),
+        ),
+        outlineColor=Color(
+            rgba=[0, 0, 0, 255],
+        ),
+        outline=True,
+        extrudedHeight=0,
+        perPositionHeight=True,
+    )
+    assert str(poly) == expected_result
+
+
 def test_polygon_interval_with_position():
     """This only tests one interval"""
 
