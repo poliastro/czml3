@@ -296,6 +296,22 @@ def test_outline_material_colors():
     assert str(omat) == expected_result
 
 
+def test_positionlist_epoch():
+    expected_result = """{
+    "cartographicDegrees": [
+        200,
+        100,
+        30
+    ],
+    "epoch": "2019-06-11T12:26:58.000000Z"
+}"""
+    p = PositionList(
+        epoch=dt.datetime(2019, 6, 11, 12, 26, 58, tzinfo=dt.timezone.utc),
+        cartographicDegrees=[200, 100, 30],
+    )
+    assert str(p) == expected_result
+
+
 def test_color_isvalid():
     assert Color.is_valid([255, 204, 0, 55])
     assert Color.is_valid([255, 204, 55])
@@ -825,6 +841,58 @@ def test_polygon_interval():
     )
     poly = Polygon(
         positions=PositionList(cartographicDegrees=[10.0, 20.0, 0.0], interval=t)
+    )
+    assert str(poly) == expected_result
+
+
+def test_polygon_outline():
+    expected_result = """{
+    "positions": {
+        "cartographicDegrees": [
+            10.0,
+            20.0,
+            0.0
+        ]
+    },
+    "material": {
+        "solidColor": {
+            "color": {
+                "rgba": [
+                    255,
+                    100,
+                    0,
+                    100
+                ]
+            }
+        }
+    },
+    "outlineColor": {
+        "rgba": [
+            0,
+            0,
+            0,
+            255
+        ]
+    },
+    "outline": true,
+    "extrudedHeight": 0,
+    "perPositionHeight": true
+}"""
+    poly = Polygon(
+        positions=PositionList(cartographicDegrees=[10.0, 20.0, 0.0]),
+        material=Material(
+            solidColor=SolidColorMaterial(
+                color=Color(
+                    rgba=[255, 100, 0, 100],
+                ),
+            ),
+        ),
+        outlineColor=Color(
+            rgba=[0, 0, 0, 255],
+        ),
+        outline=True,
+        extrudedHeight=0,
+        perPositionHeight=True,
     )
     assert str(poly) == expected_result
 
