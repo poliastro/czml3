@@ -296,6 +296,22 @@ def test_outline_material_colors():
     assert str(omat) == expected_result
 
 
+def test_positionlist_epoch():
+    expected_result = """{
+    "cartographicDegrees": [
+        200,
+        100,
+        30
+    ],
+    "epoch": "2019-06-11T12:26:58.000000Z"
+}"""
+    p = PositionList(
+        epoch=dt.datetime(2019, 6, 11, 12, 26, 58, tzinfo=dt.timezone.utc),
+        cartographicDegrees=[200, 100, 30],
+    )
+    assert str(p) == expected_result
+
+
 def test_color_isvalid():
     assert Color.is_valid([255, 204, 0, 55])
     assert Color.is_valid([255, 204, 55])
