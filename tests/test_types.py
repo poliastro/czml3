@@ -13,6 +13,7 @@ from czml3.types import (
     RgbafValue,
     RgbaValue,
     TimeInterval,
+    IntervalValue,
     UnitQuaternionValue,
     format_datetime_like,
 )
@@ -185,6 +186,17 @@ def test_custom_time_interval():
 def test_bad_time_raises_error():
     with pytest.raises(ValueError):
         format_datetime_like("2019/01/01")
+
+
+def test_interval_value():
+    start = "2019-01-01T12:00:00.000000Z"
+    end = "2019-09-02T21:59:59.000000Z"
+    # value is a boolean
+    assert str(IntervalValue(start=start, end=end, value=True)) == {
+        "start": start,
+        "end": end,
+        "value": True,
+    }
 
 
 @pytest.mark.xfail

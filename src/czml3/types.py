@@ -343,9 +343,11 @@ class IntervalValue(BaseCZMLObject):
     def to_json(self):
         obj_dict = {"interval": TimeInterval(start=self._start, end=self._end)}
 
-        try:
+        if hasattr(self._value, "to_json"):
             obj_dict.update(**self._value.to_json())
-        except AttributeError:
+        elif isinstance(self._value, dict):
+            obj_dict.update(self._value)
+        else:
             key = TYPE_MAPPING[type(self._value)]
             obj_dict[key] = self._value
 
