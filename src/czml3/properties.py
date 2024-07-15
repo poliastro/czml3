@@ -394,6 +394,8 @@ class Polygon(BaseCZMLObject):
     holes = attr.ib(default=None)
     outlineColor = attr.ib(default=None)
     outline = attr.ib(default=None)
+    extrudedHeight = attr.ib(default=None)
+    perPositionHeight = attr.ib(default=None)
 
 
 @attr.s(str=False, frozen=True, kw_only=True)
