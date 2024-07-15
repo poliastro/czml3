@@ -191,12 +191,37 @@ def test_bad_time_raises_error():
 def test_interval_value():
     start = "2019-01-01T12:00:00.000000Z"
     end = "2019-09-02T21:59:59.000000Z"
+
     # value is a boolean
-    assert str(IntervalValue(start=start, end=end, value=True)) == {
-        "start": start,
-        "end": end,
-        "value": True,
-    }
+    assert (
+        str(IntervalValue(start=start, end=end, value=True))
+        == """{
+    "interval": "2019-01-01T12:00:00.000000Z/2019-09-02T21:59:59.000000Z",
+    "boolean": true
+}"""
+    )
+
+    # value is a dict
+    assert (
+        str(IntervalValue(start=start, end=end, value={"foo": "bar"}))
+        == """{
+    "interval": "2019-01-01T12:00:00.000000Z/2019-09-02T21:59:59.000000Z",
+    "foo": "bar"
+}"""
+    )
+
+    # value is something that has a "to_json" method
+    class CustomValue:
+        def to_json(self):
+            return {"foo": "bar"}
+
+    assert (
+        str(IntervalValue(start=start, end=end, value=CustomValue()))
+        == """{
+    "interval": "2019-01-01T12:00:00.000000Z/2019-09-02T21:59:59.000000Z",
+    "foo": "bar"
+}"""
+    )
 
 
 @pytest.mark.xfail
