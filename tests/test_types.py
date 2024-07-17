@@ -2,6 +2,7 @@ import datetime as dt
 
 import astropy.time
 import pytest
+from czml3.base import BaseCZMLObject
 from czml3.types import (
     Cartesian3Value,
     CartographicDegreesListValue,
@@ -204,7 +205,7 @@ def test_interval_value():
     )
 
     # value is something that has a "to_json" method
-    class CustomValue:
+    class CustomValue(BaseCZMLObject):
         def to_json(self):
             return {"foo": "bar"}
 
