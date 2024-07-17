@@ -343,9 +343,12 @@ class IntervalValue(BaseCZMLObject):
     def to_json(self):
         obj_dict = {"interval": TimeInterval(start=self._start, end=self._end)}
 
-        try:
+        if isinstance(self._value, BaseCZMLObject):
             obj_dict.update(**self._value.to_json())
-        except AttributeError:
+        elif isinstance(self._value, list):
+            for value in self._value:
+                obj_dict.update(**value.to_json())
+        else:
             key = TYPE_MAPPING[type(self._value)]
             obj_dict[key] = self._value
 
@@ -374,3 +377,44 @@ class UnitQuaternionValue(_TimeTaggedCoords):
     """
 
     NUM_COORDS = 4
+
+
+@attr.s(str=False, frozen=True, kw_only=True)
+class EpochValue(BaseCZMLObject):
+    """A value representing a time epoch."""
+
+    _value = attr.ib()
+
+    @_value.validator
+    def _check_epoch(self, attribute, value):
+        if not isinstance(value, (str, dt.datetime)):
+            raise ValueError("Epoch must be a string or a datetime object.")
+
+    def to_json(self):
+        return {"epoch": format_datetime_like(self._value)}
+
+
+@attr.s(str=False, frozen=True, kw_only=True)
+class NumberValue(BaseCZMLObject):
+    """A single number, or a list of number pairs signifying the time and representative value."""
+
+    values = attr.ib()
+
+    @values.validator
+    def _check_values(self, attribute, value):
+        if isinstance(value, list):
+            if not all(isinstance(val, (int, float)) for val in value):
+                raise ValueError("Values must be integers or floats.")
+            if len(value) % 2 != 0:
+                raise ValueError(
+                    "Values must be a list of number pairs signifying the time and representative value."
+                )
+
+        elif not isinstance(value, (int, float)):
+            raise ValueError("Values must be integers or floats.")
+
+    def to_json(self):
+        if isinstance(self.values, (int, float)):
+            return {"number": self.values}
+
+        return {"number": list(self.values)}

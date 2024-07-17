@@ -2,13 +2,17 @@ import datetime as dt
 
 import astropy.time
 import pytest
+from czml3.base import BaseCZMLObject
 from czml3.types import (
     Cartesian3Value,
     CartographicDegreesListValue,
     CartographicRadiansListValue,
     DistanceDisplayConditionValue,
+    EpochValue,
     FontValue,
+    IntervalValue,
     NearFarScalarValue,
+    NumberValue,
     ReferenceValue,
     RgbafValue,
     RgbaValue,
@@ -185,6 +189,120 @@ def test_custom_time_interval():
 def test_bad_time_raises_error():
     with pytest.raises(ValueError):
         format_datetime_like("2019/01/01")
+
+
+def test_interval_value():
+    start = "2019-01-01T12:00:00.000000Z"
+    end = "2019-09-02T21:59:59.000000Z"
+
+    # value is a boolean
+    assert (
+        str(IntervalValue(start=start, end=end, value=True))
+        == """{
+    "interval": "2019-01-01T12:00:00.000000Z/2019-09-02T21:59:59.000000Z",
+    "boolean": true
+}"""
+    )
+
+    # value is something that has a "to_json" method
+    class CustomValue(BaseCZMLObject):
+        def to_json(self):
+            return {"foo": "bar"}
+
+    assert (
+        str(IntervalValue(start=start, end=end, value=CustomValue()))
+        == """{
+    "interval": "2019-01-01T12:00:00.000000Z/2019-09-02T21:59:59.000000Z",
+    "foo": "bar"
+}"""
+    )
+
+    assert (
+        str(
+            IntervalValue(
+                start=start,
+                end=end,
+                value=[
+                    EpochValue(value=start),
+                    NumberValue(values=[1, 2, 3, 4]),
+                ],
+            )
+        )
+        == """{
+    "interval": "2019-01-01T12:00:00.000000Z/2019-09-02T21:59:59.000000Z",
+    "epoch": "2019-01-01T12:00:00.000000Z",
+    "number": [
+        1,
+        2,
+        3,
+        4
+    ]
+}"""
+    )
+
+
+def test_epoch_value():
+    epoch: str = "2019-01-01T12:00:00.000000Z"
+
+    assert (
+        str(EpochValue(value=epoch))
+        == """{
+    "epoch": "2019-01-01T12:00:00.000000Z"
+}"""
+    )
+
+    assert (
+        str(EpochValue(value=dt.datetime(2019, 1, 1, 12)))
+        == """{
+    "epoch": "2019-01-01T12:00:00.000000Z"
+}"""
+    )
+
+    with pytest.raises(expected_exception=ValueError):
+        str(EpochValue(value="test"))
+
+    with pytest.raises(
+        expected_exception=ValueError,
+        match="Epoch must be a string or a datetime object.",
+    ):
+        EpochValue(value=1)
+
+
+def test_numbers_value():
+    expected_result = """{
+    "number": [
+        1,
+        2,
+        3,
+        4
+    ]
+}"""
+    numbers = NumberValue(values=[1, 2, 3, 4])
+
+    assert str(numbers) == expected_result
+
+    expected_result = """{
+    "number": 1.0
+}"""
+    numbers = NumberValue(values=1.0)
+
+    assert str(numbers) == expected_result
+
+    with pytest.raises(
+        expected_exception=ValueError, match="Values must be integers or floats."
+    ):
+        NumberValue(values="test")
+
+    with pytest.raises(
+        expected_exception=ValueError, match="Values must be integers or floats."
+    ):
+        NumberValue(values=[1, "test"])
+
+    with pytest.raises(
+        expected_exception=ValueError,
+        match="Values must be a list of number pairs signifying the time and representative value.",
+    ):
+        NumberValue(values=[1, 2, 3, 4, 5])
 
 
 @pytest.mark.xfail
