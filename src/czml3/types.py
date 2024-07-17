@@ -343,7 +343,7 @@ class IntervalValue(BaseCZMLObject):
     def to_json(self):
         obj_dict = {"interval": TimeInterval(start=self._start, end=self._end)}
 
-        if isinstance(self._value, BaseCZMLObject)
+        if isinstance(self._value, BaseCZMLObject):
             obj_dict.update(**self._value.to_json())
         elif isinstance(self._value, list):
             for value in self._value:
