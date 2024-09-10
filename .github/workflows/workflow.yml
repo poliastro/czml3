@@ -23,18 +23,21 @@ jobs:
       run: |
         ruff format
         ruff check --fix
-    - name: format all files
+    - name: trailing-whitespace
       continue-on-error: true
       run: |
         pre-commit run trailing-whitespace --all-files
+    - name: end-of-file-fixer
+      continue-on-error: true
+      run: |
         pre-commit run end-of-file-fixer --all-files
     - name: Commit changes
       uses: EndBug/add-and-commit@v9
       with:
-        message: Lint Python using ruff
+        message: Lint files
         committer_name: GitHub Actions
         committer_email: 41898282+github-actions[bot]@users.noreply.github.com
-        add: '*.py'
+        add: '*'
 
   tox-checks:
     runs-on: ubuntu-latest
