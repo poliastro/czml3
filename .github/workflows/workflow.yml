@@ -2,6 +2,9 @@ name: Run checks
 
 on: [pull_request]
 
+permissions:
+  contents: write
+
 jobs:
   lint:
     runs-on: ubuntu-latest
