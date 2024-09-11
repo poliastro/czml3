@@ -2,6 +2,7 @@ import json
 import os
 
 import pytest
+
 from czml3.examples import simple
 
 TESTS_DIR = os.path.dirname(os.path.realpath(__file__))
