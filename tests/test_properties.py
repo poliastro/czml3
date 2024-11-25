@@ -11,11 +11,17 @@ from czml3.properties import (
     CheckerboardMaterial,
     ClassificationType,
     Color,
+    ColorBlendMode,
+    ColorBlendModes,
+    CornerType,
+    CornerTypes,
     DistanceDisplayCondition,
     Ellipsoid,
     EllipsoidRadii,
     EyeOffset,
     GridMaterial,
+    HeightReference,
+    HeightReferences,
     ImageMaterial,
     Label,
     Material,
@@ -37,6 +43,7 @@ from czml3.properties import (
     Position,
     PositionList,
     PositionListOfLists,
+    RectangleCoordinates,
     ShadowMode,
     SolidColorMaterial,
     StripeMaterial,
@@ -320,6 +327,9 @@ def test_positionlist_epoch():
 def test_colors_rgba():
     Color(rgba=[255, 204, 0, 55])
     Color(rgba=[255, 204, 55])
+    Color(rgba=[0.5, 0.6, 0.2])
+    Color(rgba="0xFF0000")
+    Color(rgba="0xFFFFFFFF")
     Color(rgba="0xFF3223")
     Color(rgba="0xFF322332")
     Color(rgba="#FF3223")
@@ -625,9 +635,12 @@ def test_position_cartographic_degrees():
 
 def test_position_reference():
     expected_result = """{
-    "reference": "#satellite"
+    "cartesian": [
+        0
+    ],
+    "reference": "this#satellite"
 }"""
-    pos = Position(reference="#satellite")
+    pos = Position(cartesian=[0], reference="this#satellite")
 
     assert str(pos) == expected_result
 
@@ -637,9 +650,9 @@ def test_viewfrom_reference():
     "cartesian": [
         1.0
     ],
-    "reference": "#satellite"
+    "reference": "this#satellite"
 }"""
-    v = ViewFrom(reference="#satellite", cartesian=[1.0])
+    v = ViewFrom(reference="this#satellite", cartesian=[1.0])
 
     assert str(v) == expected_result
 
@@ -999,3 +1012,165 @@ def test_tileset():
         show=True, uri="../SampleData/Cesium3DTiles/Batched/BatchedColors/tileset.json"
     )
     assert str(tileset) == expected_result
+
+
+def test_check_classes_with_references():
+    assert (
+        str(ViewFrom(cartesian=[0, 0], reference="this#that"))
+        == """{
+    "cartesian": [
+        0,
+        0
+    ],
+    "reference": "this#that"
+}"""
+    )
+    assert (
+        str(EllipsoidRadii(cartesian=[0, 0], reference="this#that"))
+        == """{
+    "cartesian": [
+        0,
+        0
+    ],
+    "reference": "this#that"
+}"""
+    )
+    assert (
+        str(ArcType(arcType=ArcTypes.GEODESIC, reference="this#that"))
+        == """{
+    "arcType": "GEODESIC",
+    "reference": "this#that"
+}"""
+    )
+    assert (
+        str(Position(cartesian=[0, 0], reference="this#that"))
+        == """{
+    "cartesian": [
+        0,
+        0
+    ],
+    "reference": "this#that"
+}"""
+    )
+    assert (
+        str(Orientation(unitQuaternion=[0, 0, 0, 0], reference="this#that"))
+        == """{
+    "unitQuaternion": [
+        0,
+        0,
+        0,
+        0
+    ],
+    "reference": "this#that"
+}"""
+    )
+    assert (
+        str(NearFarScalar(nearFarScalar=[0, 0], reference="this#that"))
+        == """{
+    "nearFarScalar": [
+        0,
+        0
+    ],
+    "reference": "this#that"
+}"""
+    )
+    assert (
+        str(CornerType(cornerType=CornerTypes.BEVELED, reference="this#that"))
+        == """{
+    "cornerType": "BEVELED",
+    "reference": "this#that"
+}"""
+    )
+    assert (
+        str(
+            ColorBlendMode(
+                colorBlendMode=ColorBlendModes.HIGHLIGHT, reference="this#that"
+            )
+        )
+        == """{
+    "colorBlendMode": "HIGHLIGHT",
+    "reference": "this#that"
+}"""
+    )
+    assert (
+        str(
+            HeightReference(
+                heightReference=HeightReferences.NONE, reference="this#that"
+            )
+        )
+        == """{
+    "heightReference": "NONE",
+    "reference": "this#that"
+}"""
+    )
+    assert (
+        str(EyeOffset(cartesian=[0, 0], reference="this#that"))
+        == """{
+    "cartesian": [
+        0,
+        0
+    ],
+    "reference": "this#that"
+}"""
+    )
+    assert (
+        str(RectangleCoordinates(wsen=[0, 0], reference="this#that"))
+        == """{
+    "wsen": [
+        0,
+        0
+    ],
+    "reference": "this#that"
+}"""
+    )
+    assert (
+        str(
+            BoxDimensions(
+                cartesian=Cartesian3Value(values=[0, 0, 1]), reference="this#that"
+            )
+        )
+        == """{
+    "cartesian": [
+        0,
+        0,
+        1
+    ],
+    "reference": "this#that"
+}"""
+    )
+    assert (
+        str(
+            DistanceDisplayCondition(
+                distanceDisplayCondition=DistanceDisplayConditionValue(
+                    values=[0, 1, 2]
+                ),
+                reference="this#that",
+            )
+        )
+        == """{
+    "distanceDisplayCondition": [
+        0,
+        1,
+        2
+    ],
+    "reference": "this#that"
+}"""
+    )
+    assert (
+        str(
+            ClassificationType(
+                classificationType=ClassificationTypes.BOTH, reference="this#that"
+            )
+        )
+        == """{
+    "classificationType": "BOTH",
+    "reference": "this#that"
+}"""
+    )
+    assert (
+        str(ShadowMode(shadowMode=ShadowModes.CAST_ONLY, reference="this#that"))
+        == """{
+    "shadowMode": "CAST_ONLY",
+    "reference": "this#that"
+}"""
+    )

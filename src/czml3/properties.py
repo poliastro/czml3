@@ -582,9 +582,9 @@ class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
 class RectangleCoordinates(BaseCZMLObject, Interpolatable, Deletable):
     """A set of coordinates describing a cartographic rectangle on the surface of the ellipsoid."""
 
-    reference: None | str = Field(default=None)
     wsen: None | list[float] | list[int] = Field(default=None)
     wsenDegrees: None | list[float] | list[int] = Field(default=None)
+    reference: None | str = Field(default=None)
 
     @model_validator(mode="after")
     def checks(self):

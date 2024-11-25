@@ -7,7 +7,9 @@ from pydantic import ValidationError
 from czml3.types import (
     Cartesian3Value,
     CartographicDegreesListValue,
+    CartographicDegreesValue,
     CartographicRadiansListValue,
+    CartographicRadiansValue,
     DistanceDisplayConditionValue,
     EpochValue,
     FontValue,
@@ -300,3 +302,91 @@ def test_quaternion_value():
     result = UnitQuaternionValue(values=[0, 0, 0, 1])
 
     assert str(result) == expected_result
+
+
+def test_cartographic_radians_value():
+    result = CartographicRadiansValue(values=[0, 0, 0, 1])
+    assert (
+        str(result)
+        == """[
+    0,
+    0,
+    0,
+    1
+]"""
+    )
+    result = CartographicRadiansValue(values=[0, 0, 1])
+    assert (
+        str(result)
+        == """[
+    0,
+    0,
+    1
+]"""
+    )
+
+
+def test_cartographic_degrees_value():
+    result = CartographicDegreesValue(values=[0, 0, 0, 1])
+    assert (
+        str(result)
+        == """[
+    0,
+    0,
+    0,
+    1
+]"""
+    )
+    result = CartographicRadiansValue(values=[0, 0, 1])
+    assert (
+        str(result)
+        == """[
+    0,
+    0,
+    1
+]"""
+    )
+
+
+def test_rgba_value():
+    assert (
+        str(RgbaValue(values=[30, 30, 30, 30]))
+        == """[
+    30,
+    30,
+    30,
+    30
+]"""
+    )
+    assert (
+        str(RgbaValue(values=[30, 30, 30, 30, 1]))
+        == """[
+    30,
+    30,
+    30,
+    30,
+    1
+]"""
+    )
+
+
+def test_rgbaf_value():
+    assert (
+        str(RgbafValue(values=[0.5, 0.5, 0.5, 0.5]))
+        == """[
+    0.5,
+    0.5,
+    0.5,
+    0.5
+]"""
+    )
+    assert (
+        str(RgbafValue(values=[0.5, 0.5, 0.5, 0.5, 1]))
+        == """[
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    1
+]"""
+    )
