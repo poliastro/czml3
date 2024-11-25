@@ -5,6 +5,7 @@ import pytest
 from pydantic import ValidationError
 
 from czml3.types import (
+    Cartesian2Value,
     Cartesian3Value,
     CartographicDegreesListValue,
     CartographicDegreesValue,
@@ -30,6 +31,13 @@ def test_invalid_near_far_scalar_value():
         NearFarScalarValue(values=[0, 3.2, 1, 4, 2, 1])
 
     assert "Input values must have either 4 or N * 5 values, " in excinfo.exconly()
+
+
+def test_distance_display_condition_is_invalid():
+    with pytest.raises(TypeError):
+        DistanceDisplayConditionValue(
+            values=[0, 150, 15000000, 300, 10000, 15000000, 600]
+        )
 
 
 def test_distance_display_condition():
@@ -89,11 +97,21 @@ def test_invalid_cartograpic_degree_list():
 
 
 @pytest.mark.parametrize("values", [[2, 2], [5, 5, 5, 5, 5]])
-def test_bad_cartesian_raises_error(values):
+def test_bad_cartesian3_raises_error(values):
     with pytest.raises(TypeError) as excinfo:
         Cartesian3Value(values=values)
 
     assert "Input values must have either 3 or N * 4 values" in excinfo.exconly()
+    assert str(Cartesian3Value()) == "{}"
+
+
+@pytest.mark.parametrize("values", [[2, 2, 2, 2, 2], [5, 5, 5, 5, 5]])
+def test_bad_cartesian2_raises_error(values):
+    with pytest.raises(TypeError) as excinfo:
+        Cartesian2Value(values=values)
+
+    assert "Input values must have either 2 or N * 3 values" in excinfo.exconly()
+    assert str(Cartesian2Value()) == "{}"
 
 
 def test_reference_value():
@@ -291,6 +309,11 @@ def test_astropy_time_format():
     assert result == expected_result
 
 
+def test_quaternion_value_is_invalid():
+    with pytest.raises(TypeError):
+        UnitQuaternionValue(values=[0, 0, 0, 1, 0])
+
+
 def test_quaternion_value():
     expected_result = """[
     0,
@@ -324,6 +347,10 @@ def test_cartographic_radians_value():
     1
 ]"""
     )
+    result = CartographicRadiansValue()
+    assert str(result) == """[]"""
+    with pytest.raises(TypeError):
+        CartographicRadiansValue(values=[0, 0, 1, 1, 1, 1])
 
 
 def test_cartographic_degrees_value():
@@ -346,6 +373,10 @@ def test_cartographic_degrees_value():
     1
 ]"""
     )
+    result = CartographicDegreesValue()
+    assert str(result) == """[]"""
+    with pytest.raises(TypeError):
+        CartographicDegreesValue(values=[0, 0, 1, 1, 1, 1])
 
 
 def test_rgba_value():
