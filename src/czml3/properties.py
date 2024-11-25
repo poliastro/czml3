@@ -246,7 +246,6 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
                     self.cartographicDegrees,
                     self.cartographicRadians,
                     self.cartesianVelocity,
-                    self.reference,
                 )
             )
             != 1

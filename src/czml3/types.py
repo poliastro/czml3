@@ -89,7 +89,7 @@ def get_color(color):
 
 
 def check_reference(r):
-    if re.search(r"^.+#.+$", r) is not None:
+    if re.search(r"^.+#.+$", r) is None:
         raise TypeError(
             "Invalid reference string format. Input must be of the form id#property"
         )
@@ -203,7 +203,7 @@ class RgbaValue(BaseCZMLObject):
 
     @model_serializer
     def custom_serializer(self):
-        return self
+        return self.values
 
 
 class ReferenceValue(BaseCZMLObject):
