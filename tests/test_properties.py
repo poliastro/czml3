@@ -1178,3 +1178,12 @@ def test_check_classes_with_references():
     "reference": "this#that"
 }"""
     )
+
+
+def test_rectangle_coordinates_delete():
+    assert (
+        str(RectangleCoordinates(wsen=[0, 0], reference="this#that", delete=True))
+        == """{
+    "delete": true
+}"""
+    )

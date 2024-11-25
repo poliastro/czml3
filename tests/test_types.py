@@ -22,6 +22,7 @@ from czml3.types import (
     RgbaValue,
     TimeInterval,
     UnitQuaternionValue,
+    check_reference,
     format_datetime_like,
 )
 
@@ -421,3 +422,13 @@ def test_rgbaf_value():
     1.0
 ]"""
     )
+
+
+def test_check_reference():
+    with pytest.raises(TypeError):
+        check_reference("thisthat")
+    assert check_reference("this#that") is None
+
+
+def test_format_datetime_like():
+    assert format_datetime_like(None) is None
