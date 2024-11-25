@@ -1,6 +1,8 @@
 import datetime as dt
 
 import pytest
+from pydantic import ValidationError
+
 from czml3.enums import ArcTypes, ClassificationTypes, ShadowModes
 from czml3.properties import (
     ArcType,
@@ -52,6 +54,7 @@ from czml3.types import (
     Sequence,
     TimeInterval,
     UnitQuaternionValue,
+    format_datetime_like,
 )
 
 
@@ -92,9 +95,9 @@ def test_point():
     "pixelSize": 10,
     "scaleByDistance": {
         "nearFarScalar": [
-            150,
+            150.0,
             2.0,
-            15000000,
+            15000000.0,
             0.5
         ]
     },
@@ -178,11 +181,13 @@ def test_material_solid_color():
         }
     }
 }"""
-    mat = Material(solidColor=SolidColorMaterial.from_list([200, 100, 30]))
+    mat = Material(solidColor=SolidColorMaterial(color=Color(rgba=[200, 100, 30])))
 
     assert str(mat) == expected_result
 
-    pol_mat = PolylineMaterial(solidColor=SolidColorMaterial.from_list([200, 100, 30]))
+    pol_mat = PolylineMaterial(
+        solidColor=SolidColorMaterial(color=Color(rgba=[200, 100, 30]))
+    )
     assert str(pol_mat) == expected_result
 
 
@@ -298,12 +303,12 @@ def test_outline_material_colors():
 
 def test_positionlist_epoch():
     expected_result = """{
+    "epoch": "2019-06-11T12:26:58.000000Z",
     "cartographicDegrees": [
         200,
         100,
         30
-    ],
-    "epoch": "2019-06-11T12:26:58.000000Z"
+    ]
 }"""
     p = PositionList(
         epoch=dt.datetime(2019, 6, 11, 12, 26, 58, tzinfo=dt.timezone.utc),
@@ -312,32 +317,76 @@ def test_positionlist_epoch():
     assert str(p) == expected_result
 
 
-def test_color_isvalid():
-    assert Color.is_valid([255, 204, 0, 55])
-    assert Color.is_valid([255, 204, 55])
-    assert Color.is_valid(0xFF3223)
-    assert Color.is_valid(32)
-    assert Color.is_valid(0xFF322332)
-    assert Color.is_valid("#FF3223")
-    assert Color.is_valid("#FF322332")
-    assert Color.is_valid((255, 204, 55))
-    assert Color.is_valid((255, 204, 55, 255))
-    assert Color.is_valid((0.127568, 0.566949, 0.550556))
-    assert Color.is_valid((0.127568, 0.566949, 0.550556, 1.0))
+def test_colors_rgba():
+    Color(rgba=[255, 204, 0, 55])
+    Color(rgba=[255, 204, 55])
+    Color(rgba="0xFF3223")
+    Color(rgba="0xFF322332")
+    Color(rgba="#FF3223")
+    Color(rgba="#FF322332")
+    Color(rgba=[255, 204, 55])
+    Color(rgba=[255, 204, 55, 255])
+    Color(rgba=[0.127568, 0.566949, 0.550556])
+    Color(rgba=[0.127568, 0.566949, 0.550556, 1.0])
 
 
-def test_color_isvalid_false():
-    assert Color.is_valid([256, 204, 0, 55]) is False
-    assert Color.is_valid([-204, 0, 55]) is False
-    assert Color.is_valid([249.1, 204.3, 55.4]) is False
-    assert Color.is_valid([255, 204]) is False
-    assert Color.is_valid([255, 232, 300]) is False
-    assert Color.is_valid(0xFF3223324) is False
-    assert Color.is_valid(-3) is False
-    assert Color.is_valid("totally valid color") is False
-    assert Color.is_valid("#FF322332432") is False
-    assert Color.is_valid((255, 204, 55, 255, 42)) is False
-    assert Color.is_valid((0.127568, 0.566949, 0.550556, 1.0, 3.0)) is False
+def test_colors_rgbaf():
+    Color(rgbaf=[255, 204, 0, 55])
+    Color(rgbaf=[255, 204, 55])
+    Color(rgbaf="0xFF3223")
+    Color(rgbaf="0xFF322332")
+    Color(rgbaf="#FF3223")
+    Color(rgbaf="#FF322332")
+    Color(rgbaf=[255, 204, 55])
+    Color(rgbaf=[255, 204, 55, 255])
+    Color(rgbaf=[0.127568, 0.566949, 0.550556])
+    Color(rgbaf=[0.127568, 0.566949, 0.550556, 1.0])
+
+
+def test_color_invalid_colors_rgba():
+    with pytest.raises(TypeError):
+        Color(rgba=[256, 204, 0, 55])
+    with pytest.raises(TypeError):
+        Color(rgba=[-204, 0, 55])
+    with pytest.raises(TypeError):
+        Color(rgba=[255, 204])
+    with pytest.raises(TypeError):
+        Color(rgba=[255, 232, 300])
+    with pytest.raises(TypeError):
+        Color(rgba="0xFF3223324")
+    with pytest.raises(TypeError):
+        Color(rgba=-3)  # type: ignore
+    with pytest.raises(ValidationError):
+        Color(rgba="totally valid color")
+    with pytest.raises(TypeError):
+        Color(rgba="#FF322332432")
+    with pytest.raises(TypeError):
+        Color(rgba=[255, 204, 55, 255, 42])
+    with pytest.raises(TypeError):
+        Color(rgba=[0.127568, 0.566949, 0.550556, 1.0, 3.0])
+
+
+def test_color_invalid_colors_rgbaf():
+    with pytest.raises(TypeError):
+        Color(rgbaf=[256, 204, 0, 55])
+    with pytest.raises(TypeError):
+        Color(rgbaf=[-204, 0, 55])
+    with pytest.raises(TypeError):
+        Color(rgbaf=[255, 204])
+    with pytest.raises(TypeError):
+        Color(rgbaf=[255, 232, 300])
+    with pytest.raises(TypeError):
+        Color(rgbaf="0xFF3223324")
+    with pytest.raises(TypeError):
+        Color(rgbaf=-3)  # type: ignore
+    with pytest.raises(ValidationError):
+        Color(rgbaf="totally valid color")
+    with pytest.raises(TypeError):
+        Color(rgbaf="#FF322332432")
+    with pytest.raises(TypeError):
+        Color(rgbaf=[255, 204, 55, 255, 42])
+    with pytest.raises(TypeError):
+        Color(rgbaf=[0.127568, 0.566949, 0.550556, 1.0, 3.0])
 
 
 def test_material_image():
@@ -355,8 +404,7 @@ def test_material_image():
                 30,
                 255
             ]
-        },
-        "transparent": false
+        }
     }
 }"""
 
@@ -364,7 +412,7 @@ def test_material_image():
         image=ImageMaterial(
             image=Uri(uri="https://site.com/image.png"),
             repeat=[2, 2],
-            color=Color.from_list([200, 100, 30]),
+            color=Color(rgba=[200, 100, 30]),
         )
     )
     assert str(mat) == expected_result
@@ -373,7 +421,7 @@ def test_material_image():
         image=ImageMaterial(
             image=Uri(uri="https://site.com/image.png"),
             repeat=[2, 2],
-            color=Color.from_list([200, 100, 30]),
+            color=Color(rgba=[200, 100, 30]),
         )
     )
     assert str(pol_mat) == expected_result
@@ -405,7 +453,37 @@ def test_material_grid():
 }"""
 
     pol_mat = GridMaterial(
-        color=Color.from_list([20, 20, 30]),
+        color=Color(rgba=[20, 20, 30]),
+        cellAlpha=1.0,
+        lineCount=[16, 16],
+        lineThickness=[2.0, 2.0],
+        lineOffset=[0.3, 0.4],
+    )
+    assert str(pol_mat) == expected_result
+
+
+def test_nested_delete():
+    expected_result = """{
+    "color": {
+        "delete": true
+    },
+    "cellAlpha": 1.0,
+    "lineCount": [
+        16,
+        16
+    ],
+    "lineThickness": [
+        2.0,
+        2.0
+    ],
+    "lineOffset": [
+        0.3,
+        0.4
+    ]
+}"""
+
+    pol_mat = GridMaterial(
+        color=Color(rgba=[20, 20, 30], delete=True),
         cellAlpha=1.0,
         lineCount=[16, 16],
         lineThickness=[2.0, 2.0],
@@ -416,7 +494,6 @@ def test_material_grid():
 
 def test_material_stripe():
     expected_result = """{
-    "orientation": "HORIZONTAL",
     "evenColor": {
         "rgba": [
             0,
@@ -438,8 +515,8 @@ def test_material_stripe():
 }"""
 
     pol_mat = StripeMaterial(
-        evenColor=Color.from_list([0, 0, 0]),
-        oddColor=Color.from_list([255, 255, 255]),
+        evenColor=Color(rgba=[0, 0, 0]),
+        oddColor=Color(rgba=[255, 255, 255]),
         offset=0.3,
         repeat=4,
     )
@@ -468,8 +545,8 @@ def test_material_checkerboard():
 }"""
 
     pol_mat = CheckerboardMaterial(
-        evenColor=Color.from_list([0, 0, 0]),
-        oddColor=Color.from_list([255, 255, 255]),
+        evenColor=Color(rgba=[0, 0, 0]),
+        oddColor=Color(rgba=[255, 255, 255]),
         repeat=4,
     )
     assert str(pol_mat) == expected_result
@@ -482,7 +559,7 @@ def test_position_has_delete():
 
 
 def test_position_no_values_raises_error():
-    with pytest.raises(ValueError) as exc:
+    with pytest.raises(TypeError) as exc:
         Position()
 
     assert (
@@ -502,7 +579,9 @@ def test_position_with_delete_has_nothing_else():
 
 
 def test_position_has_given_epoch():
-    expected_epoch = dt.datetime(2019, 6, 11, 12, 26, 58, tzinfo=dt.timezone.utc)
+    expected_epoch = format_datetime_like(
+        dt.datetime(2019, 6, 11, 12, 26, 58, tzinfo=dt.timezone.utc)
+    )
 
     pos = Position(epoch=expected_epoch, cartesian=[])
 
@@ -510,7 +589,9 @@ def test_position_has_given_epoch():
 
 
 def test_positionlist_has_given_epoch():
-    expected_epoch = dt.datetime(2019, 6, 11, 12, 26, 58, tzinfo=dt.timezone.utc)
+    expected_epoch = format_datetime_like(
+        dt.datetime(2019, 6, 11, 12, 26, 58, tzinfo=dt.timezone.utc)
+    )
 
     pos = PositionList(epoch=expected_epoch, cartesian=[])
 
@@ -544,18 +625,21 @@ def test_position_cartographic_degrees():
 
 def test_position_reference():
     expected_result = """{
-    "reference": "satellite"
+    "reference": "#satellite"
 }"""
-    pos = Position(reference="satellite")
+    pos = Position(reference="#satellite")
 
     assert str(pos) == expected_result
 
 
 def test_viewfrom_reference():
     expected_result = """{
-    "reference": "satellite"
+    "cartesian": [
+        1.0
+    ],
+    "reference": "#satellite"
 }"""
-    v = ViewFrom(reference="satellite")
+    v = ViewFrom(reference="#satellite", cartesian=[1.0])
 
     assert str(v) == expected_result
 
@@ -574,16 +658,14 @@ def test_viewfrom_cartesian():
 
 
 def test_viewfrom_has_delete():
-    v = ViewFrom(delete=True, cartesian=[])
+    v = ViewFrom(delete=True, cartesian=[14.0, 12.0])
 
     assert v.delete
 
 
 def test_viewfrom_no_values_raises_error():
-    with pytest.raises(ValueError) as exc:
-        ViewFrom()
-
-    assert "One of cartesian or reference must be given" in exc.exconly()
+    with pytest.raises(ValidationError) as _:
+        ViewFrom()  # type: ignore
 
 
 def test_single_interval_value():
@@ -617,7 +699,7 @@ def test_multiple_interval_value():
     end1 = dt.datetime(2019, 1, 3, tzinfo=dt.timezone.utc)
 
     prop = Sequence(
-        [
+        values=[
             IntervalValue(start=start0, end=end0, value=True),
             IntervalValue(start=start1, end=end1, value=False),
         ]
@@ -643,7 +725,7 @@ def test_multiple_interval_decimal_value():
     end1 = dt.datetime(2019, 1, 3, 1, 2, 3, 456789, tzinfo=dt.timezone.utc)
 
     prop = Sequence(
-        [
+        values=[
             IntervalValue(start=start0, end=end0, value=True),
             IntervalValue(start=start1, end=end1, value=False),
         ]
@@ -680,7 +762,7 @@ def test_model():
 
 
 def test_bad_uri_raises_error():
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TypeError) as excinfo:
         Uri(uri="a")
 
     assert "uri must be a URL or a data URI" in excinfo.exconly()
@@ -760,32 +842,6 @@ def test_ellipsoid_parameters():
         outlineColor=Color(rgbaf=[0, 0, 0, 1]),
     )
     assert str(ell) == expected_result
-
-
-def test_color_rgbaf_from_tuple():
-    expected_result = """{
-    "rgbaf": [
-        0.127568,
-        0.566949,
-        0.550556,
-        1.0
-    ]
-}"""
-    tc = Color.from_tuple((0.127568, 0.566949, 0.550556, 1.0))
-    assert str(tc) == expected_result
-
-
-def test_color_rgba_from_tuple():
-    expected_result = """{
-    "rgba": [
-        100,
-        200,
-        255,
-        255
-    ]
-}"""
-    tc = Color.from_tuple((100, 200, 255))
-    assert str(tc) == expected_result
 
 
 def test_polygon_with_hole():
@@ -922,9 +978,6 @@ def test_polygon_interval_with_position():
 
 def test_label_offset():
     expected_result = """{
-    "show": true,
-    "style": "FILL",
-    "outlineWidth": 1.0,
     "pixelOffset": {
         "cartesian2": [
             5,
@@ -939,8 +992,8 @@ def test_label_offset():
 
 def test_tileset():
     expected_result = """{
-    "show": true,
-    "uri": "../SampleData/Cesium3DTiles/Batched/BatchedColors/tileset.json"
+    "uri": "../SampleData/Cesium3DTiles/Batched/BatchedColors/tileset.json",
+    "show": true
 }"""
     tileset = Tileset(
         show=True, uri="../SampleData/Cesium3DTiles/Batched/BatchedColors/tileset.json"

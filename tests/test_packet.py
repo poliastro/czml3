@@ -1,7 +1,8 @@
-from io import StringIO
+import ast
 from uuid import UUID
 
 import pytest
+
 from czml3 import CZML_VERSION, Packet, Preamble
 from czml3.enums import InterpolationAlgorithms, ReferenceFrames
 from czml3.properties import (
@@ -77,9 +78,7 @@ def test_packet_label():
     expected_result = """{
     "id": "0",
     "label": {
-        "show": true,
         "font": "20px sans-serif",
-        "style": "FILL",
         "fillColor": {
             "rgbaf": [
                 0.2,
@@ -103,12 +102,13 @@ def test_packet_label():
         id="0",
         label=Label(
             font="20px sans-serif",
-            fillColor=Color.from_list([0.2, 0.3, 0.4]),
-            outlineColor=Color.from_list([0, 233, 255, 2]),
+            fillColor=Color(rgbaf=[0.2, 0.3, 0.4, 1.0]),
+            outlineColor=Color(rgba=[0, 233, 255, 2]),
             outlineWidth=2.0,
         ),
     )
 
+    assert packet == Packet(**ast.literal_eval(expected_result))
     assert str(packet) == expected_result
 
 
@@ -133,42 +133,10 @@ def test_packet_with_delete_has_nothing_else():
 
 
 def test_packet_dumps():
-    expected_result = """{"id": "id_00"}"""
+    expected_result = """{"id":"id_00"}"""
     packet = Packet(id="id_00")
 
     assert packet.dumps() == expected_result
-
-
-def test_packet_dump():
-    expected_result = """{"id": "id_00"}"""
-    packet = Packet(id="id_00")
-
-    with StringIO() as fp:
-        packet.dump(fp)
-        fp.seek(0)
-        result = fp.read()
-
-    assert result == expected_result
-
-
-@pytest.mark.xfail
-def test_packet_constant_cartesian_position_perfect():
-    # Trying to group the cartesian value by sample
-    # is much more difficult than expected.
-    # Pull requests welcome
-    expected_result = """{
-    "id": "MyObject",
-    "position": {
-        "interpolationAlgorithm": "LINEAR",
-        "referenceFrame": "FIXED",
-        "cartesian": [
-            0.0, 0.0, 0.0
-        ]
-    }
-}"""
-    packet = Packet(id="MyObject", position=Position(cartesian=[0.0, 0.0, 0.0]))
-
-    assert str(packet) == expected_result
 
 
 def test_packet_constant_cartesian_position():
@@ -272,7 +240,6 @@ def test_packet_description():
     string = "<strong>Description</strong>"
     packet_str = Packet(id="id_00", name="Name", description=string)
     packet_val = Packet(id="id_00", name="Name", description=StringValue(string=string))
-
     assert str(packet_str) == str(packet_val) == expected_result
 
 
@@ -336,7 +303,7 @@ def test_packet_point():
         }
     }
 }"""
-    packet = Packet(id="id_00", point=Point(color=Color.from_list([255, 0, 0, 255])))
+    packet = Packet(id="id_00", point=Point(color=Color(rgba=[255, 0, 0, 255])))
 
     assert str(packet) == expected_result
 
@@ -376,7 +343,7 @@ def test_packet_polyline():
                 cartographicDegrees=[-75, 43, 500000, -125, 43, 500000]
             ),
             material=PolylineMaterial(
-                solidColor=SolidColorMaterial.from_list([255, 0, 0, 255])
+                solidColor=SolidColorMaterial(color=Color(rgba=[255, 0, 0, 255]))
             ),
         ),
     )
@@ -429,8 +396,8 @@ def test_packet_polyline_outline():
             ),
             material=PolylineOutlineMaterial(
                 polylineOutline=PolylineOutline(
-                    color=Color.from_list([255, 0, 0, 255]),
-                    outlineColor=Color.from_list([255, 0, 0, 255]),
+                    color=Color(rgba=[255, 0, 0, 255]),
+                    outlineColor=Color(rgba=[255, 0, 0, 255]),
                     outlineWidth=2,
                 )
             ),
@@ -479,7 +446,7 @@ def test_packet_polyline_glow():
             ),
             material=PolylineGlowMaterial(
                 polylineGlow=PolylineGlow(
-                    color=Color.from_list([255, 0, 0, 255]),
+                    color=Color(rgba=[255, 0, 0, 255]),
                     glowPower=0.2,
                     taperPower=0.5,
                 )
@@ -525,7 +492,7 @@ def test_packet_polyline_arrow():
                 cartographicDegrees=[-75, 43, 500000, -125, 43, 500000]
             ),
             material=PolylineArrowMaterial(
-                polylineArrow=PolylineArrow(color=Color.from_list([255, 0, 0, 255]))
+                polylineArrow=PolylineArrow(color=Color(rgba=[255, 0, 0, 255]))
             ),
         ),
     )
@@ -568,7 +535,7 @@ def test_packet_polyline_dashed():
                 cartographicDegrees=[-75, 43, 500000, -125, 43, 500000]
             ),
             material=PolylineDashMaterial(
-                polylineDash=PolylineDash(color=Color.from_list([255, 0, 0, 255]))
+                polylineDash=PolylineDash(color=Color(rgba=[255, 0, 0, 255]))
             ),
         ),
     )
@@ -584,19 +551,19 @@ def test_packet_polygon():
             "cartographicDegrees": [
                 -115.0,
                 37.0,
-                0,
+                0.0,
                 -115.0,
                 32.0,
-                0,
+                0.0,
                 -107.0,
                 33.0,
-                0,
+                0.0,
                 -102.0,
                 31.0,
-                0,
+                0.0,
                 -102.0,
                 35.0,
-                0
+                0.0
             ]
         },
         "granularity": 1.0,
@@ -637,7 +604,9 @@ def test_packet_polygon():
                 ]
             ),
             granularity=1.0,
-            material=Material(solidColor=SolidColorMaterial.from_list([255, 0, 0])),
+            material=Material(
+                solidColor=SolidColorMaterial(color=Color(rgba=[255, 0, 0]))
+            ),
         ),
     )
 

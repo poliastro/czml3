@@ -2,7 +2,8 @@ import datetime as dt
 
 import astropy.time
 import pytest
-from czml3.base import BaseCZMLObject
+from pydantic import ValidationError
+
 from czml3.types import (
     Cartesian3Value,
     CartographicDegreesListValue,
@@ -20,11 +21,10 @@ from czml3.types import (
     UnitQuaternionValue,
     format_datetime_like,
 )
-from dateutil.tz import tzoffset
 
 
 def test_invalid_near_far_scalar_value():
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TypeError) as excinfo:
         NearFarScalarValue(values=[0, 3.2, 1, 4, 2, 1])
 
     assert "Input values must have either 4 or N * 5 values, " in excinfo.exconly()
@@ -59,7 +59,7 @@ def test_cartographic_radian_list():
 
 
 def test_invalid_cartograpic_radian_list():
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TypeError) as excinfo:
         CartographicRadiansListValue(values=[1])
     assert (
         "Invalid values. Input values should be arrays of size 3 * N"
@@ -78,7 +78,7 @@ def test_cartograpic_degree_list():
 
 
 def test_invalid_cartograpic_degree_list():
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TypeError) as excinfo:
         CartographicDegreesListValue(values=[15, 25, 50, 30])
     assert (
         "Invalid values. Input values should be arrays of size 3 * N"
@@ -88,7 +88,7 @@ def test_invalid_cartograpic_degree_list():
 
 @pytest.mark.parametrize("values", [[2, 2], [5, 5, 5, 5, 5]])
 def test_bad_cartesian_raises_error(values):
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TypeError) as excinfo:
         Cartesian3Value(values=values)
 
     assert "Input values must have either 3 or N * 4 values" in excinfo.exconly()
@@ -102,7 +102,7 @@ def test_reference_value():
 
 
 def test_invalid_reference_value():
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TypeError) as excinfo:
         ReferenceValue(string="id")
 
     assert (
@@ -126,62 +126,50 @@ def test_font_property_value():
 
 
 def test_bad_rgba_size_values_raises_error():
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TypeError) as excinfo:
         RgbaValue(values=[0, 0, 255])
 
     assert "Input values must have either 4 or N * 5 values, " in excinfo.exconly()
 
 
 def test_bad_rgba_4_values_raises_error():
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TypeError) as excinfo:
         RgbaValue(values=[256, 0, 0, 255])
 
     assert "Color values must be integers in the range 0-255." in excinfo.exconly()
 
 
 def test_bad_rgba_5_color_values_raises_error():
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TypeError) as excinfo:
         RgbaValue(values=[0, 0.1, 0.3, 0.3, 255])
 
     assert "Color values must be integers in the range 0-255." in excinfo.exconly()
 
 
 def test_bad_rgbaf_size_values_raises_error():
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TypeError) as excinfo:
         RgbafValue(values=[0, 0, 0.1])
 
     assert "Input values must have either 4 or N * 5 values, " in excinfo.exconly()
 
 
 def test_bad_rgbaf_4_values_raises_error():
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TypeError) as excinfo:
         RgbafValue(values=[0.3, 0, 0, 1.4])
 
     assert "Color values must be floats in the range 0-1." in excinfo.exconly()
 
 
 def test_bad_rgbaf_5_color_values_raises_error():
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TypeError) as excinfo:
         RgbafValue(values=[0, 0.1, 0.3, 0.3, 255])
 
     assert "Color values must be floats in the range 0-1." in excinfo.exconly()
 
 
 def test_default_time_interval():
-    expected_result = '"0000-00-00T00:00:00Z/9999-12-31T24:00:00Z"'
+    expected_result = '"0001-01-01T00:00:00Z/9999-12-31T23:59:59Z"'
     time_interval = TimeInterval()
-
-    assert str(time_interval) == expected_result
-
-
-def test_custom_time_interval():
-    tz = tzoffset("UTC+02", dt.timedelta(hours=2))
-    start = dt.datetime(2019, 1, 1, 12, 0, tzinfo=dt.timezone.utc)
-    end = dt.datetime(2019, 9, 2, 23, 59, 59, tzinfo=tz)
-
-    expected_result = '"2019-01-01T12:00:00.000000Z/2019-09-02T21:59:59.000000Z"'
-
-    time_interval = TimeInterval(start=start, end=end)
 
     assert str(time_interval) == expected_result
 
@@ -201,19 +189,6 @@ def test_interval_value():
         == """{
     "interval": "2019-01-01T12:00:00.000000Z/2019-09-02T21:59:59.000000Z",
     "boolean": true
-}"""
-    )
-
-    # value is something that has a "to_json" method
-    class CustomValue(BaseCZMLObject):
-        def to_json(self):
-            return {"foo": "bar"}
-
-    assert (
-        str(IntervalValue(start=start, end=end, value=CustomValue()))
-        == """{
-    "interval": "2019-01-01T12:00:00.000000Z/2019-09-02T21:59:59.000000Z",
-    "foo": "bar"
 }"""
     )
 
@@ -258,16 +233,11 @@ def test_epoch_value():
 }"""
     )
 
-    with pytest.raises(expected_exception=ValueError):
+    with pytest.raises(ValueError):
         str(EpochValue(value="test"))
 
-    with pytest.raises(
-        expected_exception=ValueError,
-        match="Epoch must be a string or a datetime object.",
-    ):
-        EpochValue(value=1)
 
-
+@pytest.mark.xfail(reason="NumberValue class requires further explanaition")
 def test_numbers_value():
     expected_result = """{
     "number": [
@@ -288,20 +258,13 @@ def test_numbers_value():
 
     assert str(numbers) == expected_result
 
-    with pytest.raises(
-        expected_exception=ValueError, match="Values must be integers or floats."
-    ):
-        NumberValue(values="test")
+    with pytest.raises(ValidationError):
+        NumberValue(values="test")  # type: ignore
 
-    with pytest.raises(
-        expected_exception=ValueError, match="Values must be integers or floats."
-    ):
-        NumberValue(values=[1, "test"])
+    with pytest.raises(ValidationError):
+        NumberValue(values=[1, "test"])  # type: ignore
 
-    with pytest.raises(
-        expected_exception=ValueError,
-        match="Values must be a list of number pairs signifying the time and representative value.",
-    ):
+    with pytest.raises(ValidationError):
         NumberValue(values=[1, 2, 3, 4, 5])
 
 

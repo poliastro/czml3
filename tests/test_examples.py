@@ -2,6 +2,7 @@ import json
 import os
 
 import pytest
+
 from czml3.examples import simple
 
 TESTS_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -12,7 +13,7 @@ def test_simple(document, filename):
     with open(os.path.join(TESTS_DIR, filename)) as fp:
         expected_result = json.load(fp)
 
-    result = json.loads(document.dumps())
+    result = json.loads(document.to_json())
     for ii, packet in enumerate(result):
         expected_packet = expected_result[ii]
         for key in packet:

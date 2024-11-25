@@ -101,9 +101,9 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Astronomy",
 ]
 dependencies = [
-    "attrs>=19.2",
+    "pydantic>=2.10.1",
     "python-dateutil>=2.7,<3",
-    "w3lib",
+    "w3lib"
 ]
 dynamic = ["version"]
 

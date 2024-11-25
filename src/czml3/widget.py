@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-import attr
+from pydantic import BaseModel, Field
 
 from .core import Document, Preamble
 
@@ -74,21 +74,19 @@ require(['cesium'], function (Cesium) {{
 """
 
 
-@attr.s
-class CZMLWidget:
-    document = attr.ib(default=Document([Preamble()]))
-    cesium_version = attr.ib(default="1.88")
-    ion_token = attr.ib(default="")
-    terrain = attr.ib(default=TERRAIN["Ellipsoid"])
-    imagery = attr.ib(default=IMAGERY["OSM"])
-
-    _container_id = attr.ib(factory=uuid4)
+class CZMLWidget(BaseModel):
+    document: Document = Field(default=Document(packets=[Preamble()]))
+    cesium_version: str = Field(default="1.88")
+    ion_token: str = Field(default="")
+    terrain: str = Field(default=TERRAIN["Ellipsoid"])
+    imagery: str = Field(default=IMAGERY["OSM"])
+    container_id: str = Field(default=str(uuid4))
 
     def build_script(self):
         return SCRIPT_TPL.format(
             cesium_version=self.cesium_version,
-            czml=self.document.dumps(),
-            container_id=self._container_id,
+            czml=self.document.to_json(),
+            container_id=self.container_id,
             ion_token=self.ion_token,
             terrain=self.terrain,
             imagery=self.imagery,
@@ -98,7 +96,7 @@ class CZMLWidget:
         return CESIUM_TPL.format(
             cesium_version=self.cesium_version,
             script=self.build_script(),
-            container_id=self._container_id,
+            container_id=self.container_id,
             widget_height=widget_height,
         )
 

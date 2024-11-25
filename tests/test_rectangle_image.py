@@ -3,6 +3,7 @@ import os
 import tempfile
 
 import pytest
+
 from czml3 import Document, Packet, Preamble
 from czml3.properties import ImageMaterial, Material, Rectangle, RectangleCoordinates
 
@@ -18,13 +19,10 @@ def image():
 
 
 def test_rectangle_coordinates_invalid_if_nothing_given():
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(TypeError) as excinfo:
         RectangleCoordinates()
 
-    assert (
-        "One of cartesian, cartographicDegrees or cartographicRadians must be given"
-        in excinfo.exconly()
-    )
+    assert "One of wsen or wsenDegrees must be given" in excinfo.exconly()
 
 
 def test_packet_rectangles(image):
@@ -70,12 +68,10 @@ def test_packet_rectangles(image):
 
 
 def test_make_czml_png_rectangle_file(image):
-    wsen = [20, 40, 21, 41]
-
     rectangle_packet = Packet(
         id="id_00",
         rectangle=Rectangle(
-            coordinates=RectangleCoordinates(wsenDegrees=wsen),
+            coordinates=RectangleCoordinates(wsenDegrees=[20, 40, 21, 41]),
             fill=True,
             material=Material(
                 image=ImageMaterial(
@@ -88,7 +84,7 @@ def test_make_czml_png_rectangle_file(image):
     )
 
     with tempfile.NamedTemporaryFile(mode="w", suffix=".czml") as out_file:
-        out_file.write(str(Document([Preamble(), rectangle_packet])))
+        out_file.write(str(Document(packets=[Preamble(), rectangle_packet])))
         exists = os.path.isfile(out_file.name)
 
         # TODO: Should we be testing something else?

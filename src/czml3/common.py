@@ -1,28 +1,28 @@
-# noinspection PyPep8Naming
-from __future__ import annotations
-
 import datetime as dt
 
-import attr
+from pydantic import BaseModel, field_validator
 
 from .enums import InterpolationAlgorithms
+from .types import format_datetime_like
 
 
-@attr.s(str=False, frozen=True, kw_only=True)
-class Deletable:
+class Deletable(BaseModel):
     """A property whose value may be deleted."""
 
-    delete: bool | None = attr.ib(default=None)
+    delete: None | bool = None
 
 
-# noinspection PyPep8Naming
-@attr.s(str=False, frozen=True, kw_only=True)
-class Interpolatable:
+class Interpolatable(BaseModel):
     """A property whose value may be determined by interpolating.
 
     The interpolation happens over provided time-tagged samples.
     """
 
-    epoch: dt.datetime | None = attr.ib(default=None)
-    interpolationAlgorithm: InterpolationAlgorithms | None = attr.ib(default=None)
-    interpolationDegree: int | None = attr.ib(default=None)
+    epoch: None | str | dt.datetime = None
+    interpolationAlgorithm: None | InterpolationAlgorithms = None
+    interpolationDegree: None | int = None
+
+    @field_validator("epoch")
+    @classmethod
+    def check(cls, e):
+        return format_datetime_like(e)
