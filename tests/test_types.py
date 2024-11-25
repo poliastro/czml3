@@ -102,7 +102,7 @@ def test_bad_cartesian3_raises_error(values):
         Cartesian3Value(values=values)
 
     assert "Input values must have either 3 or N * 4 values" in excinfo.exconly()
-    assert str(Cartesian3Value()) == "{}"
+    assert str(Cartesian3Value()) == "[]"
 
 
 @pytest.mark.parametrize("values", [[2, 2, 2, 2, 2], [5, 5, 5, 5, 5]])
