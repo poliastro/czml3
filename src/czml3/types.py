@@ -119,7 +119,7 @@ def format_datetime_like(dt_object):
 class FontValue(BaseCZMLObject):
     """A font, specified using the same syntax as the CSS "font" property."""
 
-    font: str = Field()
+    font: str
 
     @model_serializer
     def custom_serializer(self):
@@ -135,7 +135,7 @@ class RgbafValue(BaseCZMLObject):
 
     """
 
-    values: list[float] | list[int] = Field()
+    values: list[float] | list[int]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -175,7 +175,7 @@ class RgbaValue(BaseCZMLObject):
 
     """
 
-    values: list[float] | list[int] = Field()
+    values: list[float] | list[int]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -212,7 +212,7 @@ class ReferenceValue(BaseCZMLObject):
 
     """
 
-    string: str = Field()
+    string: str
 
     @field_validator("string")
     @classmethod
@@ -368,7 +368,7 @@ class StringValue(BaseCZMLObject):
     The string can optionally vary with time.
     """
 
-    string: str = Field()
+    string: str
 
     @model_serializer
     def custom_serializer(self) -> str:
@@ -379,7 +379,7 @@ class CartographicRadiansListValue(BaseCZMLObject):
     """A list of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...],
     where Longitude and Latitude are in radians and Height is in meters."""
 
-    values: list[float] | list[int] = Field()
+    values: list[float] | list[int]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -399,7 +399,7 @@ class CartographicDegreesListValue(BaseCZMLObject):
     """A list of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...],
     where Longitude and Latitude are in degrees and Height is in meters."""
 
-    values: list[float] | list[int] = Field()
+    values: list[float] | list[int]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -422,7 +422,7 @@ class DistanceDisplayConditionValue(BaseCZMLObject):
     where Time is an ISO 8601 date and time string or seconds since epoch.
     """
 
-    values: list[float] | list[int] = Field()
+    values: list[float] | list[int]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -446,7 +446,7 @@ class NearFarScalarValue(BaseCZMLObject):
     FarDistance, FarValue, ...], where Time is an ISO 8601 date and time string or seconds since epoch.
     """
 
-    values: list[float] | list[int] = Field()
+    values: list[float] | list[int]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -484,8 +484,8 @@ class TimeInterval(BaseCZMLObject):
 class IntervalValue(BaseCZMLObject):
     """Value over some interval."""
 
-    start: str | dt.datetime = Field()
-    end: str | dt.datetime = Field()
+    start: str | dt.datetime
+    end: str | dt.datetime
     value: Any = Field(default=None)
 
     @model_serializer
@@ -513,7 +513,7 @@ class IntervalValue(BaseCZMLObject):
 class Sequence(BaseCZMLObject):
     """Sequence, list, array of objects."""
 
-    values: list[Any] = Field()
+    values: list[Any]
 
     @model_serializer
     def custom_serializer(self) -> list[Any]:
@@ -530,7 +530,7 @@ class UnitQuaternionValue(BaseCZMLObject):
 
     """
 
-    values: list[float] | list[int] = Field()
+    values: list[float] | list[int]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -549,7 +549,7 @@ class UnitQuaternionValue(BaseCZMLObject):
 class EpochValue(BaseCZMLObject):
     """A value representing a time epoch."""
 
-    value: str | dt.datetime = Field()
+    value: str | dt.datetime
 
     @model_serializer
     def custom_serializer(self):
@@ -559,7 +559,7 @@ class EpochValue(BaseCZMLObject):
 class NumberValue(BaseCZMLObject):
     """A single number, or a list of number pairs signifying the time and representative value."""
 
-    values: int | float | list[float] | list[int] = Field()
+    values: int | float | list[float] | list[int]
 
     @model_serializer
     def custom_serializer(self):

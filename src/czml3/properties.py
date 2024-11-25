@@ -273,7 +273,7 @@ class ViewFrom(BaseCZMLObject, Interpolatable, Deletable):
 
     ViewFrom can optionally vary over time."""
 
-    cartesian: None | Cartesian3Value | list[float] | list[int] = Field()
+    cartesian: None | Cartesian3Value | list[float] | list[int]
     reference: None | str = Field(default=None)
 
     @field_validator("reference")
@@ -290,7 +290,7 @@ class Billboard(BaseCZMLObject, HasAlignment):
     A billboard is sometimes called a marker.
     """
 
-    image: str | Uri = Field()
+    image: str | Uri
     show: None | bool = Field(default=None)
     scale: None | float | int = Field(default=None)
     pixelOffset: None | list[float] | list[int] = Field(default=None)
@@ -301,7 +301,7 @@ class Billboard(BaseCZMLObject, HasAlignment):
 class EllipsoidRadii(BaseCZMLObject, Interpolatable, Deletable):
     """The radii of an ellipsoid."""
 
-    cartesian: None | Cartesian3Value | list[float] | list[int] = Field()
+    cartesian: None | Cartesian3Value | list[float] | list[int]
     reference: None | str = Field(default=None)
 
     @field_validator("reference")
@@ -317,7 +317,7 @@ class Corridor(BaseCZMLObject):
 
     positions: PositionList | list[int] | list[float]
     show: None | bool = Field(default=None)
-    width: float | int = Field()
+    width: float | int
     height: None | float | int = Field(default=None)
     heightReference: None | HeightReference = Field(default=None)
     extrudedHeight: None | float | int = Field(default=None)
@@ -338,10 +338,10 @@ class Corridor(BaseCZMLObject):
 class Cylinder(BaseCZMLObject):
     """A cylinder, which is a special cone defined by length, top and bottom radius."""
 
-    length: float | int = Field()
+    length: float | int
     show: None | bool = Field(default=None)
-    topRadius: float | int = Field()
-    bottomRadius: float | int = Field()
+    topRadius: float | int
+    bottomRadius: float | int
     heightReference: None | HeightReference = Field(default=None)
     fill: None | bool = Field(default=None)
     material: None | Material | str = Field(default=None)
@@ -357,8 +357,8 @@ class Cylinder(BaseCZMLObject):
 class Ellipse(BaseCZMLObject):
     """An ellipse, which is a close curve, on or above Earth's surface."""
 
-    semiMajorAxis: float | int = Field()
-    semiMinorAxis: float | int = Field()
+    semiMajorAxis: float | int
+    semiMinorAxis: float | int
     show: None | bool = Field(default=None)
     height: None | float | int = Field(default=None)
     heightReference: None | HeightReference = Field(default=None)
@@ -382,7 +382,7 @@ class Ellipse(BaseCZMLObject):
 class Polygon(BaseCZMLObject):
     """A polygon, which is a closed figure on the surface of the Earth."""
 
-    positions: Position | PositionList | list[int] | list[float] = Field()
+    positions: Position | PositionList | list[int] | list[float]
     show: None | bool = Field(default=None)
     arcType: None | ArcType = Field(default=None)
     granularity: None | float | int = Field(default=None)
@@ -403,7 +403,7 @@ class Polygon(BaseCZMLObject):
 class Polyline(BaseCZMLObject):
     """A polyline, which is a line in the scene composed of multiple segments."""
 
-    positions: PositionList = Field()
+    positions: PositionList
     show: None | bool = Field(default=None)
     arcType: None | ArcType = Field(default=None)
     width: None | float | int = Field(default=None)
@@ -727,7 +727,7 @@ class Wall(BaseCZMLObject):
     """
 
     show: None | bool = Field(default=None)
-    positions: PositionList = Field()
+    positions: PositionList
     minimumHeights: None | list[float] | list[int] = Field(default=None)
     maximumHeights: None | list[float] | list[int] = Field(default=None)
     granularity: None | float | int = Field(default=None)
@@ -802,7 +802,7 @@ class Model(BaseCZMLObject):
     """A 3D model."""
 
     show: None | bool = Field(default=None)
-    gltf: str = Field()
+    gltf: str
     scale: None | float | int = Field(default=None)
     minimumPixelSize: None | float | int = Field(default=None)
     maximumScale: None | float | int = Field(default=None)

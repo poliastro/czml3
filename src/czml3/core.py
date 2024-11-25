@@ -81,7 +81,7 @@ class Packet(BaseCZMLObject):
 class Document(BaseCZMLObject):
     """A CZML document, consisting on a list of packets."""
 
-    packets: list[Packet | Preamble] = Field()
+    packets: list[Packet | Preamble]
 
     @model_serializer
     def custom_serializer(self):
