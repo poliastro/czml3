@@ -3,7 +3,14 @@ import datetime as dt
 import pytest
 from pydantic import ValidationError
 
-from czml3.enums import ArcTypes, ClassificationTypes, ShadowModes
+from czml3.enums import (
+    ArcTypes,
+    ClassificationTypes,
+    ColorBlendModes,
+    CornerTypes,
+    HeightReferences,
+    ShadowModes,
+)
 from czml3.properties import (
     ArcType,
     Box,
@@ -12,16 +19,13 @@ from czml3.properties import (
     ClassificationType,
     Color,
     ColorBlendMode,
-    ColorBlendModes,
     CornerType,
-    CornerTypes,
     DistanceDisplayCondition,
     Ellipsoid,
     EllipsoidRadii,
     EyeOffset,
     GridMaterial,
     HeightReference,
-    HeightReferences,
     ImageMaterial,
     Label,
     Material,

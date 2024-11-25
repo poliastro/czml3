@@ -337,7 +337,7 @@ def test_cartographic_degrees_value():
     1
 ]"""
     )
-    result = CartographicRadiansValue(values=[0, 0, 1])
+    result = CartographicDegreesValue(values=[0, 0, 1])
     assert (
         str(result)
         == """[
