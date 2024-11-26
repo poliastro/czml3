@@ -20,3 +20,8 @@ def test_to_html_contains_script():
     widget = CZMLWidget()
 
     assert widget.build_script() in widget.to_html()
+
+
+def test_repr():
+    widget = CZMLWidget()
+    assert widget.to_html() == widget._repr_html_()
