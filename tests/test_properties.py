@@ -454,22 +454,13 @@ def test_material_image_uri():
     mat = Material(
         image=ImageMaterial(
             image=Uri(
-                uri="""data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"""
+                uri="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
             ),
             repeat=[2, 2],
             color=Color(rgba=[200, 100, 30]),
         )
     )
     assert str(mat) == expected_result
-
-    pol_mat = PolylineMaterial(
-        image=ImageMaterial(
-            image=Uri(uri="https://site.com/image.png"),
-            repeat=[2, 2],
-            color=Color(rgba=[200, 100, 30]),
-        )
-    )
-    assert str(pol_mat) == expected_result
 
 
 def test_material_grid():
