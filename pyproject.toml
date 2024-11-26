@@ -1,5 +1,9 @@
 [tool.ruff.lint]
-ignore = ["E203", "E266", "E501"]
+ignore = [
+    "E501",
+    "UP007",  # support Pythons <3.11
+    "UP006",  # support Pythons <3.11
+]
 select = [
     "E",  # pycodestyle
     "F",  # Pyflakes
@@ -103,7 +107,9 @@ classifiers = [
 dependencies = [
     "pydantic>=2.10.1",
     "python-dateutil>=2.7,<3",
-    "w3lib"
+    "w3lib",
+    "typing-extensions>=4.12.0",
+    "StrEnum>=0.4.0",
 ]
 dynamic = ["version"]
 

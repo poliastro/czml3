@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict
 
 from pydantic import BaseModel, model_validator
 
@@ -8,13 +8,13 @@ NON_DELETE_PROPERTIES = ["id", "delete"]
 class BaseCZMLObject(BaseModel):
     @model_validator(mode="before")
     @classmethod
-    def check_model_before(cls, data: dict[str, Any]) -> Any:
+    def check_model_before(cls, data: Dict[str, Any]) -> Any:
         if data is not None and "delete" in data and data["delete"]:
-            return (
-                {"delete": True}
-                | ({"id": data["id"]} if "id" in data else {})
-                | {k: None for k in data if k not in NON_DELETE_PROPERTIES}
-            )
+            return {
+                "delete": True,
+                "id": data.get("id"),
+                **{k: None for k in data if k not in NON_DELETE_PROPERTIES},
+            }
         return data
 
     def __str__(self) -> str:

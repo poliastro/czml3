@@ -1,6 +1,7 @@
 import datetime as dt
 import re
-from typing import Any, Self
+import sys
+from typing import Any, Dict, List, Union
 
 from dateutil.parser import isoparse as parse_iso_date
 from pydantic import (
@@ -12,6 +13,11 @@ from pydantic import (
 
 from .base import BaseCZMLObject
 from .constants import ISO8601_FORMAT_Z
+
+if sys.version_info[1] >= 11:
+    from typing import Self
+else:
+    from typing_extensions import Self
 
 TYPE_MAPPING = {bool: "boolean"}
 
@@ -137,7 +143,7 @@ class RgbafValue(BaseCZMLObject):
 
     """
 
-    values: list[float] | list[int]
+    values: Union[List[float], List[int]]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -177,7 +183,7 @@ class RgbaValue(BaseCZMLObject):
 
     """
 
-    values: list[float] | list[int]
+    values: Union[List[float], List[int]]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -240,7 +246,7 @@ class Cartesian3Value(BaseCZMLObject):
 
     """
 
-    values: None | list[Any] = Field(default=None)
+    values: Union[None, List[Any]] = Field(default=None)
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -257,7 +263,7 @@ class Cartesian3Value(BaseCZMLObject):
         return self
 
     @model_serializer
-    def custom_serializer(self) -> list[Any]:
+    def custom_serializer(self) -> List[Any]:
         if self.values is None:
             return []
         return list(self.values)
@@ -273,7 +279,7 @@ class Cartesian2Value(BaseCZMLObject):
 
     """
 
-    values: None | list[Any] = Field(default=None)
+    values: Union[None, List[Any]] = Field(default=None)
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -307,7 +313,7 @@ class CartographicRadiansValue(BaseCZMLObject):
 
     """
 
-    values: None | list[Any] = Field(default=None)
+    values: Union[None, List[Any]] = Field(default=None)
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -341,7 +347,7 @@ class CartographicDegreesValue(BaseCZMLObject):
 
     """
 
-    values: None | list[Any] = Field(default=None)
+    values: Union[None, List[Any]] = Field(default=None)
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -358,7 +364,7 @@ class CartographicDegreesValue(BaseCZMLObject):
         return self
 
     @model_serializer
-    def custom_serializer(self) -> list[Any]:
+    def custom_serializer(self) -> List[Any]:
         if self.values is None:
             return []
         return self.values
@@ -381,7 +387,7 @@ class CartographicRadiansListValue(BaseCZMLObject):
     """A list of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...],
     where Longitude and Latitude are in radians and Height is in meters."""
 
-    values: list[float] | list[int]
+    values: Union[List[float], List[int]]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -401,7 +407,7 @@ class CartographicDegreesListValue(BaseCZMLObject):
     """A list of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...],
     where Longitude and Latitude are in degrees and Height is in meters."""
 
-    values: list[float] | list[int]
+    values: Union[List[float], List[int]]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -424,7 +430,7 @@ class DistanceDisplayConditionValue(BaseCZMLObject):
     where Time is an ISO 8601 date and time string or seconds since epoch.
     """
 
-    values: list[float] | list[int]
+    values: Union[List[float], List[int]]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -448,7 +454,7 @@ class NearFarScalarValue(BaseCZMLObject):
     FarDistance, FarValue, ...], where Time is an ISO 8601 date and time string or seconds since epoch.
     """
 
-    values: list[float] | list[int]
+    values: Union[List[float], List[int]]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -470,8 +476,8 @@ class NearFarScalarValue(BaseCZMLObject):
 class TimeInterval(BaseCZMLObject):
     """A time interval, specified in ISO8601 interval format."""
 
-    start: str | dt.datetime = Field(default="0001-01-01T00:00:00Z")
-    end: str | dt.datetime = Field(default="9999-12-31T23:59:59Z")
+    start: Union[str, dt.datetime] = Field(default="0001-01-01T00:00:00Z")
+    end: Union[str, dt.datetime] = Field(default="9999-12-31T23:59:59Z")
 
     @field_validator("start", "end")
     @classmethod
@@ -486,12 +492,12 @@ class TimeInterval(BaseCZMLObject):
 class IntervalValue(BaseCZMLObject):
     """Value over some interval."""
 
-    start: str | dt.datetime
-    end: str | dt.datetime
-    value: Any = Field(default=None)
+    start: Union[str, dt.datetime]
+    end: Union[str, dt.datetime]
+    value: Union[Any] = Field(default=None)
 
     @model_serializer
-    def custom_serializer(self) -> dict[str, Any]:
+    def custom_serializer(self) -> Dict[str, Any]:
         obj_dict = {
             "interval": TimeInterval(start=self.start, end=self.end).model_dump(
                 exclude_none=True
@@ -515,10 +521,10 @@ class IntervalValue(BaseCZMLObject):
 class Sequence(BaseCZMLObject):
     """Sequence, list, array of objects."""
 
-    values: list[Any]
+    values: List[Any]
 
     @model_serializer
-    def custom_serializer(self) -> list[Any]:
+    def custom_serializer(self) -> List[Any]:
         return list(self.values)
 
 
@@ -532,7 +538,7 @@ class UnitQuaternionValue(BaseCZMLObject):
 
     """
 
-    values: list[float] | list[int]
+    values: Union[List[float], List[int]]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -551,7 +557,7 @@ class UnitQuaternionValue(BaseCZMLObject):
 class EpochValue(BaseCZMLObject):
     """A value representing a time epoch."""
 
-    value: str | dt.datetime
+    value: Union[str, dt.datetime]
 
     @model_serializer
     def custom_serializer(self):
@@ -561,7 +567,7 @@ class EpochValue(BaseCZMLObject):
 class NumberValue(BaseCZMLObject):
     """A single number, or a list of number pairs signifying the time and representative value."""
 
-    values: int | float | list[float] | list[int]
+    values: Union[int, float, List[float], List[int]]
 
     @model_serializer
     def custom_serializer(self):

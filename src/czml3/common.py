@@ -1,4 +1,5 @@
 import datetime as dt
+from typing import Union
 
 from pydantic import BaseModel, field_validator
 
@@ -9,7 +10,7 @@ from .types import format_datetime_like
 class Deletable(BaseModel):
     """A property whose value may be deleted."""
 
-    delete: None | bool = None
+    delete: Union[None, bool] = None
 
 
 class Interpolatable(BaseModel):
@@ -18,9 +19,9 @@ class Interpolatable(BaseModel):
     The interpolation happens over provided time-tagged samples.
     """
 
-    epoch: None | str | dt.datetime = None
-    interpolationAlgorithm: None | InterpolationAlgorithms = None
-    interpolationDegree: None | int = None
+    epoch: Union[None, str, dt.datetime] = None
+    interpolationAlgorithm: Union[None, InterpolationAlgorithms] = None
+    interpolationDegree: Union[None, int] = None
 
     @field_validator("epoch")
     @classmethod
