@@ -26,14 +26,14 @@ def get_color(color):
     """Determines if the input is a valid color"""
     if color is None or (
         isinstance(color, list)
-        and all(issubclass(type(v), (int, float)) for v in color)
+        and all(issubclass(type(v), int | float) for v in color)
         and len(color) == 4
         and (all(0 <= v <= 255 for v in color) or all(0 <= v <= 1 for v in color))
     ):
         return color
     elif (
         isinstance(color, list)
-        and all(issubclass(type(v), (int, float)) for v in color)
+        and all(issubclass(type(v), int | float) for v in color)
         and len(color) == 3
         and all(0 <= v <= 255 for v in color)
     ):
@@ -41,14 +41,14 @@ def get_color(color):
     # rgbf or rgbaf
     # if (
     #     isinstance(color, list)
-    #     and all(issubclass(type(v), (int, float)) for v in color)
+    #     and all(issubclass(type(v), int | float) for v in color)
     #     and (3 <= len(color) <= 4)
     #     and not all(0 <= v <= 1 for v in color)
     # ):
     #     raise TypeError("RGBF or RGBAF values must be between 0 and 1")
     elif (
         isinstance(color, list)
-        and all(issubclass(type(v), (int, float)) for v in color)
+        and all(issubclass(type(v), int | float) for v in color)
         and len(color) == 3
         and all(0 <= v <= 1 for v in color)
     ):
@@ -571,6 +571,6 @@ class NumberValue(BaseCZMLObject):
 
     @model_serializer
     def custom_serializer(self):
-        if isinstance(self.values, (int, float)):
+        if isinstance(self.values, int | float):
             return {"number": self.values}
         return {"number": list(self.values)}
