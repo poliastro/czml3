@@ -1,9 +1,5 @@
 [tool.ruff.lint]
-ignore = [
-    "E501",
-    "UP007",  # support Pythons <3.11
-    "UP006",  # support Pythons <3.11
-]
+ignore = ["E501"]
 select = [
     "E",  # pycodestyle
     "F",  # Pyflakes

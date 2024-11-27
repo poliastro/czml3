@@ -1,6 +1,6 @@
 import sys
 from enum import auto
-from typing import Any, List
+from typing import Any
 
 if sys.version_info[1] >= 11:
     from enum import StrEnum
@@ -12,7 +12,7 @@ if sys.version_info[1] >= 11:
 
         @staticmethod
         def _generate_next_value_(
-            name: str, start: int, count: int, last_values: List[Any]
+            name: str, start: int, count: int, last_values: list[Any]
         ) -> str:
             return name
 else:
