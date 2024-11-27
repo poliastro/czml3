@@ -1,55 +1,27 @@
-import datetime as dt
-import json
-import warnings
-from enum import Enum
-from json import JSONEncoder
+from typing import Any
 
-import attr
-
-from .constants import ISO8601_FORMAT_Z
+from pydantic import BaseModel, model_validator
 
 NON_DELETE_PROPERTIES = ["id", "delete"]
 
 
-class CZMLEncoder(JSONEncoder):
-    def default(self, o):
-        if isinstance(o, BaseCZMLObject):
-            return o.to_json()
+class BaseCZMLObject(BaseModel):
+    @model_validator(mode="before")
+    @classmethod
+    def check_model_before(cls, data: dict[str, Any]) -> Any:
+        if data is not None and "delete" in data and data["delete"]:
+            return {
+                "delete": True,
+                "id": data.get("id"),
+                **{k: None for k in data if k not in NON_DELETE_PROPERTIES},
+            }
+        return data
 
-        elif isinstance(o, Enum):
-            return o.name
+    def __str__(self) -> str:
+        return self.to_json()
 
-        elif isinstance(o, dt.datetime):
-            return o.astimezone(dt.timezone.utc).strftime(ISO8601_FORMAT_Z)
+    def dumps(self) -> str:
+        return self.model_dump_json(exclude_none=True)
 
-        return super().default(o)
-
-
-@attr.s(str=False, frozen=True)
-class BaseCZMLObject:
-    def __str__(self):
-        return self.dumps(indent=4)
-
-    def dumps(self, *args, **kwargs):
-        if "cls" in kwargs:
-            warnings.warn("Ignoring specified cls", UserWarning, stacklevel=2)
-
-        kwargs["cls"] = CZMLEncoder
-        return json.dumps(self, *args, **kwargs)
-
-    def dump(self, fp, *args, **kwargs):
-        for chunk in CZMLEncoder(*args, **kwargs).iterencode(self):
-            fp.write(chunk)
-
-    def to_json(self):
-        if getattr(self, "delete", False):
-            properties_list = NON_DELETE_PROPERTIES
-        else:
-            properties_list = list(attr.asdict(self).keys())
-
-        obj_dict = {}
-        for property_name in properties_list:
-            if getattr(self, property_name, None) is not None:
-                obj_dict[property_name] = getattr(self, property_name)
-
-        return obj_dict
+    def to_json(self, *, indent: int = 4) -> str:
+        return self.model_dump_json(exclude_none=True, indent=indent)

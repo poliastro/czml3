@@ -25,7 +25,7 @@ start = dt.datetime(2012, 3, 15, 10, tzinfo=dt.timezone.utc)
 end = dt.datetime(2012, 3, 16, 10, tzinfo=dt.timezone.utc)
 
 simple = Document(
-    [
+    packets=[
         Preamble(
             name="simple",
             clock=IntervalValue(
@@ -38,7 +38,7 @@ simple = Document(
             name="Geoeye1 to ISS",
             parent=accesses_id,
             availability=Sequence(
-                [
+                values=[
                     TimeInterval(
                         start="2012-03-15T10:16:06.97400000000198Z",
                         end="2012-03-15T10:33:59.3549999999959Z",
@@ -102,8 +102,8 @@ simple = Document(
                 outlineWidth=2,
                 text="Pennsylvania",
                 verticalOrigin=VerticalOrigins.CENTER,
-                fillColor=Color.from_list([255, 0, 0]),
-                outlineColor=Color.from_list([0, 0, 0]),
+                fillColor=Color(rgba=[255, 0, 0]),
+                outlineColor=Color(rgba=[0, 0, 0]),
             ),
             position=Position(
                 cartesian=[1152255.80150063, -4694317.951340558, 4147335.9067563135]
@@ -136,8 +136,8 @@ simple = Document(
                 style=LabelStyles.FILL_AND_OUTLINE,
                 text="AGI",
                 verticalOrigin=VerticalOrigins.CENTER,
-                fillColor=Color.from_list([0, 255, 255]),
-                outlineColor=Color.from_list([0, 0, 0]),
+                fillColor=Color(rgba=[0, 255, 255]),
+                outlineColor=Color(rgba=[0, 0, 0]),
             ),
             position=Position(
                 cartesian=[1216469.9357990976, -4736121.71856379, 4081386.8856866374]
@@ -170,14 +170,16 @@ simple = Document(
                 style=LabelStyles.FILL_AND_OUTLINE,
                 text="Geoeye 1",
                 verticalOrigin=VerticalOrigins.CENTER,
-                fillColor=Color.from_list([0, 255, 0]),
-                outlineColor=Color.from_list([0, 0, 0]),
+                fillColor=Color(rgba=[0, 255, 0]),
+                outlineColor=Color(rgba=[0, 0, 0]),
             ),
             path=Path(
-                show=Sequence([IntervalValue(start=start, end=end, value=True)]),
+                show=Sequence(values=[IntervalValue(start=start, end=end, value=True)]),
                 width=1,
                 resolution=120,
-                material=Material(solidColor=SolidColorMaterial.from_list([0, 255, 0])),
+                material=Material(
+                    solidColor=SolidColorMaterial(color=Color(rgba=[0, 255, 0]))
+                ),
             ),
             position=Position(
                 interpolationAlgorithm=InterpolationAlgorithms.LAGRANGE,

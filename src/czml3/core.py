@@ -1,26 +1,47 @@
+from typing import Any
 from uuid import uuid4
 
-import attr
+from pydantic import Field, model_serializer
+
+from czml3.types import StringValue
 
 from .base import BaseCZMLObject
-from .types import Sequence
+from .properties import (
+    Billboard,
+    Box,
+    Clock,
+    Corridor,
+    Cylinder,
+    Ellipse,
+    Ellipsoid,
+    Label,
+    Model,
+    Orientation,
+    Path,
+    Point,
+    Polygon,
+    Polyline,
+    Position,
+    Rectangle,
+    Tileset,
+    ViewFrom,
+    Wall,
+)
+from .types import IntervalValue, Sequence, TimeInterval
 
 CZML_VERSION = "1.0"
 
 
-@attr.s(str=False, frozen=True, kw_only=True)
 class Preamble(BaseCZMLObject):
     """The preamble packet."""
 
-    id = attr.ib(init=False, default="document")
+    id: str = Field(default="document")
+    version: str = Field(default=CZML_VERSION)
+    name: None | str = Field(default=None)
+    description: None | str = Field(default=None)
+    clock: None | Clock | IntervalValue = Field(default=None)
 
-    version = attr.ib(default=CZML_VERSION)
-    name = attr.ib(default=None)
-    description = attr.ib(default=None)
-    clock = attr.ib(default=None)
 
-
-@attr.s(str=False, frozen=True, kw_only=True)
 class Packet(BaseCZMLObject):
     """A CZML Packet.
 
@@ -28,37 +49,40 @@ class Packet(BaseCZMLObject):
     for further information.
     """
 
-    id = attr.ib(factory=lambda: str(uuid4()))
-    delete = attr.ib(default=None)
-    name = attr.ib(default=None)
-    parent = attr.ib(default=None)
-    description = attr.ib(default=None)
-    availability = attr.ib(default=None)
-    properties = attr.ib(default=None)
-    position = attr.ib(default=None)
-    orientation = attr.ib(default=None)
-    viewFrom = attr.ib(default=None)
-    billboard = attr.ib(default=None)
-    box = attr.ib(default=None)
-    corridor = attr.ib(default=None)
-    cylinder = attr.ib(default=None)
-    ellipse = attr.ib(default=None)
-    ellipsoid = attr.ib(default=None)
-    label = attr.ib(default=None)
-    model = attr.ib(default=None)
-    path = attr.ib(default=None)
-    point = attr.ib(default=None)
-    polygon = attr.ib(default=None)
-    polyline = attr.ib(default=None)
-    rectangle = attr.ib(default=None)
-    tileset = attr.ib(default=None)
-    wall = attr.ib(default=None)
+    id: str = Field(default=str(uuid4()))
+    delete: None | bool = Field(default=None)
+    name: None | str = Field(default=None)
+    parent: None | str = Field(default=None)
+    description: None | str | StringValue = Field(default=None)
+    availability: None | TimeInterval | list[TimeInterval] | Sequence = Field(
+        default=None
+    )
+    properties: None | Any = Field(default=None)
+    position: None | Position = Field(default=None)
+    orientation: None | Orientation = Field(default=None)
+    viewFrom: None | ViewFrom = Field(default=None)
+    billboard: None | Billboard = Field(default=None)
+    box: None | Box = Field(default=None)
+    corridor: None | Corridor = Field(default=None)
+    cylinder: None | Cylinder = Field(default=None)
+    ellipse: None | Ellipse = Field(default=None)
+    ellipsoid: None | Ellipsoid = Field(default=None)
+    label: None | Label = Field(default=None)
+    model: None | Model = Field(default=None)
+    path: None | Path = Field(default=None)
+    point: None | Point = Field(default=None)
+    polygon: None | Polygon = Field(default=None)
+    polyline: None | Polyline = Field(default=None)
+    rectangle: None | Rectangle = Field(default=None)
+    tileset: None | Tileset = Field(default=None)
+    wall: None | Wall = Field(default=None)
 
 
-@attr.s(str=False, frozen=True)
-class Document(Sequence):
+class Document(BaseCZMLObject):
     """A CZML document, consisting on a list of packets."""
 
-    @property
-    def packets(self):
-        return self._values
+    packets: list[Packet | Preamble]
+
+    @model_serializer
+    def custom_serializer(self):
+        return list(self.packets)
