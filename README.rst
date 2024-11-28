@@ -58,7 +58,7 @@ or conda::
 
   $ conda install czml3 --channel conda-forge
 
-czml3 requires Python >= 3.8.
+czml3 requires Python >= 3.10.
 
 Examples
 ========
@@ -79,7 +79,7 @@ all objects show as nice CZML (JSON)::
       "name": "AGI"
   }
   >>> packet0.dumps()
-  '{"id": "Facility/AGI", "name": "AGI"}'
+  '{"id":"Facility/AGI","name":"AGI"}'
 
 And there are more complex examples available::
 
@@ -93,9 +93,7 @@ And there are more complex examples available::
           "clock": {
               "interval": "2012-03-15T10:00:00Z/2012-03-16T10:00:00Z",
               "currentTime": "2012-03-15T10:00:00Z",
-              "multiplier": 60,
-              "range": "LOOP_STOP",
-              "step": "SYSTEM_CLOCK_MULTIPLIER"
+              "multiplier": 60
           }
       },
   ...
