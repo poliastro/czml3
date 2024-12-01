@@ -70,7 +70,7 @@ class PolylineOutline(BaseCZMLObject):
 
     color: None | Color | str = Field(default=None)
     outlineColor: None | Color | str = Field(default=None)
-    outlineWidth: None | int | float = Field(default=None)
+    outlineWidth: None | float = Field(default=None)
 
 
 class PolylineOutlineMaterial(BaseCZMLObject):
@@ -83,8 +83,8 @@ class PolylineGlow(BaseCZMLObject):
     """A definition of how a glowing polyline appears."""
 
     color: None | Color | str = Field(default=None)
-    glowPower: None | float | int = Field(default=None)
-    taperPower: None | float | int = Field(default=None)
+    glowPower: None | float = Field(default=None)
+    taperPower: None | float = Field(default=None)
 
 
 class PolylineGlowMaterial(BaseCZMLObject):
@@ -110,7 +110,7 @@ class PolylineDash(BaseCZMLObject):
 
     color: None | Color | str = Field(default=None)
     gapColor: None | Color | str = Field(default=None)
-    dashLength: None | float | int = Field(default=None)
+    dashLength: None | float = Field(default=None)
     dashPattern: None | int = Field(default=None)
 
 
@@ -141,10 +141,10 @@ class GridMaterial(BaseCZMLObject):
     """A material that fills the surface with a two-dimensional grid."""
 
     color: None | Color | str = Field(default=None)
-    cellAlpha: None | float | int = Field(default=None)
+    cellAlpha: None | float = Field(default=None)
     lineCount: None | list[int] = Field(default=None)
-    lineThickness: None | list[float] | list[int] = Field(default=None)
-    lineOffset: None | list[float] | list[int] = Field(default=None)
+    lineThickness: None | list[float] = Field(default=None)
+    lineOffset: None | list[float] = Field(default=None)
 
 
 class StripeMaterial(BaseCZMLObject):
@@ -153,8 +153,8 @@ class StripeMaterial(BaseCZMLObject):
     orientation: None | int = Field(default=None)
     evenColor: None | Color | str = Field(default=None)
     oddColor: None | Color | str = Field(default=None)
-    offset: None | float | int = Field(default=None)
-    repeat: None | float | int = Field(default=None)
+    offset: None | float = Field(default=None)
+    repeat: None | float = Field(default=None)
 
 
 class CheckerboardMaterial(BaseCZMLObject):
@@ -177,59 +177,23 @@ class ImageMaterial(BaseCZMLObject):
 class Color(BaseCZMLObject, Interpolatable, Deletable):
     """A color. The color can optionally vary over time."""
 
-    rgba: None | RgbaValue | str | list[float] | list[int] = Field(default=None)
-    rgbaf: None | RgbafValue | str | list[float] | list[int] = Field(default=None)
+    rgba: None | RgbaValue | str | list[float] = Field(default=None)
+    rgbaf: None | RgbafValue | str | list[float] = Field(default=None)
 
     @field_validator("rgba", "rgbaf")
     @classmethod
     def is_valid(cls, color):
         return get_color(color)
 
-    # @classmethod
-    # def from_list(cls, color):
-    #     if all(issubclass(type(v), int) for v in color):
-    #         color = color + [255] if len(color) == 3 else color[:]
-    #         return cls(rgba=RgbaValue(values=color))
-    #     else:
-    #         color = color + [1.0] if len(color) == 3 else color[:]
-    #         return cls(rgbaf=RgbafValue(values=color))
-
-    # @classmethod
-    # def from_tuple(cls, color):
-    #     return cls.from_list(list(color))
-
-    # @classmethod
-    # def from_hex(cls, color):
-    #     if color > 0xFFFFFF:
-    #         values = [
-    #             (color & 0xFF000000) >> 24,
-    #             (color & 0x00FF0000) >> 16,
-    #             (color & 0x0000FF00) >> 8,
-    #             (color & 0x000000FF) >> 0,
-    #         ]
-    #     else:
-    #         values = [
-    #             (color & 0xFF0000) >> 16,
-    #             (color & 0x00FF00) >> 8,
-    #             (color & 0x0000FF) >> 0,
-    #             0xFF,
-    #         ]
-
-    #     return cls.from_list(values)
-
-    # @classmethod
-    # def from_str(cls, color):
-    #     return cls.from_hex(int(color.rsplit("#")[-1], 16))
-
 
 class Position(BaseCZMLObject, Interpolatable, Deletable):
     """Defines a position. The position can optionally vary over time."""
 
     referenceFrame: None | str = Field(default=None)
-    cartesian: None | Cartesian3Value | list[float] | list[int] = Field(default=None)
-    cartographicRadians: None | list[float] | list[int] = Field(default=None)
-    cartographicDegrees: None | list[float] | list[int] = Field(default=None)
-    cartesianVelocity: None | list[float] | list[int] = Field(default=None)
+    cartesian: None | Cartesian3Value | list[float] = Field(default=None)
+    cartographicRadians: None | list[float] = Field(default=None)
+    cartographicDegrees: None | list[float] = Field(default=None)
+    cartesianVelocity: None | list[float] = Field(default=None)
     reference: None | str = Field(default=None)
     interval: None | TimeInterval = Field(default=None)
     epoch: None | str | dt.datetime = Field(default=None)
@@ -272,7 +236,7 @@ class ViewFrom(BaseCZMLObject, Interpolatable, Deletable):
 
     ViewFrom can optionally vary over time."""
 
-    cartesian: None | Cartesian3Value | list[float] | list[int]
+    cartesian: None | Cartesian3Value | list[float]
     reference: None | str = Field(default=None)
 
     @field_validator("reference")
@@ -291,16 +255,16 @@ class Billboard(BaseCZMLObject, HasAlignment):
 
     image: str | Uri
     show: None | bool = Field(default=None)
-    scale: None | float | int = Field(default=None)
-    pixelOffset: None | list[float] | list[int] = Field(default=None)
-    eyeOffset: None | list[float] | list[int] = Field(default=None)
+    scale: None | float = Field(default=None)
+    pixelOffset: None | list[float] = Field(default=None)
+    eyeOffset: None | list[float] = Field(default=None)
     color: None | Color | str = Field(default=None)
 
 
 class EllipsoidRadii(BaseCZMLObject, Interpolatable, Deletable):
     """The radii of an ellipsoid."""
 
-    cartesian: None | Cartesian3Value | list[float] | list[int]
+    cartesian: Cartesian3Value | list[float]
     reference: None | str = Field(default=None)
 
     @field_validator("reference")
@@ -314,20 +278,20 @@ class Corridor(BaseCZMLObject):
     """A corridor , which is a shape defined by a centerline and width that conforms to the
     curvature of the body shape. It can can optionally be extruded into a volume."""
 
-    positions: PositionList | list[int] | list[float]
+    positions: PositionList | list[float]
     show: None | bool = Field(default=None)
-    width: float | int
-    height: None | float | int = Field(default=None)
+    width: float
+    height: None | float = Field(default=None)
     heightReference: None | HeightReference = Field(default=None)
-    extrudedHeight: None | float | int = Field(default=None)
+    extrudedHeight: None | float = Field(default=None)
     extrudedHeightReference: None | HeightReference = Field(default=None)
     cornerType: None | CornerType = Field(default=None)
-    granularity: None | float | int = Field(default=None)
+    granularity: None | float = Field(default=None)
     fill: None | bool = Field(default=None)
     material: None | Material | str = Field(default=None)
     outline: None | Color | str = Field(default=None)
     outlineColor: None | Color | str = Field(default=None)
-    outlineWidth: None | int | float = Field(default=None)
+    outlineWidth: None | float = Field(default=None)
     shadows: None | ShadowMode = Field(default=None)
     distanceDisplayCondition: None | DistanceDisplayCondition = Field(default=None)
     classificationType: None | ClassificationType = Field(default=None)
@@ -337,16 +301,16 @@ class Corridor(BaseCZMLObject):
 class Cylinder(BaseCZMLObject):
     """A cylinder, which is a special cone defined by length, top and bottom radius."""
 
-    length: float | int
+    length: float
     show: None | bool = Field(default=None)
-    topRadius: float | int
-    bottomRadius: float | int
+    topRadius: float
+    bottomRadius: float
     heightReference: None | HeightReference = Field(default=None)
     fill: None | bool = Field(default=None)
     material: None | Material | str = Field(default=None)
     outline: None | bool = Field(default=None)
     outlineColor: None | Color | str = Field(default=None)
-    outlineWidth: None | float | int = Field(default=None)
+    outlineWidth: None | float = Field(default=None)
     numberOfVerticalLines: None | int = Field(default=None)
     slices: None | int = Field(default=None)
     shadows: None | ShadowMode = Field(default=None)
@@ -356,21 +320,21 @@ class Cylinder(BaseCZMLObject):
 class Ellipse(BaseCZMLObject):
     """An ellipse, which is a close curve, on or above Earth's surface."""
 
-    semiMajorAxis: float | int
-    semiMinorAxis: float | int
+    semiMajorAxis: float
+    semiMinorAxis: float
     show: None | bool = Field(default=None)
-    height: None | float | int = Field(default=None)
+    height: None | float = Field(default=None)
     heightReference: None | HeightReference = Field(default=None)
-    extrudedHeight: None | float | int = Field(default=None)
+    extrudedHeight: None | float = Field(default=None)
     extrudedHeightReference: None | HeightReference = Field(default=None)
-    rotation: None | float | int = Field(default=None)
-    stRotation: None | float | int = Field(default=None)
-    granularity: None | float | int = Field(default=None)
+    rotation: None | float = Field(default=None)
+    stRotation: None | float = Field(default=None)
+    granularity: None | float = Field(default=None)
     fill: None | bool = Field(default=None)
     material: None | Material | str = Field(default=None)
     outline: None | bool = Field(default=None)
     outlineColor: None | Color | str = Field(default=None)
-    outlineWidth: None | float | int = Field(default=None)
+    outlineWidth: None | float = Field(default=None)
     numberOfVerticalLines: None | int = Field(default=None)
     shadows: None | ShadowMode = Field(default=None)
     distanceDisplayCondition: None | DistanceDisplayCondition = Field(default=None)
@@ -381,21 +345,21 @@ class Ellipse(BaseCZMLObject):
 class Polygon(BaseCZMLObject):
     """A polygon, which is a closed figure on the surface of the Earth."""
 
-    positions: Position | PositionList | list[int] | list[float]
+    positions: Position | PositionList | list[float]
     show: None | bool = Field(default=None)
     arcType: None | ArcType = Field(default=None)
-    granularity: None | float | int = Field(default=None)
+    granularity: None | float = Field(default=None)
     material: None | Material | str = Field(default=None)
     shadows: None | ShadowMode = Field(default=None)
     distanceDisplayCondition: None | DistanceDisplayCondition = Field(default=None)
     classificationType: None | ClassificationType = Field(default=None)
     zIndex: None | int = Field(default=None)
-    holes: None | PositionList | PositionListOfLists | list[int] | list[float] = Field(
+    holes: None | PositionList | PositionListOfLists | list[float] = Field(
         default=None
     )  # NOTE: not in documentation
     outlineColor: None | Color | str = Field(default=None)
     outline: None | bool = Field(default=None)
-    extrudedHeight: None | float | int = Field(default=None)
+    extrudedHeight: None | float = Field(default=None)
     perPositionHeight: None | bool = Field(default=None)
 
 
@@ -405,8 +369,8 @@ class Polyline(BaseCZMLObject):
     positions: PositionList
     show: None | bool = Field(default=None)
     arcType: None | ArcType = Field(default=None)
-    width: None | float | int = Field(default=None)
-    granularity: None | float | int = Field(default=None)
+    width: None | float = Field(default=None)
+    granularity: None | float = Field(default=None)
     material: (
         None
         | PolylineMaterial
@@ -490,12 +454,8 @@ class PositionListOfLists(BaseCZMLObject, Deletable):
 
     referenceFrame: None | str | list[str] = Field(default=None)
     cartesian: None | Cartesian3Value = Field(default=None)
-    cartographicRadians: (
-        None | list[float] | list[int] | list[list[float]] | list[list[int]]
-    ) = Field(default=None)
-    cartographicDegrees: (
-        None | list[float] | list[int] | list[list[float]] | list[list[int]]
-    ) = Field(default=None)
+    cartographicRadians: None | list[float] | list[list[float]] = Field(default=None)
+    cartographicDegrees: None | list[float] | list[list[float]] = Field(default=None)
     references: None | str | list[str] = Field(default=None)
 
 
@@ -503,13 +463,13 @@ class PositionList(BaseCZMLObject, Interpolatable, Deletable):
     """A list of positions."""
 
     referenceFrame: None | str | list[str] = Field(default=None)
-    cartesian: None | Cartesian3Value | list[float] | list[int] = Field(default=None)
-    cartographicRadians: (
-        None | list[float] | list[int] | CartographicRadiansListValue
-    ) = Field(default=None)
-    cartographicDegrees: (
-        None | list[float] | list[int] | CartographicDegreesListValue
-    ) = Field(default=None)
+    cartesian: None | Cartesian3Value | list[float] = Field(default=None)
+    cartographicRadians: None | list[float] | CartographicRadiansListValue = Field(
+        default=None
+    )
+    cartographicDegrees: None | list[float] | CartographicDegreesListValue = Field(
+        default=None
+    )
     references: None | str | list[str] = Field(default=None)
     interval: None | TimeInterval = Field(default=None)
     epoch: None | str | dt.datetime = Field(default=None)  # note: not documented
@@ -525,17 +485,17 @@ class Ellipsoid(BaseCZMLObject):
 
     radii: EllipsoidRadii
     innerRadii: None | EllipsoidRadii = Field(default=None)
-    minimumClock: None | float | int = Field(default=None)
-    maximumClock: None | float | int = Field(default=None)
-    minimumCone: None | float | int = Field(default=None)
-    maximumCone: None | float | int = Field(default=None)
+    minimumClock: None | float = Field(default=None)
+    maximumClock: None | float = Field(default=None)
+    minimumCone: None | float = Field(default=None)
+    maximumCone: None | float = Field(default=None)
     show: None | bool = Field(default=None)
     heightReference: None | HeightReference = Field(default=None)
     fill: None | bool = Field(default=None)
     material: None | Material | str = Field(default=None)
     outline: None | bool = Field(default=None)
     outlineColor: None | Color | str = Field(default=None)
-    outlineWidth: None | float | int = Field(default=None)
+    outlineWidth: None | float = Field(default=None)
     stackPartitions: None | int = Field(default=None)
     slicePartitions: None | int = Field(default=None)
     subdivisions: None | int = Field(default=None)
@@ -551,7 +511,7 @@ class Box(BaseCZMLObject):
     material: None | Material | str = Field(default=None)
     outline: None | bool = Field(default=None)
     outlineColor: None | Color | str = Field(default=None)
-    outlineWidth: None | float | int = Field(default=None)
+    outlineWidth: None | float = Field(default=None)
     shadows: None | ShadowMode = Field(default=None)
     distanceDisplayCondition: None | DistanceDisplayCondition = Field(default=None)
 
@@ -582,8 +542,8 @@ class Rectangle(BaseCZMLObject, Interpolatable, Deletable):
 class RectangleCoordinates(BaseCZMLObject, Interpolatable, Deletable):
     """A set of coordinates describing a cartographic rectangle on the surface of the ellipsoid."""
 
-    wsen: None | list[float] | list[int] = Field(default=None)
-    wsenDegrees: None | list[float] | list[int] = Field(default=None)
+    wsen: None | list[float] = Field(default=None)
+    wsenDegrees: None | list[float] = Field(default=None)
     reference: None | str = Field(default=None)
 
     @model_validator(mode="after")
@@ -610,7 +570,7 @@ class EyeOffset(BaseCZMLObject, Deletable):
 
     """
 
-    cartesian: None | Cartesian3Value | list[float] | list[int] = Field(default=None)
+    cartesian: None | Cartesian3Value | list[float] = Field(default=None)
     reference: None | str = Field(default=None)
 
     @field_validator("reference")
@@ -667,7 +627,7 @@ class Clock(BaseCZMLObject):
     """
 
     currentTime: None | str | dt.datetime = Field(default=None)
-    multiplier: None | float | int = Field(default=None)
+    multiplier: None | float = Field(default=None)
     range: None | ClockRanges = Field(default=None)
     step: None | ClockSteps = Field(default=None)
 
@@ -689,10 +649,10 @@ class Path(BaseCZMLObject):
     """
 
     show: None | bool | Sequence = Field(default=None)
-    leadTime: None | float | int = Field(default=None)
-    trailTime: None | float | int = Field(default=None)
-    width: None | float | int = Field(default=None)
-    resolution: None | float | int = Field(default=None)
+    leadTime: None | float = Field(default=None)
+    trailTime: None | float = Field(default=None)
+    width: None | float = Field(default=None)
+    resolution: None | float = Field(default=None)
     material: None | Material | str = Field(default=None)
     distanceDisplayCondition: None | DistanceDisplayCondition = Field(default=None)
 
@@ -701,15 +661,15 @@ class Point(BaseCZMLObject):
     """A point, or viewport-aligned circle."""
 
     show: None | bool = Field(default=None)
-    pixelSize: None | float | int = Field(default=None)
+    pixelSize: None | float = Field(default=None)
     heightReference: None | HeightReference = Field(default=None)
     color: None | Color | str = Field(default=None)
     outlineColor: None | Color | str = Field(default=None)
-    outlineWidth: None | float | int = Field(default=None)
+    outlineWidth: None | float = Field(default=None)
     scaleByDistance: None | NearFarScalar = Field(default=None)
     translucencyByDistance: None | NearFarScalar = Field(default=None)
     distanceDisplayCondition: None | DistanceDisplayCondition = Field(default=None)
-    disableDepthTestDistance: None | float | int = Field(default=None)
+    disableDepthTestDistance: None | float = Field(default=None)
 
 
 class Tileset(BaseCZMLObject):
@@ -717,7 +677,7 @@ class Tileset(BaseCZMLObject):
 
     uri: str | Uri
     show: None | bool = Field(default=None)
-    maximumScreenSpaceError: None | float | int = Field(default=None)
+    maximumScreenSpaceError: None | float = Field(default=None)
 
 
 class Wall(BaseCZMLObject):
@@ -727,14 +687,14 @@ class Wall(BaseCZMLObject):
 
     show: None | bool = Field(default=None)
     positions: PositionList
-    minimumHeights: None | list[float] | list[int] = Field(default=None)
-    maximumHeights: None | list[float] | list[int] = Field(default=None)
-    granularity: None | float | int = Field(default=None)
+    minimumHeights: None | list[float] = Field(default=None)
+    maximumHeights: None | list[float] = Field(default=None)
+    granularity: None | float = Field(default=None)
     fill: None | bool = Field(default=None)
     material: None | Material | str = Field(default=None)
     outline: None | bool = Field(default=None)
     outlineColor: None | Color | str = Field(default=None)
-    outlineWidth: None | float | int = Field(default=None)
+    outlineWidth: None | float = Field(default=None)
     shadows: None | ShadowMode = Field(default=None)
     distanceDisplayCondition: None | DistanceDisplayCondition = Field(default=None)
 
@@ -748,9 +708,7 @@ class NearFarScalar(BaseCZMLObject, Interpolatable, Deletable):
     less than the near distance or greater than the far distance, respectively.
     """
 
-    nearFarScalar: None | list[float] | list[int] | NearFarScalarValue = Field(
-        default=None
-    )
+    nearFarScalar: None | list[float] | NearFarScalarValue = Field(default=None)
     reference: None | str = Field(default=None)
 
     @field_validator("reference")
@@ -767,13 +725,13 @@ class Label(BaseCZMLObject, HasAlignment):
     text: None | str = Field(default=None)
     font: None | str = Field(default=None)
     style: None | LabelStyles = Field(default=None)
-    scale: None | float | int = Field(default=None)
+    scale: None | float = Field(default=None)
     showBackground: None | bool = Field(default=None)
     backgroundColor: None | Color | str = Field(default=None)
     fillColor: None | Color | str = Field(default=None)
     outlineColor: None | Color | str = Field(default=None)
-    outlineWidth: None | float | int = Field(default=None)
-    pixelOffset: None | float | int | Cartesian2Value = Field(default=None)
+    outlineWidth: None | float = Field(default=None)
+    pixelOffset: None | float | Cartesian2Value = Field(default=None)
 
 
 class Orientation(BaseCZMLObject, Interpolatable, Deletable):
@@ -784,9 +742,7 @@ class Orientation(BaseCZMLObject, Interpolatable, Deletable):
 
     """
 
-    unitQuaternion: None | list[float] | list[int] | UnitQuaternionValue = Field(
-        default=None
-    )
+    unitQuaternion: None | list[float] | UnitQuaternionValue = Field(default=None)
     reference: None | str = Field(default=None)
     velocityReference: None | str = Field(default=None)
 
@@ -802,9 +758,9 @@ class Model(BaseCZMLObject):
 
     show: None | bool = Field(default=None)
     gltf: str
-    scale: None | float | int = Field(default=None)
-    minimumPixelSize: None | float | int = Field(default=None)
-    maximumScale: None | float | int = Field(default=None)
+    scale: None | float = Field(default=None)
+    minimumPixelSize: None | float = Field(default=None)
+    maximumScale: None | float = Field(default=None)
     incrementallyLoadTextures: None | bool = Field(default=None)
     runAnimations: None | bool = Field(default=None)
     shadows: None | ShadowMode = Field(default=None)
@@ -813,7 +769,7 @@ class Model(BaseCZMLObject):
     silhouetteSize: None | Color | str = Field(default=None)
     color: None | Color | str = Field(default=None)
     colorBlendMode: None | ColorBlendMode = Field(default=None)
-    colorBlendAmount: None | float | int = Field(default=None)
+    colorBlendAmount: None | float = Field(default=None)
     distanceDisplayCondition: None | DistanceDisplayCondition = Field(default=None)
     nodeTransformations: None | Any = Field(default=None)
     articulations: None | Any = Field(default=None)

@@ -28,7 +28,7 @@ from czml3.properties import (
     PositionList,
     SolidColorMaterial,
 )
-from czml3.types import Cartesian3Value, StringValue
+from czml3.types import Cartesian3Value, Sequence, StringValue
 
 
 def test_preamble_has_proper_id_and_expected_version():
@@ -89,10 +89,10 @@ def test_packet_label():
         },
         "outlineColor": {
             "rgba": [
-                0,
-                233,
-                255,
-                2
+                0.0,
+                233.0,
+                255.0,
+                2.0
             ]
         },
         "outlineWidth": 2.0
@@ -253,8 +253,8 @@ def test_packet_custom_properties():
         "ellipsoid": {
             "radii": {
                 "cartesian": [
-                    6378137,
-                    6378137,
+                    6378137.0,
+                    6378137.0,
                     6356752.31414
                 ]
             }
@@ -295,10 +295,10 @@ def test_packet_point():
     "point": {
         "color": {
             "rgba": [
-                255,
-                0,
-                0,
-                255
+                255.0,
+                0.0,
+                0.0,
+                255.0
             ]
         }
     }
@@ -314,22 +314,22 @@ def test_packet_polyline():
     "polyline": {
         "positions": {
             "cartographicDegrees": [
-                -75,
-                43,
-                500000,
-                -125,
-                43,
-                500000
+                -75.0,
+                43.0,
+                500000.0,
+                -125.0,
+                43.0,
+                500000.0
             ]
         },
         "material": {
             "solidColor": {
                 "color": {
                     "rgba": [
-                        255,
-                        0,
-                        0,
-                        255
+                        255.0,
+                        0.0,
+                        0.0,
+                        255.0
                     ]
                 }
             }
@@ -357,33 +357,33 @@ def test_packet_polyline_outline():
     "polyline": {
         "positions": {
             "cartographicDegrees": [
-                -75,
-                43,
-                500000,
-                -125,
-                43,
-                500000
+                -75.0,
+                43.0,
+                500000.0,
+                -125.0,
+                43.0,
+                500000.0
             ]
         },
         "material": {
             "polylineOutline": {
                 "color": {
                     "rgba": [
-                        255,
-                        0,
-                        0,
-                        255
+                        255.0,
+                        0.0,
+                        0.0,
+                        255.0
                     ]
                 },
                 "outlineColor": {
                     "rgba": [
-                        255,
-                        0,
-                        0,
-                        255
+                        255.0,
+                        0.0,
+                        0.0,
+                        255.0
                     ]
                 },
-                "outlineWidth": 2
+                "outlineWidth": 2.0
             }
         }
     }
@@ -414,22 +414,22 @@ def test_packet_polyline_glow():
     "polyline": {
         "positions": {
             "cartographicDegrees": [
-                -75,
-                43,
-                500000,
-                -125,
-                43,
-                500000
+                -75.0,
+                43.0,
+                500000.0,
+                -125.0,
+                43.0,
+                500000.0
             ]
         },
         "material": {
             "polylineGlow": {
                 "color": {
                     "rgba": [
-                        255,
-                        0,
-                        0,
-                        255
+                        255.0,
+                        0.0,
+                        0.0,
+                        255.0
                     ]
                 },
                 "glowPower": 0.2,
@@ -463,22 +463,22 @@ def test_packet_polyline_arrow():
     "polyline": {
         "positions": {
             "cartographicDegrees": [
-                -75,
-                43,
-                500000,
-                -125,
-                43,
-                500000
+                -75.0,
+                43.0,
+                500000.0,
+                -125.0,
+                43.0,
+                500000.0
             ]
         },
         "material": {
             "polylineArrow": {
                 "color": {
                     "rgba": [
-                        255,
-                        0,
-                        0,
-                        255
+                        255.0,
+                        0.0,
+                        0.0,
+                        255.0
                     ]
                 }
             }
@@ -506,22 +506,22 @@ def test_packet_polyline_dashed():
     "polyline": {
         "positions": {
             "cartographicDegrees": [
-                -75,
-                43,
-                500000,
-                -125,
-                43,
-                500000
+                -75.0,
+                43.0,
+                500000.0,
+                -125.0,
+                43.0,
+                500000.0
             ]
         },
         "material": {
             "polylineDash": {
                 "color": {
                     "rgba": [
-                        255,
-                        0,
-                        0,
-                        255
+                        255.0,
+                        0.0,
+                        0.0,
+                        255.0
                     ]
                 }
             }
@@ -571,10 +571,10 @@ def test_packet_polygon():
             "solidColor": {
                 "color": {
                     "rgba": [
-                        255,
-                        0,
-                        0,
-                        255
+                        255.0,
+                        0.0,
+                        0.0,
+                        255.0
                     ]
                 }
             }
@@ -611,3 +611,17 @@ def test_packet_polygon():
     )
 
     assert str(packet) == expected_result
+
+
+def test_different_IDs():
+    p1 = Packet()
+    p2 = Packet()
+    assert p1.id != p2.id
+    assert str(p1.id) != str(p2.id)
+
+
+def test_different_availabilities():
+    p1 = Packet(availability=Sequence(values=[1, 2, 3]))
+    p2 = Packet(availability=Sequence(values=[2, 3, 4]))
+    assert p1 != p2
+    assert str(p1) != str(p2)
