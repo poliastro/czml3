@@ -28,7 +28,7 @@ from czml3.properties import (
     PositionList,
     SolidColorMaterial,
 )
-from czml3.types import Cartesian3Value, StringValue
+from czml3.types import Cartesian3Value, Sequence, StringValue
 
 
 def test_preamble_has_proper_id_and_expected_version():
@@ -617,3 +617,11 @@ def test_different_IDs():
     p1 = Packet()
     p2 = Packet()
     assert p1.id != p2.id
+    assert str(p1.id) != str(p2.id)
+
+
+def test_different_availabilities():
+    p1 = Packet(availability=Sequence(values=[1, 2, 3]))
+    p2 = Packet(availability=Sequence(values=[2, 3, 4]))
+    assert p1 != p2
+    assert str(p1) != str(p2)
