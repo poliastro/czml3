@@ -26,7 +26,7 @@ def test_rectangle_coordinates_invalid_if_nothing_given():
 
 
 def test_packet_rectangles(image):
-    wsen = [20, 40, 21, 41]
+    wsen = [20.0, 40.0, 21.0, 41.0]
 
     expected_result = """{{
     "id": "id_00",
