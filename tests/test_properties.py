@@ -1209,3 +1209,10 @@ def test_rectangle_coordinates_delete():
     "delete": true
 }"""
     )
+
+
+def test_different_positions():
+    pos1 = Position(cartographicDegrees=[1, 2, 3])
+    pos2 = Position(cartographicRadians=[1, 2, 3])
+    assert pos1 != pos2
+    assert str(pos1) != str(pos2)

@@ -49,7 +49,7 @@ class Packet(BaseCZMLObject):
     for further information.
     """
 
-    id: str = Field(default=str(uuid4()))
+    id: str = Field(default_factory=uuid4)
     delete: None | bool = Field(default=None)
     name: None | str = Field(default=None)
     parent: None | str = Field(default=None)
