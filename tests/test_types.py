@@ -43,15 +43,15 @@ def test_distance_display_condition_is_invalid():
 
 def test_distance_display_condition():
     expected_result = """[
-    0,
-    150,
-    15000000,
-    300,
-    10000,
-    15000000,
-    600,
-    150,
-    15000000
+    0.0,
+    150.0,
+    15000000.0,
+    300.0,
+    10000.0,
+    15000000.0,
+    600.0,
+    150.0,
+    15000000.0
 ]"""
     dist = DistanceDisplayConditionValue(
         values=[0, 150, 15000000, 300, 10000, 15000000, 600, 150, 15000000]
@@ -61,9 +61,9 @@ def test_distance_display_condition():
 
 def test_cartographic_radian_list():
     expected_result = """[
-    0,
-    1,
-    0
+    0.0,
+    1.0,
+    0.0
 ]"""
     car = CartographicRadiansListValue(values=[0, 1, 0])
     assert str(car) == expected_result
@@ -80,9 +80,9 @@ def test_invalid_cartograpic_radian_list():
 
 def test_cartograpic_degree_list():
     expected_result = """[
-    15,
-    25,
-    50
+    15.0,
+    25.0,
+    50.0
 ]"""
     car = CartographicDegreesListValue(values=[15, 25, 50])
     assert str(car) == expected_result
@@ -162,7 +162,7 @@ def test_bad_rgba_4_values_raises_error():
 
 def test_bad_rgba_5_color_values_raises_error():
     with pytest.raises(TypeError) as excinfo:
-        RgbaValue(values=[0, 0.1, 0.3, 0.3, 255])
+        RgbaValue(values=[0, 0.1, 0.3, 0.3, 256])
 
     assert "Color values must be integers in the range 0-255." in excinfo.exconly()
 
@@ -317,10 +317,10 @@ def test_quaternion_value_is_invalid():
 
 def test_quaternion_value():
     expected_result = """[
-    0,
-    0,
-    0,
-    1
+    0.0,
+    0.0,
+    0.0,
+    1.0
 ]"""
 
     result = UnitQuaternionValue(values=[0, 0, 0, 1])
@@ -333,19 +333,19 @@ def test_cartographic_radians_value():
     assert (
         str(result)
         == """[
-    0,
-    0,
-    0,
-    1
+    0.0,
+    0.0,
+    0.0,
+    1.0
 ]"""
     )
     result = CartographicRadiansValue(values=[0, 0, 1])
     assert (
         str(result)
         == """[
-    0,
-    0,
-    1
+    0.0,
+    0.0,
+    1.0
 ]"""
     )
     result = CartographicRadiansValue()
@@ -359,19 +359,19 @@ def test_cartographic_degrees_value():
     assert (
         str(result)
         == """[
-    0,
-    0,
-    0,
-    1
+    0.0,
+    0.0,
+    0.0,
+    1.0
 ]"""
     )
     result = CartographicDegreesValue(values=[0, 0, 1])
     assert (
         str(result)
         == """[
-    0,
-    0,
-    1
+    0.0,
+    0.0,
+    1.0
 ]"""
     )
     result = CartographicDegreesValue()
@@ -384,20 +384,20 @@ def test_rgba_value():
     assert (
         str(RgbaValue(values=[30, 30, 30, 30]))
         == """[
-    30,
-    30,
-    30,
-    30
+    30.0,
+    30.0,
+    30.0,
+    30.0
 ]"""
     )
     assert (
         str(RgbaValue(values=[30, 30, 30, 30, 1]))
         == """[
-    30,
-    30,
-    30,
-    30,
-    1
+    30.0,
+    30.0,
+    30.0,
+    30.0,
+    1.0
 ]"""
     )
 

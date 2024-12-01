@@ -74,9 +74,9 @@ def test_box():
     "show": true,
     "dimensions": {
         "cartesian": [
-            5,
-            6,
-            3
+            5.0,
+            6.0,
+            3.0
         ]
     }
 }"""
@@ -90,9 +90,9 @@ def test_box():
 def test_eyeOffset():
     expected_result = """{
     "cartesian": [
-        1,
-        2,
-        3
+        1.0,
+        2.0,
+        3.0
     ]
 }"""
 
@@ -103,7 +103,7 @@ def test_eyeOffset():
 def test_point():
     expected_result = """{
     "show": true,
-    "pixelSize": 10,
+    "pixelSize": 10.0,
     "scaleByDistance": {
         "nearFarScalar": [
             150.0,
@@ -146,9 +146,9 @@ def test_polyline():
     expected_result = """{
     "positions": {
         "cartographicDegrees": [
-            20,
-            30,
-            10
+            20.0,
+            30.0,
+            10.0
         ]
     },
     "arcType": {
@@ -156,8 +156,8 @@ def test_polyline():
     },
     "distanceDisplayCondition": {
         "distanceDisplayCondition": [
-            14,
-            81
+            14.0,
+            81.0
         ]
     },
     "classificationType": {
@@ -184,10 +184,10 @@ def test_material_solid_color():
     "solidColor": {
         "color": {
             "rgba": [
-                200,
-                100,
-                30,
-                255
+                200.0,
+                100.0,
+                30.0,
+                255.0
             ]
         }
     }
@@ -207,10 +207,10 @@ def test_arrowmaterial_color():
     "polylineArrow": {
         "color": {
             "rgba": [
-                200,
-                100,
-                30,
-                255
+                200.0,
+                100.0,
+                30.0,
+                255.0
             ]
         }
     }
@@ -227,21 +227,21 @@ def test_dashmaterial_colors():
     "polylineDash": {
         "color": {
             "rgba": [
-                200,
-                100,
-                30,
-                255
+                200.0,
+                100.0,
+                30.0,
+                255.0
             ]
         },
         "gapColor": {
             "rgba": [
-                100,
-                200,
-                0,
-                255
+                100.0,
+                200.0,
+                0.0,
+                255.0
             ]
         },
-        "dashLength": 16,
+        "dashLength": 16.0,
         "dashPattern": 255
     }
 }"""
@@ -262,10 +262,10 @@ def test_glowmaterial_color():
     "polylineGlow": {
         "color": {
             "rgba": [
-                200,
-                100,
-                30,
-                255
+                200.0,
+                100.0,
+                30.0,
+                255.0
             ]
         },
         "glowPower": 0.7,
@@ -285,21 +285,21 @@ def test_outline_material_colors():
     "polylineOutline": {
         "color": {
             "rgba": [
-                200,
-                100,
-                30,
-                255
+                200.0,
+                100.0,
+                30.0,
+                255.0
             ]
         },
         "outlineColor": {
             "rgba": [
-                100,
-                200,
-                0,
-                255
+                100.0,
+                200.0,
+                0.0,
+                255.0
             ]
         },
-        "outlineWidth": 3
+        "outlineWidth": 3.0
     }
 }"""
     omat = PolylineOutlineMaterial(
@@ -316,9 +316,9 @@ def test_positionlist_epoch():
     expected_result = """{
     "epoch": "2019-06-11T12:26:58.000000Z",
     "cartographicDegrees": [
-        200,
-        100,
-        30
+        200.0,
+        100.0,
+        30.0
     ]
 }"""
     p = PositionList(
@@ -413,10 +413,10 @@ def test_material_image():
         ],
         "color": {
             "rgba": [
-                200,
-                100,
-                30,
-                255
+                200.0,
+                100.0,
+                30.0,
+                255.0
             ]
         }
     }
@@ -442,10 +442,10 @@ def test_material_image_uri():
         ],
         "color": {
             "rgba": [
-                200,
-                100,
-                30,
-                255
+                200.0,
+                100.0,
+                30.0,
+                255.0
             ]
         }
     }
@@ -467,10 +467,10 @@ def test_material_grid():
     expected_result = """{
     "color": {
         "rgba": [
-            20,
-            20,
-            30,
-            255
+            20.0,
+            20.0,
+            30.0,
+            255.0
         ]
     },
     "cellAlpha": 1.0,
@@ -532,29 +532,29 @@ def test_material_stripe():
     expected_result = """{
     "evenColor": {
         "rgba": [
-            0,
-            0,
-            0,
-            255
+            0.0,
+            0.0,
+            0.0,
+            255.0
         ]
     },
     "oddColor": {
         "rgba": [
-            255,
-            255,
-            255,
-            255
+            255.0,
+            255.0,
+            255.0,
+            255.0
         ]
     },
     "offset": 0.3,
-    "repeat": 4
+    "repeat": 4.0
 }"""
 
     pol_mat = StripeMaterial(
         evenColor=Color(rgba=[0, 0, 0]),
         oddColor=Color(rgba=[255, 255, 255]),
         offset=0.3,
-        repeat=4,
+        repeat=4.0,
     )
     assert str(pol_mat) == expected_result
 
@@ -563,18 +563,18 @@ def test_material_checkerboard():
     expected_result = """{
     "evenColor": {
         "rgba": [
-            0,
-            0,
-            0,
-            255
+            0.0,
+            0.0,
+            0.0,
+            255.0
         ]
     },
     "oddColor": {
         "rgba": [
-            255,
-            255,
-            255,
-            255
+            255.0,
+            255.0,
+            255.0,
+            255.0
         ]
     },
     "repeat": 4
@@ -662,7 +662,7 @@ def test_position_cartographic_degrees():
 def test_position_reference():
     expected_result = """{
     "cartesian": [
-        0
+        0.0
     ],
     "reference": "this#satellite"
 }"""
@@ -686,9 +686,9 @@ def test_viewfrom_reference():
 def test_viewfrom_cartesian():
     expected_result = """{
     "cartesian": [
-        -1000,
-        0,
-        300
+        -1000.0,
+        0.0,
+        300.0
     ]
 }"""
     v = ViewFrom(cartesian=Cartesian3Value(values=[-1000, 0, 300]))
@@ -776,10 +776,10 @@ def test_multiple_interval_decimal_value():
 def test_orientation():
     expected_result = """{
     "unitQuaternion": [
-        0,
-        0,
-        0,
-        1
+        0.0,
+        0.0,
+        0.0,
+        1.0
     ]
 }"""
 
@@ -849,20 +849,20 @@ def test_ellipsoid_parameters():
     "material": {
         "solidColor": {
             "rgba": [
-                255,
-                0,
-                0,
-                100
+                255.0,
+                0.0,
+                0.0,
+                100.0
             ]
         }
     },
     "outline": true,
     "outlineColor": {
         "rgbaf": [
-            0,
-            0,
-            0,
-            1
+            0.0,
+            0.0,
+            0.0,
+            1.0
         ]
     }
 }"""
@@ -953,24 +953,24 @@ def test_polygon_outline():
         "solidColor": {
             "color": {
                 "rgba": [
-                    255,
-                    100,
-                    0,
-                    100
+                    255.0,
+                    100.0,
+                    0.0,
+                    100.0
                 ]
             }
         }
     },
     "outlineColor": {
         "rgba": [
-            0,
-            0,
-            0,
-            255
+            0.0,
+            0.0,
+            0.0,
+            255.0
         ]
     },
     "outline": true,
-    "extrudedHeight": 0,
+    "extrudedHeight": 0.0,
     "perPositionHeight": true
 }"""
     poly = Polygon(
@@ -1019,8 +1019,8 @@ def test_label_offset():
     expected_result = """{
     "pixelOffset": {
         "cartesian2": [
-            5,
-            5
+            5.0,
+            5.0
         ]
     }
 }"""
@@ -1045,8 +1045,8 @@ def test_check_classes_with_references():
         str(ViewFrom(cartesian=[0, 0], reference="this#that"))
         == """{
     "cartesian": [
-        0,
-        0
+        0.0,
+        0.0
     ],
     "reference": "this#that"
 }"""
@@ -1055,8 +1055,8 @@ def test_check_classes_with_references():
         str(EllipsoidRadii(cartesian=[0, 0], reference="this#that"))
         == """{
     "cartesian": [
-        0,
-        0
+        0.0,
+        0.0
     ],
     "reference": "this#that"
 }"""
@@ -1072,8 +1072,8 @@ def test_check_classes_with_references():
         str(Position(cartesian=[0, 0], reference="this#that"))
         == """{
     "cartesian": [
-        0,
-        0
+        0.0,
+        0.0
     ],
     "reference": "this#that"
 }"""
@@ -1082,10 +1082,10 @@ def test_check_classes_with_references():
         str(Orientation(unitQuaternion=[0, 0, 0, 0], reference="this#that"))
         == """{
     "unitQuaternion": [
-        0,
-        0,
-        0,
-        0
+        0.0,
+        0.0,
+        0.0,
+        0.0
     ],
     "reference": "this#that"
 }"""
@@ -1094,8 +1094,8 @@ def test_check_classes_with_references():
         str(NearFarScalar(nearFarScalar=[0, 0], reference="this#that"))
         == """{
     "nearFarScalar": [
-        0,
-        0
+        0.0,
+        0.0
     ],
     "reference": "this#that"
 }"""
@@ -1133,8 +1133,8 @@ def test_check_classes_with_references():
         str(EyeOffset(cartesian=[0, 0], reference="this#that"))
         == """{
     "cartesian": [
-        0,
-        0
+        0.0,
+        0.0
     ],
     "reference": "this#that"
 }"""
@@ -1143,8 +1143,8 @@ def test_check_classes_with_references():
         str(RectangleCoordinates(wsen=[0, 0], reference="this#that"))
         == """{
     "wsen": [
-        0,
-        0
+        0.0,
+        0.0
     ],
     "reference": "this#that"
 }"""
@@ -1157,9 +1157,9 @@ def test_check_classes_with_references():
         )
         == """{
     "cartesian": [
-        0,
-        0,
-        1
+        0.0,
+        0.0,
+        1.0
     ],
     "reference": "this#that"
 }"""
@@ -1175,9 +1175,9 @@ def test_check_classes_with_references():
         )
         == """{
     "distanceDisplayCondition": [
-        0,
-        1,
-        2
+        0.0,
+        1.0,
+        2.0
     ],
     "reference": "this#that"
 }"""

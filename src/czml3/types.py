@@ -22,33 +22,33 @@ else:
 TYPE_MAPPING = {bool: "boolean"}
 
 
-def get_color(color):
+def get_color(color) -> list[float]:
     """Determines if the input is a valid color"""
     if color is None or (
         isinstance(color, list)
-        and all(issubclass(type(v), int | float) for v in color)
+        and all(issubclass(type(v), float) for v in color)
         and len(color) == 4
         and (all(0 <= v <= 255 for v in color) or all(0 <= v <= 1 for v in color))
     ):
         return color
     elif (
         isinstance(color, list)
-        and all(issubclass(type(v), int | float) for v in color)
+        and all(issubclass(type(v), float) for v in color)
         and len(color) == 3
         and all(0 <= v <= 255 for v in color)
     ):
-        return color + [255]
+        return color + [255.0]
     # rgbf or rgbaf
     # if (
     #     isinstance(color, list)
-    #     and all(issubclass(type(v), int | float) for v in color)
+    #     and all(issubclass(type(v), float) for v in color)
     #     and (3 <= len(color) <= 4)
     #     and not all(0 <= v <= 1 for v in color)
     # ):
     #     raise TypeError("RGBF or RGBAF values must be between 0 and 1")
     elif (
         isinstance(color, list)
-        and all(issubclass(type(v), int | float) for v in color)
+        and all(issubclass(type(v), float) for v in color)
         and len(color) == 3
         and all(0 <= v <= 1 for v in color)
     ):
@@ -143,7 +143,7 @@ class RgbafValue(BaseCZMLObject):
 
     """
 
-    values: list[float] | list[int]
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -183,7 +183,7 @@ class RgbaValue(BaseCZMLObject):
 
     """
 
-    values: list[float] | list[int]
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -197,7 +197,7 @@ class RgbaValue(BaseCZMLObject):
             )
 
         if len(self.values) == num_coords and not all(
-            isinstance(val, int) and 0 <= val <= 255 for val in self.values
+            isinstance(val, float) and 0 <= val <= 255 for val in self.values
         ):
             raise TypeError("Color values must be integers in the range 0-255.")
 
@@ -205,7 +205,7 @@ class RgbaValue(BaseCZMLObject):
             for i in range(0, len(self.values), num_coords + 1):
                 v = self.values[i + 1 : i + num_coords + 1]
 
-                if not all(isinstance(val, int) and 0 <= val <= 255 for val in v):
+                if not all(isinstance(val, float) and 0 <= val <= 255 for val in v):
                     raise TypeError("Color values must be integers in the range 0-255.")
         return self
 
@@ -246,7 +246,7 @@ class Cartesian3Value(BaseCZMLObject):
 
     """
 
-    values: None | list[Any] = Field(default=None)
+    values: None | list[float] = Field(default=None)
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -263,7 +263,7 @@ class Cartesian3Value(BaseCZMLObject):
         return self
 
     @model_serializer
-    def custom_serializer(self) -> list[Any]:
+    def custom_serializer(self) -> list[float]:
         if self.values is None:
             return []
         return list(self.values)
@@ -279,7 +279,7 @@ class Cartesian2Value(BaseCZMLObject):
 
     """
 
-    values: None | list[Any] = Field(default=None)
+    values: None | list[float] = Field(default=None)
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -313,7 +313,7 @@ class CartographicRadiansValue(BaseCZMLObject):
 
     """
 
-    values: None | list[Any] = Field(default=None)
+    values: None | list[float] = Field(default=None)
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -347,7 +347,7 @@ class CartographicDegreesValue(BaseCZMLObject):
 
     """
 
-    values: None | list[Any] = Field(default=None)
+    values: None | list[float] = Field(default=None)
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -364,7 +364,7 @@ class CartographicDegreesValue(BaseCZMLObject):
         return self
 
     @model_serializer
-    def custom_serializer(self) -> list[Any]:
+    def custom_serializer(self) -> list[float]:
         if self.values is None:
             return []
         return self.values
@@ -387,7 +387,7 @@ class CartographicRadiansListValue(BaseCZMLObject):
     """A list of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...],
     where Longitude and Latitude are in radians and Height is in meters."""
 
-    values: list[float] | list[int]
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -407,7 +407,7 @@ class CartographicDegreesListValue(BaseCZMLObject):
     """A list of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...],
     where Longitude and Latitude are in degrees and Height is in meters."""
 
-    values: list[float] | list[int]
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -430,7 +430,7 @@ class DistanceDisplayConditionValue(BaseCZMLObject):
     where Time is an ISO 8601 date and time string or seconds since epoch.
     """
 
-    values: list[float] | list[int]
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -454,7 +454,7 @@ class NearFarScalarValue(BaseCZMLObject):
     FarDistance, FarValue, ...], where Time is an ISO 8601 date and time string or seconds since epoch.
     """
 
-    values: list[float] | list[int]
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -538,7 +538,7 @@ class UnitQuaternionValue(BaseCZMLObject):
 
     """
 
-    values: list[float] | list[int]
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -567,7 +567,7 @@ class EpochValue(BaseCZMLObject):
 class NumberValue(BaseCZMLObject):
     """A single number, or a list of number pairs signifying the time and representative value."""
 
-    values: int | float | list[float] | list[int]
+    values: int | float | list[float] | int | list[int]
 
     @model_serializer
     def custom_serializer(self):
