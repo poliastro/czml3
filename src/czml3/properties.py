@@ -185,42 +185,6 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
     def is_valid(cls, color):
         return get_color(color)
 
-    # @classmethod
-    # def from_list(cls, color):
-    #     if all(issubclass(type(v), int) for v in color):
-    #         color = color + [255] if len(color) == 3 else color[:]
-    #         return cls(rgba=RgbaValue(values=color))
-    #     else:
-    #         color = color + [1.0] if len(color) == 3 else color[:]
-    #         return cls(rgbaf=RgbafValue(values=color))
-
-    # @classmethod
-    # def from_tuple(cls, color):
-    #     return cls.from_list(list(color))
-
-    # @classmethod
-    # def from_hex(cls, color):
-    #     if color > 0xFFFFFF:
-    #         values = [
-    #             (color & 0xFF000000) >> 24,
-    #             (color & 0x00FF0000) >> 16,
-    #             (color & 0x0000FF00) >> 8,
-    #             (color & 0x000000FF) >> 0,
-    #         ]
-    #     else:
-    #         values = [
-    #             (color & 0xFF0000) >> 16,
-    #             (color & 0x00FF00) >> 8,
-    #             (color & 0x0000FF) >> 0,
-    #             0xFF,
-    #         ]
-
-    #     return cls.from_list(values)
-
-    # @classmethod
-    # def from_str(cls, color):
-    #     return cls.from_hex(int(color.rsplit("#")[-1], 16))
-
 
 class Position(BaseCZMLObject, Interpolatable, Deletable):
     """Defines a position. The position can optionally vary over time."""
