@@ -612,6 +612,7 @@ def test_packet_polygon():
 
     assert str(packet) == expected_result
 
+
 def test_different_IDs():
     p1 = Packet()
     p2 = Packet()

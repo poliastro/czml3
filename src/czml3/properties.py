@@ -454,12 +454,8 @@ class PositionListOfLists(BaseCZMLObject, Deletable):
 
     referenceFrame: None | str | list[str] = Field(default=None)
     cartesian: None | Cartesian3Value = Field(default=None)
-    cartographicRadians: (
-        None | list[float] | list[list[float]]
-    ) = Field(default=None)
-    cartographicDegrees: (
-        None | list[float] | list[list[float]]
-    ) = Field(default=None)
+    cartographicRadians: None | list[float] | list[list[float]] = Field(default=None)
+    cartographicDegrees: None | list[float] | list[list[float]] = Field(default=None)
     references: None | str | list[str] = Field(default=None)
 
 
@@ -468,12 +464,12 @@ class PositionList(BaseCZMLObject, Interpolatable, Deletable):
 
     referenceFrame: None | str | list[str] = Field(default=None)
     cartesian: None | Cartesian3Value | list[float] = Field(default=None)
-    cartographicRadians: (
-        None | list[float] | CartographicRadiansListValue
-    ) = Field(default=None)
-    cartographicDegrees: (
-        None | list[float] | CartographicDegreesListValue
-    ) = Field(default=None)
+    cartographicRadians: None | list[float] | CartographicRadiansListValue = Field(
+        default=None
+    )
+    cartographicDegrees: None | list[float] | CartographicDegreesListValue = Field(
+        default=None
+    )
     references: None | str | list[str] = Field(default=None)
     interval: None | TimeInterval = Field(default=None)
     epoch: None | str | dt.datetime = Field(default=None)  # note: not documented
@@ -712,9 +708,7 @@ class NearFarScalar(BaseCZMLObject, Interpolatable, Deletable):
     less than the near distance or greater than the far distance, respectively.
     """
 
-    nearFarScalar: None | list[float] | NearFarScalarValue = Field(
-        default=None
-    )
+    nearFarScalar: None | list[float] | NearFarScalarValue = Field(default=None)
     reference: None | str = Field(default=None)
 
     @field_validator("reference")
@@ -748,9 +742,7 @@ class Orientation(BaseCZMLObject, Interpolatable, Deletable):
 
     """
 
-    unitQuaternion: None | list[float] | UnitQuaternionValue = Field(
-        default=None
-    )
+    unitQuaternion: None | list[float] | UnitQuaternionValue = Field(default=None)
     reference: None | str = Field(default=None)
     velocityReference: None | str = Field(default=None)
 

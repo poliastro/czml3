@@ -22,7 +22,7 @@ else:
 TYPE_MAPPING = {bool: "boolean"}
 
 
-def get_color(color) -> list[float]:
+def get_color(color) -> list[float] | None:
     """Determines if the input is a valid color"""
     if color is None or (
         isinstance(color, list)
