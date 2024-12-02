@@ -532,6 +532,27 @@ class PositionList(BaseCZMLObject, Interpolatable, Deletable):
         default=None
     )  # note: not documented
 
+    @field_validator("cartesian")
+    @classmethod
+    def check_cartesian(cls, r):
+        if isinstance(r, list):
+            check_num_points(3, True, r)
+        elif isinstance(r, Cartesian3Value) and r.values is not None:
+            check_num_points(3, True, r.values)
+        return r
+
+    @field_validator("cartographicRadians")
+    @classmethod
+    def check_cartographicRadians(cls, r):
+        check_num_points(3, True, r)
+        return r
+
+    @field_validator("cartographicDegrees")
+    @classmethod
+    def check_cartographicDegrees(cls, r):
+        check_num_points(3, True, r)
+        return r
+
     @field_validator("epoch")
     @classmethod
     def check(cls, e):
