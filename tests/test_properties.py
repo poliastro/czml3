@@ -629,7 +629,7 @@ def test_positionlist_has_given_epoch():
         dt.datetime(2019, 6, 11, 12, 26, 58, tzinfo=dt.timezone.utc)
     )
 
-    pos = PositionList(epoch=expected_epoch, cartesian=[])
+    pos = PositionList(epoch=expected_epoch, cartesian=[0, 0, 0])
 
     assert pos.epoch == expected_epoch
 
@@ -1046,7 +1046,7 @@ def test_tileset():
     assert str(tileset) == expected_result
 
 
-def test_check_classes_with_references():
+def test_check_classes_with_references_ViewFrom():
     assert (
         str(ViewFrom(cartesian=[0, 0, 0], reference="this#that"))
         == """{
@@ -1058,6 +1058,9 @@ def test_check_classes_with_references():
     "reference": "this#that"
 }"""
     )
+
+
+def test_check_classes_with_references_EllipsoidRadii():
     assert (
         str(EllipsoidRadii(cartesian=[0, 0, 0], reference="this#that"))
         == """{
@@ -1069,6 +1072,9 @@ def test_check_classes_with_references():
     "reference": "this#that"
 }"""
     )
+
+
+def test_check_classes_with_references_ArcType():
     assert (
         str(ArcType(arcType=ArcTypes.GEODESIC, reference="this#that"))
         == """{
@@ -1076,6 +1082,9 @@ def test_check_classes_with_references():
     "reference": "this#that"
 }"""
     )
+
+
+def test_check_classes_with_references_Position():
     assert (
         str(Position(cartesian=[0, 0, 0], reference="this#that"))
         == """{
@@ -1087,6 +1096,9 @@ def test_check_classes_with_references():
     "reference": "this#that"
 }"""
     )
+
+
+def test_check_classes_with_references_Orientation():
     assert (
         str(Orientation(unitQuaternion=[0, 0, 0, 0], reference="this#that"))
         == """{
@@ -1099,6 +1111,9 @@ def test_check_classes_with_references():
     "reference": "this#that"
 }"""
     )
+
+
+def test_check_classes_with_references_NearFarScalar():
     assert (
         str(NearFarScalar(nearFarScalar=[0, 0], reference="this#that"))
         == """{
@@ -1109,6 +1124,9 @@ def test_check_classes_with_references():
     "reference": "this#that"
 }"""
     )
+
+
+def test_check_classes_with_references_CornerType():
     assert (
         str(CornerType(cornerType=CornerTypes.BEVELED, reference="this#that"))
         == """{
@@ -1116,6 +1134,9 @@ def test_check_classes_with_references():
     "reference": "this#that"
 }"""
     )
+
+
+def test_check_classes_with_references_ColorBlendMode():
     assert (
         str(
             ColorBlendMode(
@@ -1127,6 +1148,9 @@ def test_check_classes_with_references():
     "reference": "this#that"
 }"""
     )
+
+
+def test_check_classes_with_references_HeightReference():
     assert (
         str(
             HeightReference(
@@ -1138,6 +1162,9 @@ def test_check_classes_with_references():
     "reference": "this#that"
 }"""
     )
+
+
+def test_check_classes_with_references_EyeOffset():
     assert (
         str(EyeOffset(cartesian=[0, 0], reference="this#that"))
         == """{
@@ -1148,6 +1175,9 @@ def test_check_classes_with_references():
     "reference": "this#that"
 }"""
     )
+
+
+def test_check_classes_with_references_RectangleCoordinates():
     assert (
         str(RectangleCoordinates(wsen=[0, 0], reference="this#that"))
         == """{
@@ -1158,6 +1188,9 @@ def test_check_classes_with_references():
     "reference": "this#that"
 }"""
     )
+
+
+def test_check_classes_with_references_BoxDimensions():
     assert (
         str(
             BoxDimensions(
@@ -1173,6 +1206,9 @@ def test_check_classes_with_references():
     "reference": "this#that"
 }"""
     )
+
+
+def test_check_classes_with_references_DistanceDisplayCondition():
     assert (
         str(
             DistanceDisplayCondition(
@@ -1191,6 +1227,9 @@ def test_check_classes_with_references():
     "reference": "this#that"
 }"""
     )
+
+
+def test_check_classes_with_references_ClassificationType():
     assert (
         str(
             ClassificationType(
@@ -1202,6 +1241,9 @@ def test_check_classes_with_references():
     "reference": "this#that"
 }"""
     )
+
+
+def test_check_classes_with_references_ShadowMode():
     assert (
         str(ShadowMode(shadowMode=ShadowModes.CAST_ONLY, reference="this#that"))
         == """{
@@ -1225,3 +1267,74 @@ def test_different_positions():
     pos2 = Position(cartographicRadians=[1, 2, 3])
     assert pos1 != pos2
     assert str(pos1) != str(pos2)
+
+
+def test_positionlist_bad_cartesian():
+    with pytest.raises(TypeError):
+        PositionList(cartesian=[0, 0, 0, 0, 0])
+    with pytest.raises(TypeError):
+        PositionList(cartesian=[0, 0])
+    with pytest.raises(TypeError):
+        PositionList(cartesian=[0])
+    with pytest.raises(TypeError):
+        PositionList(cartesian=[])
+
+
+def test_positionlist_bad_cartographicRadians():
+    with pytest.raises(TypeError):
+        PositionList(cartographicRadians=[0, 0, 0, 0, 0])
+    with pytest.raises(TypeError):
+        PositionList(cartographicRadians=[0, 0])
+    with pytest.raises(TypeError):
+        PositionList(cartographicRadians=[0])
+    with pytest.raises(TypeError):
+        PositionList(cartographicRadians=[])
+
+
+def test_positionlist_bad_cartographicDegrees():
+    with pytest.raises(TypeError):
+        PositionList(cartographicDegrees=[0, 0, 0, 0, 0])
+    with pytest.raises(TypeError):
+        PositionList(cartographicDegrees=[0, 0])
+    with pytest.raises(TypeError):
+        PositionList(cartographicDegrees=[0])
+    with pytest.raises(TypeError):
+        PositionList(cartographicDegrees=[])
+
+
+def test_position_bad_cartesian():
+    with pytest.raises(TypeError):
+        Position(cartesian=[0, 0])
+    with pytest.raises(TypeError):
+        Position(cartesian=[0])
+    with pytest.raises(TypeError):
+        Position(cartesian=[])
+
+
+def test_position_bad_cartographicRadians():
+    with pytest.raises(TypeError):
+        Position(cartographicRadians=[0, 0])
+    with pytest.raises(TypeError):
+        Position(cartographicRadians=[0])
+    with pytest.raises(TypeError):
+        Position(cartographicRadians=[])
+
+
+def test_position_bad_cartographicDegrees():
+    with pytest.raises(TypeError):
+        Position(cartographicDegrees=[0, 0])
+    with pytest.raises(TypeError):
+        Position(cartographicDegrees=[0])
+    with pytest.raises(TypeError):
+        Position(cartographicDegrees=[])
+
+
+def test_position_bad_cartesianVelocity():
+    with pytest.raises(TypeError):
+        Position(cartesianVelocity=[0, 0, 0, 0])
+    with pytest.raises(TypeError):
+        Position(cartesianVelocity=[0, 0])
+    with pytest.raises(TypeError):
+        Position(cartesianVelocity=[0])
+    with pytest.raises(TypeError):
+        Position(cartesianVelocity=[])

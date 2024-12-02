@@ -29,6 +29,7 @@ from .enums import (
 )
 from .types import (
     Cartesian2Value,
+    Cartesian3ListValue,
     Cartesian3Value,
     Cartesian3VelocityValue,
     CartographicDegreesListValue,
@@ -42,7 +43,6 @@ from .types import (
     Sequence,
     TimeInterval,
     UnitQuaternionValue,
-    check_num_points,
     check_reference,
     format_datetime_like,
     get_color,
@@ -239,30 +239,28 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
     @classmethod
     def check_cartesian(cls, r):
         if isinstance(r, list):
-            check_num_points(3, False, r)
-        elif isinstance(r, Cartesian3Value) and r.values is not None:
-            check_num_points(3, False, r.values)
+            return Cartesian3Value(values=r)
         return r
 
     @field_validator("cartographicRadians")
     @classmethod
     def check_cartographicRadians(cls, r):
-        check_num_points(3, False, r)
+        if isinstance(r, list):
+            return CartographicRadiansValue(values=r)
         return r
 
     @field_validator("cartographicDegrees")
     @classmethod
     def check_cartographicDegrees(cls, r):
-        check_num_points(3, False, r)
+        if isinstance(r, list):
+            return CartographicDegreesValue(values=r)
         return r
 
     @field_validator("cartesianVelocity")
     @classmethod
     def check_cartesianVelocity(cls, r):
         if isinstance(r, list):
-            check_num_points(6, False, r)
-        elif isinstance(r, Cartesian3VelocityValue) and r.values is not None:
-            check_num_points(6, False, r.values)
+            return Cartesian3VelocityValue(values=r)
         return r
 
     @field_validator("epoch")
@@ -519,7 +517,7 @@ class PositionList(BaseCZMLObject, Interpolatable, Deletable):
     """A list of positions."""
 
     referenceFrame: None | str | list[str] | Sequence = Field(default=None)
-    cartesian: None | Cartesian3Value | list[float] | Sequence = Field(default=None)
+    cartesian: None | Cartesian3ListValue | list[float] | Sequence = Field(default=None)
     cartographicRadians: (
         None | list[float] | CartographicRadiansListValue | Sequence
     ) = Field(default=None)
@@ -536,21 +534,21 @@ class PositionList(BaseCZMLObject, Interpolatable, Deletable):
     @classmethod
     def check_cartesian(cls, r):
         if isinstance(r, list):
-            check_num_points(3, True, r)
-        elif isinstance(r, Cartesian3Value) and r.values is not None:
-            check_num_points(3, True, r.values)
+            return Cartesian3Value(values=r)
         return r
 
     @field_validator("cartographicRadians")
     @classmethod
     def check_cartographicRadians(cls, r):
-        check_num_points(3, True, r)
+        if isinstance(r, list):
+            return CartographicRadiansListValue(values=r)
         return r
 
     @field_validator("cartographicDegrees")
     @classmethod
     def check_cartographicDegrees(cls, r):
-        check_num_points(3, True, r)
+        if isinstance(r, list):
+            return CartographicDegreesListValue(values=r)
         return r
 
     @field_validator("epoch")

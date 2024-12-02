@@ -94,17 +94,25 @@ def get_color(color) -> list[float] | None:
     raise TypeError("Colour type not supported")
 
 
-def check_num_points(num_points: int, supports_time: bool, values: list[Any]):
+def check_num_points(
+    num_points: int, supports_multiples: bool, supports_time: bool, values: list[Any]
+):
+    assert not (supports_multiples and supports_time)
     if not (
         len(values) == num_points
-        or (supports_time and len(values) % (num_points + 1) == 0)
+        or (supports_multiples and len(values) % (num_points) == 0 and len(values) > 0)
+        or (supports_time and len(values) % (num_points + 1) == 0 and len(values) > 0)
     ):
-        if not supports_time:
-            raise TypeError(f"Input values must have {num_points}")
-        else:
+        if supports_time:
             raise TypeError(
                 f"Input values must have either {num_points} or N * {num_points + 1} values, where N is the number of time-tagged samples."
             )
+        elif supports_multiples:
+            raise TypeError(
+                f"Input values must have either {num_points} or N * {num_points} values, where N is the number of time-tagged samples."
+            )
+        else:
+            raise TypeError(f"Input values must have {num_points}")
 
 
 def check_reference(r):
@@ -161,7 +169,7 @@ class RgbafValue(BaseCZMLObject):
     @model_validator(mode="after")
     def _check_values(self) -> Self:
         num_coords = 4
-        check_num_points(num_coords, True, self.values)
+        check_num_points(num_coords, False, True, self.values)
         if len(self.values) == num_coords:
             if not all(0 <= val <= 1 for val in self.values):
                 raise TypeError("Color values must be floats in the range 0-1.")
@@ -195,7 +203,7 @@ class RgbaValue(BaseCZMLObject):
     @model_validator(mode="after")
     def _check_values(self) -> Self:
         num_coords = 4
-        check_num_points(num_coords, True, self.values)
+        check_num_points(num_coords, False, True, self.values)
         if len(self.values) == num_coords and not all(
             isinstance(val, float) and 0 <= val <= 255 for val in self.values
         ):
@@ -252,7 +260,26 @@ class Cartesian3Value(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        check_num_points(3, True, self.values)
+        check_num_points(3, False, True, self.values)
+        return self
+
+    @model_serializer
+    def custom_serializer(self) -> list[float]:
+        if self.values is None:
+            return []
+        return list(self.values)
+
+
+class Cartesian3ListValue(BaseCZMLObject):
+    """A list of three-dimensional Cartesian values specified as [X, Y, Z, X, Y, Z, ...]"""
+
+    values: None | list[float] = Field(default=None)
+
+    @model_validator(mode="after")
+    def _check_values(self) -> Self:
+        if self.values is None:
+            return self
+        check_num_points(3, True, False, self.values)
         return self
 
     @model_serializer
@@ -278,7 +305,7 @@ class Cartesian2Value(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        check_num_points(2, True, self.values)
+        check_num_points(2, False, True, self.values)
         return self
 
     @model_serializer
@@ -305,7 +332,7 @@ class CartographicRadiansValue(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        check_num_points(3, True, self.values)
+        check_num_points(3, False, True, self.values)
         return self
 
     @model_serializer
@@ -332,7 +359,7 @@ class CartographicDegreesValue(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        check_num_points(3, True, self.values)
+        check_num_points(3, False, True, self.values)
         return self
 
     @model_serializer
@@ -359,7 +386,7 @@ class Cartesian3VelocityValue(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        check_num_points(6, True, self.values)
+        check_num_points(6, False, True, self.values)
         return self
 
     @model_serializer
@@ -390,11 +417,7 @@ class CartographicRadiansListValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        num_coords = 3
-        if len(self.values) % num_coords != 0:
-            raise TypeError(
-                f"Invalid values. Input values should be arrays of size {num_coords} * N"
-            )
+        check_num_points(3, True, False, self.values)
         return self
 
     @model_serializer
@@ -410,11 +433,7 @@ class CartographicDegreesListValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        num_coords = 3
-        if len(self.values) % num_coords != 0:
-            raise TypeError(
-                f"Invalid values. Input values should be arrays of size {num_coords} * N"
-            )
+        check_num_points(3, True, False, self.values)
         return self
 
     @model_serializer
@@ -433,6 +452,7 @@ class DistanceDisplayConditionValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
+        check_num_points(2, False, True, self.values)
         num_coords = 2
         if len(self.values) != num_coords and len(self.values) % (num_coords + 1) != 0:
             raise TypeError(
@@ -457,7 +477,7 @@ class NearFarScalarValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        check_num_points(4, True, self.values)
+        check_num_points(4, False, True, self.values)
         return self
 
     @model_serializer
@@ -534,11 +554,7 @@ class UnitQuaternionValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        num_coords = 4
-        if len(self.values) % num_coords != 0:
-            raise TypeError(
-                f"Invalid values. Input values should be arrays of size {num_coords} * N"
-            )
+        check_num_points(4, False, True, self.values)
         return self
 
     @model_serializer

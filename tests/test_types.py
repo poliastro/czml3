@@ -28,10 +28,8 @@ from czml3.types import (
 
 
 def test_invalid_near_far_scalar_value():
-    with pytest.raises(TypeError) as excinfo:
-        NearFarScalarValue(values=[0, 3.2, 1, 4, 2, 1])
-
-    assert "Input values must have either 4 or N * 5 values, " in excinfo.exconly()
+    with pytest.raises(TypeError):
+        NearFarScalarValue(values=[0, 3.2, 1, 4, 2, 1, 0])
 
 
 def test_distance_display_condition_is_invalid():
@@ -70,12 +68,8 @@ def test_cartographic_radian_list():
 
 
 def test_invalid_cartograpic_radian_list():
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         CartographicRadiansListValue(values=[1])
-    assert (
-        "Invalid values. Input values should be arrays of size 3 * N"
-        in excinfo.exconly()
-    )
 
 
 def test_cartograpic_degree_list():
@@ -89,12 +83,8 @@ def test_cartograpic_degree_list():
 
 
 def test_invalid_cartograpic_degree_list():
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         CartographicDegreesListValue(values=[15, 25, 50, 30])
-    assert (
-        "Invalid values. Input values should be arrays of size 3 * N"
-        in excinfo.exconly()
-    )
 
 
 @pytest.mark.parametrize("values", [[2, 2], [5, 5, 5, 5, 5]])
@@ -312,7 +302,7 @@ def test_astropy_time_format():
 
 def test_quaternion_value_is_invalid():
     with pytest.raises(TypeError):
-        UnitQuaternionValue(values=[0, 0, 0, 1, 0])
+        UnitQuaternionValue(values=[0, 0, 0, 1, 0, 0])
 
 
 def test_quaternion_value():
