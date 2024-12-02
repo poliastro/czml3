@@ -22,6 +22,8 @@ from .properties import (
     Polygon,
     Polyline,
     Position,
+    PositionList,
+    PositionListOfLists,
     Rectangle,
     Tileset,
     ViewFrom,
@@ -58,7 +60,7 @@ class Packet(BaseCZMLObject):
         default=None
     )
     properties: None | Any = Field(default=None)
-    position: None | Position = Field(default=None)
+    position: None | Position | PositionList | PositionListOfLists = Field(default=None)
     orientation: None | Orientation = Field(default=None)
     viewFrom: None | ViewFrom = Field(default=None)
     billboard: None | Billboard = Field(default=None)
