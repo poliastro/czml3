@@ -370,6 +370,40 @@ class CartographicDegreesValue(BaseCZMLObject):
         return self.values
 
 
+class Cartesian3VelocityValue(BaseCZMLObject):
+    """A geodetic, WGS84 position specified as [Longitude, Latitude, Height].
+
+    Longitude and Latitude are in degrees and Height is in meters.
+    If the array has three elements, the value is constant.
+    If it has four or more elements, they are time-tagged samples
+    arranged as [Time, Longitude, Latitude, Height, Time, Longitude, Latitude, Height, ...],
+    where Time is an ISO 8601 date and time string or seconds since epoch.
+
+    """
+
+    values: None | list[float] = Field(default=None)
+
+    @model_validator(mode="after")
+    def _check_values(self) -> Self:
+        if self.values is None:
+            return self
+        num_coords = 6
+        if not (
+            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
+        ):
+            raise TypeError(
+                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
+                "where N is the number of time-tagged samples."
+            )
+        return self
+
+    @model_serializer
+    def custom_serializer(self) -> list[float]:
+        if self.values is None:
+            return []
+        return self.values
+
+
 class StringValue(BaseCZMLObject):
     """A string value.
 
