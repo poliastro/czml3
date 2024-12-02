@@ -368,7 +368,7 @@ def test_color_invalid_colors_rgba():
         Color(rgba=[255, 232, 300])
     with pytest.raises(TypeError):
         Color(rgba="0xFF3223324")
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         Color(rgba=-3)  # type: ignore
     with pytest.raises(ValidationError):
         Color(rgba="totally valid color")
@@ -391,7 +391,7 @@ def test_color_invalid_colors_rgbaf():
         Color(rgbaf=[255, 232, 300])
     with pytest.raises(TypeError):
         Color(rgbaf="0xFF3223324")
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         Color(rgbaf=-3)  # type: ignore
     with pytest.raises(ValidationError):
         Color(rgbaf="totally valid color")
@@ -619,7 +619,7 @@ def test_position_has_given_epoch():
         dt.datetime(2019, 6, 11, 12, 26, 58, tzinfo=dt.timezone.utc)
     )
 
-    pos = Position(epoch=expected_epoch, cartesian=[])
+    pos = Position(epoch=expected_epoch, cartesian=[0, 0, 0])
 
     assert pos.epoch == expected_epoch
 
@@ -637,10 +637,14 @@ def test_positionlist_has_given_epoch():
 def test_position_renders_epoch():
     expected_result = """{
     "epoch": "2019-03-20T12:00:00.000000Z",
-    "cartesian": []
+    "cartesian": [
+        0.0,
+        0.0,
+        0.0
+    ]
 }"""
     pos = Position(
-        epoch=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc), cartesian=[]
+        epoch=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc), cartesian=[0, 0, 0]
     )
 
     assert str(pos) == expected_result
@@ -662,11 +666,13 @@ def test_position_cartographic_degrees():
 def test_position_reference():
     expected_result = """{
     "cartesian": [
+        0.0,
+        0.0,
         0.0
     ],
     "reference": "this#satellite"
 }"""
-    pos = Position(cartesian=[0], reference="this#satellite")
+    pos = Position(cartesian=[0, 0, 0], reference="this#satellite")
 
     assert str(pos) == expected_result
 
@@ -1042,9 +1048,10 @@ def test_tileset():
 
 def test_check_classes_with_references():
     assert (
-        str(ViewFrom(cartesian=[0, 0], reference="this#that"))
+        str(ViewFrom(cartesian=[0, 0, 0], reference="this#that"))
         == """{
     "cartesian": [
+        0.0,
         0.0,
         0.0
     ],
@@ -1052,9 +1059,10 @@ def test_check_classes_with_references():
 }"""
     )
     assert (
-        str(EllipsoidRadii(cartesian=[0, 0], reference="this#that"))
+        str(EllipsoidRadii(cartesian=[0, 0, 0], reference="this#that"))
         == """{
     "cartesian": [
+        0.0,
         0.0,
         0.0
     ],
@@ -1069,9 +1077,10 @@ def test_check_classes_with_references():
 }"""
     )
     assert (
-        str(Position(cartesian=[0, 0], reference="this#that"))
+        str(Position(cartesian=[0, 0, 0], reference="this#that"))
         == """{
     "cartesian": [
+        0.0,
         0.0,
         0.0
     ],

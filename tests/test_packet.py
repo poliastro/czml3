@@ -212,7 +212,7 @@ def test_packet_dynamic_cartesian_position():
 }"""
     packet = Packet(
         id="InternationalSpaceStation",
-        position=Position(
+        position=PositionList(
             interpolationAlgorithm=InterpolationAlgorithms.LAGRANGE,
             referenceFrame=ReferenceFrames.INERTIAL,
             cartesian=[
