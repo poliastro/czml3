@@ -161,13 +161,7 @@ class RgbafValue(BaseCZMLObject):
     @model_validator(mode="after")
     def _check_values(self) -> Self:
         num_coords = 4
-        if not (
-            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
-        ):
-            raise TypeError(
-                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
-                "where N is the number of time-tagged samples."
-            )
+        check_num_points(num_coords, True, self.values)
         if len(self.values) == num_coords:
             if not all(0 <= val <= 1 for val in self.values):
                 raise TypeError("Color values must be floats in the range 0-1.")
@@ -201,14 +195,7 @@ class RgbaValue(BaseCZMLObject):
     @model_validator(mode="after")
     def _check_values(self) -> Self:
         num_coords = 4
-        if not (
-            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
-        ):
-            raise TypeError(
-                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
-                "where N is the number of time-tagged samples."
-            )
-
+        check_num_points(num_coords, True, self.values)
         if len(self.values) == num_coords and not all(
             isinstance(val, float) and 0 <= val <= 255 for val in self.values
         ):
@@ -265,14 +252,7 @@ class Cartesian3Value(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        num_coords = 3
-        if not (
-            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
-        ):
-            raise TypeError(
-                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
-                "where N is the number of time-tagged samples."
-            )
+        check_num_points(3, True, self.values)
         return self
 
     @model_serializer
@@ -298,14 +278,7 @@ class Cartesian2Value(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        num_coords = 2
-        if not (
-            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
-        ):
-            raise TypeError(
-                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
-                "where N is the number of time-tagged samples."
-            )
+        check_num_points(2, True, self.values)
         return self
 
     @model_serializer
@@ -332,14 +305,7 @@ class CartographicRadiansValue(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        num_coords = 3
-        if not (
-            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
-        ):
-            raise TypeError(
-                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
-                "where N is the number of time-tagged samples."
-            )
+        check_num_points(3, True, self.values)
         return self
 
     @model_serializer
@@ -366,14 +332,7 @@ class CartographicDegreesValue(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        num_coords = 3
-        if not (
-            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
-        ):
-            raise TypeError(
-                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
-                "where N is the number of time-tagged samples."
-            )
+        check_num_points(3, True, self.values)
         return self
 
     @model_serializer
@@ -400,14 +359,7 @@ class Cartesian3VelocityValue(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        num_coords = 6
-        if not (
-            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
-        ):
-            raise TypeError(
-                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
-                "where N is the number of time-tagged samples."
-            )
+        check_num_points(6, True, self.values)
         return self
 
     @model_serializer
@@ -505,14 +457,7 @@ class NearFarScalarValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        num_coords = 4
-        if not (
-            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
-        ):
-            raise TypeError(
-                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
-                "where N is the number of time-tagged samples."
-            )
+        check_num_points(4, True, self.values)
         return self
 
     @model_serializer
