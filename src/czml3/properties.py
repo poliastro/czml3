@@ -30,8 +30,11 @@ from .enums import (
 from .types import (
     Cartesian2Value,
     Cartesian3Value,
+    Cartesian3VelocityValue,
     CartographicDegreesListValue,
+    CartographicDegreesValue,
     CartographicRadiansListValue,
+    CartographicRadiansValue,
     DistanceDisplayConditionValue,
     NearFarScalarValue,
     RgbafValue,
@@ -39,6 +42,7 @@ from .types import (
     Sequence,
     TimeInterval,
     UnitQuaternionValue,
+    check_num_points,
     check_reference,
     format_datetime_like,
     get_color,
@@ -191,9 +195,15 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
 
     referenceFrame: None | str = Field(default=None)
     cartesian: None | Cartesian3Value | list[float] = Field(default=None)
-    cartographicRadians: None | list[float] = Field(default=None)
-    cartographicDegrees: None | list[float] = Field(default=None)
-    cartesianVelocity: None | list[float] = Field(default=None)
+    cartographicRadians: None | CartographicRadiansValue | list[float] = Field(
+        default=None
+    )
+    cartographicDegrees: None | CartographicDegreesValue | list[float] = Field(
+        default=None
+    )
+    cartesianVelocity: None | Cartesian3VelocityValue | list[float] = Field(
+        default=None
+    )
     reference: None | str = Field(default=None)
     interval: None | TimeInterval = Field(default=None)
     epoch: None | str | dt.datetime = Field(default=None)
@@ -223,6 +233,36 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
     @classmethod
     def check_ref(cls, r):
         check_reference(r)
+        return r
+
+    @field_validator("cartesian")
+    @classmethod
+    def check_cartesian(cls, r):
+        if isinstance(r, list):
+            check_num_points(3, False, r)
+        elif isinstance(r, Cartesian3Value) and r.values is not None:
+            check_num_points(3, False, r.values)
+        return r
+
+    @field_validator("cartographicRadians")
+    @classmethod
+    def check_cartographicRadians(cls, r):
+        check_num_points(3, False, r)
+        return r
+
+    @field_validator("cartographicDegrees")
+    @classmethod
+    def check_cartographicDegrees(cls, r):
+        check_num_points(3, False, r)
+        return r
+
+    @field_validator("cartesianVelocity")
+    @classmethod
+    def check_cartesianVelocity(cls, r):
+        if isinstance(r, list):
+            check_num_points(6, False, r)
+        elif isinstance(r, Cartesian3VelocityValue) and r.values is not None:
+            check_num_points(6, False, r.values)
         return r
 
     @field_validator("epoch")

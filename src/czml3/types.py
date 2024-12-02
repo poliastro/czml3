@@ -94,6 +94,19 @@ def get_color(color) -> list[float] | None:
     raise TypeError("Colour type not supported")
 
 
+def check_num_points(num_points: int, supports_time: bool, values: list[Any]):
+    if not (
+        len(values) == num_points
+        or (supports_time and len(values) % (num_points + 1) == 0)
+    ):
+        if not supports_time:
+            raise TypeError(f"Input values must have {num_points}")
+        else:
+            raise TypeError(
+                f"Input values must have either {num_points} or N * {num_points + 1} values, where N is the number of time-tagged samples."
+            )
+
+
 def check_reference(r):
     if r is None:
         return
