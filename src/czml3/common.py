@@ -18,9 +18,9 @@ class Interpolatable(BaseModel):
     The interpolation happens over provided time-tagged samples.
     """
 
-    epoch: None | str | dt.datetime = None
-    interpolationAlgorithm: None | InterpolationAlgorithms = None
-    interpolationDegree: None | int = None
+    epoch: None | str | dt.datetime | Sequence = None
+    interpolationAlgorithm: None | InterpolationAlgorithms | Sequence = None
+    interpolationDegree: None | int | Sequence = None
 
     @field_validator("epoch")
     @classmethod
