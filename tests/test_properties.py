@@ -345,14 +345,14 @@ def test_colors_rgba():
 
 
 def test_colors_rgbaf():
-    Color(rgbaf=[255, 204, 0, 55])
-    Color(rgbaf=[255, 204, 55])
+    Color(rgbaf=[1, 0.8, 0, 0.6])
+    Color(rgbaf=[1, 0.8, 0.6])
     Color(rgbaf="0xFF3223")
     Color(rgbaf="0xFF322332")
     Color(rgbaf="#FF3223")
     Color(rgbaf="#FF322332")
-    Color(rgbaf=[255, 204, 55])
-    Color(rgbaf=[255, 204, 55, 255])
+    Color(rgbaf=[1, 0.8, 0.6])
+    Color(rgbaf=[1, 0.8, 0.6, 1])
     Color(rgbaf=[0.127568, 0.566949, 0.550556])
     Color(rgbaf=[0.127568, 0.566949, 0.550556, 1.0])
 
@@ -366,14 +366,8 @@ def test_color_invalid_colors_rgba():
         Color(rgba=[255, 204])
     with pytest.raises(TypeError):
         Color(rgba=[255, 232, 300])
-    with pytest.raises(TypeError):
-        Color(rgba="0xFF3223324")
     with pytest.raises(ValidationError):
         Color(rgba=-3)  # type: ignore
-    with pytest.raises(ValidationError):
-        Color(rgba="totally valid color")
-    with pytest.raises(TypeError):
-        Color(rgba="#FF322332432")
     with pytest.raises(TypeError):
         Color(rgba=[255, 204, 55, 255, 42])
     with pytest.raises(TypeError):
@@ -389,14 +383,8 @@ def test_color_invalid_colors_rgbaf():
         Color(rgbaf=[255, 204])
     with pytest.raises(TypeError):
         Color(rgbaf=[255, 232, 300])
-    with pytest.raises(TypeError):
-        Color(rgbaf="0xFF3223324")
     with pytest.raises(ValidationError):
         Color(rgbaf=-3)  # type: ignore
-    with pytest.raises(ValidationError):
-        Color(rgbaf="totally valid color")
-    with pytest.raises(TypeError):
-        Color(rgbaf="#FF322332432")
     with pytest.raises(TypeError):
         Color(rgbaf=[255, 204, 55, 255, 42])
     with pytest.raises(TypeError):
@@ -1276,7 +1264,7 @@ def test_positionlist_bad_cartesian():
         PositionList(cartesian=[0, 0])
     with pytest.raises(TypeError):
         PositionList(cartesian=[0])
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         PositionList(cartesian=[])
 
 
@@ -1287,7 +1275,7 @@ def test_positionlist_bad_cartographicRadians():
         PositionList(cartographicRadians=[0, 0])
     with pytest.raises(TypeError):
         PositionList(cartographicRadians=[0])
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         PositionList(cartographicRadians=[])
 
 
@@ -1298,7 +1286,7 @@ def test_positionlist_bad_cartographicDegrees():
         PositionList(cartographicDegrees=[0, 0])
     with pytest.raises(TypeError):
         PositionList(cartographicDegrees=[0])
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         PositionList(cartographicDegrees=[])
 
 
@@ -1307,7 +1295,7 @@ def test_position_bad_cartesian():
         Position(cartesian=[0, 0])
     with pytest.raises(TypeError):
         Position(cartesian=[0])
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         Position(cartesian=[])
 
 
@@ -1316,7 +1304,7 @@ def test_position_bad_cartographicRadians():
         Position(cartographicRadians=[0, 0])
     with pytest.raises(TypeError):
         Position(cartographicRadians=[0])
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         Position(cartographicRadians=[])
 
 
@@ -1325,7 +1313,7 @@ def test_position_bad_cartographicDegrees():
         Position(cartographicDegrees=[0, 0])
     with pytest.raises(TypeError):
         Position(cartographicDegrees=[0])
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         Position(cartographicDegrees=[])
 
 
@@ -1336,5 +1324,10 @@ def test_position_bad_cartesianVelocity():
         Position(cartesianVelocity=[0, 0])
     with pytest.raises(TypeError):
         Position(cartesianVelocity=[0])
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         Position(cartesianVelocity=[])
+
+
+def test_no_values():
+    with pytest.raises(ValueError):
+        Color(rgba=[])

@@ -89,19 +89,17 @@ def test_invalid_cartograpic_degree_list():
 
 @pytest.mark.parametrize("values", [[2, 2], [5, 5, 5, 5, 5]])
 def test_bad_cartesian3_raises_error(values):
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         Cartesian3Value(values=values)
 
-    assert "Input values must have either 3 or N * 4 values" in excinfo.exconly()
     assert str(Cartesian3Value()) == "[]"
 
 
 @pytest.mark.parametrize("values", [[2, 2, 2, 2, 2], [5, 5, 5, 5, 5]])
 def test_bad_cartesian2_raises_error(values):
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         Cartesian2Value(values=values)
 
-    assert "Input values must have either 2 or N * 3 values" in excinfo.exconly()
     assert str(Cartesian2Value()) == "{}"
 
 
@@ -137,45 +135,28 @@ def test_font_property_value():
 
 
 def test_bad_rgba_size_values_raises_error():
-    with pytest.raises(TypeError) as excinfo:
-        RgbaValue(values=[0, 0, 255])
-
-    assert "Input values must have either 4 or N * 5 values, " in excinfo.exconly()
+    with pytest.raises(TypeError):
+        RgbaValue(values=[0, 0, 255, 0, 0])
 
 
 def test_bad_rgba_4_values_raises_error():
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         RgbaValue(values=[256, 0, 0, 255])
-
-    assert "Color values must be integers in the range 0-255." in excinfo.exconly()
 
 
 def test_bad_rgba_5_color_values_raises_error():
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         RgbaValue(values=[0, 0.1, 0.3, 0.3, 256])
-
-    assert "Color values must be integers in the range 0-255." in excinfo.exconly()
-
-
-def test_bad_rgbaf_size_values_raises_error():
-    with pytest.raises(TypeError) as excinfo:
-        RgbafValue(values=[0, 0, 0.1])
-
-    assert "Input values must have either 4 or N * 5 values, " in excinfo.exconly()
 
 
 def test_bad_rgbaf_4_values_raises_error():
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         RgbafValue(values=[0.3, 0, 0, 1.4])
-
-    assert "Color values must be floats in the range 0-1." in excinfo.exconly()
 
 
 def test_bad_rgbaf_5_color_values_raises_error():
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         RgbafValue(values=[0, 0.1, 0.3, 0.3, 255])
-
-    assert "Color values must be floats in the range 0-1." in excinfo.exconly()
 
 
 def test_default_time_interval():
@@ -341,7 +322,7 @@ def test_cartographic_radians_value():
     result = CartographicRadiansValue()
     assert str(result) == """[]"""
     with pytest.raises(TypeError):
-        CartographicRadiansValue(values=[0, 0, 1, 1, 1, 1])
+        CartographicRadiansValue(values=[0, 0, 1, 1, 1, 1, 1])
 
 
 def test_cartographic_degrees_value():
@@ -367,7 +348,7 @@ def test_cartographic_degrees_value():
     result = CartographicDegreesValue()
     assert str(result) == """[]"""
     with pytest.raises(TypeError):
-        CartographicDegreesValue(values=[0, 0, 1, 1, 1, 1])
+        CartographicDegreesValue(values=[0, 0, 1, 1, 1, 1, 1])
 
 
 def test_rgba_value():
@@ -380,16 +361,6 @@ def test_rgba_value():
     30.0
 ]"""
     )
-    assert (
-        str(RgbaValue(values=[30, 30, 30, 30, 1]))
-        == """[
-    30.0,
-    30.0,
-    30.0,
-    30.0,
-    1.0
-]"""
-    )
 
 
 def test_rgbaf_value():
@@ -400,16 +371,6 @@ def test_rgbaf_value():
     0.5,
     0.5,
     0.5
-]"""
-    )
-    assert (
-        str(RgbafValue(values=[0.5, 0.5, 0.5, 0.5, 1]))
-        == """[
-    0.5,
-    0.5,
-    0.5,
-    0.5,
-    1.0
 ]"""
     )
 

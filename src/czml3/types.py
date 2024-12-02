@@ -22,97 +22,43 @@ else:
 TYPE_MAPPING = {bool: "boolean"}
 
 
-def get_color(color) -> list[float] | None:
+def get_color(color: None | list[float], max_val: float) -> list[float] | None:
     """Determines if the input is a valid color"""
+    if isinstance(color, list) and len(color) == 0:
+        raise ValueError("Length of colours must be non-zero")
     if color is None or (
         isinstance(color, list)
-        and all(issubclass(type(v), float) for v in color)
         and len(color) == 4
-        and (all(0 <= v <= 255 for v in color) or all(0 <= v <= 1 for v in color))
+        and all(0 <= v <= max_val for v in color)
     ):
         return color
     elif (
         isinstance(color, list)
-        and all(issubclass(type(v), float) for v in color)
         and len(color) == 3
-        and all(0 <= v <= 255 for v in color)
+        and all(0 <= v <= max_val for v in color)
     ):
-        return color + [255.0]
-    # rgbf or rgbaf
-    # if (
-    #     isinstance(color, list)
-    #     and all(issubclass(type(v), float) for v in color)
-    #     and (3 <= len(color) <= 4)
-    #     and not all(0 <= v <= 1 for v in color)
-    # ):
-    #     raise TypeError("RGBF or RGBAF values must be between 0 and 1")
-    elif (
-        isinstance(color, list)
-        and all(issubclass(type(v), float) for v in color)
-        and len(color) == 3
-        and all(0 <= v <= 1 for v in color)
-    ):
-        return color + [1.0]
-    # Hexadecimal RGBA
-    # elif issubclass(type(color), int) and not (0 <= color <= 0xFFFFFFFF):
-    #     raise TypeError("Hexadecimal RGBA not valid")
-    elif (
-        issubclass(type(color), int) and (0 <= color <= 0xFFFFFFFF) and color > 0xFFFFFF
-    ):
-        return [
-            (color & 0xFF000000) >> 24,
-            (color & 0x00FF0000) >> 16,
-            (color & 0x0000FF00) >> 8,
-            (color & 0x000000FF) >> 0,
-        ]
-    elif issubclass(type(color), int) and (0 <= color <= 0xFFFFFFFF):
-        return [
-            (color & 0xFF0000) >> 16,
-            (color & 0x00FF00) >> 8,
-            (color & 0x0000FF) >> 0,
-            0xFF,
-        ]
-    # RGBA string
-    elif isinstance(color, str):
-        n = int(color.rsplit("#")[-1], 16)
-        if not (0 <= n <= 0xFFFFFFFF):
-            raise TypeError("RGBA string not valid")
-        if n > 0xFFFFFF:
-            return [
-                (n & 0xFF000000) >> 24,
-                (n & 0x00FF0000) >> 16,
-                (n & 0x0000FF00) >> 8,
-                (n & 0x000000FF) >> 0,
-            ]
-        else:
-            return [
-                (n & 0xFF0000) >> 16,
-                (n & 0x00FF00) >> 8,
-                (n & 0x0000FF) >> 0,
-                0xFF,
-            ]
+        return color + [max_val]
     raise TypeError("Colour type not supported")
 
 
-def check_num_points(
-    num_points: int, supports_multiples: bool, supports_time: bool, values: list[Any]
-):
-    assert not (supports_multiples and supports_time)
-    if not (
-        len(values) == num_points
-        or (supports_multiples and len(values) % (num_points) == 0 and len(values) > 0)
-        or (supports_time and len(values) % (num_points + 1) == 0 and len(values) > 0)
-    ):
-        if supports_time:
-            raise TypeError(
-                f"Input values must have either {num_points} or N * {num_points + 1} values, where N is the number of time-tagged samples."
-            )
-        elif supports_multiples:
-            raise TypeError(
-                f"Input values must have either {num_points} or N * {num_points} values, where N is the number of time-tagged samples."
-            )
-        else:
-            raise TypeError(f"Input values must have {num_points}")
+def check_list_of_values(num_points: int, values: list[Any]):
+    """Values that support [X,Y,Z,X,Y,Z,...]"""
+    if len(values) <= 0:
+        raise ValueError("No values present")
+    if len(values) % num_points != 0:
+        raise TypeError(
+            f"Input values must have either {num_points} or N * {num_points} values, where N is the number of samples."
+        )
+
+
+def check_values(num_points: int, values: list[Any]):
+    """Values that support [X,Y,Z] or [Time,X,Y,Z,Time,X,Y,Z,...]"""
+    if len(values) <= 0:
+        raise ValueError("No values present")
+    if not (len(values) % (num_points) == 0 or len(values) % (num_points + 1) == 0):
+        raise TypeError(
+            f"Input values must have either {num_points} or N * {num_points + 1} values, where N is the number of time-tagged samples."
+        )
 
 
 def check_reference(r):
@@ -166,20 +112,27 @@ class RgbafValue(BaseCZMLObject):
 
     values: list[float]
 
+    @field_validator("values")
+    @classmethod
+    def get_color_from_values(cls, r):
+        return get_color(r, 1.0)
+
     @model_validator(mode="after")
     def _check_values(self) -> Self:
         num_coords = 4
-        check_num_points(num_coords, False, True, self.values)
-        if len(self.values) == num_coords:
-            if not all(0 <= val <= 1 for val in self.values):
-                raise TypeError("Color values must be floats in the range 0-1.")
-
-        else:
-            for i in range(0, len(self.values), num_coords + 1):
-                v = self.values[i + 1 : i + num_coords + 1]
-
-                if not all(0 <= val <= 1 for val in v):
-                    raise TypeError("Color values must be floats in the range 0-1.")
+        check_values(num_coords, self.values)
+        if (
+            len(self.values) % num_coords == 0
+            and not all(0 <= val <= 1 for val in self.values)
+            or (
+                len(self.values) % (num_coords + 1) == 0
+                and not all(0 <= val <= 1 for val in self.values[1::5])
+                and not all(0 <= val <= 1 for val in self.values[2::5])
+                and not all(0 <= val <= 1 for val in self.values[3::5])
+                and not all(0 <= val <= 1 for val in self.values[4::5])
+            )
+        ):
+            raise TypeError("Color values must be floats in the range 0-1.")
         return self
 
     @model_serializer
@@ -200,21 +153,27 @@ class RgbaValue(BaseCZMLObject):
 
     values: list[float]
 
+    @field_validator("values")
+    @classmethod
+    def get_color_from_values(cls, r):
+        return get_color(r, 255.0)
+
     @model_validator(mode="after")
     def _check_values(self) -> Self:
         num_coords = 4
-        check_num_points(num_coords, False, True, self.values)
-        if len(self.values) == num_coords and not all(
-            isinstance(val, float) and 0 <= val <= 255 for val in self.values
+        check_values(num_coords, self.values)
+        if (
+            len(self.values) % num_coords == 0
+            and not all(0 <= val <= 255 for val in self.values)
+            or (
+                len(self.values) % (num_coords + 1) == 0
+                and not all(0 <= val <= 255 for val in self.values[1::5])
+                and not all(0 <= val <= 255 for val in self.values[2::5])
+                and not all(0 <= val <= 255 for val in self.values[3::5])
+                and not all(0 <= val <= 255 for val in self.values[4::5])
+            )
         ):
-            raise TypeError("Color values must be integers in the range 0-255.")
-
-        else:
-            for i in range(0, len(self.values), num_coords + 1):
-                v = self.values[i + 1 : i + num_coords + 1]
-
-                if not all(isinstance(val, float) and 0 <= val <= 255 for val in v):
-                    raise TypeError("Color values must be integers in the range 0-255.")
+            raise TypeError("Color values must be floats in the range 0-255.")
         return self
 
     @model_serializer
@@ -260,7 +219,7 @@ class Cartesian3Value(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        check_num_points(3, False, True, self.values)
+        check_values(3, self.values)
         return self
 
     @model_serializer
@@ -279,7 +238,7 @@ class Cartesian3ListValue(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        check_num_points(3, True, False, self.values)
+        check_list_of_values(3, self.values)
         return self
 
     @model_serializer
@@ -305,7 +264,7 @@ class Cartesian2Value(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        check_num_points(2, False, True, self.values)
+        check_values(2, self.values)
         return self
 
     @model_serializer
@@ -332,7 +291,7 @@ class CartographicRadiansValue(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        check_num_points(3, False, True, self.values)
+        check_values(3, self.values)
         return self
 
     @model_serializer
@@ -359,7 +318,7 @@ class CartographicDegreesValue(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        check_num_points(3, False, True, self.values)
+        check_values(3, self.values)
         return self
 
     @model_serializer
@@ -386,7 +345,7 @@ class Cartesian3VelocityValue(BaseCZMLObject):
     def _check_values(self) -> Self:
         if self.values is None:
             return self
-        check_num_points(6, False, True, self.values)
+        check_values(6, self.values)
         return self
 
     @model_serializer
@@ -417,7 +376,7 @@ class CartographicRadiansListValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        check_num_points(3, True, False, self.values)
+        check_list_of_values(3, self.values)
         return self
 
     @model_serializer
@@ -433,7 +392,7 @@ class CartographicDegreesListValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        check_num_points(3, True, False, self.values)
+        check_list_of_values(3, self.values)
         return self
 
     @model_serializer
@@ -452,12 +411,7 @@ class DistanceDisplayConditionValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        check_num_points(2, False, True, self.values)
-        num_coords = 2
-        if len(self.values) != num_coords and len(self.values) % (num_coords + 1) != 0:
-            raise TypeError(
-                f"Invalid values. Input values should be arrays of size either {num_coords} or {num_coords + 1} * N"
-            )
+        check_values(2, self.values)
         return self
 
     @model_serializer
@@ -477,7 +431,7 @@ class NearFarScalarValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        check_num_points(4, False, True, self.values)
+        check_values(4, self.values)
         return self
 
     @model_serializer
@@ -554,7 +508,7 @@ class UnitQuaternionValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        check_num_points(4, False, True, self.values)
+        check_values(4, self.values)
         return self
 
     @model_serializer

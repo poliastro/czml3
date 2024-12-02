@@ -45,7 +45,6 @@ from .types import (
     UnitQuaternionValue,
     check_reference,
     format_datetime_like,
-    get_color,
 )
 
 
@@ -184,10 +183,19 @@ class Color(BaseCZMLObject, Interpolatable, Deletable):
     rgba: None | RgbaValue | str | list[float] | Sequence = Field(default=None)
     rgbaf: None | RgbafValue | str | list[float] | Sequence = Field(default=None)
 
-    @field_validator("rgba", "rgbaf")
+    @field_validator("rgba")
     @classmethod
-    def is_valid(cls, color):
-        return get_color(color)
+    def validate_rgba(cls, c):
+        if isinstance(c, list):
+            return RgbaValue(values=c)
+        return c
+
+    @field_validator("rgbaf")
+    @classmethod
+    def validate_rgbaf(cls, c):
+        if isinstance(c, list):
+            return RgbafValue(values=c)
+        return c
 
 
 class Position(BaseCZMLObject, Interpolatable, Deletable):
