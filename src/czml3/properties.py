@@ -60,7 +60,7 @@ class Material(BaseCZMLObject):
     grid: None | GridMaterial = Field(default=None)
     stripe: None | StripeMaterial = Field(default=None)
     checkerboard: None | CheckerboardMaterial = Field(default=None)
-    polylineOutline: None | PolylineMaterial = Field(
+    polylineOutline: None | PolylineMaterial | PolylineOutline = Field(
         default=None
     )  # NOTE: Not present in documentation
 
