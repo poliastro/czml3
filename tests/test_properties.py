@@ -842,12 +842,14 @@ def test_ellipsoid_parameters():
     "maximumCone": 105.0,
     "material": {
         "solidColor": {
-            "rgba": [
-                255.0,
-                0.0,
-                0.0,
-                100.0
-            ]
+            "color": {
+                "rgba": [
+                    255.0,
+                    0.0,
+                    0.0,
+                    100.0
+                ]
+            }
         }
     },
     "outline": true,
@@ -869,7 +871,7 @@ def test_ellipsoid_parameters():
         minimumCone=75.0,
         maximumCone=105.0,
         material=Material(
-            solidColor=Color(rgba=[255, 0, 0, 100]),
+            solidColor=SolidColorMaterial(color=Color(rgba=[255, 0, 0, 100])),
         ),
         outline=True,
         outlineColor=Color(rgbaf=[0, 0, 0, 1]),
