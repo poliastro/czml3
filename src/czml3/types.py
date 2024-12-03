@@ -41,6 +41,19 @@ def get_color(color: None | list[float], max_val: float) -> list[float] | None:
     raise TypeError("Colour type not supported")
 
 
+def check_list_of_list_values(num_points: int, values: list[list[Any]]):
+    """Values that support [X,Y,Z,X,Y,Z,...]"""
+    if len(values) <= 0:
+        raise ValueError("No values present")
+    for value in values:
+        if len(value) <= 0:
+            raise ValueError("No values present in a list")
+        if len(value) % num_points != 0:
+            raise TypeError(
+                f"Input values of each list must have either {num_points} or N * {num_points} values, where N is the number of samples."
+            )
+
+
 def check_list_of_values(num_points: int, values: list[Any]):
     """Values that support [X,Y,Z,X,Y,Z,...]"""
     if len(values) <= 0:
@@ -203,6 +216,50 @@ class ReferenceValue(BaseCZMLObject):
         return self.string
 
 
+class ReferenceListValue(BaseCZMLObject):
+    """Represents a reference to another property. References can be used to specify that two properties on different
+    objects are in fact, the same property.
+
+    """
+
+    values: list[str]
+
+    @field_validator("values")
+    @classmethod
+    def _check_string(cls, v):
+        if all("#" not in _v for _v in v):
+            raise TypeError(
+                "Invalid reference string format. Input must be of the form id#property"
+            )
+        return v
+
+    @model_serializer
+    def custom_serializer(self):
+        return self.values
+
+
+class ReferenceListOfListsValue(BaseCZMLObject):
+    """Represents a reference to another property. References can be used to specify that two properties on different
+    objects are in fact, the same property.
+
+    """
+
+    values: list[list[str]]
+
+    @field_validator("values")
+    @classmethod
+    def _check_string(cls, v):
+        if all("#" not in _v for _v in v):
+            raise TypeError(
+                "Invalid reference string format. Input must be of the form id#property"
+            )
+        return v
+
+    @model_serializer
+    def custom_serializer(self):
+        return self.values
+
+
 class Cartesian3Value(BaseCZMLObject):
     """A three-dimensional Cartesian value specified as [X, Y, Z].
 
@@ -233,6 +290,21 @@ class Cartesian3ListValue(BaseCZMLObject):
     @model_validator(mode="after")
     def _check_values(self) -> Self:
         check_list_of_values(3, self.values)
+        return self
+
+    @model_serializer
+    def custom_serializer(self) -> list[float]:
+        return list(self.values)
+
+
+class Cartesian3ListOfListsValue(BaseCZMLObject):
+    """A list of lists of three-dimensional Cartesian values specified as [X, Y, Z, X, Y, Z, ...]"""
+
+    values: list[list[float]]
+
+    @model_validator(mode="after")
+    def _check_values(self) -> Self:
+        check_list_of_list_values(3, self.values)
         return self
 
     @model_serializer
@@ -360,6 +432,21 @@ class CartographicRadiansListValue(BaseCZMLObject):
         return list(self.values)
 
 
+class CartographicRadiansListOfListsValue(BaseCZMLObject):
+    """A list of lists of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...], where Longitude and Latitude are in radians and Height is in meters"""
+
+    values: list[list[float]]
+
+    @model_validator(mode="after")
+    def _check_values(self) -> Self:
+        check_list_of_list_values(3, self.values)
+        return self
+
+    @model_serializer
+    def custom_serializer(self):
+        return list(self.values)
+
+
 class CartographicDegreesListValue(BaseCZMLObject):
     """A list of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...],
     where Longitude and Latitude are in degrees and Height is in meters."""
@@ -369,6 +456,21 @@ class CartographicDegreesListValue(BaseCZMLObject):
     @model_validator(mode="after")
     def _check_values(self) -> Self:
         check_list_of_values(3, self.values)
+        return self
+
+    @model_serializer
+    def custom_serializer(self):
+        return list(self.values)
+
+
+class CartographicDegreesListOfListsValue(BaseCZMLObject):
+    """A list of lists of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...], where Longitude and Latitude are in degrees and Height is in meters"""
+
+    values: list[list[float]]
+
+    @model_validator(mode="after")
+    def _check_values(self) -> Self:
+        check_list_of_list_values(3, self.values)
         return self
 
     @model_serializer
