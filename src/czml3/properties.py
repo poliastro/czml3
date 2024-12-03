@@ -58,7 +58,9 @@ class HasAlignment(BaseModel):
 class Material(BaseCZMLObject):
     """A definition of how a surface is colored or shaded."""
 
-    solidColor: None | Color | SolidColorMaterial | str | Sequence = Field(default=None)
+    solidColor: None | SolidColorMaterial | str | Sequence = Field(
+        default=None
+    )
     image: None | ImageMaterial | str | Uri | Sequence = Field(default=None)
     grid: None | GridMaterial | Sequence = Field(default=None)
     stripe: None | StripeMaterial | Sequence = Field(default=None)
