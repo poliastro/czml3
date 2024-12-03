@@ -16,7 +16,6 @@ from czml3.properties import (
     Material,
     Path,
     Position,
-    PositionList,
     SolidColorMaterial,
 )
 from czml3.types import IntervalValue, Sequence, TimeInterval
@@ -182,7 +181,7 @@ simple = Document(
                     solidColor=SolidColorMaterial(color=Color(rgba=[0, 255, 0]))
                 ),
             ),
-            position=PositionList(
+            position=Position(
                 interpolationAlgorithm=InterpolationAlgorithms.LAGRANGE,
                 interpolationDegree=5,
                 referenceFrame=ReferenceFrames.INERTIAL,
