@@ -549,12 +549,16 @@ class PositionListOfLists(BaseCZMLObject, Deletable):
             raise TypeError(
                 "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
             )
-        if self.references is not None:
-            if self.cartesian is not None:
+        if isinstance(self.references, ReferenceListOfListsValue):
+            if isinstance(self.cartesian, Cartesian3ListOfListsValue):
                 v = self.cartesian.values
-            elif self.cartographicDegrees is not None:
+            elif isinstance(
+                self.cartographicDegrees, CartographicDegreesListOfListsValue
+            ):
                 v = self.cartographicDegrees.values
-            elif self.cartographicRadians is not None:
+            elif isinstance(
+                self.cartographicRadians, CartographicRadiansListOfListsValue
+            ):
                 v = self.cartographicRadians.values
             else:
                 raise TypeError
@@ -632,12 +636,12 @@ class PositionList(BaseCZMLObject, Interpolatable, Deletable):
             raise TypeError(
                 "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
             )
-        if self.references is not None:
-            if self.cartesian is not None:
+        if isinstance(self.references, ReferenceListValue):
+            if isinstance(self.cartesian, Cartesian3ListValue):
                 v = self.cartesian.values
-            elif self.cartographicDegrees is not None:
+            elif isinstance(self.cartographicDegrees, CartographicDegreesListValue):
                 v = self.cartographicDegrees.values
-            elif self.cartographicRadians is not None:
+            elif isinstance(self.cartographicRadians, CartographicRadiansListValue):
                 v = self.cartographicRadians.values
             else:
                 raise TypeError
