@@ -549,6 +549,23 @@ class PositionListOfLists(BaseCZMLObject, Deletable):
             raise TypeError(
                 "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
             )
+        if self.references is not None:
+            if self.cartesian is not None:
+                v = self.cartesian.values
+            elif self.cartographicDegrees is not None:
+                v = self.cartographicDegrees.values
+            elif self.cartographicRadians is not None:
+                v = self.cartographicRadians.values
+            else:
+                raise TypeError
+            if len(self.references.values) != len(v):
+                raise TypeError("Number of references must equal number of coordinates")
+            for r, v1 in zip(self.references.values, v, strict=False):
+                if len(r) != len(v1) // 3:
+                    raise TypeError(
+                        "Number of references must equal number of coordinates in each list"
+                    )
+
         return self
 
     @field_validator("references")
@@ -615,6 +632,17 @@ class PositionList(BaseCZMLObject, Interpolatable, Deletable):
             raise TypeError(
                 "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
             )
+        if self.references is not None:
+            if self.cartesian is not None:
+                v = self.cartesian.values
+            elif self.cartographicDegrees is not None:
+                v = self.cartographicDegrees.values
+            elif self.cartographicRadians is not None:
+                v = self.cartographicRadians.values
+            else:
+                raise TypeError
+            if len(self.references.values) != len(v) // 3:
+                raise TypeError("Number of references must equal number of coordinates")
         return self
 
     @field_validator("references")

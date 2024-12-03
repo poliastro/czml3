@@ -17,6 +17,8 @@ from czml3.types import (
     IntervalValue,
     NearFarScalarValue,
     NumberValue,
+    ReferenceListValue,
+    ReferenceListOfListsValue,
     ReferenceValue,
     RgbafValue,
     RgbaValue,
@@ -383,3 +385,25 @@ def test_check_reference():
 
 def test_format_datetime_like():
     assert format_datetime_like(None) is None
+
+
+def test_reference_list():
+    expected_result = """[
+    "1#this",
+    "1#that"
+]"""
+    r = ReferenceListValue(values=["1#this", "1#that"])
+    assert expected_result == str(r)
+
+
+def test_reference_list_of_lists():
+    expected_result = """[
+    [
+        "1#this"
+    ],
+    [
+        "1#that"
+    ]
+]"""
+    r = ReferenceListOfListsValue(values=[["1#this"], ["1#that"]])
+    assert expected_result == str(r)

@@ -56,6 +56,13 @@ from czml3.properties import (
     ViewFrom,
 )
 from czml3.types import (
+    CartographicDegreesListOfListsValue,
+    CartographicRadiansListOfListsValue,
+    Cartesian3ListOfListsValue,
+    CartographicRadiansListValue,
+    Cartesian3ListValue,
+    ReferenceListOfListsValue,
+    ReferenceListValue,
     Cartesian2Value,
     Cartesian3Value,
     CartographicDegreesListValue,
@@ -1333,3 +1340,235 @@ def test_position_bad_cartesianVelocity():
 def test_no_values():
     with pytest.raises(ValueError):
         Color(rgba=[])
+
+
+def test_SequenceTime_mix():
+    with pytest.raises(ValidationError):
+        Sequence(
+            values=[  # type: ignore
+                TimeInterval(
+                    start=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc),
+                    end=dt.datetime(2019, 4, 20, 12, tzinfo=dt.timezone.utc),
+                ),
+                IntervalValue(
+                    start=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc),
+                    end=dt.datetime(2019, 4, 20, 12, tzinfo=dt.timezone.utc),
+                    value=True,
+                ),
+            ]
+        )
+
+
+def test_bad_PositionListOfLists():
+    with pytest.raises(TypeError):
+        PositionListOfLists(
+            cartographicDegrees=[[20.0, 20.0, 0.0], [10.0, 10.0, 0.0, 0]]
+        )
+    with pytest.raises(ValidationError):
+        PositionListOfLists(cartographicDegrees=[])
+    with pytest.raises(ValidationError):
+        PositionListOfLists(cartographicDegrees=[[0, 0, 0], []])
+
+
+def test_bad_PositionList():
+    with pytest.raises(TypeError):
+        PositionList(cartographicDegrees=[10.0, 10.0, 0.0, 0])
+    with pytest.raises(ValidationError):
+        PositionList(cartographicDegrees=[])
+    with pytest.raises(TypeError):
+        PositionList(cartographicDegrees=[0, 0, 0, 0, 0])
+
+
+def test_bad_Position():
+    with pytest.raises(ValidationError):
+        Position(cartographicDegrees=[])
+    with pytest.raises(TypeError):
+        Position(cartographicDegrees=[0, 0, 0, 0, 0])
+
+
+def test_position_list_with_references():
+    expected_result = """{
+    "cartographicDegrees": [
+        20.0,
+        30.0,
+        10.0
+    ],
+    "references": [
+        "1#this"
+    ]
+}"""
+    p1 = PositionList(
+        cartographicDegrees=CartographicDegreesListValue(values=[20, 30, 10]),
+        references=["1#this"],
+    )
+    p2 = PositionList(
+        cartographicDegrees=CartographicDegreesListValue(values=[20, 30, 10]),
+        references=ReferenceListValue(values=["1#this"]),
+    )
+    assert str(p1) == str(p2) == expected_result
+    expected_result = """{
+    "cartographicRadians": [
+        20.0,
+        30.0,
+        10.0
+    ],
+    "references": [
+        "1#this"
+    ]
+}"""
+    p1 = PositionList(
+        cartographicRadians=CartographicRadiansListValue(values=[20, 30, 10]),
+        references=["1#this"],
+    )
+    p2 = PositionList(
+        cartographicRadians=CartographicRadiansListValue(values=[20, 30, 10]),
+        references=ReferenceListValue(values=["1#this"]),
+    )
+    assert str(p1) == str(p2) == expected_result
+    expected_result = """{
+    "cartesian": [
+        20.0,
+        30.0,
+        10.0
+    ],
+    "references": [
+        "1#this"
+    ]
+}"""
+    p1 = PositionList(
+        cartesian=Cartesian3ListValue(values=[20, 30, 10]), references=["1#this"]
+    )
+    p2 = PositionList(
+        cartesian=Cartesian3ListValue(values=[20, 30, 10]),
+        references=ReferenceListValue(values=["1#this"]),
+    )
+    assert str(p1) == str(p2) == expected_result
+
+
+def test_position_list_of_lists_with_references():
+    expected_result = """{
+    "cartographicDegrees": [
+        [
+            20.0,
+            30.0,
+            10.0
+        ],
+        [
+            20.0,
+            30.0,
+            10.0
+        ]
+    ],
+    "references": [
+        [
+            "1#this"
+        ],
+        [
+            "1#this"
+        ]
+    ]
+}"""
+    p1 = PositionListOfLists(
+        cartographicDegrees=CartographicDegreesListOfListsValue(
+            values=[[20, 30, 10], [20, 30, 10]]
+        ),
+        references=[["1#this"], ["1#this"]],
+    )
+    p2 = PositionListOfLists(
+        cartographicDegrees=CartographicDegreesListOfListsValue(
+            values=[[20, 30, 10], [20, 30, 10]]
+        ),
+        references=ReferenceListOfListsValue(values=[["1#this"], ["1#this"]]),
+    )
+    assert str(p1) == str(p2) == expected_result
+    expected_result = """{
+    "cartographicRadians": [
+        [
+            20.0,
+            30.0,
+            10.0
+        ],
+        [
+            20.0,
+            30.0,
+            10.0
+        ]
+    ],
+    "references": [
+        [
+            "1#this"
+        ],
+        [
+            "1#this"
+        ]
+    ]
+}"""
+    p1 = PositionListOfLists(
+        cartographicRadians=CartographicRadiansListOfListsValue(
+            values=[[20, 30, 10], [20, 30, 10]]
+        ),
+        references=[["1#this"], ["1#this"]],
+    )
+    p2 = PositionListOfLists(
+        cartographicRadians=CartographicRadiansListOfListsValue(
+            values=[[20, 30, 10], [20, 30, 10]]
+        ),
+        references=ReferenceListOfListsValue(values=[["1#this"], ["1#this"]]),
+    )
+    assert str(p1) == str(p2) == expected_result
+    expected_result = """{
+    "cartesian": [
+        [
+            20.0,
+            30.0,
+            10.0
+        ],
+        [
+            20.0,
+            30.0,
+            10.0
+        ]
+    ],
+    "references": [
+        [
+            "1#this"
+        ],
+        [
+            "1#this"
+        ]
+    ]
+}"""
+    p1 = PositionListOfLists(
+        cartesian=Cartesian3ListOfListsValue(values=[[20, 30, 10], [20, 30, 10]]),
+        references=[["1#this"], ["1#this"]],
+    )
+    p2 = PositionListOfLists(
+        cartesian=Cartesian3ListOfListsValue(values=[[20, 30, 10], [20, 30, 10]]),
+        references=ReferenceListOfListsValue(values=[["1#this"], ["1#this"]]),
+    )
+    assert str(p1) == str(p2) == expected_result
+
+
+def test_position_list_with_bad_references():
+    with pytest.raises(TypeError):
+        PositionList(
+            cartographicDegrees=CartographicDegreesListValue(values=[20, 30, 10]),
+            references=["1#this", "1#this"],
+        )
+
+
+def test_position_list_of_lists_with_bad_references():
+    with pytest.raises(TypeError):
+        PositionListOfLists(
+            cartographicDegrees=CartographicDegreesListOfListsValue(
+                values=[[20, 30, 10], [20, 30, 10]]
+            ),
+            references=[["1#this"], ["1#this"], ["2#this"]],
+        )
+    with pytest.raises(TypeError):
+        PositionListOfLists(
+            cartographicDegrees=CartographicDegreesListOfListsValue(
+                values=[[20, 30, 10], [20, 30, 10]]
+            ),
+            references=ReferenceListOfListsValue(values=[["1#this"], ["1#this", "2#this"]]),
+        )
