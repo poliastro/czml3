@@ -249,7 +249,7 @@ class ReferenceListOfListsValue(BaseCZMLObject):
     @field_validator("values")
     @classmethod
     def _check_string(cls, v):
-        if all("#" not in _v for _v in v):
+        if all("#" not in _v for v1 in v for _v in v1):
             raise TypeError(
                 "Invalid reference string format. Input must be of the form id#property"
             )
