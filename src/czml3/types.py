@@ -150,7 +150,7 @@ class RgbafValue(BaseCZMLObject):
 
     @model_serializer
     def custom_serializer(self):
-        return list(self.values)
+        return self.values
 
 
 class RgbaValue(BaseCZMLObject):
@@ -279,7 +279,7 @@ class Cartesian3Value(BaseCZMLObject):
 
     @model_serializer
     def custom_serializer(self) -> list[float]:
-        return list(self.values)
+        return self.values
 
 
 class Cartesian3ListValue(BaseCZMLObject):
@@ -294,7 +294,7 @@ class Cartesian3ListValue(BaseCZMLObject):
 
     @model_serializer
     def custom_serializer(self) -> list[float]:
-        return list(self.values)
+        return self.values
 
 
 class Cartesian3ListOfListsValue(BaseCZMLObject):
@@ -308,8 +308,8 @@ class Cartesian3ListOfListsValue(BaseCZMLObject):
         return self
 
     @model_serializer
-    def custom_serializer(self) -> list[float]:
-        return list(self.values)
+    def custom_serializer(self):
+        return self.values
 
 
 class Cartesian2Value(BaseCZMLObject):
@@ -354,7 +354,7 @@ class CartographicRadiansValue(BaseCZMLObject):
 
     @model_serializer
     def custom_serializer(self):
-        return list(self.values)
+        return self.values
 
 
 class CartographicDegreesValue(BaseCZMLObject):
@@ -429,7 +429,7 @@ class CartographicRadiansListValue(BaseCZMLObject):
 
     @model_serializer
     def custom_serializer(self):
-        return list(self.values)
+        return self.values
 
 
 class CartographicRadiansListOfListsValue(BaseCZMLObject):
@@ -444,7 +444,7 @@ class CartographicRadiansListOfListsValue(BaseCZMLObject):
 
     @model_serializer
     def custom_serializer(self):
-        return list(self.values)
+        return self.values
 
 
 class CartographicDegreesListValue(BaseCZMLObject):
@@ -460,7 +460,7 @@ class CartographicDegreesListValue(BaseCZMLObject):
 
     @model_serializer
     def custom_serializer(self):
-        return list(self.values)
+        return self.values
 
 
 class CartographicDegreesListOfListsValue(BaseCZMLObject):
@@ -475,7 +475,7 @@ class CartographicDegreesListOfListsValue(BaseCZMLObject):
 
     @model_serializer
     def custom_serializer(self):
-        return list(self.values)
+        return self.values
 
 
 class DistanceDisplayConditionValue(BaseCZMLObject):
@@ -494,7 +494,7 @@ class DistanceDisplayConditionValue(BaseCZMLObject):
 
     @model_serializer
     def custom_serializer(self):
-        return list(self.values)
+        return self.values
 
 
 class NearFarScalarValue(BaseCZMLObject):
@@ -514,7 +514,7 @@ class NearFarScalarValue(BaseCZMLObject):
 
     @model_serializer
     def custom_serializer(self):
-        return list(self.values)
+        return self.values
 
 
 class TimeInterval(BaseCZMLObject):
@@ -565,11 +565,11 @@ class IntervalValue(BaseCZMLObject):
 class Sequence(BaseCZMLObject):
     """Sequence, list, array of objects."""
 
-    values: list[Any]
+    values: list[TimeInterval] | list[IntervalValue]
 
     @model_serializer
     def custom_serializer(self) -> list[Any]:
-        return list(self.values)
+        return self.values
 
 
 class UnitQuaternionValue(BaseCZMLObject):
@@ -591,7 +591,7 @@ class UnitQuaternionValue(BaseCZMLObject):
 
     @model_serializer
     def custom_serializer(self):
-        return list(self.values)
+        return self.values
 
 
 class EpochValue(BaseCZMLObject):
