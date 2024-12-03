@@ -241,41 +241,41 @@ class Position(BaseCZMLObject, Interpolatable, Deletable):
 
     @field_validator("reference")
     @classmethod
-    def check_ref(cls, r):
+    def validate_reference(cls, r):
         check_reference(r)
         return r
 
     @field_validator("cartesian")
     @classmethod
-    def check_cartesian(cls, r):
+    def validate_cartesian(cls, r):
         if isinstance(r, list):
             return Cartesian3Value(values=r)
         return r
 
     @field_validator("cartographicRadians")
     @classmethod
-    def check_cartographicRadians(cls, r):
+    def validate_cartographicRadians(cls, r):
         if isinstance(r, list):
             return CartographicRadiansValue(values=r)
         return r
 
     @field_validator("cartographicDegrees")
     @classmethod
-    def check_cartographicDegrees(cls, r):
+    def validate_cartographicDegrees(cls, r):
         if isinstance(r, list):
             return CartographicDegreesValue(values=r)
         return r
 
     @field_validator("cartesianVelocity")
     @classmethod
-    def check_cartesianVelocity(cls, r):
+    def validate_cartesianVelocity(cls, r):
         if isinstance(r, list):
             return Cartesian3VelocityValue(values=r)
         return r
 
     @field_validator("epoch")
     @classmethod
-    def check_epoch(cls, e):
+    def validate_epoch(cls, e):
         return format_datetime_like(e)
 
 
@@ -542,21 +542,21 @@ class PositionList(BaseCZMLObject, Interpolatable, Deletable):
 
     @field_validator("cartesian")
     @classmethod
-    def check_cartesian(cls, r):
+    def validate_cartesian(cls, r):
         if isinstance(r, list):
             return Cartesian3Value(values=r)
         return r
 
     @field_validator("cartographicRadians")
     @classmethod
-    def check_cartographicRadians(cls, r):
+    def validate_cartographicRadians(cls, r):
         if isinstance(r, list):
             return CartographicRadiansListValue(values=r)
         return r
 
     @field_validator("cartographicDegrees")
     @classmethod
-    def check_cartographicDegrees(cls, r):
+    def validate_cartographicDegrees(cls, r):
         if isinstance(r, list):
             return CartographicDegreesListValue(values=r)
         return r

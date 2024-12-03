@@ -8,7 +8,7 @@ NON_DELETE_PROPERTIES = ["id", "delete"]
 class BaseCZMLObject(BaseModel):
     @model_validator(mode="before")
     @classmethod
-    def check_model_before(cls, data: dict[str, Any]) -> Any:
+    def validate_model_before(cls, data: dict[str, Any]) -> Any:
         if (
             data is not None
             and isinstance(data, dict)
