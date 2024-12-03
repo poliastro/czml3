@@ -270,7 +270,7 @@ class Cartesian3Value(BaseCZMLObject):
 
     """
 
-    values: list[float] = Field(default=None)
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -285,7 +285,7 @@ class Cartesian3Value(BaseCZMLObject):
 class Cartesian3ListValue(BaseCZMLObject):
     """A list of three-dimensional Cartesian values specified as [X, Y, Z, X, Y, Z, ...]"""
 
-    values: list[float] = Field(default=None)
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -322,7 +322,7 @@ class Cartesian2Value(BaseCZMLObject):
 
     """
 
-    values: list[float] = Field(default=None)
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -345,7 +345,7 @@ class CartographicRadiansValue(BaseCZMLObject):
 
     """
 
-    values: list[float] = Field(default=None)
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -368,7 +368,7 @@ class CartographicDegreesValue(BaseCZMLObject):
 
     """
 
-    values: list[float] = Field(default=None)
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
@@ -391,7 +391,7 @@ class Cartesian3VelocityValue(BaseCZMLObject):
 
     """
 
-    values: list[float] = Field(default=None)
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
