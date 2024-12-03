@@ -213,38 +213,30 @@ class Cartesian3Value(BaseCZMLObject):
 
     """
 
-    values: None | list[float] = Field(default=None)
+    values: list[float] = Field(default=None)
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        if self.values is None:
-            return self
         check_values(3, self.values)
         return self
 
     @model_serializer
     def custom_serializer(self) -> list[float]:
-        if self.values is None:
-            return []
         return list(self.values)
 
 
 class Cartesian3ListValue(BaseCZMLObject):
     """A list of three-dimensional Cartesian values specified as [X, Y, Z, X, Y, Z, ...]"""
 
-    values: None | list[float] = Field(default=None)
+    values: list[float] = Field(default=None)
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        if self.values is None:
-            return self
         check_list_of_values(3, self.values)
         return self
 
     @model_serializer
     def custom_serializer(self) -> list[float]:
-        if self.values is None:
-            return []
         return list(self.values)
 
 
@@ -258,19 +250,15 @@ class Cartesian2Value(BaseCZMLObject):
 
     """
 
-    values: None | list[float] = Field(default=None)
+    values: list[float] = Field(default=None)
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        if self.values is None:
-            return self
         check_values(2, self.values)
         return self
 
     @model_serializer
     def custom_serializer(self):
-        if self.values is None:
-            return {}
         return {"cartesian2": list(self.values)}
 
 
@@ -285,19 +273,15 @@ class CartographicRadiansValue(BaseCZMLObject):
 
     """
 
-    values: None | list[float] = Field(default=None)
+    values: list[float] = Field(default=None)
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        if self.values is None:
-            return self
         check_values(3, self.values)
         return self
 
     @model_serializer
     def custom_serializer(self):
-        if self.values is None:
-            return []
         return list(self.values)
 
 
@@ -312,19 +296,15 @@ class CartographicDegreesValue(BaseCZMLObject):
 
     """
 
-    values: None | list[float] = Field(default=None)
+    values: list[float] = Field(default=None)
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        if self.values is None:
-            return self
         check_values(3, self.values)
         return self
 
     @model_serializer
     def custom_serializer(self) -> list[float]:
-        if self.values is None:
-            return []
         return self.values
 
 
@@ -339,19 +319,15 @@ class Cartesian3VelocityValue(BaseCZMLObject):
 
     """
 
-    values: None | list[float] = Field(default=None)
+    values: list[float] = Field(default=None)
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        if self.values is None:
-            return self
         check_values(6, self.values)
         return self
 
     @model_serializer
     def custom_serializer(self) -> list[float]:
-        if self.values is None:
-            return []
         return self.values
 
 
