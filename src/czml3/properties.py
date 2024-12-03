@@ -29,15 +29,20 @@ from .enums import (
 )
 from .types import (
     Cartesian2Value,
+    Cartesian3ListOfListsValue,
     Cartesian3ListValue,
     Cartesian3Value,
     Cartesian3VelocityValue,
+    CartographicDegreesListOfListsValue,
     CartographicDegreesListValue,
     CartographicDegreesValue,
+    CartographicRadiansListOfListsValue,
     CartographicRadiansListValue,
     CartographicRadiansValue,
     DistanceDisplayConditionValue,
     NearFarScalarValue,
+    ReferenceListOfListsValue,
+    ReferenceListValue,
     RgbafValue,
     RgbaValue,
     Sequence,
@@ -512,39 +517,118 @@ class DistanceDisplayCondition(BaseCZMLObject, Interpolatable, Deletable):
 class PositionListOfLists(BaseCZMLObject, Deletable):
     """A list of positions."""
 
-    referenceFrame: None | str | list[str] | Sequence = Field(default=None)
-    cartesian: None | Cartesian3Value | Sequence = Field(default=None)
-    cartographicRadians: None | list[float] | list[list[float]] | Sequence = Field(
+    referenceFrame: None | str | Sequence = Field(default=None)
+    cartesian: None | Cartesian3ListOfListsValue | list[list[float]] | Sequence = Field(
         default=None
     )
-    cartographicDegrees: None | list[float] | list[list[float]] | Sequence = Field(
-        default=None
-    )
-    references: None | str | list[str] | Sequence = Field(default=None)
-
-
-class PositionList(BaseCZMLObject, Interpolatable, Deletable):
-    """A list of positions."""
-
-    referenceFrame: None | str | list[str] | Sequence = Field(default=None)
-    cartesian: None | Cartesian3ListValue | list[float] | Sequence = Field(default=None)
     cartographicRadians: (
-        None | list[float] | CartographicRadiansListValue | Sequence
+        None | CartographicRadiansListOfListsValue | list[list[float]] | Sequence
     ) = Field(default=None)
     cartographicDegrees: (
-        None | list[float] | CartographicDegreesListValue | Sequence
+        None | CartographicDegreesListOfListsValue | list[list[float]] | Sequence
     ) = Field(default=None)
-    references: None | str | list[str] | Sequence = Field(default=None)
-    interval: None | TimeInterval | Sequence = Field(default=None)
-    epoch: None | str | dt.datetime | Sequence = Field(
+    references: None | ReferenceListOfListsValue | list[list[str]] | Sequence = Field(
         default=None
-    )  # note: not documented
+    )
+
+    @model_validator(mode="after")
+    def checks(self):
+        if self.delete:
+            return self
+        if (
+            sum(
+                val is not None
+                for val in (
+                    self.cartesian,
+                    self.cartographicDegrees,
+                    self.cartographicRadians,
+                )
+            )
+            != 1
+        ):
+            raise TypeError(
+                "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
+            )
+        return self
+
+    @field_validator("references")
+    @classmethod
+    def validate_reference(cls, r):
+        if isinstance(r, list):
+            return ReferenceListOfListsValue(values=r)
+        return r
 
     @field_validator("cartesian")
     @classmethod
     def validate_cartesian(cls, r):
         if isinstance(r, list):
-            return Cartesian3Value(values=r)
+            return Cartesian3ListOfListsValue(values=r)
+        return r
+
+    @field_validator("cartographicRadians")
+    @classmethod
+    def validate_cartographicRadians(cls, r):
+        if isinstance(r, list):
+            return CartographicRadiansListOfListsValue(values=r)
+        return r
+
+    @field_validator("cartographicDegrees")
+    @classmethod
+    def validate_cartographicDegrees(cls, r):
+        if isinstance(r, list):
+            return CartographicDegreesListOfListsValue(values=r)
+        return r
+
+
+class PositionList(BaseCZMLObject, Interpolatable, Deletable):
+    """A list of positions."""
+
+    referenceFrame: None | str | Sequence = Field(default=None)
+    cartesian: None | Cartesian3ListValue | list[float] | Sequence = Field(default=None)
+    cartographicRadians: (
+        None | CartographicRadiansListValue | list[float] | Sequence
+    ) = Field(default=None)
+    cartographicDegrees: (
+        None | CartographicDegreesListValue | list[float] | Sequence
+    ) = Field(default=None)
+    references: None | ReferenceListValue | list[str] | Sequence = Field(default=None)
+    interval: None | TimeInterval | Sequence = Field(default=None)
+    epoch: None | str | dt.datetime | Sequence = Field(
+        default=None
+    )  # note: not documented
+
+    @model_validator(mode="after")
+    def checks(self):
+        if self.delete:
+            return self
+        if (
+            sum(
+                val is not None
+                for val in (
+                    self.cartesian,
+                    self.cartographicDegrees,
+                    self.cartographicRadians,
+                )
+            )
+            != 1
+        ):
+            raise TypeError(
+                "One of cartesian, cartographicDegrees, cartographicRadians or reference must be given"
+            )
+        return self
+
+    @field_validator("references")
+    @classmethod
+    def validate_reference(cls, r):
+        if isinstance(r, list):
+            return ReferenceListValue(values=r)
+        return r
+
+    @field_validator("cartesian")
+    @classmethod
+    def validate_cartesian(cls, r):
+        if isinstance(r, list):
+            return Cartesian3ListValue(values=r)
         return r
 
     @field_validator("cartographicRadians")
