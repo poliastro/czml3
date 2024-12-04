@@ -675,11 +675,13 @@ def test_position_reference():
 def test_viewfrom_reference():
     expected_result = """{
     "cartesian": [
+        1.0,
+        1.0,
         1.0
     ],
     "reference": "this#satellite"
 }"""
-    v = ViewFrom(reference="this#satellite", cartesian=[1.0])
+    v = ViewFrom(reference="this#satellite", cartesian=[1.0, 1.0, 1.0])
 
     assert str(v) == expected_result
 
@@ -1163,9 +1165,10 @@ def test_check_classes_with_references_HeightReference():
 
 def test_check_classes_with_references_EyeOffset():
     assert (
-        str(EyeOffset(cartesian=[0, 0], reference="this#that"))
+        str(EyeOffset(cartesian=[0, 0, 0], reference="this#that"))
         == """{
     "cartesian": [
+        0.0,
         0.0,
         0.0
     ],

@@ -292,6 +292,13 @@ class ViewFrom(BaseCZMLObject, Interpolatable, Deletable):
     cartesian: None | Cartesian3Value | list[float] | Sequence
     reference: None | str | Sequence = Field(default=None)
 
+    @field_validator("cartesian")
+    @classmethod
+    def validate_cartesian(cls, r):
+        if isinstance(r, list):
+            return Cartesian3Value(values=r)
+        return r
+
     @field_validator("reference")
     @classmethod
     def check(cls, r):
@@ -319,6 +326,13 @@ class EllipsoidRadii(BaseCZMLObject, Interpolatable, Deletable):
 
     cartesian: Cartesian3Value | list[float] | Sequence
     reference: None | str | Sequence = Field(default=None)
+
+    @field_validator("cartesian")
+    @classmethod
+    def validate_cartesian(cls, r):
+        if isinstance(r, list):
+            return Cartesian3Value(values=r)
+        return r
 
     @field_validator("reference")
     @classmethod
@@ -724,8 +738,15 @@ class Box(BaseCZMLObject):
 class BoxDimensions(BaseCZMLObject, Interpolatable):
     """The width, depth, and height of a box."""
 
-    cartesian: None | Cartesian3Value | Sequence = Field(default=None)
+    cartesian: None | Cartesian3Value | list[float] | Sequence = Field(default=None)
     reference: None | str | Sequence = Field(default=None)
+
+    @field_validator("cartesian")
+    @classmethod
+    def validate_cartesian(cls, r):
+        if isinstance(r, list):
+            return Cartesian3Value(values=r)
+        return r
 
     @field_validator("reference")
     @classmethod
@@ -777,6 +798,13 @@ class EyeOffset(BaseCZMLObject, Deletable):
 
     cartesian: None | Cartesian3Value | list[float] | Sequence = Field(default=None)
     reference: None | str | Sequence = Field(default=None)
+
+    @field_validator("cartesian")
+    @classmethod
+    def validate_cartesian(cls, r):
+        if isinstance(r, list):
+            return Cartesian3Value(values=r)
+        return r
 
     @field_validator("reference")
     @classmethod
