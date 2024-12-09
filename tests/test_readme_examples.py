@@ -3,12 +3,12 @@ def test_example0():
     from czml3.properties import (
         Box,
         BoxDimensions,
-        Cartesian3Value,
         Color,
         Material,
         Position,
         SolidColorMaterial,
     )
+    from czml3.types import Cartesian3Value
 
     expected_result = """[
     {
@@ -77,5 +77,5 @@ def test_example1():
         300000.0
     ]
 }"""
-    p = Position(cartographicDegrees=np.array([-114, 40, 300000], dtype=int))
+    p = Position(cartographicDegrees=np.array([-114, 40, 300000], dtype=int))  # type: ignore
     assert str(p) == expected_result
