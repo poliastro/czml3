@@ -30,13 +30,22 @@ def get_color(color: None | list[float], max_val: float) -> list[float] | None:
         isinstance(color, list)
         and len(color) == 4
         and all(0 <= v <= max_val for v in color)
-    ):
+    ):  # [r, g, b, a]
+        return color
+    if (
+        isinstance(color, list)
+        and len(color) % 5 == 0
+        and all(0 <= v <= max_val for v in color[1::5])
+        and all(0 <= v <= max_val for v in color[2::5])
+        and all(0 <= v <= max_val for v in color[3::5])
+        and all(0 <= v <= max_val for v in color[4::5])
+    ):  # [time, r, g, b, a]
         return color
     elif (
         isinstance(color, list)
         and len(color) == 3
         and all(0 <= v <= max_val for v in color)
-    ):
+    ):  # [r, g, b]
         return color + [max_val]
     raise TypeError("Colour type not supported")
 
@@ -130,24 +139,6 @@ class RgbafValue(BaseCZMLObject):
     def get_color_from_values(cls, r):
         return get_color(r, 1.0)
 
-    @model_validator(mode="after")
-    def _check_values(self) -> Self:
-        num_coords = 4
-        check_values(num_coords, self.values)
-        if (
-            len(self.values) % num_coords == 0
-            and not all(0 <= val <= 1 for val in self.values)
-            or (
-                len(self.values) % (num_coords + 1) == 0
-                and not all(0 <= val <= 1 for val in self.values[1::5])
-                and not all(0 <= val <= 1 for val in self.values[2::5])
-                and not all(0 <= val <= 1 for val in self.values[3::5])
-                and not all(0 <= val <= 1 for val in self.values[4::5])
-            )
-        ):
-            raise TypeError("Color values must be floats in the range 0-1.")
-        return self
-
     @model_serializer
     def custom_serializer(self):
         return self.values
@@ -170,24 +161,6 @@ class RgbaValue(BaseCZMLObject):
     @classmethod
     def get_color_from_values(cls, r):
         return get_color(r, 255.0)
-
-    @model_validator(mode="after")
-    def _check_values(self) -> Self:
-        num_coords = 4
-        check_values(num_coords, self.values)
-        if (
-            len(self.values) % num_coords == 0
-            and not all(0 <= val <= 255 for val in self.values)
-            or (
-                len(self.values) % (num_coords + 1) == 0
-                and not all(0 <= val <= 255 for val in self.values[1::5])
-                and not all(0 <= val <= 255 for val in self.values[2::5])
-                and not all(0 <= val <= 255 for val in self.values[3::5])
-                and not all(0 <= val <= 255 for val in self.values[4::5])
-            )
-        ):
-            raise TypeError("Color values must be floats in the range 0-255.")
-        return self
 
     @model_serializer
     def custom_serializer(self):
