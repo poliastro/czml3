@@ -118,6 +118,26 @@ def test_invalid_reference_value():
     )
 
 
+def test_invalid_reference_list_value():
+    with pytest.raises(TypeError) as excinfo:
+        ReferenceListValue(values=["id"])
+
+    assert (
+        "Invalid reference string format. Input must be of the form id#property"
+        in excinfo.exconly()
+    )
+
+
+def test_invalid_reference_list_of_lists_value():
+    with pytest.raises(TypeError) as excinfo:
+        ReferenceListOfListsValue(values=[["id"]])
+
+    assert (
+        "Invalid reference string format. Input must be of the form id#property"
+        in excinfo.exconly()
+    )
+
+
 def test_font_value():
     expected_result = '"20px sans-serif"'
     font = FontValue(font="20px sans-serif")
@@ -130,11 +150,6 @@ def test_font_property_value():
     font = FontValue(font="20px sans-serif")
 
     assert font.font == expected_result
-
-
-def test_bad_rgba_size_values_raises_error():
-    with pytest.raises(TypeError):
-        RgbaValue(values=[0, 0, 255, 0, 0])
 
 
 def test_bad_rgba_4_values_raises_error():
@@ -399,3 +414,109 @@ def test_reference_list_of_lists():
 ]"""
     r = ReferenceListOfListsValue(values=[["1#this"], ["1#that"]])
     assert expected_result == str(r)
+
+
+def test_rgbaf_with_time():
+    assert (
+        str(RgbafValue(values=[1, 0.5, 0.5, 0.5, 0.5]))
+        == """[
+    1.0,
+    0.5,
+    0.5,
+    0.5,
+    0.5
+]"""
+    )
+    assert (
+        str(
+            RgbafValue(
+                values=[
+                    1,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                    2,
+                    0.8,
+                    0.8,
+                    0.8,
+                    0.8,
+                    3,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                ]
+            )
+        )
+        == """[
+    1.0,
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    2.0,
+    0.8,
+    0.8,
+    0.8,
+    0.8,
+    3.0,
+    0.5,
+    0.5,
+    0.5,
+    0.5
+]"""
+    )
+
+
+def test_rgba_with_time():
+    assert (
+        str(RgbaValue(values=[1, 0.5, 0.5, 0.5, 0.5]))
+        == """[
+    1.0,
+    0.5,
+    0.5,
+    0.5,
+    0.5
+]"""
+    )
+    assert (
+        str(
+            RgbaValue(
+                values=[
+                    1,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                    2,
+                    0.8,
+                    0.8,
+                    0.8,
+                    0.8,
+                    3,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                ]
+            )
+        )
+        == """[
+    1.0,
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    2.0,
+    0.8,
+    0.8,
+    0.8,
+    0.8,
+    3.0,
+    0.5,
+    0.5,
+    0.5,
+    0.5
+]"""
+    )
