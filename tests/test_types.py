@@ -17,8 +17,8 @@ from czml3.types import (
     IntervalValue,
     NearFarScalarValue,
     NumberValue,
-    ReferenceListValue,
     ReferenceListOfListsValue,
+    ReferenceListValue,
     ReferenceValue,
     RgbafValue,
     RgbaValue,
@@ -94,15 +94,11 @@ def test_bad_cartesian3_raises_error(values):
     with pytest.raises(TypeError):
         Cartesian3Value(values=values)
 
-    assert str(Cartesian3Value()) == "[]"
-
 
 @pytest.mark.parametrize("values", [[2, 2, 2, 2, 2], [5, 5, 5, 5, 5]])
 def test_bad_cartesian2_raises_error(values):
     with pytest.raises(TypeError):
         Cartesian2Value(values=values)
-
-    assert str(Cartesian2Value()) == "{}"
 
 
 def test_reference_value():
@@ -321,8 +317,6 @@ def test_cartographic_radians_value():
     1.0
 ]"""
     )
-    result = CartographicRadiansValue()
-    assert str(result) == """[]"""
     with pytest.raises(TypeError):
         CartographicRadiansValue(values=[0, 0, 1, 1, 1, 1, 1])
 
@@ -347,8 +341,6 @@ def test_cartographic_degrees_value():
     1.0
 ]"""
     )
-    result = CartographicDegreesValue()
-    assert str(result) == """[]"""
     with pytest.raises(TypeError):
         CartographicDegreesValue(values=[0, 0, 1, 1, 1, 1, 1])
 

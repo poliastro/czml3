@@ -56,21 +56,21 @@ from czml3.properties import (
     ViewFrom,
 )
 from czml3.types import (
-    CartographicDegreesListOfListsValue,
-    CartographicRadiansListOfListsValue,
-    Cartesian3ListOfListsValue,
-    CartographicRadiansListValue,
-    Cartesian3ListValue,
-    ReferenceListOfListsValue,
-    ReferenceListValue,
     Cartesian2Value,
+    Cartesian3ListOfListsValue,
+    Cartesian3ListValue,
     Cartesian3Value,
+    CartographicDegreesListOfListsValue,
     CartographicDegreesListValue,
+    CartographicRadiansListOfListsValue,
+    CartographicRadiansListValue,
     DistanceDisplayConditionValue,
     IntervalValue,
     NearFarScalarValue,
-    Sequence,
+    ReferenceListOfListsValue,
+    ReferenceListValue,
     TimeInterval,
+    TimeIntervalCollection,
     UnitQuaternionValue,
     format_datetime_like,
 )
@@ -740,7 +740,7 @@ def test_multiple_interval_value():
     end0 = start1 = dt.datetime(2019, 1, 2, tzinfo=dt.timezone.utc)
     end1 = dt.datetime(2019, 1, 3, tzinfo=dt.timezone.utc)
 
-    prop = Sequence(
+    prop = TimeIntervalCollection(
         values=[
             IntervalValue(start=start0, end=end0, value=True),
             IntervalValue(start=start1, end=end1, value=False),
@@ -766,7 +766,7 @@ def test_multiple_interval_decimal_value():
     end0 = start1 = dt.datetime(2019, 1, 2, 1, 2, 3, 456789, tzinfo=dt.timezone.utc)
     end1 = dt.datetime(2019, 1, 3, 1, 2, 3, 456789, tzinfo=dt.timezone.utc)
 
-    prop = Sequence(
+    prop = TimeIntervalCollection(
         values=[
             IntervalValue(start=start0, end=end0, value=True),
             IntervalValue(start=start1, end=end1, value=False),
@@ -1347,7 +1347,7 @@ def test_no_values():
 
 def test_SequenceTime_mix():
     with pytest.raises(ValidationError):
-        Sequence(
+        TimeIntervalCollection(
             values=[  # type: ignore
                 TimeInterval(
                     start=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc),
@@ -1573,5 +1573,7 @@ def test_position_list_of_lists_with_bad_references():
             cartographicDegrees=CartographicDegreesListOfListsValue(
                 values=[[20, 30, 10], [20, 30, 10]]
             ),
-            references=ReferenceListOfListsValue(values=[["1#this"], ["1#this", "2#this"]]),
+            references=ReferenceListOfListsValue(
+                values=[["1#this"], ["1#this", "2#this"]]
+            ),
         )

@@ -1,4 +1,5 @@
 import ast
+import datetime as dt
 from uuid import UUID
 
 import pytest
@@ -28,7 +29,12 @@ from czml3.properties import (
     PositionList,
     SolidColorMaterial,
 )
-from czml3.types import Cartesian3Value, Sequence, StringValue
+from czml3.types import (
+    Cartesian3Value,
+    StringValue,
+    TimeInterval,
+    TimeIntervalCollection,
+)
 
 
 def test_preamble_has_proper_id_and_expected_version():
@@ -212,7 +218,7 @@ def test_packet_dynamic_cartesian_position():
 }"""
     packet = Packet(
         id="InternationalSpaceStation",
-        position=PositionList(
+        position=Position(
             interpolationAlgorithm=InterpolationAlgorithms.LAGRANGE,
             referenceFrame=ReferenceFrames.INERTIAL,
             cartesian=[
@@ -621,7 +627,25 @@ def test_different_IDs():
 
 
 def test_different_availabilities():
-    p1 = Packet(availability=Sequence(values=[1, 2, 3]))
-    p2 = Packet(availability=Sequence(values=[2, 3, 4]))
+    p1 = Packet(
+        availability=TimeIntervalCollection(
+            values=[
+                TimeInterval(
+                    start=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc),
+                    end=dt.datetime(2019, 4, 20, 12, tzinfo=dt.timezone.utc),
+                )
+            ]
+        )
+    )
+    p2 = Packet(
+        availability=TimeIntervalCollection(
+            values=[
+                TimeInterval(
+                    start=dt.datetime(2019, 3, 20, 12, tzinfo=dt.timezone.utc),
+                    end=dt.datetime(2020, 4, 20, 12, tzinfo=dt.timezone.utc),
+                )
+            ]
+        )
+    )
     assert p1 != p2
     assert str(p1) != str(p2)
