@@ -22,12 +22,14 @@ from .properties import (
     Polygon,
     Polyline,
     Position,
+    PositionList,
+    PositionListOfLists,
     Rectangle,
     Tileset,
     ViewFrom,
     Wall,
 )
-from .types import IntervalValue, Sequence, TimeInterval
+from .types import IntervalValue, TimeInterval, TimeIntervalCollection
 
 CZML_VERSION = "1.0"
 
@@ -51,31 +53,31 @@ class Packet(BaseCZMLObject):
 
     id: str = Field(default_factory=lambda _: str(uuid4()))
     delete: None | bool = Field(default=None)
-    name: None | str = Field(default=None)
-    parent: None | str = Field(default=None)
-    description: None | str | StringValue = Field(default=None)
-    availability: None | TimeInterval | list[TimeInterval] | Sequence = Field(
-        default=None
-    )
-    properties: None | Any = Field(default=None)
-    position: None | Position = Field(default=None)
-    orientation: None | Orientation = Field(default=None)
-    viewFrom: None | ViewFrom = Field(default=None)
-    billboard: None | Billboard = Field(default=None)
-    box: None | Box = Field(default=None)
-    corridor: None | Corridor = Field(default=None)
-    cylinder: None | Cylinder = Field(default=None)
-    ellipse: None | Ellipse = Field(default=None)
-    ellipsoid: None | Ellipsoid = Field(default=None)
-    label: None | Label = Field(default=None)
-    model: None | Model = Field(default=None)
-    path: None | Path = Field(default=None)
-    point: None | Point = Field(default=None)
-    polygon: None | Polygon = Field(default=None)
-    polyline: None | Polyline = Field(default=None)
-    rectangle: None | Rectangle = Field(default=None)
-    tileset: None | Tileset = Field(default=None)
-    wall: None | Wall = Field(default=None)
+    name: None | str | TimeIntervalCollection = Field(default=None)
+    parent: None | str | TimeIntervalCollection = Field(default=None)
+    description: None | str | StringValue | TimeIntervalCollection = Field(default=None)
+    availability: None | TimeInterval | TimeIntervalCollection = Field(default=None)
+    properties: None | Any | TimeIntervalCollection = Field(default=None)
+    position: (
+        None | Position | PositionList | PositionListOfLists | TimeIntervalCollection
+    ) = Field(default=None)
+    orientation: None | Orientation | TimeIntervalCollection = Field(default=None)
+    viewFrom: None | ViewFrom | TimeIntervalCollection = Field(default=None)
+    billboard: None | Billboard | TimeIntervalCollection = Field(default=None)
+    box: None | Box | TimeIntervalCollection = Field(default=None)
+    corridor: None | Corridor | TimeIntervalCollection = Field(default=None)
+    cylinder: None | Cylinder | TimeIntervalCollection = Field(default=None)
+    ellipse: None | Ellipse | TimeIntervalCollection = Field(default=None)
+    ellipsoid: None | Ellipsoid | TimeIntervalCollection = Field(default=None)
+    label: None | Label | TimeIntervalCollection = Field(default=None)
+    model: None | Model | TimeIntervalCollection = Field(default=None)
+    path: None | Path | TimeIntervalCollection = Field(default=None)
+    point: None | Point | TimeIntervalCollection = Field(default=None)
+    polygon: None | Polygon | TimeIntervalCollection = Field(default=None)
+    polyline: None | Polyline | TimeIntervalCollection = Field(default=None)
+    rectangle: None | Rectangle | TimeIntervalCollection = Field(default=None)
+    tileset: None | Tileset | TimeIntervalCollection = Field(default=None)
+    wall: None | Wall | TimeIntervalCollection = Field(default=None)
 
 
 class Document(BaseCZMLObject):

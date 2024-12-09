@@ -22,76 +22,65 @@ else:
 TYPE_MAPPING = {bool: "boolean"}
 
 
-def get_color(color) -> list[float] | None:
+def get_color(color: None | list[float], max_val: float) -> list[float] | None:
     """Determines if the input is a valid color"""
+    if isinstance(color, list) and len(color) == 0:
+        raise ValueError("Length of colours must be non-zero")
     if color is None or (
         isinstance(color, list)
-        and all(issubclass(type(v), float) for v in color)
         and len(color) == 4
-        and (all(0 <= v <= 255 for v in color) or all(0 <= v <= 1 for v in color))
-    ):
+        and all(0 <= v <= max_val for v in color)
+    ):  # [r, g, b, a]
+        return color
+    if (
+        isinstance(color, list)
+        and len(color) % 5 == 0
+        and all(0 <= v <= max_val for v in color[1::5])
+        and all(0 <= v <= max_val for v in color[2::5])
+        and all(0 <= v <= max_val for v in color[3::5])
+        and all(0 <= v <= max_val for v in color[4::5])
+    ):  # [time, r, g, b, a]
         return color
     elif (
         isinstance(color, list)
-        and all(issubclass(type(v), float) for v in color)
         and len(color) == 3
-        and all(0 <= v <= 255 for v in color)
-    ):
-        return color + [255.0]
-    # rgbf or rgbaf
-    # if (
-    #     isinstance(color, list)
-    #     and all(issubclass(type(v), float) for v in color)
-    #     and (3 <= len(color) <= 4)
-    #     and not all(0 <= v <= 1 for v in color)
-    # ):
-    #     raise TypeError("RGBF or RGBAF values must be between 0 and 1")
-    elif (
-        isinstance(color, list)
-        and all(issubclass(type(v), float) for v in color)
-        and len(color) == 3
-        and all(0 <= v <= 1 for v in color)
-    ):
-        return color + [1.0]
-    # Hexadecimal RGBA
-    # elif issubclass(type(color), int) and not (0 <= color <= 0xFFFFFFFF):
-    #     raise TypeError("Hexadecimal RGBA not valid")
-    elif (
-        issubclass(type(color), int) and (0 <= color <= 0xFFFFFFFF) and color > 0xFFFFFF
-    ):
-        return [
-            (color & 0xFF000000) >> 24,
-            (color & 0x00FF0000) >> 16,
-            (color & 0x0000FF00) >> 8,
-            (color & 0x000000FF) >> 0,
-        ]
-    elif issubclass(type(color), int) and (0 <= color <= 0xFFFFFFFF):
-        return [
-            (color & 0xFF0000) >> 16,
-            (color & 0x00FF00) >> 8,
-            (color & 0x0000FF) >> 0,
-            0xFF,
-        ]
-    # RGBA string
-    elif isinstance(color, str):
-        n = int(color.rsplit("#")[-1], 16)
-        if not (0 <= n <= 0xFFFFFFFF):
-            raise TypeError("RGBA string not valid")
-        if n > 0xFFFFFF:
-            return [
-                (n & 0xFF000000) >> 24,
-                (n & 0x00FF0000) >> 16,
-                (n & 0x0000FF00) >> 8,
-                (n & 0x000000FF) >> 0,
-            ]
-        else:
-            return [
-                (n & 0xFF0000) >> 16,
-                (n & 0x00FF00) >> 8,
-                (n & 0x0000FF) >> 0,
-                0xFF,
-            ]
+        and all(0 <= v <= max_val for v in color)
+    ):  # [r, g, b]
+        return color + [max_val]
     raise TypeError("Colour type not supported")
+
+
+def check_list_of_list_values(num_points: int, values: list[list[Any]]):
+    """Values that support [X,Y,Z,X,Y,Z,...]"""
+    if len(values) <= 0:
+        raise ValueError("No values present")
+    for value in values:
+        if len(value) <= 0:
+            raise ValueError("No values present in a list")
+        if len(value) % num_points != 0:
+            raise TypeError(
+                f"Input values of each list must have either {num_points} or N * {num_points} values, where N is the number of samples."
+            )
+
+
+def check_list_of_values(num_points: int, values: list[Any]):
+    """Values that support [X,Y,Z,X,Y,Z,...]"""
+    if len(values) <= 0:
+        raise ValueError("No values present")
+    if len(values) % num_points != 0:
+        raise TypeError(
+            f"Input values must have either {num_points} or N * {num_points} values, where N is the number of samples."
+        )
+
+
+def check_values(num_points: int, values: list[Any]):
+    """Values that support [X,Y,Z] or [Time,X,Y,Z,Time,X,Y,Z,...]"""
+    if len(values) <= 0:
+        raise ValueError("No values present")
+    if not (len(values) % (num_points) == 0 or len(values) % (num_points + 1) == 0):
+        raise TypeError(
+            f"Input values must have either {num_points} or N * {num_points + 1} values, where N is the number of time-tagged samples."
+        )
 
 
 def check_reference(r):
@@ -145,31 +134,14 @@ class RgbafValue(BaseCZMLObject):
 
     values: list[float]
 
-    @model_validator(mode="after")
-    def _check_values(self) -> Self:
-        num_coords = 4
-        if not (
-            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
-        ):
-            raise TypeError(
-                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
-                "where N is the number of time-tagged samples."
-            )
-        if len(self.values) == num_coords:
-            if not all(0 <= val <= 1 for val in self.values):
-                raise TypeError("Color values must be floats in the range 0-1.")
-
-        else:
-            for i in range(0, len(self.values), num_coords + 1):
-                v = self.values[i + 1 : i + num_coords + 1]
-
-                if not all(0 <= val <= 1 for val in v):
-                    raise TypeError("Color values must be floats in the range 0-1.")
-        return self
+    @field_validator("values")
+    @classmethod
+    def get_color_from_values(cls, r):
+        return get_color(r, 1.0)
 
     @model_serializer
     def custom_serializer(self):
-        return list(self.values)
+        return self.values
 
 
 class RgbaValue(BaseCZMLObject):
@@ -185,29 +157,10 @@ class RgbaValue(BaseCZMLObject):
 
     values: list[float]
 
-    @model_validator(mode="after")
-    def _check_values(self) -> Self:
-        num_coords = 4
-        if not (
-            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
-        ):
-            raise TypeError(
-                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
-                "where N is the number of time-tagged samples."
-            )
-
-        if len(self.values) == num_coords and not all(
-            isinstance(val, float) and 0 <= val <= 255 for val in self.values
-        ):
-            raise TypeError("Color values must be integers in the range 0-255.")
-
-        else:
-            for i in range(0, len(self.values), num_coords + 1):
-                v = self.values[i + 1 : i + num_coords + 1]
-
-                if not all(isinstance(val, float) and 0 <= val <= 255 for val in v):
-                    raise TypeError("Color values must be integers in the range 0-255.")
-        return self
+    @field_validator("values")
+    @classmethod
+    def get_color_from_values(cls, r):
+        return get_color(r, 255.0)
 
     @model_serializer
     def custom_serializer(self):
@@ -220,9 +173,9 @@ class ReferenceValue(BaseCZMLObject):
 
     """
 
-    string: str
+    value: str
 
-    @field_validator("string")
+    @field_validator("value")
     @classmethod
     def _check_string(cls, v):
         if "#" not in v:
@@ -233,7 +186,51 @@ class ReferenceValue(BaseCZMLObject):
 
     @model_serializer
     def custom_serializer(self):
-        return self.string
+        return self.value
+
+
+class ReferenceListValue(BaseCZMLObject):
+    """Represents a reference to another property. References can be used to specify that two properties on different
+    objects are in fact, the same property.
+
+    """
+
+    values: list[str]
+
+    @field_validator("values")
+    @classmethod
+    def _check_string(cls, v):
+        if all("#" not in _v for _v in v):
+            raise TypeError(
+                "Invalid reference string format. Input must be of the form id#property"
+            )
+        return v
+
+    @model_serializer
+    def custom_serializer(self):
+        return self.values
+
+
+class ReferenceListOfListsValue(BaseCZMLObject):
+    """Represents a reference to another property. References can be used to specify that two properties on different
+    objects are in fact, the same property.
+
+    """
+
+    values: list[list[str]]
+
+    @field_validator("values")
+    @classmethod
+    def _check_string(cls, v):
+        if all("#" not in _v for v1 in v for _v in v1):
+            raise TypeError(
+                "Invalid reference string format. Input must be of the form id#property"
+            )
+        return v
+
+    @model_serializer
+    def custom_serializer(self):
+        return self.values
 
 
 class Cartesian3Value(BaseCZMLObject):
@@ -246,27 +243,46 @@ class Cartesian3Value(BaseCZMLObject):
 
     """
 
-    values: None | list[float] = Field(default=None)
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        if self.values is None:
-            return self
-        num_coords = 3
-        if not (
-            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
-        ):
-            raise TypeError(
-                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
-                "where N is the number of time-tagged samples."
-            )
+        check_values(3, self.values)
         return self
 
     @model_serializer
     def custom_serializer(self) -> list[float]:
-        if self.values is None:
-            return []
-        return list(self.values)
+        return self.values
+
+
+class Cartesian3ListValue(BaseCZMLObject):
+    """A list of three-dimensional Cartesian values specified as [X, Y, Z, X, Y, Z, ...]"""
+
+    values: list[float]
+
+    @model_validator(mode="after")
+    def _check_values(self) -> Self:
+        check_list_of_values(3, self.values)
+        return self
+
+    @model_serializer
+    def custom_serializer(self) -> list[float]:
+        return self.values
+
+
+class Cartesian3ListOfListsValue(BaseCZMLObject):
+    """A list of lists of three-dimensional Cartesian values specified as [X, Y, Z, X, Y, Z, ...]"""
+
+    values: list[list[float]]
+
+    @model_validator(mode="after")
+    def _check_values(self) -> Self:
+        check_list_of_list_values(3, self.values)
+        return self
+
+    @model_serializer
+    def custom_serializer(self):
+        return self.values
 
 
 class Cartesian2Value(BaseCZMLObject):
@@ -279,26 +295,15 @@ class Cartesian2Value(BaseCZMLObject):
 
     """
 
-    values: None | list[float] = Field(default=None)
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        if self.values is None:
-            return self
-        num_coords = 2
-        if not (
-            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
-        ):
-            raise TypeError(
-                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
-                "where N is the number of time-tagged samples."
-            )
+        check_values(2, self.values)
         return self
 
     @model_serializer
     def custom_serializer(self):
-        if self.values is None:
-            return {}
         return {"cartesian2": list(self.values)}
 
 
@@ -313,27 +318,16 @@ class CartographicRadiansValue(BaseCZMLObject):
 
     """
 
-    values: None | list[float] = Field(default=None)
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        if self.values is None:
-            return self
-        num_coords = 3
-        if not (
-            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
-        ):
-            raise TypeError(
-                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
-                "where N is the number of time-tagged samples."
-            )
+        check_values(3, self.values)
         return self
 
     @model_serializer
     def custom_serializer(self):
-        if self.values is None:
-            return []
-        return list(self.values)
+        return self.values
 
 
 class CartographicDegreesValue(BaseCZMLObject):
@@ -347,26 +341,38 @@ class CartographicDegreesValue(BaseCZMLObject):
 
     """
 
-    values: None | list[float] = Field(default=None)
+    values: list[float]
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        if self.values is None:
-            return self
-        num_coords = 3
-        if not (
-            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
-        ):
-            raise TypeError(
-                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
-                "where N is the number of time-tagged samples."
-            )
+        check_values(3, self.values)
         return self
 
     @model_serializer
     def custom_serializer(self) -> list[float]:
-        if self.values is None:
-            return []
+        return self.values
+
+
+class Cartesian3VelocityValue(BaseCZMLObject):
+    """A geodetic, WGS84 position specified as [Longitude, Latitude, Height].
+
+    Longitude and Latitude are in degrees and Height is in meters.
+    If the array has three elements, the value is constant.
+    If it has four or more elements, they are time-tagged samples
+    arranged as [Time, Longitude, Latitude, Height, Time, Longitude, Latitude, Height, ...],
+    where Time is an ISO 8601 date and time string or seconds since epoch.
+
+    """
+
+    values: list[float]
+
+    @model_validator(mode="after")
+    def _check_values(self) -> Self:
+        check_values(6, self.values)
+        return self
+
+    @model_serializer
+    def custom_serializer(self) -> list[float]:
         return self.values
 
 
@@ -391,16 +397,27 @@ class CartographicRadiansListValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        num_coords = 3
-        if len(self.values) % num_coords != 0:
-            raise TypeError(
-                f"Invalid values. Input values should be arrays of size {num_coords} * N"
-            )
+        check_list_of_values(3, self.values)
         return self
 
     @model_serializer
     def custom_serializer(self):
-        return list(self.values)
+        return self.values
+
+
+class CartographicRadiansListOfListsValue(BaseCZMLObject):
+    """A list of lists of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...], where Longitude and Latitude are in radians and Height is in meters"""
+
+    values: list[list[float]]
+
+    @model_validator(mode="after")
+    def _check_values(self) -> Self:
+        check_list_of_list_values(3, self.values)
+        return self
+
+    @model_serializer
+    def custom_serializer(self):
+        return self.values
 
 
 class CartographicDegreesListValue(BaseCZMLObject):
@@ -411,16 +428,27 @@ class CartographicDegreesListValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        num_coords = 3
-        if len(self.values) % num_coords != 0:
-            raise TypeError(
-                f"Invalid values. Input values should be arrays of size {num_coords} * N"
-            )
+        check_list_of_values(3, self.values)
         return self
 
     @model_serializer
     def custom_serializer(self):
-        return list(self.values)
+        return self.values
+
+
+class CartographicDegreesListOfListsValue(BaseCZMLObject):
+    """A list of lists of geodetic, WGS84 positions specified as [Longitude, Latitude, Height, Longitude, Latitude, Height, ...], where Longitude and Latitude are in degrees and Height is in meters"""
+
+    values: list[list[float]]
+
+    @model_validator(mode="after")
+    def _check_values(self) -> Self:
+        check_list_of_list_values(3, self.values)
+        return self
+
+    @model_serializer
+    def custom_serializer(self):
+        return self.values
 
 
 class DistanceDisplayConditionValue(BaseCZMLObject):
@@ -434,16 +462,12 @@ class DistanceDisplayConditionValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        num_coords = 2
-        if len(self.values) != num_coords and len(self.values) % (num_coords + 1) != 0:
-            raise TypeError(
-                f"Invalid values. Input values should be arrays of size either {num_coords} or {num_coords + 1} * N"
-            )
+        check_values(2, self.values)
         return self
 
     @model_serializer
     def custom_serializer(self):
-        return list(self.values)
+        return self.values
 
 
 class NearFarScalarValue(BaseCZMLObject):
@@ -458,19 +482,12 @@ class NearFarScalarValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        num_coords = 4
-        if not (
-            len(self.values) == num_coords or len(self.values) % (num_coords + 1) == 0
-        ):
-            raise TypeError(
-                f"Input values must have either {num_coords} or N * {num_coords + 1} values, "
-                "where N is the number of time-tagged samples."
-            )
+        check_values(4, self.values)
         return self
 
     @model_serializer
     def custom_serializer(self):
-        return list(self.values)
+        return self.values
 
 
 class TimeInterval(BaseCZMLObject):
@@ -518,14 +535,14 @@ class IntervalValue(BaseCZMLObject):
         return obj_dict
 
 
-class Sequence(BaseCZMLObject):
+class TimeIntervalCollection(BaseCZMLObject):
     """Sequence, list, array of objects."""
 
-    values: list[Any]
+    values: list[TimeInterval] | list[IntervalValue]
 
     @model_serializer
     def custom_serializer(self) -> list[Any]:
-        return list(self.values)
+        return self.values
 
 
 class UnitQuaternionValue(BaseCZMLObject):
@@ -542,16 +559,12 @@ class UnitQuaternionValue(BaseCZMLObject):
 
     @model_validator(mode="after")
     def _check_values(self) -> Self:
-        num_coords = 4
-        if len(self.values) % num_coords != 0:
-            raise TypeError(
-                f"Invalid values. Input values should be arrays of size {num_coords} * N"
-            )
+        check_values(4, self.values)
         return self
 
     @model_serializer
     def custom_serializer(self):
-        return list(self.values)
+        return self.values
 
 
 class EpochValue(BaseCZMLObject):

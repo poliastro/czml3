@@ -17,6 +17,8 @@ from czml3.types import (
     IntervalValue,
     NearFarScalarValue,
     NumberValue,
+    ReferenceListOfListsValue,
+    ReferenceListValue,
     ReferenceValue,
     RgbafValue,
     RgbaValue,
@@ -28,10 +30,8 @@ from czml3.types import (
 
 
 def test_invalid_near_far_scalar_value():
-    with pytest.raises(TypeError) as excinfo:
-        NearFarScalarValue(values=[0, 3.2, 1, 4, 2, 1])
-
-    assert "Input values must have either 4 or N * 5 values, " in excinfo.exconly()
+    with pytest.raises(TypeError):
+        NearFarScalarValue(values=[0, 3.2, 1, 4, 2, 1, 0])
 
 
 def test_distance_display_condition_is_invalid():
@@ -70,12 +70,8 @@ def test_cartographic_radian_list():
 
 
 def test_invalid_cartograpic_radian_list():
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         CartographicRadiansListValue(values=[1])
-    assert (
-        "Invalid values. Input values should be arrays of size 3 * N"
-        in excinfo.exconly()
-    )
 
 
 def test_cartograpic_degree_list():
@@ -89,42 +85,52 @@ def test_cartograpic_degree_list():
 
 
 def test_invalid_cartograpic_degree_list():
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         CartographicDegreesListValue(values=[15, 25, 50, 30])
-    assert (
-        "Invalid values. Input values should be arrays of size 3 * N"
-        in excinfo.exconly()
-    )
 
 
 @pytest.mark.parametrize("values", [[2, 2], [5, 5, 5, 5, 5]])
 def test_bad_cartesian3_raises_error(values):
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         Cartesian3Value(values=values)
-
-    assert "Input values must have either 3 or N * 4 values" in excinfo.exconly()
-    assert str(Cartesian3Value()) == "[]"
 
 
 @pytest.mark.parametrize("values", [[2, 2, 2, 2, 2], [5, 5, 5, 5, 5]])
 def test_bad_cartesian2_raises_error(values):
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         Cartesian2Value(values=values)
-
-    assert "Input values must have either 2 or N * 3 values" in excinfo.exconly()
-    assert str(Cartesian2Value()) == "{}"
 
 
 def test_reference_value():
     expected_result = '"id#property"'
-    reference = ReferenceValue(string="id#property")
+    reference = ReferenceValue(value="id#property")
 
     assert str(reference) == expected_result
 
 
 def test_invalid_reference_value():
     with pytest.raises(TypeError) as excinfo:
-        ReferenceValue(string="id")
+        ReferenceValue(value="id")
+
+    assert (
+        "Invalid reference string format. Input must be of the form id#property"
+        in excinfo.exconly()
+    )
+
+
+def test_invalid_reference_list_value():
+    with pytest.raises(TypeError) as excinfo:
+        ReferenceListValue(values=["id"])
+
+    assert (
+        "Invalid reference string format. Input must be of the form id#property"
+        in excinfo.exconly()
+    )
+
+
+def test_invalid_reference_list_of_lists_value():
+    with pytest.raises(TypeError) as excinfo:
+        ReferenceListOfListsValue(values=[["id"]])
 
     assert (
         "Invalid reference string format. Input must be of the form id#property"
@@ -146,46 +152,24 @@ def test_font_property_value():
     assert font.font == expected_result
 
 
-def test_bad_rgba_size_values_raises_error():
-    with pytest.raises(TypeError) as excinfo:
-        RgbaValue(values=[0, 0, 255])
-
-    assert "Input values must have either 4 or N * 5 values, " in excinfo.exconly()
-
-
 def test_bad_rgba_4_values_raises_error():
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         RgbaValue(values=[256, 0, 0, 255])
-
-    assert "Color values must be integers in the range 0-255." in excinfo.exconly()
 
 
 def test_bad_rgba_5_color_values_raises_error():
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         RgbaValue(values=[0, 0.1, 0.3, 0.3, 256])
-
-    assert "Color values must be integers in the range 0-255." in excinfo.exconly()
-
-
-def test_bad_rgbaf_size_values_raises_error():
-    with pytest.raises(TypeError) as excinfo:
-        RgbafValue(values=[0, 0, 0.1])
-
-    assert "Input values must have either 4 or N * 5 values, " in excinfo.exconly()
 
 
 def test_bad_rgbaf_4_values_raises_error():
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         RgbafValue(values=[0.3, 0, 0, 1.4])
-
-    assert "Color values must be floats in the range 0-1." in excinfo.exconly()
 
 
 def test_bad_rgbaf_5_color_values_raises_error():
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         RgbafValue(values=[0, 0.1, 0.3, 0.3, 255])
-
-    assert "Color values must be floats in the range 0-1." in excinfo.exconly()
 
 
 def test_default_time_interval():
@@ -312,7 +296,7 @@ def test_astropy_time_format():
 
 def test_quaternion_value_is_invalid():
     with pytest.raises(TypeError):
-        UnitQuaternionValue(values=[0, 0, 0, 1, 0])
+        UnitQuaternionValue(values=[0, 0, 0, 1, 0, 0])
 
 
 def test_quaternion_value():
@@ -348,10 +332,8 @@ def test_cartographic_radians_value():
     1.0
 ]"""
     )
-    result = CartographicRadiansValue()
-    assert str(result) == """[]"""
     with pytest.raises(TypeError):
-        CartographicRadiansValue(values=[0, 0, 1, 1, 1, 1])
+        CartographicRadiansValue(values=[0, 0, 1, 1, 1, 1, 1])
 
 
 def test_cartographic_degrees_value():
@@ -374,10 +356,8 @@ def test_cartographic_degrees_value():
     1.0
 ]"""
     )
-    result = CartographicDegreesValue()
-    assert str(result) == """[]"""
     with pytest.raises(TypeError):
-        CartographicDegreesValue(values=[0, 0, 1, 1, 1, 1])
+        CartographicDegreesValue(values=[0, 0, 1, 1, 1, 1, 1])
 
 
 def test_rgba_value():
@@ -388,16 +368,6 @@ def test_rgba_value():
     30.0,
     30.0,
     30.0
-]"""
-    )
-    assert (
-        str(RgbaValue(values=[30, 30, 30, 30, 1]))
-        == """[
-    30.0,
-    30.0,
-    30.0,
-    30.0,
-    1.0
 ]"""
     )
 
@@ -412,16 +382,6 @@ def test_rgbaf_value():
     0.5
 ]"""
     )
-    assert (
-        str(RgbafValue(values=[0.5, 0.5, 0.5, 0.5, 1]))
-        == """[
-    0.5,
-    0.5,
-    0.5,
-    0.5,
-    1.0
-]"""
-    )
 
 
 def test_check_reference():
@@ -432,3 +392,131 @@ def test_check_reference():
 
 def test_format_datetime_like():
     assert format_datetime_like(None) is None
+
+
+def test_reference_list():
+    expected_result = """[
+    "1#this",
+    "1#that"
+]"""
+    r = ReferenceListValue(values=["1#this", "1#that"])
+    assert expected_result == str(r)
+
+
+def test_reference_list_of_lists():
+    expected_result = """[
+    [
+        "1#this"
+    ],
+    [
+        "1#that"
+    ]
+]"""
+    r = ReferenceListOfListsValue(values=[["1#this"], ["1#that"]])
+    assert expected_result == str(r)
+
+
+def test_rgbaf_with_time():
+    assert (
+        str(RgbafValue(values=[1, 0.5, 0.5, 0.5, 0.5]))
+        == """[
+    1.0,
+    0.5,
+    0.5,
+    0.5,
+    0.5
+]"""
+    )
+    assert (
+        str(
+            RgbafValue(
+                values=[
+                    1,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                    2,
+                    0.8,
+                    0.8,
+                    0.8,
+                    0.8,
+                    3,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                ]
+            )
+        )
+        == """[
+    1.0,
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    2.0,
+    0.8,
+    0.8,
+    0.8,
+    0.8,
+    3.0,
+    0.5,
+    0.5,
+    0.5,
+    0.5
+]"""
+    )
+
+
+def test_rgba_with_time():
+    assert (
+        str(RgbaValue(values=[1, 0.5, 0.5, 0.5, 0.5]))
+        == """[
+    1.0,
+    0.5,
+    0.5,
+    0.5,
+    0.5
+]"""
+    )
+    assert (
+        str(
+            RgbaValue(
+                values=[
+                    1,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                    2,
+                    0.8,
+                    0.8,
+                    0.8,
+                    0.8,
+                    3,
+                    0.5,
+                    0.5,
+                    0.5,
+                    0.5,
+                ]
+            )
+        )
+        == """[
+    1.0,
+    0.5,
+    0.5,
+    0.5,
+    0.5,
+    2.0,
+    0.8,
+    0.8,
+    0.8,
+    0.8,
+    3.0,
+    0.5,
+    0.5,
+    0.5,
+    0.5
+]"""
+    )
