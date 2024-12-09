@@ -18,7 +18,7 @@ from czml3.properties import (
     Position,
     SolidColorMaterial,
 )
-from czml3.types import IntervalValue, Sequence, TimeInterval
+from czml3.types import IntervalValue, TimeInterval, TimeIntervalCollection
 
 accesses_id = "9927edc4-e87a-4e1f-9b8b-0bfb3b05b227"
 start = dt.datetime(2012, 3, 15, 10, tzinfo=dt.timezone.utc)
@@ -37,7 +37,7 @@ simple = Document(
             id="Satellite/Geoeye1-to-Satellite/ISS",
             name="Geoeye1 to ISS",
             parent=accesses_id,
-            availability=Sequence(
+            availability=TimeIntervalCollection(
                 values=[
                     TimeInterval(
                         start="2012-03-15T10:16:06.97400000000198Z",
@@ -174,7 +174,9 @@ simple = Document(
                 outlineColor=Color(rgba=[0, 0, 0]),
             ),
             path=Path(
-                show=Sequence(values=[IntervalValue(start=start, end=end, value=True)]),
+                show=TimeIntervalCollection(
+                    values=[IntervalValue(start=start, end=end, value=True)]
+                ),
                 width=1,
                 resolution=120,
                 material=Material(

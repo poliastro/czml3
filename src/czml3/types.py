@@ -562,7 +562,7 @@ class IntervalValue(BaseCZMLObject):
         return obj_dict
 
 
-class Sequence(BaseCZMLObject):
+class TimeIntervalCollection(BaseCZMLObject):
     """Sequence, list, array of objects."""
 
     values: list[TimeInterval] | list[IntervalValue]

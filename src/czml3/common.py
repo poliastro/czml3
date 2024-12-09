@@ -3,7 +3,7 @@ import datetime as dt
 from pydantic import BaseModel, field_validator
 
 from .enums import InterpolationAlgorithms
-from .types import Sequence, format_datetime_like
+from .types import TimeIntervalCollection, format_datetime_like
 
 
 class Deletable(BaseModel):
@@ -18,9 +18,11 @@ class Interpolatable(BaseModel):
     The interpolation happens over provided time-tagged samples.
     """
 
-    epoch: None | str | dt.datetime | Sequence = None
-    interpolationAlgorithm: None | InterpolationAlgorithms | Sequence = None
-    interpolationDegree: None | int | Sequence = None
+    epoch: None | str | dt.datetime | TimeIntervalCollection = None
+    interpolationAlgorithm: None | InterpolationAlgorithms | TimeIntervalCollection = (
+        None
+    )
+    interpolationDegree: None | int | TimeIntervalCollection = None
 
     @field_validator("epoch")
     @classmethod
