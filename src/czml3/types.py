@@ -173,9 +173,9 @@ class ReferenceValue(BaseCZMLObject):
 
     """
 
-    string: str
+    value: str
 
-    @field_validator("string")
+    @field_validator("value")
     @classmethod
     def _check_string(cls, v):
         if "#" not in v:
@@ -186,7 +186,7 @@ class ReferenceValue(BaseCZMLObject):
 
     @model_serializer
     def custom_serializer(self):
-        return self.string
+        return self.value
 
 
 class ReferenceListValue(BaseCZMLObject):

@@ -103,14 +103,14 @@ def test_bad_cartesian2_raises_error(values):
 
 def test_reference_value():
     expected_result = '"id#property"'
-    reference = ReferenceValue(string="id#property")
+    reference = ReferenceValue(value="id#property")
 
     assert str(reference) == expected_result
 
 
 def test_invalid_reference_value():
     with pytest.raises(TypeError) as excinfo:
-        ReferenceValue(string="id")
+        ReferenceValue(value="id")
 
     assert (
         "Invalid reference string format. Input must be of the form id#property"
