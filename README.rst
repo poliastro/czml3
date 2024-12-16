@@ -1,3 +1,10 @@
+.. image:: http://unmaintained.tech/badge.svg
+  :target: http://unmaintained.tech
+  :alt: No Maintenance Intended
+
+*czml3 is now developed at https://github.com/Stoops-ML/czml3,*
+*see https://github.com/poliastro/czml3/issues/112 for more context.*
+
 :Name: czml3
 :Authors: Juan Luis Cano Rodríguez, Eleftheria Chatziargyriou
 
